@@ -41,7 +41,7 @@ function Admin() {
     isLoading: carsLoading,
     error: carsError,
   } = useQuery<ICars[]>({ queryKey: ["cars"], queryFn: getCars });
-
+  console.log(cars);
   const onHandleName = (event: React.ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
   };
@@ -57,23 +57,87 @@ function Admin() {
     setActiveTab(tab);
   };
 
-  const addUser = async () => {
+  const addName = async () => {
     const username = await window.prompt("이름 입력: ");
-
-    const res = await axiosApi.post("/addName", { username });
-    if (res.status === 200) {
-      alert("성공적으로 등록하였습니다.");
-      queryClient.invalidateQueries({ queryKey: ["names"] });
+    if (username) {
+      const res = await axiosApi.post("/addName", { username });
+      if (res.status === 200) {
+        alert("성공적으로 등록하였습니다.");
+        queryClient.invalidateQueries({ queryKey: ["names"] });
+      }
     }
   };
 
-  const deleteUser = async (id: string) => {
+  const removeName = async (id: string) => {
     const isConfirm = window.confirm("삭제하시겠습니까?");
     if (isConfirm) {
       const res = await axiosApi.delete(`/removeName/${id}`);
       if (res.status === 200) {
         alert("성공적으로 삭제하였습니다.");
         queryClient.invalidateQueries({ queryKey: ["names"] });
+      }
+    }
+  };
+
+  const addDestination = async () => {
+    const destination = await window.prompt("행선지 입력: ");
+    if (destination) {
+      const res = await axiosApi.post("/addDestination", { destination });
+      if (res.status === 200) {
+        alert("성공적으로 등록하였습니다.");
+        queryClient.invalidateQueries({ queryKey: ["destinations"] });
+      }
+    }
+  };
+  const removeDestination = async (id: string) => {
+    const isConfirm = window.confirm("삭제하시겠습니까?");
+    if (isConfirm) {
+      const res = await axiosApi.delete(`/removeDestination/${id}`);
+      if (res.status === 200) {
+        alert("성공적으로 삭제하였습니다.");
+        queryClient.invalidateQueries({ queryKey: ["destinations"] });
+      }
+    }
+  };
+
+  const addState = async () => {
+    const state = await window.prompt("상태 입력: ");
+    if (state) {
+      const res = await axiosApi.post("/addState", { state });
+      if (res.status === 200) {
+        alert("성공적으로 등록하였습니다.");
+        queryClient.invalidateQueries({ queryKey: ["states"] });
+      }
+    }
+  };
+  const removeState = async (id: string) => {
+    const isConfirm = window.confirm("삭제하시겠습니까?");
+    if (isConfirm) {
+      const res = await axiosApi.delete(`/removeState/${id}`);
+      if (res.status === 200) {
+        alert("성공적으로 삭제하였습니다.");
+        queryClient.invalidateQueries({ queryKey: ["states"] });
+      }
+    }
+  };
+
+  const addCar = async () => {
+    const car = await window.prompt("상태 입력: ");
+    if (car) {
+      const res = await axiosApi.post("/addCar", { car });
+      if (res.status === 200) {
+        alert("성공적으로 등록하였습니다.");
+        queryClient.invalidateQueries({ queryKey: ["cars"] });
+      }
+    }
+  };
+  const removeCar = async (id: string) => {
+    const isConfirm = window.confirm("삭제하시겠습니까?");
+    if (isConfirm) {
+      const res = await axiosApi.delete(`/removeCar/${id}`);
+      if (res.status === 200) {
+        alert("성공적으로 삭제하였습니다.");
+        queryClient.invalidateQueries({ queryKey: ["cars"] });
       }
     }
   };
@@ -132,61 +196,169 @@ function Admin() {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td className="bg-white p-4">목록</td>
-              <td></td>
-              <td></td>
-              <td>
-                <button onClick={addUser}>추가</button>
-              </td>
-            </tr>
-            {activeTab === "name" &&
-              names?.map((item, index) => (
-                <tr
-                  key={index}
-                  className={`hover:bg-gray-100 ${
-                    index % 2 === 0 ? "bg-white" : "bg-gray-50"
-                  }`}
-                >
-                  <td className="p-4 border-b border-gray-200">
-                    {item.username}
+            {activeTab === "name" && (
+              <>
+                <tr>
+                  <td className="bg-white p-4 border-b border-gray-200">
+                    목록
                   </td>
-                  <td></td>
-                  <td></td>
-                  <td>
-                    <button onClick={() => deleteUser(item._id)}>삭제</button>
+                  <td className="border-b border-gray-200"></td>
+                  <td className="border-b border-gray-200"></td>
+                  <td className="border-b border-gray-200">
+                    <button
+                      className="bg-[#00ab39] rounded-lg text-white py-2 px-4 hover:opacity-60 font-bold"
+                      onClick={addName}
+                    >
+                      추가
+                    </button>
                   </td>
                 </tr>
-              ))}
-            {activeTab === "destination" && (
-              <tr>
-                <td>행선지</td>
-                <td></td>
-                <td></td>
-                <td>
-                  <button>삭제</button>
-                </td>
-              </tr>
+                {names?.map((item, index) => (
+                  <tr
+                    key={index}
+                    className={`hover:bg-gray-100 ${
+                      index % 2 === 0 ? "bg-white" : "bg-gray-50"
+                    }`}
+                  >
+                    <td className="p-4 border-b border-gray-200">
+                      {item.username}
+                    </td>
+                    <td className="border-b border-gray-200"></td>
+                    <td className="border-b border-gray-200"></td>
+                    <td className="border-b border-gray-200">
+                      <button
+                        className="bg-[#FF0000] rounded-lg text-white py-2 px-4 hover:opacity-60 font-bold"
+                        onClick={() => removeName(item._id)}
+                      >
+                        삭제
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </>
             )}
+
+            {activeTab === "destination" && (
+              <>
+                <tr>
+                  <td className="bg-white p-4 border-b border-gray-200">
+                    목록
+                  </td>
+                  <td className="border-b border-gray-200"></td>
+                  <td className="border-b border-gray-200"></td>
+                  <td className="border-b border-gray-200">
+                    <button
+                      className="bg-[#00ab39] rounded-lg text-white py-2 px-4 hover:opacity-60 font-bold"
+                      onClick={addDestination}
+                    >
+                      추가
+                    </button>
+                  </td>
+                </tr>
+                {destinations?.map((item, index) => (
+                  <tr
+                    key={index}
+                    className={`hover:bg-gray-100 ${
+                      index % 2 === 0 ? "bg-white" : "bg-gray-50"
+                    }`}
+                  >
+                    <td className="p-4 border-b border-gray-200">
+                      {item.destination}
+                    </td>
+                    <td className="border-b border-gray-200"></td>
+                    <td className="border-b border-gray-200"></td>
+                    <td className="border-b border-gray-200">
+                      <button
+                        className="bg-[#FF0000] rounded-lg text-white py-2 px-4 hover:opacity-60 font-bold"
+                        onClick={() => removeDestination(item._id)}
+                      >
+                        삭제
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </>
+            )}
+
             {activeTab === "status" && (
-              <tr>
-                <td>상태</td>
-                <td></td>
-                <td></td>
-                <td>
-                  <button>삭제</button>
-                </td>
-              </tr>
+              <>
+                <tr>
+                  <td className="bg-white p-4 border-b border-gray-200">
+                    목록
+                  </td>
+                  <td className="border-b border-gray-200"></td>
+                  <td className="border-b border-gray-200"></td>
+                  <td className="border-b border-gray-200">
+                    <button
+                      className="bg-[#00ab39] rounded-lg text-white py-2 px-4 hover:opacity-60 font-bold"
+                      onClick={addState}
+                    >
+                      추가
+                    </button>
+                  </td>
+                </tr>
+                {states?.map((item, index) => (
+                  <tr
+                    key={index}
+                    className={`hover:bg-gray-100 ${
+                      index % 2 === 0 ? "bg-white" : "bg-gray-50"
+                    }`}
+                  >
+                    <td className="p-4 border-b border-gray-200">
+                      {item.state}
+                    </td>
+                    <td className="border-b border-gray-200"></td>
+                    <td className="border-b border-gray-200"></td>
+                    <td className="border-b border-gray-200">
+                      <button
+                        className="bg-[#FF0000] rounded-lg text-white py-2 px-4 hover:opacity-60 font-bold"
+                        onClick={() => removeState(item._id)}
+                      >
+                        삭제
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </>
             )}
             {activeTab === "car" && (
-              <tr>
-                <td>차량</td>
-                <td></td>
-                <td></td>
-                <td>
-                  <button>삭제</button>
-                </td>
-              </tr>
+              <>
+                <tr>
+                  <td className="bg-white p-4 border-b border-gray-200">
+                    목록
+                  </td>
+                  <td className="border-b border-gray-200"></td>
+                  <td className="border-b border-gray-200"></td>
+                  <td className="border-b border-gray-200">
+                    <button
+                      className="bg-[#00ab39] rounded-lg text-white py-2 px-4 hover:opacity-60 font-bold"
+                      onClick={addCar}
+                    >
+                      추가
+                    </button>
+                  </td>
+                </tr>
+                {cars?.map((item, index) => (
+                  <tr
+                    key={index}
+                    className={`hover:bg-gray-100 ${
+                      index % 2 === 0 ? "bg-white" : "bg-gray-50"
+                    }`}
+                  >
+                    <td className="p-4 border-b border-gray-200">{item.car}</td>
+                    <td className=" border-b border-gray-200"></td>
+                    <td className="border-b border-gray-200"></td>
+                    <td className="border-b border-gray-200">
+                      <button
+                        className="bg-[#FF0000] rounded-lg text-white py-2 px-4 hover:opacity-60 font-bold"
+                        onClick={() => removeCar(item._id)}
+                      >
+                        삭제
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </>
             )}
           </tbody>
         </table>

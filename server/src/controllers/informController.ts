@@ -10,7 +10,6 @@ import Car from "../models/Car";
 export const addName = async (req: Request, res: Response) => {
   try {
     const { username } = req.body;
-
     await Name.create({ username });
     res.status(200).json({ message: "이름 추가 성공" });
   } catch (error) {
@@ -49,6 +48,7 @@ export const getName = async (req: Request, res: Response) => {
 export const addDestination = async (req: Request, res: Response) => {
   try {
     const { destination } = req.body;
+
     await Destination.create({ destination });
     res.status(200).json({ message: "목적지 추가 성공" });
   } catch (error) {
@@ -58,18 +58,23 @@ export const addDestination = async (req: Request, res: Response) => {
   }
 };
 
-export const removeDestination = async (req: Request, res: Response) => {};
+export const removeDestination = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  try {
+    await Destination.deleteOne({ _id: id });
+    res.status(200).json({ message: "행선지 삭제 성공" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "서버 에러" });
+    return;
+  }
+};
 
 export const getDestination = async (req: Request, res: Response) => {
   try {
-    const allDestinations = await Destination.find(
-      {},
-      { destination: 1, _id: 0 }
-    );
+    const allDestinations = await Destination.find({}, { destination: 1 });
 
-    res
-      .status(200)
-      .json({ message: "행선지 조회 성공", data: allDestinations });
+    res.status(200).json({ allDestinations });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "서버 에러" });
@@ -81,6 +86,7 @@ export const getDestination = async (req: Request, res: Response) => {
 export const addStatus = async (req: Request, res: Response) => {
   try {
     const { state } = req.body;
+
     await State.create({ state });
     res.status(200).json({ message: "상태 추가 성공" });
   } catch (error) {
@@ -90,12 +96,21 @@ export const addStatus = async (req: Request, res: Response) => {
   }
 };
 
-export const removeStatus = async (req: Request, res: Response) => {};
+export const removeStatus = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  try {
+    await State.deleteOne({ _id: id });
+    res.status(200).json({ message: "상태 삭제 성공" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "서버 에러" });
+    return;
+  }
+};
 
 export const getStatus = async (req: Request, res: Response) => {
   try {
-    const allStates = await State.find({}, { state: 1, _id: 0 });
-
+    const allStates = await State.find({}, { state: 1 });
     res.status(200).json({ allStates });
   } catch (error) {
     console.error(error);
@@ -116,12 +131,21 @@ export const addCar = async (req: Request, res: Response) => {
   }
 };
 
-export const removeCar = async (req: Request, res: Response) => {};
+export const removeCar = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  try {
+    await Car.deleteOne({ _id: id });
+    res.status(200).json({ message: "차량 삭제 성공" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "서버 에러" });
+    return;
+  }
+};
 
 export const getCar = async (req: Request, res: Response) => {
   try {
-    const allCars = await Car.find({}, { state: 1, _id: 0 });
-
+    const allCars = await Car.find({}, { car: 1 });
     res.status(200).json({ allCars });
   } catch (error) {
     console.error(error);

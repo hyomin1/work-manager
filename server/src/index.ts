@@ -13,7 +13,10 @@ import {
   getDestination,
   getName,
   getStatus,
+  removeDestination,
   removeName,
+  removeStatus,
+  removeCar,
 } from "./controllers/informController";
 
 const app: Express = express();
@@ -36,12 +39,15 @@ app.delete("/removeName/:id", removeName);
 
 app.get("/getDestination", getDestination);
 app.post("/addDestination", addDestination);
+app.delete("/removeDestination/:id", removeDestination);
 
 app.get("/getState", getStatus);
 app.post("/addState", addStatus);
+app.delete("/removeState/:id", removeStatus);
 
 app.get("/getCar", getCar);
 app.post("/addCar", addCar);
+app.delete("/removeCar/:id", removeCar);
 
 connectDB();
 
