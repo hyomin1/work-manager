@@ -4,6 +4,7 @@ import Name from "../models/Name";
 import Destination from "../models/Destination";
 import State from "../models/State";
 import Car from "../models/Car";
+import Inform from "../models/Inform";
 
 //이름
 
@@ -147,6 +148,18 @@ export const getCar = async (req: Request, res: Response) => {
   try {
     const allCars = await Car.find({}, { car: 1 });
     res.status(200).json({ allCars });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "서버 에러" });
+    return;
+  }
+};
+
+export const addInform = async (req: Request, res: Response) => {
+  try {
+    const { username, destination, state, car } = req.body;
+    await Inform.create({ username, destination, state, car });
+    res.status(200).json({ message: "정보 입력 성공" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "서버 에러" });

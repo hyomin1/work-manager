@@ -17,6 +17,7 @@ import {
   removeName,
   removeStatus,
   removeCar,
+  addInform,
 } from "./controllers/informController";
 
 const app: Express = express();
@@ -48,6 +49,8 @@ app.delete("/removeState/:id", removeStatus);
 app.get("/getCar", getCar);
 app.post("/addCar", addCar);
 app.delete("/removeCar/:id", removeCar);
+
+app.post("/addInform", addInform);
 
 connectDB();
 

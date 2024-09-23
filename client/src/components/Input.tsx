@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getCars, getDestinations, getNames, getStates } from "../api";
 import { ICars, IDestinations, INames, IStates } from "../interfaces/interface";
+import axiosApi from "../axios";
 
 function Input() {
   const today = new Date();
@@ -9,7 +10,9 @@ function Input() {
 
   const [username, setName] = useState("");
   const [car, setCar] = useState("");
-  const [destination, setDestination] = useState("");
+  const [destination1, setDestination1] = useState("");
+  const [destination2, setDestination2] = useState("");
+  const [destination3, setDestination3] = useState("");
   const [state, setState] = useState("");
 
   const {
@@ -47,10 +50,20 @@ function Input() {
   const handleCarChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setCar(event.target.value);
   };
-  const handleDestinationChange = (
+  const handleDestinationChange1 = (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
-    setDestination(event.target.value);
+    setDestination1(event.target.value);
+  };
+  const handleDestinationChange2 = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    setDestination2(event.target.value);
+  };
+  const handleDestinationChange3 = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    setDestination3(event.target.value);
   };
   const handleStateChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setState(event.target.value);
@@ -58,6 +71,31 @@ function Input() {
   if (namesLoading || destinationsLoading || statesLoading || carsLoading) {
     return <div>Loading...</div>;
   }
+  const onClickComplete = async () => {
+    if (!username) {
+      alert("이름을 선택해주세요");
+      return;
+    }
+    if (!destination1) {
+      alert("행선지를 선택해주세요");
+      return;
+    }
+    if (!state) {
+      alert("상태를 선택해주세요");
+      return;
+    }
+    if (!car) {
+      alert("차량을 선택해주세요");
+      return;
+    }
+    const res = await axiosApi.post("/addInform", {
+      username,
+      destination: destination1,
+      state,
+      car,
+    });
+    //데이터 넣고 홈으로 보내기
+  };
 
   return (
     <div className="w-full h-screen flex flex-col justify-between items-center p-10">
@@ -81,7 +119,7 @@ function Input() {
             <tr>
               {/* 이름 */}
               <td>
-                <select defaultValue="">
+                <select defaultValue="" onChange={handleNameChange}>
                   <option disabled value="">
                     이름 선택
                   </option>
@@ -94,7 +132,7 @@ function Input() {
               </td>
               {/* 행선지 */}
               <td className="flex flex-col">
-                <select defaultValue="">
+                <select defaultValue="" onChange={handleDestinationChange1}>
                   <option disabled value="">
                     행선지 선택
                   </option>
@@ -105,7 +143,7 @@ function Input() {
                   ))}
                 </select>
 
-                <select defaultValue="">
+                <select defaultValue="" onChange={handleDestinationChange2}>
                   <option disabled value="">
                     행선지 선택
                   </option>
@@ -116,7 +154,7 @@ function Input() {
                   ))}
                 </select>
 
-                <select defaultValue="">
+                <select defaultValue="" onChange={handleDestinationChange3}>
                   <option disabled value="">
                     행선지 선택
                   </option>
@@ -129,7 +167,7 @@ function Input() {
               </td>
               {/* 상태 */}
               <td>
-                <select defaultValue="">
+                <select defaultValue="" onChange={handleStateChange}>
                   <option disabled value="">
                     선택
                   </option>
@@ -143,7 +181,7 @@ function Input() {
 
               {/* 차량 */}
               <td>
-                <select defaultValue="">
+                <select defaultValue="" onChange={handleCarChange}>
                   <option disabled value="">
                     차량 선택
                   </option>
@@ -156,7 +194,10 @@ function Input() {
               </td>
 
               <td>
-                <button className="bg-[#00ab39] rounded-lg text-white py-2 px-4 hover:opacity-60">
+                <button
+                  onClick={onClickComplete}
+                  className="bg-[#00ab39] rounded-lg text-white py-2 px-4 hover:opacity-60"
+                >
                   완료
                 </button>
               </td>
