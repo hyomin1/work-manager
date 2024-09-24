@@ -3,6 +3,7 @@ import { Schema, model } from "mongoose";
 interface IInform {
   username: string;
   destination: string;
+  business: string;
   state: string;
   car: string;
   createdAt?: Date;
@@ -11,6 +12,7 @@ const informSchema = new Schema<IInform>(
   {
     username: { type: String, required: true, trim: true },
     destination: { type: String, required: true, trim: true },
+    business: { type: String, required: true, trim: true },
     state: { type: String, required: true, trim: true },
     car: { type: String, required: true, trim: true },
   },

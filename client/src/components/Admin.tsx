@@ -1,59 +1,88 @@
 import React, { useState } from "react";
 import axiosApi from "../axios";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { ICars, IDestinations, INames, IStates } from "../interfaces/interface";
-import { getCars, getDestinations, getNames, getStates } from "../api";
+import {
+  IBusinesses,
+  ICars,
+  IDestinations,
+  INames,
+  IStates,
+} from "../interfaces/interface";
+import {
+  formDate,
+  getBusinesses,
+  getCars,
+  getDestinations,
+  getNames,
+  getStates,
+} from "../api";
+import { FaPlus } from "react-icons/fa6";
+import { IoClose } from "react-icons/io5";
+import Page from "./Page";
 
 function Admin() {
-  const today = new Date();
-  const formatDate = today.toLocaleDateString("ko-KR");
-
   const queryClient = useQueryClient();
 
-  const [username, setName] = useState("");
   const [activeTab, setActiveTab] = useState<string>("name");
 
-  const {
-    data: names,
-    isLoading: namesLoading,
-    error: namesError,
-  } = useQuery<INames[]>({
+  const { data: names } = useQuery<INames[]>({
     queryKey: ["names"],
     queryFn: getNames,
   });
-  const {
-    data: destinations,
-    isLoading: destinationsLoading,
-    error: destinationsError,
-  } = useQuery<IDestinations[]>({
+  const { data: destinations } = useQuery<IDestinations[]>({
     queryKey: ["destinations"],
     queryFn: getDestinations,
   });
 
-  const {
-    data: states,
-    isLoading: statesLoading,
-    error: statesError,
-  } = useQuery<IStates[]>({ queryKey: ["states"], queryFn: getStates });
+  const { data: businesses } = useQuery<IBusinesses[]>({
+    queryKey: ["businesses"],
+    queryFn: getBusinesses,
+  });
 
-  const {
-    data: cars,
-    isLoading: carsLoading,
-    error: carsError,
-  } = useQuery<ICars[]>({ queryKey: ["cars"], queryFn: getCars });
-  console.log(cars);
-  const onHandleName = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setName(event.target.value);
-  };
+  const { data: states } = useQuery<IStates[]>({
+    queryKey: ["states"],
+    queryFn: getStates,
+  });
 
-  const onSubmitName = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const res = await axiosApi.post("/addName", { username });
-    //addName();
-    setName("");
+  const { data: cars } = useQuery<ICars[]>({
+    queryKey: ["cars"],
+    queryFn: getCars,
+  });
+
+  const [page, setPage] = useState(1);
+
+  const itemsPerPage = 10;
+
+  const indexOfLastNameItem = page * itemsPerPage;
+  const indexOfFirstNameItem = indexOfLastNameItem - itemsPerPage;
+  const totalNamePages = names ? Math.ceil(names.length / itemsPerPage) : 0;
+
+  const indexOfLastDestinationItem = page * itemsPerPage;
+  const indexOfFirstDestinationItem = indexOfLastDestinationItem - itemsPerPage;
+  const totalDestinationPages = destinations
+    ? Math.ceil(destinations.length / itemsPerPage)
+    : 0;
+
+  const indexOfLastStateItem = page * itemsPerPage;
+  const indexOfFirstStateItem = indexOfLastStateItem - itemsPerPage;
+  const totalStatePages = states ? Math.ceil(states.length / itemsPerPage) : 0;
+
+  const indexOfLastCarItem = page * itemsPerPage;
+  const indexOfFirstCarItem = indexOfLastCarItem - itemsPerPage;
+  const totalCarPages = cars ? Math.ceil(cars.length / itemsPerPage) : 0;
+
+  const indexOfLastBusinessItem = page * itemsPerPage;
+  const indexOfFirstBusinessItem = indexOfLastBusinessItem - itemsPerPage;
+  const totalBusinessPages = businesses
+    ? Math.ceil(businesses.length / itemsPerPage)
+    : 0;
+
+  const handlePage = (page: number) => {
+    setPage(page);
   };
 
   const handleTabClick = (tab: string) => {
+    setPage(1);
     setActiveTab(tab);
   };
 
@@ -63,7 +92,7 @@ function Admin() {
       const res = await axiosApi.post("/addName", { username });
       if (res.status === 200) {
         alert("성공적으로 등록하였습니다.");
-        queryClient.invalidateQueries({ queryKey: ["names"] });
+        queryClient.invalidateQueries({ queryKey: ["names"] }); // 입력 시 정보 refetch
       }
     }
   };
@@ -74,13 +103,13 @@ function Admin() {
       const res = await axiosApi.delete(`/removeName/${id}`);
       if (res.status === 200) {
         alert("성공적으로 삭제하였습니다.");
-        queryClient.invalidateQueries({ queryKey: ["names"] });
+        queryClient.invalidateQueries({ queryKey: ["names"] }); // 삭제 시 정보 refetch
       }
     }
   };
 
   const addDestination = async () => {
-    const destination = await window.prompt("행선지 입력: ");
+    const destination = await window.prompt("방문지 입력: ");
     if (destination) {
       const res = await axiosApi.post("/addDestination", { destination });
       if (res.status === 200) {
@@ -96,6 +125,28 @@ function Admin() {
       if (res.status === 200) {
         alert("성공적으로 삭제하였습니다.");
         queryClient.invalidateQueries({ queryKey: ["destinations"] });
+      }
+    }
+  };
+
+  const addBusiness = async () => {
+    const business = await window.prompt("사업명 입력: ");
+    if (business) {
+      const res = await axiosApi.post("/addBusiness", { business });
+      if (res.status === 200) {
+        alert("성공적으로 등록하였습니다.");
+        queryClient.invalidateQueries({ queryKey: ["businesses"] });
+      }
+    }
+  };
+
+  const removeBusiness = async (id: string) => {
+    const isConfirm = window.confirm("삭제하시겠습니까?");
+    if (isConfirm) {
+      const res = await axiosApi.delete(`/removeBusiness/${id}`);
+      if (res.status === 200) {
+        alert("성공적으로 삭제하였습니다.");
+        queryClient.invalidateQueries({ queryKey: ["businesses"] });
       }
     }
   };
@@ -146,9 +197,9 @@ function Admin() {
     <div className="w-full h-screen flex flex-col justify-between items-center p-10">
       <div className="w-[80%] flex flex-col items-center h-screen">
         <div className="mb-4 flex items-center justify-center w-[100%]">
-          <span className="mb-4 font-bold text-3xl">{formatDate}</span>
+          <span className="mb-4 font-bold text-3xl">{formDate}</span>
         </div>
-        {/* Table Layout */}
+
         <table className="w-[100%] table-auto">
           <thead>
             <tr className="text-left">
@@ -171,7 +222,17 @@ function Admin() {
                 }`}
                 onClick={() => handleTabClick("destination")}
               >
-                행선지
+                방문지
+              </th>
+              <th
+                className={`p-4 font-bold cursor-pointer hover:opacity-60 ${
+                  activeTab === "business"
+                    ? "bg-blue-500 text-white"
+                    : "bg-gray-200"
+                }`}
+                onClick={() => handleTabClick("business")}
+              >
+                사업명
               </th>
 
               <th
@@ -182,7 +243,7 @@ function Admin() {
                 }`}
                 onClick={() => handleTabClick("status")}
               >
-                상태
+                업무
               </th>
 
               <th
@@ -199,170 +260,270 @@ function Admin() {
             {activeTab === "name" && (
               <>
                 <tr>
-                  <td className="bg-white p-4 border-b border-gray-200">
+                  <td className="bg-white p-4 border-b border-gray-200 font-bold text-xl">
                     목록
                   </td>
-                  <td className="border-b border-gray-200"></td>
-                  <td className="border-b border-gray-200"></td>
+                  <td className="border-b border-gray-200" />
+                  <td className="border-b border-gray-200" />
+                  <td className="border-b border-gray-200" />
                   <td className="border-b border-gray-200">
                     <button
-                      className="bg-[#00ab39] rounded-lg text-white py-2 px-4 hover:opacity-60 font-bold"
+                      className="bg-[#00ab39] rounded-full text-white p-2 hover:opacity-60 font-bold"
                       onClick={addName}
                     >
-                      추가
+                      <FaPlus className="w-5 h-5" />
                     </button>
                   </td>
                 </tr>
-                {names?.map((item, index) => (
-                  <tr
-                    key={index}
-                    className={`hover:bg-gray-100 ${
-                      index % 2 === 0 ? "bg-white" : "bg-gray-50"
-                    }`}
-                  >
-                    <td className="p-4 border-b border-gray-200">
-                      {item.username}
-                    </td>
-                    <td className="border-b border-gray-200"></td>
-                    <td className="border-b border-gray-200"></td>
-                    <td className="border-b border-gray-200">
-                      <button
-                        className="bg-[#FF0000] rounded-lg text-white py-2 px-4 hover:opacity-60 font-bold"
-                        onClick={() => removeName(item._id)}
-                      >
-                        삭제
-                      </button>
-                    </td>
-                  </tr>
-                ))}
+                {names
+                  ?.sort((a, b) => a.username.localeCompare(b.username))
+                  .slice(indexOfFirstNameItem, indexOfLastNameItem)
+                  .map((item, index) => (
+                    <tr
+                      key={index}
+                      className={` ${
+                        index % 2 === 0 ? "bg-white" : "bg-gray-50"
+                      }`}
+                    >
+                      <td className="p-4 border-b border-gray-200">
+                        {item.username}
+                      </td>
+                      <td className="border-b border-gray-200" />
+                      <td className="border-b border-gray-200" />
+                      <td className="border-b border-gray-200" />
+                      <td className="border-b border-gray-200">
+                        <button
+                          className="bg-[#FF0000] rounded-full text-white p-2 hover:opacity-60 font-bold"
+                          onClick={() => removeName(item._id)}
+                        >
+                          <IoClose className="w-5 h-5" />
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
               </>
             )}
 
             {activeTab === "destination" && (
               <>
                 <tr>
-                  <td className="bg-white p-4 border-b border-gray-200">
+                  <td className="bg-white p-4 border-b border-gray-200 font-bold text-xl">
                     목록
                   </td>
-                  <td className="border-b border-gray-200"></td>
-                  <td className="border-b border-gray-200"></td>
+                  <td className="border-b border-gray-200" />
+                  <td className="border-b border-gray-200" />
+                  <td className="border-b border-gray-200" />
                   <td className="border-b border-gray-200">
                     <button
-                      className="bg-[#00ab39] rounded-lg text-white py-2 px-4 hover:opacity-60 font-bold"
+                      className="bg-[#00ab39] rounded-full text-white p-2 hover:opacity-60 font-bold"
                       onClick={addDestination}
                     >
-                      추가
+                      <FaPlus className="w-5 h-5" />
                     </button>
                   </td>
                 </tr>
-                {destinations?.map((item, index) => (
-                  <tr
-                    key={index}
-                    className={`hover:bg-gray-100 ${
-                      index % 2 === 0 ? "bg-white" : "bg-gray-50"
-                    }`}
-                  >
-                    <td className="p-4 border-b border-gray-200">
-                      {item.destination}
-                    </td>
-                    <td className="border-b border-gray-200"></td>
-                    <td className="border-b border-gray-200"></td>
-                    <td className="border-b border-gray-200">
-                      <button
-                        className="bg-[#FF0000] rounded-lg text-white py-2 px-4 hover:opacity-60 font-bold"
-                        onClick={() => removeDestination(item._id)}
-                      >
-                        삭제
-                      </button>
-                    </td>
-                  </tr>
-                ))}
+                {destinations
+                  ?.sort((a, b) => a.destination.localeCompare(b.destination))
+                  .slice(
+                    indexOfFirstDestinationItem,
+                    indexOfLastDestinationItem
+                  )
+                  .map((item, index) => (
+                    <tr
+                      key={index}
+                      className={` ${
+                        index % 2 === 0 ? "bg-white" : "bg-gray-50"
+                      }`}
+                    >
+                      <td className="p-4 border-b border-gray-200">
+                        {item.destination}
+                      </td>
+                      <td className="border-b border-gray-200" />
+                      <td className="border-b border-gray-200" />
+                      <td className="border-b border-gray-200" />
+                      <td className="border-b border-gray-200">
+                        <button
+                          className="bg-[#FF0000] rounded-full text-white p-2 hover:opacity-60 font-bold"
+                          onClick={() => removeDestination(item._id)}
+                        >
+                          <IoClose className="w-5 h-5" />
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+              </>
+            )}
+            {activeTab === "business" && (
+              <>
+                <tr>
+                  <td className="bg-white p-4 border-b border-gray-200 font-bold text-xl">
+                    목록
+                  </td>
+                  <td className="border-b border-gray-200" />
+                  <td className="border-b border-gray-200" />
+                  <td className="border-b border-gray-200" />
+                  <td className="border-b border-gray-200">
+                    <button
+                      className="bg-[#488f60] rounded-full text-white p-2 hover:opacity-60 font-bold"
+                      onClick={addBusiness}
+                    >
+                      <FaPlus className="w-5 h-5" />
+                    </button>
+                  </td>
+                </tr>
+                {businesses
+                  ?.slice(indexOfFirstBusinessItem, indexOfLastBusinessItem)
+                  .map((item, index) => (
+                    <tr
+                      key={index}
+                      className={` ${
+                        index % 2 === 0 ? "bg-white" : "bg-gray-50"
+                      }`}
+                    >
+                      <td className="p-4 border-b border-gray-200">
+                        {item.business}
+                      </td>
+                      <td className=" border-b border-gray-200" />
+                      <td className="border-b border-gray-200" />
+                      <td className="border-b border-gray-200" />
+                      <td className="border-b border-gray-200">
+                        <button
+                          className="bg-[#FF0000] rounded-full text-white p-2 hover:opacity-60 font-bold"
+                          onClick={() => removeBusiness(item._id)}
+                        >
+                          <IoClose className="w-5 h-5" />
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
               </>
             )}
 
             {activeTab === "status" && (
               <>
                 <tr>
-                  <td className="bg-white p-4 border-b border-gray-200">
+                  <td className="bg-white p-4 border-b border-gray-200 text-xl font-bold">
                     목록
                   </td>
-                  <td className="border-b border-gray-200"></td>
-                  <td className="border-b border-gray-200"></td>
+                  <td className="border-b border-gray-200" />
+                  <td className="border-b border-gray-200" />
+                  <td className="border-b border-gray-200" />
                   <td className="border-b border-gray-200">
                     <button
-                      className="bg-[#00ab39] rounded-lg text-white py-2 px-4 hover:opacity-60 font-bold"
+                      className="bg-[#00ab39] rounded-full text-white p-2 hover:opacity-60 font-bold"
                       onClick={addState}
                     >
-                      추가
+                      <FaPlus className="w-5 h-5" />
                     </button>
                   </td>
                 </tr>
-                {states?.map((item, index) => (
-                  <tr
-                    key={index}
-                    className={`hover:bg-gray-100 ${
-                      index % 2 === 0 ? "bg-white" : "bg-gray-50"
-                    }`}
-                  >
-                    <td className="p-4 border-b border-gray-200">
-                      {item.state}
-                    </td>
-                    <td className="border-b border-gray-200"></td>
-                    <td className="border-b border-gray-200"></td>
-                    <td className="border-b border-gray-200">
-                      <button
-                        className="bg-[#FF0000] rounded-lg text-white py-2 px-4 hover:opacity-60 font-bold"
-                        onClick={() => removeState(item._id)}
-                      >
-                        삭제
-                      </button>
-                    </td>
-                  </tr>
-                ))}
+                {states
+                  ?.sort((a, b) => a.state.localeCompare(b.state))
+                  .slice(indexOfFirstStateItem, indexOfLastStateItem)
+                  .map((item, index) => (
+                    <tr
+                      key={index}
+                      className={` ${
+                        index % 2 === 0 ? "bg-white" : "bg-gray-50"
+                      }`}
+                    >
+                      <td className="p-4 border-b border-gray-200">
+                        {item.state}
+                      </td>
+                      <td className="border-b border-gray-200" />
+                      <td className="border-b border-gray-200" />
+                      <td className="border-b border-gray-200" />
+                      <td className="border-b border-gray-200">
+                        <button
+                          className="bg-[#FF0000] rounded-full text-white p-2 hover:opacity-60 font-bold"
+                          onClick={() => removeState(item._id)}
+                        >
+                          <IoClose className="w-5 h-5" />
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
               </>
             )}
             {activeTab === "car" && (
               <>
                 <tr>
-                  <td className="bg-white p-4 border-b border-gray-200">
+                  <td className="bg-white p-4 border-b border-gray-200 font-bold text-xl">
                     목록
                   </td>
-                  <td className="border-b border-gray-200"></td>
-                  <td className="border-b border-gray-200"></td>
+                  <td className="border-b border-gray-200" />
+                  <td className="border-b border-gray-200" />
+                  <td className="border-b border-gray-200" />
                   <td className="border-b border-gray-200">
                     <button
-                      className="bg-[#00ab39] rounded-lg text-white py-2 px-4 hover:opacity-60 font-bold"
+                      className="bg-[#488f60] rounded-full text-white p-2 hover:opacity-60 font-bold"
                       onClick={addCar}
                     >
-                      추가
+                      <FaPlus className="w-5 h-5" />
                     </button>
                   </td>
                 </tr>
-                {cars?.map((item, index) => (
-                  <tr
-                    key={index}
-                    className={`hover:bg-gray-100 ${
-                      index % 2 === 0 ? "bg-white" : "bg-gray-50"
-                    }`}
-                  >
-                    <td className="p-4 border-b border-gray-200">{item.car}</td>
-                    <td className=" border-b border-gray-200"></td>
-                    <td className="border-b border-gray-200"></td>
-                    <td className="border-b border-gray-200">
-                      <button
-                        className="bg-[#FF0000] rounded-lg text-white py-2 px-4 hover:opacity-60 font-bold"
-                        onClick={() => removeCar(item._id)}
-                      >
-                        삭제
-                      </button>
-                    </td>
-                  </tr>
-                ))}
+                {cars
+                  ?.slice(indexOfFirstCarItem, indexOfLastCarItem)
+                  .map((item, index) => (
+                    <tr
+                      key={index}
+                      className={` ${
+                        index % 2 === 0 ? "bg-white" : "bg-gray-50"
+                      }`}
+                    >
+                      <td className="p-4 border-b border-gray-200">
+                        {item.car}
+                      </td>
+                      <td className=" border-b border-gray-200" />
+                      <td className="border-b border-gray-200" />
+                      <td className="border-b border-gray-200" />
+                      <td className="border-b border-gray-200">
+                        <button
+                          className="bg-[#FF0000] rounded-full text-white p-2 hover:opacity-60 font-bold"
+                          onClick={() => removeCar(item._id)}
+                        >
+                          <IoClose className="w-5 h-5" />
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
               </>
             )}
           </tbody>
         </table>
       </div>
+      {activeTab === "name" && (
+        <Page
+          totalPage={totalNamePages}
+          page={page}
+          onPageChange={handlePage}
+        />
+      )}
+      {activeTab === "destination" && (
+        <Page
+          totalPage={totalDestinationPages}
+          page={page}
+          onPageChange={handlePage}
+        />
+      )}
+      {activeTab === "business" && (
+        <Page
+          totalPage={totalBusinessPages}
+          page={page}
+          onPageChange={handlePage}
+        />
+      )}
+      {activeTab === "status" && (
+        <Page
+          totalPage={totalStatePages}
+          page={page}
+          onPageChange={handlePage}
+        />
+      )}
+      {activeTab === "car" && (
+        <Page totalPage={totalCarPages} page={page} onPageChange={handlePage} />
+      )}
     </div>
   );
 }

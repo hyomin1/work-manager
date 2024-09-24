@@ -6,6 +6,10 @@ export interface IDestinations {
   _id: string;
   destination: string;
 }
+export interface IBusinesses {
+  _id: string;
+  business: string;
+}
 export interface ICars {
   _id: string;
   car: string;
