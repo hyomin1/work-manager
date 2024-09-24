@@ -75,7 +75,7 @@ app.delete("/removeCar/:id", removeCar);
 app.get("/getInform", getInform);
 app.post("/addInform", addInform);
 
-//app.post("/join", joinAdmin);
+app.post("/join", joinAdmin);
 app.post("/adminLogin", adminLogin);
 
 connectDB();

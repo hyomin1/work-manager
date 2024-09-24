@@ -19,11 +19,18 @@ import {
 import { FaPlus } from "react-icons/fa6";
 import { IoClose } from "react-icons/io5";
 import Page from "./Page";
+import AddData from "./AddData";
 
 function Admin() {
   const queryClient = useQueryClient();
 
   const [activeTab, setActiveTab] = useState<string>("name");
+
+  const [isName, setIsName] = useState(false);
+  const [isDestination, setIsDestination] = useState(false);
+  const [isBusiness, setIsBusiness] = useState(false);
+  const [isWork, setIsWork] = useState(false);
+  const [isCar, setIsCar] = useState(false);
 
   const { data: names } = useQuery<INames[]>({
     queryKey: ["names"],
@@ -195,6 +202,9 @@ function Admin() {
 
   return (
     <div className="w-full h-screen flex flex-col justify-between items-center p-10">
+      {activeTab === "name" && isName && (
+        <AddData setIsName={setIsName} type={activeTab} />
+      )}
       <div className="w-[80%] flex flex-col items-center h-screen">
         <div className="mt-4 mb-20 flex items-center justify-center w-[100%]">
           <span className="font-bold text-3xl">{formDate}</span>
@@ -269,7 +279,7 @@ function Admin() {
                   <td className="border-b border-gray-200">
                     <button
                       className="bg-[#00ab39] rounded-full text-white p-2 hover:opacity-60 font-bold"
-                      onClick={addName}
+                      onClick={() => setIsName(true)}
                     >
                       <FaPlus className="w-5 h-5" />
                     </button>
