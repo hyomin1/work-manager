@@ -196,8 +196,8 @@ function Admin() {
   return (
     <div className="w-full h-screen flex flex-col justify-between items-center p-10">
       <div className="w-[80%] flex flex-col items-center h-screen">
-        <div className="mb-4 flex items-center justify-center w-[100%]">
-          <span className="mb-4 font-bold text-3xl">{formDate}</span>
+        <div className="mt-4 mb-20 flex items-center justify-center w-[100%]">
+          <span className="font-bold text-3xl">{formDate}</span>
         </div>
 
         <table className="w-[100%] table-auto">

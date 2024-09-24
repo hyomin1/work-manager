@@ -18,6 +18,7 @@ const handleResponseInterceptor = async (
   } else if (error.response?.status === 403) {
     const errMsg = error.response.data as { error: string };
     alert(errMsg.error);
+    window.location.href = "/";
     return new Promise(() => {});
   } else if (error.response?.status === 404) {
     const errMsg = error.response.data as { error: string };

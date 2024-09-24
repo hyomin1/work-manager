@@ -67,18 +67,16 @@ function Main() {
   console.log(inform);
 
   return (
-    <div className="w-full h-screen flex flex-col justify-between items-center p-10">
+    <div className="w-full h-screen flex flex-col justify-between items-center p-10 bg-gray-50">
       {isShow && <AdminLogin setIsShow={setIsShow} />}
       <div className="w-[80%] flex flex-col items-center">
-        <div className="mb-4 flex items-center justify-between w-[100%]">
+        <div className="mt-4 mb-24 flex items-center justify-between w-[100%] ">
           <IoIosArrowBack
             className="w-8 h-8 hover:opacity-60"
             onClick={previous}
           />
 
-          <span className="mb-4 font-bold text-3xl">
-            {calDate(currentDate)}
-          </span>
+          <span className=" font-bold text-3xl">{calDate(currentDate)}</span>
           <IoIosArrowForward
             className="w-8 h-8 hover:opacity-60"
             onClick={next}
@@ -116,7 +114,7 @@ function Main() {
             </tr>
           </thead>
 
-          <tbody>
+          <tbody className="rounded-b-xl">
             {inform
               ?.sort((a, b) => {
                 if (a.destination === b.destination) {

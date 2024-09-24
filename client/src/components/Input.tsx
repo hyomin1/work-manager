@@ -116,12 +116,17 @@ function Input() {
     ].filter(Boolean);
 
     if (selectedDestinations.length === 0) {
-      alert("행선지를 선택해주세요");
+      alert("방문지를 선택해주세요");
+      return;
+    }
+
+    if (!business) {
+      alert("사업명을 선택해주세요");
       return;
     }
 
     if (!state) {
-      alert("상태를 선택해주세요");
+      alert("업무를 선택해주세요");
       return;
     }
 
@@ -144,7 +149,7 @@ function Input() {
       const responses = await Promise.all(requests);
 
       if (responses.every((res) => res.status === 200)) {
-        alert("성공적으로 입력하였습니다");
+        alert("입력이 완료되었습니다.");
         navigate("/");
       }
     } catch (error) {
@@ -153,13 +158,13 @@ function Input() {
   };
 
   return (
-    <div className="w-full h-screen flex flex-col justify-between items-center p-10">
-      <div className="w-[80%] flex flex-col items-center">
-        <div className="mb-4 flex items-center justify-center w-[100%]">
+    <div className="w-full h-screen flex flex-col justify-start items-center p-10 bg-gray-50">
+      <div className="w-[80%] flex flex-col items-center  rounded-lg">
+        <div className="mt-4 mb-20 flex items-center justify-center w-full">
           <span className="mb-4 font-bold text-3xl">{formDate}</span>
         </div>
 
-        <table className="w-[100%] rounded-2xl shadow-lg text-left">
+        <table className="w-full text-left border border-gray-200">
           <thead>
             <tr className="bg-gray-200">
               <th className="p-4 border-b border-gray-300">이름</th>
@@ -175,7 +180,11 @@ function Input() {
             <tr>
               {/* 이름 */}
               <td>
-                <select defaultValue="" onChange={handleNameChange}>
+                <select
+                  defaultValue=""
+                  onChange={handleNameChange}
+                  className="hover:opacity-60 border rounded-md p-2 ml-3"
+                >
                   <option disabled value="">
                     이름 선택
                   </option>
@@ -191,49 +200,40 @@ function Input() {
 
               {/* 방문지 */}
               <td className="flex flex-col">
-                <select defaultValue="" onChange={handleDestinationChange1}>
-                  <option disabled value="">
-                    방문지 선택
-                  </option>
-                  {destinations
-                    ?.sort((a, b) => a.destination.localeCompare(b.destination))
-                    .map((item, index) => (
-                      <option key={index} value={item.destination}>
-                        {item.destination}
-                      </option>
-                    ))}
-                </select>
-
-                <select defaultValue="" onChange={handleDestinationChange2}>
-                  <option disabled value="">
-                    방문지 선택
-                  </option>
-                  {destinations
-                    ?.sort((a, b) => a.destination.localeCompare(b.destination))
-                    .map((item, index) => (
-                      <option key={index} value={item.destination}>
-                        {item.destination}
-                      </option>
-                    ))}
-                </select>
-
-                <select defaultValue="" onChange={handleDestinationChange3}>
-                  <option disabled value="">
-                    방문지 선택
-                  </option>
-                  {destinations
-                    ?.sort((a, b) => a.destination.localeCompare(b.destination))
-                    .map((item, index) => (
-                      <option key={index} value={item.destination}>
-                        {item.destination}
-                      </option>
-                    ))}
-                </select>
+                {[
+                  handleDestinationChange1,
+                  handleDestinationChange2,
+                  handleDestinationChange3,
+                ].map((handler, index) => (
+                  <select
+                    key={index}
+                    defaultValue=""
+                    onChange={handler}
+                    className="hover:opacity-60 border rounded-md p-2 my-4 ml-2"
+                  >
+                    <option disabled value="">
+                      방문지 선택
+                    </option>
+                    {destinations
+                      ?.sort((a, b) =>
+                        a.destination.localeCompare(b.destination)
+                      )
+                      .map((item, idx) => (
+                        <option key={idx} value={item.destination}>
+                          {item.destination}
+                        </option>
+                      ))}
+                  </select>
+                ))}
               </td>
 
               {/* 사업명 */}
               <td>
-                <select defaultValue="" onChange={handleBusinessChange}>
+                <select
+                  defaultValue=""
+                  onChange={handleBusinessChange}
+                  className="hover:opacity-60 border rounded-md p-2 ml-4"
+                >
                   <option disabled value="">
                     선택
                   </option>
@@ -247,9 +247,13 @@ function Input() {
                 </select>
               </td>
 
-              {/* 상태 */}
+              {/* 업무 */}
               <td>
-                <select defaultValue="" onChange={handleStateChange}>
+                <select
+                  defaultValue=""
+                  onChange={handleStateChange}
+                  className="hover:opacity-60 border rounded-md p-2"
+                >
                   <option disabled value="">
                     선택
                   </option>
@@ -265,7 +269,11 @@ function Input() {
 
               {/* 차량 */}
               <td>
-                <select defaultValue="" onChange={handleCarChange}>
+                <select
+                  defaultValue=""
+                  onChange={handleCarChange}
+                  className="hover:opacity-60 border rounded-md p-2"
+                >
                   <option disabled value="">
                     차량 선택
                   </option>
