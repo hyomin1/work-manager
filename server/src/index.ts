@@ -25,7 +25,11 @@ import {
   removeBusiness,
 } from "./controllers/informController";
 import { adminLogin, joinAdmin } from "./controllers/adminController";
-import { joinUser, loginUser } from "./controllers/userController";
+import {
+  checkSession,
+  joinUser,
+  loginUser,
+} from "./controllers/authController";
 
 const app: Express = express();
 const port = 8080;
@@ -79,6 +83,7 @@ app.post("/addInform", addInform);
 app.post("/join", joinAdmin);
 app.post("/adminLogin", adminLogin);
 
+app.get("/checkSession", checkSession);
 app.post("/login", loginUser);
 app.post("/register", joinUser);
 

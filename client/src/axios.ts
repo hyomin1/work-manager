@@ -17,7 +17,14 @@ const handleResponseInterceptor = async (
     return new Promise(() => {});
   } else if (error.response?.status === 403) {
     const errMsg = error.response.data as { error: string };
+    const errType = error.response.data as { type: string };
+
     alert(errMsg.error);
+    // 유저 아닌 경우
+    if (errType.type === "not user") {
+      window.location.href = "/";
+    }
+
     window.location.href = "/";
     return new Promise(() => {});
   } else if (error.response?.status === 404) {

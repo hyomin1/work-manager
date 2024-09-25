@@ -249,16 +249,43 @@ export const getCar = async (req: Request, res: Response) => {
 };
 
 export const addInform = async (req: Request, res: Response) => {
-  const { username, destination, business, state, car } = req.body;
+  const {
+    username,
+    destination,
+    business,
+    state,
+    car,
+    isDaily,
+    startDate,
+    endDate,
+  } = req.body;
   try {
-    if (!username || !destination || !business || !state || !car) {
+    if (
+      !username ||
+      !destination ||
+      !business ||
+      !state ||
+      !car ||
+      isDaily === 0
+    ) {
       return res.status(400).json({ error: "정보를 입력해야 합니다." });
     }
-    if (car === "선택 안함") {
-      await Inform.create({ username, destination, business, state, car: "" });
-    } else {
-      await Inform.create({ username, destination, business, state, car });
+    const data = {
+      ...req.body,
+      car: car === "선택 안함" ? "" : car,
+    };
+
+    if (isDaily === 2) {
+      if (!startDate || !endDate) {
+        return res
+          .status(400)
+          .json({ error: "시작일과 종료일을 입력해야 합니다." });
+      }
+      data.startDate = startDate;
+      data.endDate = endDate;
     }
+
+    await Inform.create(data);
 
     return res.status(200).json({ message: "정보 입력 성공" });
   } catch (error) {
@@ -268,14 +295,26 @@ export const addInform = async (req: Request, res: Response) => {
 };
 
 export const getInform = async (req: Request, res: Response) => {
+  if (!req.session.isUser) {
+    return res
+      .status(403)
+      .json({ type: "not User", error: "다시 로그인 해주세요" });
+  }
   try {
     const dateParam = req.query.date as string;
     const date = new Date(dateParam);
 
     const startOfDay = new Date(date.setHours(0, 0, 0, 0));
     const endOfDay = new Date(date.setHours(23, 59, 59, 999));
+    //25~27
     const allInforms = await Inform.find(
-      { createdAt: { $gte: startOfDay, $lte: endOfDay } },
+      {
+        $or: [
+          { startDate: { $gte: startOfDay, $lte: endOfDay } }, // 시작일이 범위 내에 있는 경우
+          { endDate: { $gte: startOfDay, $lte: endOfDay } }, // 종료일이 범위 내에 있는 경우
+          { startDate: { $lte: startOfDay }, endDate: { $gte: endOfDay } }, // 범위에 포함된 경우
+        ],
+      },
       {
         username: 1,
         destination: 1,

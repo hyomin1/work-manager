@@ -27,6 +27,12 @@ function Input() {
   const [state, setState] = useState("");
   const [car, setCar] = useState("");
 
+  // 0 : 기본 1 : 일일 업무 2: 주간/월간/연간 업무
+  const [isDaily, setIsDaily] = useState(0);
+
+  const [startDate, setStartDate] = useState<Date>();
+  const [endDate, setEndDate] = useState<Date>();
+
   const navigate = useNavigate();
 
   const { data: names, isLoading: namesLoading } = useQuery<INames[]>({
@@ -93,6 +99,18 @@ function Input() {
     setCar(event.target.value);
   };
 
+  {
+    /* 일일 업무 아닌 경우 시작 날짜와 종료 날짜 설정 */
+  }
+  const handleStartDateChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setStartDate(new Date(event.target.value));
+  };
+  const handleEndDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setEndDate(new Date(event.target.value));
+  };
+
   if (
     namesLoading ||
     destinationsLoading ||
@@ -134,6 +152,10 @@ function Input() {
       alert("차량을 선택해주세요");
       return;
     }
+    if (startDate && endDate && startDate > endDate) {
+      alert("시작일이 종료일보다 느립니다.");
+      return;
+    }
 
     try {
       const requests = selectedDestinations.map((destination) =>
@@ -143,6 +165,8 @@ function Input() {
           business,
           state,
           car,
+          isDaily,
+          ...(isDaily === 1 ? {} : { startDate, endDate }),
         })
       );
 
@@ -150,7 +174,7 @@ function Input() {
 
       if (responses.every((res) => res.status === 200)) {
         alert("입력이 완료되었습니다.");
-        navigate("/");
+        navigate("/main");
       }
     } catch (error) {
       alert("정보 입력 중 오류가 발생하였습니다.");
@@ -172,7 +196,7 @@ function Input() {
               <th className="p-4 border-b border-gray-300">사업명</th>
               <th className="p-4 border-b border-gray-300">업무</th>
               <th className="p-4 border-b border-gray-300">차량</th>
-              <th className="p-4 border-b border-gray-300"></th>
+              <th className="p-4 border-b border-gray-300">기간</th>
             </tr>
           </thead>
 
@@ -286,17 +310,46 @@ function Input() {
                 </select>
               </td>
 
+              {/* 기간 */}
               <td>
-                <button
-                  onClick={onClickComplete}
-                  className="bg-[#00ab39] rounded-lg text-white py-2 px-4 hover:opacity-60"
-                >
-                  완료
-                </button>
+                <input
+                  type="radio"
+                  value={isDaily}
+                  checked={isDaily === 1}
+                  onChange={() => setIsDaily(1)}
+                />
+                <span className="mr-2">일일</span>
+                <input
+                  type="radio"
+                  value={isDaily}
+                  checked={isDaily === 2}
+                  onChange={() => setIsDaily(2)}
+                />
+                <span>장기</span>
+                {isDaily === 2 && (
+                  <div className="flex mt-4">
+                    <div className="flex flex-col">
+                      <span className="font-bold text-xl mb-2">시작일</span>
+                      <input type="date" onChange={handleStartDateChange} />
+                    </div>
+                    <div className="flex flex-col">
+                      <span className="font-bold text-xl mb-2">종료일</span>
+                      <input type="date" onChange={handleEndDateChange} />
+                    </div>
+                  </div>
+                )}
               </td>
             </tr>
           </tbody>
         </table>
+        <div className="w-full flex justify-center mt-8">
+          <button
+            onClick={onClickComplete}
+            className="bg-[#00ab39] rounded-lg text-white py-2 px-4 hover:opacity-60 w-[15%] h-12 font-bold text-xl"
+          >
+            입력 완료
+          </button>
+        </div>
       </div>
     </div>
   );

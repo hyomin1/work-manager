@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import axiosApi from "../axios";
@@ -30,6 +30,17 @@ function Login() {
   const onRegister = () => {
     navigate("/register");
   };
+
+  const checkSession = async () => {
+    const res = await axiosApi.get("/checkSession");
+    // 세션 존재 시 바로 메인 호마ㅕㄴ
+    if (res.status === 200) {
+      navigate("/main");
+    }
+  };
+  useEffect(() => {
+    checkSession();
+  }, []);
 
   return (
     <div className="w-full h-screen flex items-center justify-center ">
