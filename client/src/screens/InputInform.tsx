@@ -6,14 +6,14 @@ import {
   getCars,
   getDestinations,
   getNames,
-  getStates,
+  getWorks,
 } from "../api";
 import {
   IBusinesses,
   ICars,
   IDestinations,
   INames,
-  IStates,
+  IWorks,
 } from "../interfaces/interface";
 import axiosApi from "../axios";
 import { useNavigate } from "react-router-dom";
@@ -24,7 +24,7 @@ function Input() {
   const [destination2, setDestination2] = useState("");
   const [destination3, setDestination3] = useState("");
   const [business, setBusiness] = useState("");
-  const [state, setState] = useState("");
+  const [work, setWork] = useState("");
   const [car, setCar] = useState("");
 
   // 0 : 기본 1 : 일일 업무 2: 주간/월간/연간 업무
@@ -53,9 +53,9 @@ function Input() {
     queryFn: getBusinesses,
   });
 
-  const { data: states, isLoading: statesLoading } = useQuery<IStates[]>({
-    queryKey: ["states"],
-    queryFn: getStates,
+  const { data: works, isLoading: worksLoading } = useQuery<IWorks[]>({
+    queryKey: ["works"],
+    queryFn: getWorks,
   });
 
   const { data: cars, isLoading: carsLoading } = useQuery<ICars[]>({
@@ -92,7 +92,7 @@ function Input() {
   };
 
   const handleStateChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setState(event.target.value);
+    setWork(event.target.value);
   };
 
   const handleCarChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -115,7 +115,7 @@ function Input() {
     namesLoading ||
     destinationsLoading ||
     businessesLoading ||
-    statesLoading ||
+    worksLoading ||
     carsLoading
   ) {
     return <div>Loading...</div>;
@@ -143,7 +143,7 @@ function Input() {
       return;
     }
 
-    if (!state) {
+    if (!work) {
       alert("업무를 선택해주세요");
       return;
     }
@@ -159,11 +159,11 @@ function Input() {
 
     try {
       const requests = selectedDestinations.map((destination) =>
-        axiosApi.post("/addInform", {
+        axiosApi.post("/api/inform/addInform", {
           username,
           destination,
           business,
-          state,
+          work,
           car,
           isDaily,
           ...(isDaily === 1 ? {} : { startDate, endDate }),
@@ -281,11 +281,11 @@ function Input() {
                   <option disabled value="">
                     선택
                   </option>
-                  {states
-                    ?.sort((a, b) => a.state.localeCompare(b.state))
+                  {works
+                    ?.sort((a, b) => a.work.localeCompare(b.work))
                     .map((item, index) => (
-                      <option key={index} value={item.state}>
-                        {item.state}
+                      <option key={index} value={item.work}>
+                        {item.work}
                       </option>
                     ))}
                 </select>

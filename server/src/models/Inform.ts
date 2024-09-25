@@ -4,7 +4,7 @@ interface IInform {
   username: string;
   destination: string;
   business: string;
-  state: string;
+  work: string;
   car: string;
   isDaily: number;
   startDate?: Date;
@@ -16,7 +16,7 @@ const informSchema = new Schema<IInform>(
     username: { type: String, required: true, trim: true },
     destination: { type: String, required: true, trim: true },
     business: { type: String, required: true, trim: true },
-    state: { type: String, required: true, trim: true },
+    work: { type: String, required: true, trim: true },
     isDaily: { type: Number, default: 0 },
     startDate: { type: Date, default: new Date() },
     endDate: { type: Date, default: new Date() },

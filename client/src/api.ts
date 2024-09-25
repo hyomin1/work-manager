@@ -1,29 +1,29 @@
 import axiosApi from "./axios";
 
 export const getNames = async () => {
-  const res = await axiosApi.get("/getName");
+  const res = await axiosApi.get("/api/inform/getName");
   return res.data.allNames || [];
 };
 export const getDestinations = async () => {
-  const res = await axiosApi.get("/getDestination");
+  const res = await axiosApi.get("/api/inform/getDestination");
   return res.data.allDestinations || [];
 };
 export const getBusinesses = async () => {
-  const res = await axiosApi.get("/getBusiness");
+  const res = await axiosApi.get("/api/inform/getBusiness");
   return res.data.allBusinesses || [];
 };
 export const getCars = async () => {
-  const res = await axiosApi.get("/getCar");
+  const res = await axiosApi.get("/api/inform/getCar");
   return res.data.allCars || [];
 };
-export const getStates = async () => {
-  const res = await axiosApi.get("/getState");
-  return res.data.allStates || [];
+export const getWorks = async () => {
+  const res = await axiosApi.get("/api/inform/getWork");
+  return res.data.allWorks || [];
 };
 
 export const getInform = async (date: Date) => {
   const formatDate = date.toISOString().split("T")[0];
-  const res = await axiosApi.get(`/getInform?date=${formatDate}`);
+  const res = await axiosApi.get(`/api/inform/getInform?date=${formatDate}`);
 
   return res.data.allInforms || [];
 };

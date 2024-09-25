@@ -5,31 +5,11 @@ import cors from "cors";
 import http from "http";
 import { connectDB } from "./config/db";
 import session from "express-session";
-import {
-  addCar,
-  addDestination,
-  addName,
-  addStatus,
-  getCar,
-  getDestination,
-  getName,
-  getStatus,
-  removeDestination,
-  removeName,
-  removeStatus,
-  removeCar,
-  addInform,
-  getInform,
-  getBusiness,
-  addBusiness,
-  removeBusiness,
-} from "./controllers/informController";
+
+import authRouter from "./routes/authRouter";
+import informRouter from "./routes/informRouter";
+
 import { adminLogin, joinAdmin } from "./controllers/adminController";
-import {
-  checkSession,
-  joinUser,
-  loginUser,
-} from "./controllers/authController";
 
 const app: Express = express();
 const port = 8080;
@@ -57,37 +37,13 @@ app.use(
 );
 app.use(express.json());
 
-app.get("/getName", getName);
-app.post("/addName", addName);
-app.delete("/removeName/:id", removeName);
-
-app.get("/getDestination", getDestination);
-app.post("/addDestination", addDestination);
-app.delete("/removeDestination/:id", removeDestination);
-
-app.get("/getBusiness", getBusiness);
-app.post("/addBusiness", addBusiness);
-app.delete("/removeBusiness/:id", removeBusiness);
-
-app.get("/getState", getStatus);
-app.post("/addState", addStatus);
-app.delete("/removeState/:id", removeStatus);
-
-app.get("/getCar", getCar);
-app.post("/addCar", addCar);
-app.delete("/removeCar/:id", removeCar);
-
-app.get("/getInform", getInform);
-app.post("/addInform", addInform);
-
 app.post("/join", joinAdmin);
 app.post("/adminLogin", adminLogin);
 
-app.get("/checkSession", checkSession);
-app.post("/login", loginUser);
-app.post("/register", joinUser);
-
 connectDB();
+
+app.use("/auth", authRouter);
+app.use("/api/inform", informRouter);
 
 httpServer.listen(port, () => {
   console.log(`Server is running on port ${port}`);

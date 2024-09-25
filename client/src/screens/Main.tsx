@@ -11,7 +11,7 @@ interface IInform {
   username: string;
   destination: string;
   business: string;
-  state: string;
+  work: string;
   car: string;
   createdAt: Date;
 }
@@ -140,7 +140,7 @@ function Main() {
                   <td className="p-4 border-b border-gray-200">
                     {item.business}
                   </td>
-                  <td className="p-4 border-b border-gray-200">{item.state}</td>
+                  <td className="p-4 border-b border-gray-200">{item.work}</td>
                   <td className="p-4 border-b border-gray-200">{item.car}</td>
                 </tr>
               ))}

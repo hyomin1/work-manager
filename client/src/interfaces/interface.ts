@@ -14,7 +14,7 @@ export interface ICars {
   _id: string;
   car: string;
 }
-export interface IStates {
+export interface IWorks {
   _id: string;
-  state: string;
+  work: string;
 }

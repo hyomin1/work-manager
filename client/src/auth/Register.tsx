@@ -25,7 +25,7 @@ function Login() {
   const password = watch("password");
 
   const onRegister = async (data: IRegister) => {
-    const res = await axiosApi.post("/register", data);
+    const res = await axiosApi.post("/auth/register", data);
     if (res.status !== 201) {
       return;
     }

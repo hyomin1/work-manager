@@ -2,7 +2,7 @@
 import { Request, Response } from "express";
 import Name from "../models/Name";
 import Destination from "../models/Destination";
-import State from "../models/State";
+import Work from "../models/Work";
 import Car from "../models/Car";
 import Inform from "../models/Inform";
 import Business from "../models/Business";
@@ -156,16 +156,16 @@ export const getBusiness = async (req: Request, res: Response) => {
 };
 
 // 업무
-export const addStatus = async (req: Request, res: Response) => {
+export const addWork = async (req: Request, res: Response) => {
   if (!req.session.isAdmin) {
     return res.status(403).json({ error: "관리자 권한이 필요합니다." });
   }
-  const { state } = req.body;
-  if (!state) {
+  const { work } = req.body;
+  if (!work) {
     return res.status(400).json({ error: "업무를 입력해야 합니다." });
   }
   try {
-    await State.create({ state });
+    await Work.create({ work });
     return res.status(200).json({ message: "상태 추가 성공" });
   } catch (error) {
     console.error(error);
@@ -173,14 +173,14 @@ export const addStatus = async (req: Request, res: Response) => {
   }
 };
 
-export const removeStatus = async (req: Request, res: Response) => {
+export const removeWork = async (req: Request, res: Response) => {
   if (!req.session.isAdmin) {
     return res.status(403).json({ error: "관리자 권한이 필요합니다." });
   }
   const { id } = req.params;
   try {
-    const deletedStatus = await State.deleteOne({ _id: id });
-    if (!deletedStatus) {
+    const deletedWork = await Work.deleteOne({ _id: id });
+    if (!deletedWork) {
       return res
         .status(404)
         .json({ error: "삭제할 업무가 존재하지 않습니다." });
@@ -192,10 +192,10 @@ export const removeStatus = async (req: Request, res: Response) => {
   }
 };
 
-export const getStatus = async (req: Request, res: Response) => {
+export const getWork = async (req: Request, res: Response) => {
   try {
-    const allStates = await State.find({}, { state: 1 });
-    return res.status(200).json({ allStates });
+    const allWorks = await Work.find({}, { work: 1 });
+    return res.status(200).json({ allWorks });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: "서버 에러" });
@@ -253,7 +253,7 @@ export const addInform = async (req: Request, res: Response) => {
     username,
     destination,
     business,
-    state,
+    work,
     car,
     isDaily,
     startDate,
@@ -264,7 +264,7 @@ export const addInform = async (req: Request, res: Response) => {
       !username ||
       !destination ||
       !business ||
-      !state ||
+      !work ||
       !car ||
       isDaily === 0
     ) {
@@ -319,7 +319,7 @@ export const getInform = async (req: Request, res: Response) => {
         username: 1,
         destination: 1,
         business: 1,
-        state: 1,
+        work: 1,
         car: 1,
         createdAt: 1,
       }

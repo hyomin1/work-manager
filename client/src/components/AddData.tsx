@@ -1,44 +1,18 @@
 import React, { useState } from "react";
 import axiosApi from "../axios";
-import { useQueryClient } from "@tanstack/react-query";
+import { QueryClient } from "@tanstack/react-query";
 
 interface IAddData {
-  setIsName?: React.Dispatch<React.SetStateAction<boolean>>;
-  setIsDestination?: React.Dispatch<React.SetStateAction<boolean>>;
-  setIsBusiness?: React.Dispatch<React.SetStateAction<boolean>>;
-  setIsWork?: React.Dispatch<React.SetStateAction<boolean>>;
-  setIsCar?: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsAdding: React.Dispatch<React.SetStateAction<boolean>>;
   type: string;
+  queryClient: QueryClient;
 }
 
-function AddData({
-  setIsName,
-  setIsDestination,
-  setIsBusiness,
-  setIsWork,
-  setIsCar,
-  type,
-}: IAddData) {
+function AddData({ setIsAdding, type, queryClient }: IAddData) {
+  const [inputValue, setInputValue] = useState("");
+
   const handleCancel = () => {
-    switch (type) {
-      case "name":
-        if (setIsName) setIsName(false);
-        break;
-      case "destination":
-        if (setIsDestination) setIsDestination(false);
-        break;
-      case "business":
-        if (setIsBusiness) setIsBusiness(false);
-        break;
-      case "work":
-        if (setIsWork) setIsWork(false);
-        break;
-      case "car":
-        if (setIsCar) setIsCar(false);
-        break;
-      default:
-        break;
-    }
+    setIsAdding(false);
   };
 
   const changeName = () => {
@@ -49,74 +23,58 @@ function AddData({
         return "방문지";
       case "business":
         return "사업명";
-      case "status":
+      case "work":
         return "업무";
       case "car":
         return "차량";
       default:
+        return "";
     }
   };
-  const [username, setUsername] = useState("");
-  const [destination, setDestination] = useState("");
-  const [business, setBusiness] = useState("");
-  const [work, setWork] = useState("");
-  const [car, setCar] = useState("");
+
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (type === "name") {
-      setUsername(e.target.value);
-    } else if (type === "destination") {
-      setDestination(e.target.value);
-    } else if (type === "business") {
-      setBusiness(e.target.value);
-    } else if (type === "status") {
-      setWork(e.target.value);
-    } else if (type === "car") {
-      setCar(e.target.value);
-    }
+    setInputValue(e.target.value);
   };
-  const queryClient = useQueryClient();
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (type === "name") {
-      const res = await axiosApi.post("/addName", { username });
 
-      if (res.status === 200) {
-        alert("성공적으로 등록하였습니다.");
+    let url = "";
+    let body = {};
 
-        if (setIsName) setIsName(false);
-        queryClient.invalidateQueries({ queryKey: ["names"] }); // 입력 시 정보 refetch
-      }
-    } else if (type === "destination") {
-      const res = await axiosApi.post("/addDestination", { destination });
-      if (res.status === 200) {
-        alert("성공적으로 등록하였습니다.");
-        if (setIsDestination) setIsDestination(false);
-        queryClient.invalidateQueries({ queryKey: ["destinations"] }); // 입력 시 정보 refetch
-      }
-    } else if (type === "business") {
-      const res = await axiosApi.post("/addBusiness", { business });
-      if (res.status === 200) {
-        alert("성공적으로 등록하였습니다.");
-        if (setIsBusiness) setIsBusiness(false);
-        queryClient.invalidateQueries({ queryKey: ["businesses"] }); // 입력 시 정보 refetch
-      }
-    } else if (type === "status") {
-      const res = await axiosApi.post("/addState", { state: work });
-      if (res.status === 200) {
-        alert("성공적으로 등록하였습니다.");
-        if (setIsWork) setIsWork(false);
-        queryClient.invalidateQueries({ queryKey: ["states"] }); // 입력 시 정보 refetch
-      }
-    } else if (type === "car") {
-      const res = await axiosApi.post("/addCar", { car });
-      if (res.status === 200) {
-        alert("성공적으로 등록하였습니다.");
-        if (setIsCar) setIsCar(false);
-        queryClient.invalidateQueries({ queryKey: ["cars"] }); // 입력 시 정보 refetch
-      }
+    switch (type) {
+      case "name":
+        url = "/api/inform/addName";
+        body = { username: inputValue };
+        break;
+      case "destination":
+        url = "/api/inform/addDestination";
+        body = { destination: inputValue };
+        break;
+      case "business":
+        url = "/api/inform/addBusiness";
+        body = { business: inputValue };
+        break;
+      case "work":
+        url = "/api/inform/addWork";
+        body = { work: inputValue };
+        break;
+      case "car":
+        url = "/api/inform/addCar";
+        body = { car: inputValue };
+        break;
+      default:
+        return;
+    }
+
+    const res = await axiosApi.post(url, body);
+    if (res.status === 200) {
+      alert("성공적으로 등록하였습니다.");
+      queryClient.invalidateQueries({ queryKey: [type] });
+      setIsAdding(false);
     }
   };
+
   return (
     <div className="w-full h-screen flex items-center justify-center absolute z-10  bg-black bg-opacity-65 top-0">
       <form
@@ -128,6 +86,7 @@ function AddData({
         </h2>
         <input
           placeholder="입력"
+          value={inputValue}
           onChange={handleOnChange}
           className="mb-4 p-2 border rounded"
         />

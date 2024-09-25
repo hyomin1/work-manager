@@ -18,7 +18,7 @@ function Login() {
 
   const navigate = useNavigate();
   const onLogin = async (data: ILogin) => {
-    const res = await axiosApi.post("/login", data);
+    const res = await axiosApi.post("/auth/login", data);
     if (res.status !== 201) {
       return;
     }
@@ -32,7 +32,7 @@ function Login() {
   };
 
   const checkSession = async () => {
-    const res = await axiosApi.get("/checkSession");
+    const res = await axiosApi.get("/auth/checkSession");
     // 세션 존재 시 바로 메인 호마ㅕㄴ
     if (res.status === 200) {
       navigate("/main");
