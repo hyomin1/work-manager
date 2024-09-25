@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axiosApi from "../axios";
 
 interface ILogin {
@@ -17,15 +17,15 @@ function Login() {
   } = useForm<ILogin>();
 
   const navigate = useNavigate();
+
   const onLogin = async (data: ILogin) => {
     const res = await axiosApi.post("/auth/login", data);
     if (res.status !== 201) {
       return;
     }
-
+    navigate("/main");
     setValue("userId", "");
     setValue("password", "");
-    navigate("/main");
   };
   const onRegister = () => {
     navigate("/register");
@@ -33,7 +33,7 @@ function Login() {
 
   const checkSession = async () => {
     const res = await axiosApi.get("/auth/checkSession");
-    // 세션 존재 시 바로 메인 호마ㅕㄴ
+    // 세션 존재 시 바로 메인 화면
     if (res.status === 200) {
       navigate("/main");
     }
@@ -46,7 +46,7 @@ function Login() {
     <div className="w-full h-screen flex items-center justify-center ">
       <form
         onSubmit={handleSubmit(onLogin)}
-        className="flex flex-col w-[30%] p-6 bg-white rounded-lg shadow-lg"
+        className="flex flex-col sm:w-[80%] w-[30%] p-6 bg-white rounded-lg shadow-lg"
       >
         <span className="font-bold text-2xl mb-4">로그인</span>
         <label className="mb-2" htmlFor="userId">
@@ -57,6 +57,7 @@ function Login() {
           placeholder="아이디"
           className="mb-4 p-3 border rounded"
           {...register("userId", { required: true })}
+          autoFocus
         />
         {errors.userId && (
           <span className="text-center text-[red] font-bold text-md">

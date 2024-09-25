@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import axiosApi from "../axios";
 import { QueryClient } from "@tanstack/react-query";
 
@@ -10,6 +10,12 @@ interface IAddData {
 
 function AddData({ setIsAdding, type, queryClient }: IAddData) {
   const [inputValue, setInputValue] = useState("");
+
+  const inputRef = useRef<HTMLInputElement | null>(null);
+
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
 
   const handleCancel = () => {
     setIsAdding(false);
@@ -76,7 +82,7 @@ function AddData({ setIsAdding, type, queryClient }: IAddData) {
   };
 
   return (
-    <div className="w-full h-screen flex items-center justify-center absolute z-10  bg-black bg-opacity-65 top-0">
+    <div className="fixed inset-0 flex items-center justify-center z-10 bg-black bg-opacity-65 top-0 px-4">
       <form
         className="flex flex-col w-96 h-80 p-6 bg-white rounded-lg shadow-lg"
         onSubmit={onSubmit}
@@ -85,6 +91,7 @@ function AddData({ setIsAdding, type, queryClient }: IAddData) {
           {changeName()} 등록
         </h2>
         <input
+          ref={inputRef}
           placeholder="입력"
           value={inputValue}
           onChange={handleOnChange}

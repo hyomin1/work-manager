@@ -8,12 +8,12 @@ interface TabHeaderProps {
 
 function TabHeader({ activeTab, onTabClick }: TabHeaderProps) {
   return (
-    <thead>
-      <tr className="text-left">
+    <div className="w-[100%]">
+      <div className="text-left whitespace-nowrap sm:text-sm flex w-[100%]">
         {TABS.map((tab) => (
-          <th
+          <div
             key={tab.key}
-            className={`p-4 font-bold cursor-pointer ${
+            className={`p-4 font-bold w-[20%] cursor-pointer ${
               tab.key === TABS[0].key ? "rounded-tl-xl" : ""
             } ${
               tab.key === TABS[TABS.length - 1].key ? "rounded-tr-xl" : ""
@@ -23,10 +23,10 @@ function TabHeader({ activeTab, onTabClick }: TabHeaderProps) {
             onClick={() => onTabClick(tab.key)}
           >
             {tab.label}
-          </th>
+          </div>
         ))}
-      </tr>
-    </thead>
+      </div>
+    </div>
   );
 }
 

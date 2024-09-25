@@ -17,6 +17,7 @@ import {
 } from "../interfaces/interface";
 import axiosApi from "../axios";
 import { useNavigate } from "react-router-dom";
+import SelectBox from "../components/SelectBox";
 
 function Input() {
   const [username, setName] = useState("");
@@ -99,9 +100,8 @@ function Input() {
     setCar(event.target.value);
   };
 
-  {
-    /* 일일 업무 아닌 경우 시작 날짜와 종료 날짜 설정 */
-  }
+  /* 일일 업무 아닌 경우 시작 날짜와 종료 날짜 설정 */
+
   const handleStartDateChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -182,166 +182,124 @@ function Input() {
   };
 
   return (
-    <div className="w-full h-screen flex flex-col justify-start items-center p-10 bg-gray-50">
-      <div className="w-[80%] flex flex-col items-center  rounded-lg">
+    <div className="w-full h-screen flex flex-col justify-start items-center sm:p-2 p-10 bg-gray-50 ">
+      <div className="sm:w-full w-[80%] flex flex-col items-center   ">
         <div className="mt-4 mb-20 flex items-center justify-center w-full">
-          <span className="mb-4 font-bold text-3xl">{formDate}</span>
+          <span className="sm:text-lg mb-4 font-bold text-3xl">{formDate}</span>
         </div>
 
-        <table className="w-full text-left border border-gray-200">
-          <thead>
-            <tr className="bg-gray-200">
-              <th className="p-4 border-b border-gray-300">이름</th>
-              <th className="p-4 border-b border-gray-300">방문지</th>
-              <th className="p-4 border-b border-gray-300">사업명</th>
-              <th className="p-4 border-b border-gray-300">업무</th>
-              <th className="p-4 border-b border-gray-300">차량</th>
-              <th className="p-4 border-b border-gray-300">기간</th>
-            </tr>
-          </thead>
+        <div className="w-full  flex flex-col rounded-t-2xl ">
+          <div className=" sm:text-lg whitespace-nowrap flex sm:flex-col">
+            <div className="sm:p-1 sm:text-sm sm:flex sm:items-center sm:justify-between md:items-center p-4 border-b border-gray-300 md:w-[16%] flex md:flex-col items-center">
+              <div className="bg-gray-200 w-[100%] h-8 flex items-center font-bold p-2 mb-2">
+                <span>이름</span>
+              </div>
 
-          <tbody>
-            <tr>
-              {/* 이름 */}
-              <td>
-                <select
-                  defaultValue=""
-                  onChange={handleNameChange}
-                  className="hover:opacity-60 border rounded-md p-2 ml-3"
-                >
-                  <option disabled value="">
-                    이름 선택
-                  </option>
-                  {names
-                    ?.sort((a, b) => a.username.localeCompare(b.username))
-                    .map((item, index) => (
-                      <option key={index} value={item.username}>
-                        {item.username}
-                      </option>
-                    ))}
-                </select>
-              </td>
+              <SelectBox
+                onChange={handleNameChange}
+                options={
+                  names?.map((name) => ({
+                    label: name.username,
+                    value: name.username,
+                  })) || []
+                }
+                placeholder="이름 선택"
+              />
+            </div>
 
-              {/* 방문지 */}
-              <td className="flex flex-col">
-                {[
-                  handleDestinationChange1,
-                  handleDestinationChange2,
-                  handleDestinationChange3,
-                ].map((handler, index) => (
-                  <select
-                    key={index}
-                    defaultValue=""
-                    onChange={handler}
-                    className="hover:opacity-60 border rounded-md p-2 my-4 ml-2"
-                  >
-                    <option disabled value="">
-                      방문지 선택
-                    </option>
-                    {destinations
-                      ?.sort((a, b) =>
-                        a.destination.localeCompare(b.destination)
-                      )
-                      .map((item, idx) => (
-                        <option key={idx} value={item.destination}>
-                          {item.destination}
-                        </option>
-                      ))}
-                  </select>
-                ))}
-              </td>
-
-              {/* 사업명 */}
-              <td>
-                <select
-                  defaultValue=""
-                  onChange={handleBusinessChange}
-                  className="hover:opacity-60 border rounded-md p-2 ml-4"
-                >
-                  <option disabled value="">
-                    선택
-                  </option>
-                  {businesses
-                    ?.sort((a, b) => a.business.localeCompare(b.business))
-                    .map((item, index) => (
-                      <option key={index} value={item.business}>
-                        {item.business}
-                      </option>
-                    ))}
-                </select>
-              </td>
-
-              {/* 업무 */}
-              <td>
-                <select
-                  defaultValue=""
-                  onChange={handleStateChange}
-                  className="hover:opacity-60 border rounded-md p-2"
-                >
-                  <option disabled value="">
-                    선택
-                  </option>
-                  {works
-                    ?.sort((a, b) => a.work.localeCompare(b.work))
-                    .map((item, index) => (
-                      <option key={index} value={item.work}>
-                        {item.work}
-                      </option>
-                    ))}
-                </select>
-              </td>
-
-              {/* 차량 */}
-              <td>
-                <select
-                  defaultValue=""
-                  onChange={handleCarChange}
-                  className="hover:opacity-60 border rounded-md p-2"
-                >
-                  <option disabled value="">
-                    차량 선택
-                  </option>
-                  <option>선택 안함</option>
-                  {cars?.map((item, index) => (
-                    <option key={index} value={item.car}>
-                      {item.car}
-                    </option>
-                  ))}
-                </select>
-              </td>
-
-              {/* 기간 */}
-              <td>
-                <input
-                  type="radio"
-                  value={isDaily}
-                  checked={isDaily === 1}
-                  onChange={() => setIsDaily(1)}
+            <div className="sm:p-1 p-4 border-b border-gray-300 w-[18%] sm:text-sm flex items-center">
+              <span>방문지</span>
+              {[
+                handleDestinationChange1,
+                handleDestinationChange2,
+                handleDestinationChange3,
+              ].map((handler, index) => (
+                <SelectBox
+                  key={index}
+                  onChange={handler}
+                  options={
+                    destinations?.map((dest) => ({
+                      label: dest.destination,
+                      value: dest.destination,
+                    })) || []
+                  }
+                  placeholder="방문지 선택"
+                  className="my-4 ml-2"
                 />
-                <span className="mr-2">일일</span>
-                <input
-                  type="radio"
-                  value={isDaily}
-                  checked={isDaily === 2}
-                  onChange={() => setIsDaily(2)}
-                />
-                <span>장기</span>
-                {isDaily === 2 && (
-                  <div className="flex mt-4">
-                    <div className="flex flex-col">
-                      <span className="font-bold text-xl mb-2">시작일</span>
-                      <input type="date" onChange={handleStartDateChange} />
-                    </div>
-                    <div className="flex flex-col">
-                      <span className="font-bold text-xl mb-2">종료일</span>
-                      <input type="date" onChange={handleEndDateChange} />
-                    </div>
+              ))}
+            </div>
+            <div className="sm:p-1 p-4 border-b border-gray-300 w-[18%] sm:text-sm flex items-center">
+              <span>사업명</span>
+              <SelectBox
+                onChange={handleBusinessChange}
+                options={
+                  businesses?.map((business) => ({
+                    label: business.business,
+                    value: business.business,
+                  })) || []
+                }
+                placeholder="선택"
+                className="ml-4"
+              />
+            </div>
+            <div className="sm:p-1 p-4 border-b border-gray-300 w-[16%] sm:text-sm flex items-center">
+              <span>업무</span>
+              <SelectBox
+                onChange={handleStateChange}
+                options={
+                  works?.map((work) => ({
+                    label: work.work,
+                    value: work.work,
+                  })) || []
+                }
+                placeholder="선택"
+              />
+            </div>
+            <div className="sm:p-1 p-4 border-b border-gray-300 w-[16%] sm:text-sm flex items-center">
+              <span>차량</span>
+              <SelectBox
+                onChange={handleCarChange}
+                options={[
+                  { label: "선택 안함", value: "선택 안함" },
+                  ...(cars?.map((car) => ({
+                    label: car.car,
+                    value: car.car,
+                  })) || []),
+                ]}
+                placeholder="차량 선택"
+              />
+            </div>
+            <div className="sm:p-1 p-4 border-b border-gray-300 w-[16%] sm:text-sm flex items-center">
+              <span>기간</span>
+              <input
+                type="radio"
+                value={isDaily}
+                checked={isDaily === 1}
+                onChange={() => setIsDaily(1)}
+              />
+              <span className="mr-2">일일</span>
+              <input
+                type="radio"
+                value={isDaily}
+                checked={isDaily === 2}
+                onChange={() => setIsDaily(2)}
+              />
+              <span>장기</span>
+              {isDaily === 2 && (
+                <div className="flex mt-4">
+                  <div className="flex flex-col">
+                    <span className="font-bold text-xl mb-2">시작일</span>
+                    <input type="date" onChange={handleStartDateChange} />
                   </div>
-                )}
-              </td>
-            </tr>
-          </tbody>
-        </table>
+                  <div className="flex flex-col">
+                    <span className="font-bold text-xl mb-2">종료일</span>
+                    <input type="date" onChange={handleEndDateChange} />
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
         <div className="w-full flex justify-center mt-8">
           <button
             onClick={onClickComplete}

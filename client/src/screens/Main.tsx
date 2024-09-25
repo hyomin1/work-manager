@@ -65,16 +65,16 @@ function Main() {
   }, [currentDate, refetch]);
 
   return (
-    <div className="w-full h-screen flex flex-col justify-between items-center p-10 bg-gray-50">
+    <div className="w-full h-screen flex flex-col justify-between items-center sm:p-2 p-10 bg-gray-50">
       {isShow && <AdminLogin setIsShow={setIsShow} />}
-      <div className="w-[80%] flex flex-col items-center">
+      <div className="sm:w-full w-[80%] flex flex-col items-center ">
         <div className="mt-4 mb-24 flex items-center justify-center w-[100%] ">
           <IoIosArrowBack
             className="w-8 h-9 hover:opacity-60"
             onClick={previous}
           />
 
-          <span className=" font-bold text-3xl mx-8 ">
+          <span className="font-bold sm:text-lg text-3xl mx-8 ">
             {calDate(currentDate)}
           </span>
           <IoIosArrowForward
@@ -83,19 +83,21 @@ function Main() {
           />
         </div>
         <div className="w-[100%] flex justify-between items-center border border-t-gray-300 rounded-t-2xl">
-          <span className="text-xl w-[50%] font-bold ml-3">현황</span>
+          <span className="sm:text-lg text-xl w-[50%] font-bold ml-3">
+            현황
+          </span>
           <div className="p-4 items-center flex w-[50%] justify-end">
             <button
-              className="bg-[#00ab39] rounded-lg text-white py-2 px-4 hover:opacity-60 mr-4"
+              className="sm:whitespace-nowrap bg-[#00ab39] rounded-lg text-white py-2 px-4 hover:opacity-60 mr-4 sm:mr-2"
               onClick={onClickInputInform}
             >
-              정보 입력
+              입력
             </button>
             <button
-              className="bg-[#007BFF] rounded-lg text-white py-2 px-6 hover:opacity-60 ml-4"
+              className="sm:whitespace-nowrap bg-[#007BFF] rounded-lg text-white py-2 px-4 hover:opacity-60 ml-4 sm:ml-2"
               onClick={onClickAdmin}
             >
-              관리자
+              관리
             </button>
             <div className="h-10 border border-gray-300 mx-4" />
             <button className="hover:opacity-60" onClick={() => refetch()}>
@@ -103,14 +105,24 @@ function Main() {
             </button>
           </div>
         </div>
-        <table className="w-[100%] rounded-2xl shadow-lg text-left">
+        <table className="w-[100%] rounded-2xl shadow-lg text-left table-auto">
           <thead className="w-[100%]">
-            <tr className="bg-gray-200">
-              <th className="p-4 border-b border-gray-300">이름</th>
-              <th className="p-4 border-b border-gray-300">방문지</th>
-              <th className="p-4 border-b border-gray-300">사업명</th>
-              <th className="p-4 border-b border-gray-300">업무</th>
-              <th className="p-4 border-b border-gray-300">차량</th>
+            <tr className="bg-gray-200 sm:text-xs">
+              <th className="p-4 border-b border-gray-300 sm:whitespace-nowrap">
+                이름
+              </th>
+              <th className="p-4 border-b border-gray-300 sm:whitespace-nowrap">
+                방문지
+              </th>
+              <th className="p-4 border-b border-gray-300 sm:whitespace-nowrap">
+                사업명
+              </th>
+              <th className="p-4 border-b border-gray-300 sm:whitespace-nowrap">
+                업무
+              </th>
+              <th className="p-4 border-b border-gray-300 sm:whitespace-nowrap">
+                차량
+              </th>
             </tr>
           </thead>
 
@@ -127,20 +139,20 @@ function Main() {
               .map((item, index) => (
                 <tr
                   key={index}
-                  className={`hover:bg-gray-100 ${
+                  className={`hover:bg-gray-100 sm:text-sm ${
                     index % 2 === 0 ? "bg-white" : "bg-gray-50"
                   }`}
                 >
-                  <td className="p-4 border-b border-gray-200">
+                  <td className="p-4 border-b border-gray-200 whitespace-nowrap">
                     {item.username}
                   </td>
-                  <td className="p-4 border-b border-gray-200">
+                  <td className="p-4 border-b border-gray-200 ">
                     {item.destination}
                   </td>
-                  <td className="p-4 border-b border-gray-200">
+                  <td className="p-4 border-b border-gray-200 ">
                     {item.business}
                   </td>
-                  <td className="p-4 border-b border-gray-200">{item.work}</td>
+                  <td className="p-4 border-b border-gray-200 ">{item.work}</td>
                   <td className="p-4 border-b border-gray-200">{item.car}</td>
                 </tr>
               ))}

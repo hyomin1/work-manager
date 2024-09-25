@@ -28,13 +28,13 @@ function Admin() {
   };
 
   return (
-    <div className="w-full h-screen flex flex-col justify-between items-center p-10">
-      <div className="w-[80%] flex flex-col items-center h-screen">
+    <div className="w-full h-screen flex flex-col justify-between items-center sm:p-2 p-10">
+      <div className="sm:w-full w-[80%] flex flex-col items-center h-screen">
         <div className="mt-4 mb-20 flex items-center justify-center w-[100%]">
-          <span className="font-bold text-3xl">{formDate}</span>
+          <span className="font-bold text-3xl sm:text-lg">{formDate}</span>
         </div>
 
-        <table className="w-[100%] table-auto">
+        <div className="w-[100%] ">
           <TabHeader activeTab={activeTab} onTabClick={handleTabClick} />
 
           <TabContent
@@ -43,7 +43,7 @@ function Admin() {
             removeItem={removeItem}
             queryClient={queryClient}
           />
-        </table>
+        </div>
       </div>
       <Page totalPage={totalPages} page={page} onPageChange={handlePage} />
     </div>

@@ -40,7 +40,7 @@ function Login() {
     <div className="w-full h-screen flex items-center justify-center ">
       <form
         onSubmit={handleSubmit(onRegister)}
-        className="flex flex-col w-[30%]  p-6 bg-white rounded-lg shadow-lg"
+        className="flex flex-col sm:w-[80%] w-[30%]  p-6 bg-white rounded-lg shadow-lg"
       >
         <span className="font-bold text-2xl mb-4">회원가입</span>
         <label className="mb-2" htmlFor="userId">
@@ -50,6 +50,7 @@ function Login() {
           className="p-3 border rounded mb-4"
           id="userId"
           {...register("userId", { required: true })}
+          autoFocus
         />
         {errors.userId && (
           <span className="text-center text-[red] font-bold text-md">

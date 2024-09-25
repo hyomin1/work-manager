@@ -21,7 +21,7 @@ const TabContent = ({
   const [isAdding, setIsAdding] = useState(false);
   const activeTabConfig = TABS.find((tab) => tab.key === activeTab);
   return (
-    <tbody>
+    <div>
       {isAdding && (
         <AddData
           setIsAdding={setIsAdding}
@@ -29,44 +29,42 @@ const TabContent = ({
           queryClient={queryClient}
         />
       )}
-      <tr>
-        <td className="bg-white p-4 border-b border-gray-200 font-bold text-xl">
+      <div className="flex justify-between items-center border-b border-gray-200">
+        <div className="bg-white p-4  font-bold text-xl whitespace-nowrap sm:text-lg">
           목록
-        </td>
-        <td className="border-b border-gray-200" />
-        <td className="border-b border-gray-200" />
-        <td className="border-b border-gray-200" />
-        <td className="border-b border-gray-200">
+        </div>
+
+        <div>
           <button
             className="bg-[#00ab39] rounded-full text-white p-2 hover:opacity-60 font-bold"
             onClick={() => setIsAdding(true)}
           >
-            <FaPlus className="w-5 h-5" />
+            <FaPlus className="w-5 h-5 sm:w-3 sm:h-3" />
           </button>
-        </td>
-      </tr>
+        </div>
+      </div>
       {data.map((item, index) => (
-        <tr
+        <div
           key={item._id}
-          className={` ${index % 2 === 0 ? "bg-white" : "bg-gray-50"}`}
+          className={`flex justify-between items-center border-b border-gray-200 ${
+            index % 2 === 0 ? "bg-white" : "bg-gray-50"
+          }`}
         >
-          <td className="p-4 border-b border-gray-200">
+          <div className="p-4 border-b border-gray-200 whitespace-nowrap sm:text-lg overflow-ellipsis overflow-hidden">
             {item[activeTabConfig?.dataKey || ""]}
-          </td>
-          <td className=" border-b border-gray-200" />
-          <td className="border-b border-gray-200" />
-          <td className="border-b border-gray-200" />
-          <td className="border-b border-gray-200">
+          </div>
+
+          <div className="">
             <button
               className="bg-[#FF0000] rounded-full text-white p-2 hover:opacity-60 font-bold"
               onClick={() => removeItem(item._id)}
             >
-              <IoClose className="w-5 h-5" />
+              <IoClose className="w-5 h-5 sm:w-3 sm:h-3" />
             </button>
-          </td>
-        </tr>
+          </div>
+        </div>
       ))}
-    </tbody>
+    </div>
   );
 };
 
