@@ -18,8 +18,8 @@ import {
 } from "../api";
 import { FaPlus } from "react-icons/fa6";
 import { IoClose } from "react-icons/io5";
-import Page from "./Page";
-import AddData from "./AddData";
+import Page from "../components/Page";
+import AddData from "../components/AddData";
 
 function Admin() {
   const queryClient = useQueryClient();
@@ -199,11 +199,23 @@ function Admin() {
       }
     }
   };
-
+  console.log(activeTab);
   return (
     <div className="w-full h-screen flex flex-col justify-between items-center p-10">
       {activeTab === "name" && isName && (
         <AddData setIsName={setIsName} type={activeTab} />
+      )}
+      {activeTab === "destination" && isDestination && (
+        <AddData setIsDestination={setIsDestination} type={activeTab} />
+      )}
+      {activeTab === "business" && isBusiness && (
+        <AddData setIsBusiness={setIsBusiness} type={activeTab} />
+      )}
+      {activeTab === "status" && isWork && (
+        <AddData setIsWork={setIsWork} type={activeTab} />
+      )}
+      {activeTab === "car" && isCar && (
+        <AddData setIsCar={setIsCar} type={activeTab} />
       )}
       <div className="w-[80%] flex flex-col items-center h-screen">
         <div className="mt-4 mb-20 flex items-center justify-center w-[100%]">
@@ -325,8 +337,8 @@ function Admin() {
                   <td className="border-b border-gray-200" />
                   <td className="border-b border-gray-200">
                     <button
+                      onClick={() => setIsDestination(true)}
                       className="bg-[#00ab39] rounded-full text-white p-2 hover:opacity-60 font-bold"
-                      onClick={addDestination}
                     >
                       <FaPlus className="w-5 h-5" />
                     </button>
@@ -374,14 +386,15 @@ function Admin() {
                   <td className="border-b border-gray-200" />
                   <td className="border-b border-gray-200">
                     <button
+                      onClick={() => setIsBusiness(true)}
                       className="bg-[#488f60] rounded-full text-white p-2 hover:opacity-60 font-bold"
-                      onClick={addBusiness}
                     >
                       <FaPlus className="w-5 h-5" />
                     </button>
                   </td>
                 </tr>
                 {businesses
+                  ?.sort((a, b) => a.business.localeCompare(b.business))
                   ?.slice(indexOfFirstBusinessItem, indexOfLastBusinessItem)
                   .map((item, index) => (
                     <tr
@@ -420,8 +433,8 @@ function Admin() {
                   <td className="border-b border-gray-200" />
                   <td className="border-b border-gray-200">
                     <button
+                      onClick={() => setIsWork(true)}
                       className="bg-[#00ab39] rounded-full text-white p-2 hover:opacity-60 font-bold"
-                      onClick={addState}
                     >
                       <FaPlus className="w-5 h-5" />
                     </button>
@@ -466,8 +479,8 @@ function Admin() {
                   <td className="border-b border-gray-200" />
                   <td className="border-b border-gray-200">
                     <button
+                      onClick={() => setIsCar(true)}
                       className="bg-[#488f60] rounded-full text-white p-2 hover:opacity-60 font-bold"
-                      onClick={addCar}
                     >
                       <FaPlus className="w-5 h-5" />
                     </button>

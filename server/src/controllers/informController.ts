@@ -254,7 +254,12 @@ export const addInform = async (req: Request, res: Response) => {
     if (!username || !destination || !business || !state || !car) {
       return res.status(400).json({ error: "정보를 입력해야 합니다." });
     }
-    await Inform.create({ username, destination, business, state, car });
+    if (car === "선택 안함") {
+      await Inform.create({ username, destination, business, state, car: "" });
+    } else {
+      await Inform.create({ username, destination, business, state, car });
+    }
+
     return res.status(200).json({ message: "정보 입력 성공" });
   } catch (error) {
     console.error(error);

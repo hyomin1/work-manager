@@ -14,7 +14,7 @@ const informSchema = new Schema<IInform>(
     destination: { type: String, required: true, trim: true },
     business: { type: String, required: true, trim: true },
     state: { type: String, required: true, trim: true },
-    car: { type: String, required: true, trim: true },
+    car: { type: String, trim: true },
   },
   {
     timestamps: true, // 이 옵션을 추가하면 createdAt과 updatedAt이 자동으로 추가됨

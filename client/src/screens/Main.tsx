@@ -3,8 +3,8 @@ import React, { useEffect, useState } from "react";
 import { IoIosArrowBack } from "react-icons/io";
 import { IoIosArrowForward } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
-import { calDate, formDate, getInform } from "../api";
-import AdminLogin from "./AdminLogin";
+import { calDate, getInform } from "../api";
+import AdminLogin from "../components/AdminLogin";
 import { SlRefresh } from "react-icons/sl";
 
 interface IInform {
@@ -64,21 +64,21 @@ function Main() {
     refetch();
   }, [currentDate, refetch]);
 
-  console.log(inform);
-
   return (
     <div className="w-full h-screen flex flex-col justify-between items-center p-10 bg-gray-50">
       {isShow && <AdminLogin setIsShow={setIsShow} />}
       <div className="w-[80%] flex flex-col items-center">
-        <div className="mt-4 mb-24 flex items-center justify-between w-[100%] ">
+        <div className="mt-4 mb-24 flex items-center justify-center w-[100%] ">
           <IoIosArrowBack
-            className="w-8 h-8 hover:opacity-60"
+            className="w-8 h-9 hover:opacity-60"
             onClick={previous}
           />
 
-          <span className=" font-bold text-3xl">{calDate(currentDate)}</span>
+          <span className=" font-bold text-3xl mx-8 ">
+            {calDate(currentDate)}
+          </span>
           <IoIosArrowForward
-            className="w-8 h-8 hover:opacity-60"
+            className="w-8 h-9 hover:opacity-60"
             onClick={next}
           />
         </div>

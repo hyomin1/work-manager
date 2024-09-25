@@ -25,6 +25,7 @@ import {
   removeBusiness,
 } from "./controllers/informController";
 import { adminLogin, joinAdmin } from "./controllers/adminController";
+import { joinUser, loginUser } from "./controllers/userController";
 
 const app: Express = express();
 const port = 8080;
@@ -38,7 +39,7 @@ app.use(
     saveUninitialized: false,
     //cookie: { secure: false }, // for HTTPS시 true로 설정
     cookie: {
-      maxAge: 60 * 1000 * 30, // 10초
+      maxAge: 60 * 1000 * 30, // 30분
     },
   })
 );
@@ -77,6 +78,9 @@ app.post("/addInform", addInform);
 
 app.post("/join", joinAdmin);
 app.post("/adminLogin", adminLogin);
+
+app.post("/login", loginUser);
+app.post("/register", joinUser);
 
 connectDB();
 

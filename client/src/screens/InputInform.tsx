@@ -277,6 +277,7 @@ function Input() {
                   <option disabled value="">
                     차량 선택
                   </option>
+                  <option>선택 안함</option>
                   {cars?.map((item, index) => (
                     <option key={index} value={item.car}>
                       {item.car}
