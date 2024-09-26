@@ -17,6 +17,7 @@ import {
 } from "../interfaces/interface";
 import axiosApi from "../axios";
 import { useNavigate } from "react-router-dom";
+import { IoIosArrowRoundBack } from "react-icons/io";
 
 function Input() {
   // ... (이전 상태 및 함수들은 그대로 유지)
@@ -185,8 +186,18 @@ function Input() {
   return (
     <div className="w-full h-screen flex flex-col justify-start items-center p-10 bg-gray-50 sm:p-4 sm:overflow-y-auto">
       <div className="w-[90%] flex flex-col items-center rounded-lg sm:w-full bg-gray-50">
-        <div className="mt-4 mb-20 flex items-center justify-center w-full sm:mb-10 ">
-          <span className="mb-4 font-bold text-3xl sm:text-xl">{formDate}</span>
+        <div className="mt-4 mb-20 flex items-center md:justify-center w-full sm:mb-10 sm:justify-between">
+          <div
+            className="md:hidden sm:hover:opacity-60 sm:w-[10%] flex items-center"
+            onClick={() => navigate(-1)}
+          >
+            <IoIosArrowRoundBack className="w-10 h-8" />
+          </div>
+          <div className="sm:w-[80%] flex items-center justify-center">
+            <span className=" font-bold text-3xl sm:text-xl">{formDate}</span>
+          </div>
+
+          <div className="md-hidden sm:w-[10%]" />
         </div>
 
         <div className="w-full sm:overflow-x-auto">
@@ -338,20 +349,20 @@ function Input() {
                   </div>
                   {isDaily === 2 && (
                     <div className="flex mt-4 sm:flex-col ">
-                      <div className="flex flex-col sm:mb-">
+                      <div className="flex flex-col md:mr-2">
                         <span className="font-bold  mb-2">시작일</span>
                         <input
                           type="date"
                           onChange={handleStartDateChange}
-                          className="sm:w-full h-10 "
+                          className="p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 ease-in-out"
                         />
                       </div>
-                      <div className="flex flex-col">
-                        <span className="font-bold  mb-2">종료일</span>
+                      <div className="flex flex-col sm:mt-2">
+                        <span className="font-bold mb-2">종료일</span>
                         <input
                           type="date"
                           onChange={handleEndDateChange}
-                          className="sm:w-full h-10"
+                          className="p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 ease-in-out"
                         />
                       </div>
                     </div>
@@ -366,7 +377,7 @@ function Input() {
             onClick={onClickComplete}
             className="bg-[#00ab39] rounded-lg text-white py-2 px-4 hover:opacity-60 w-[15%] h-12 font-bold text-xl sm:w-full my-2"
           >
-            입력 완료
+            완료
           </button>
         </div>
       </div>

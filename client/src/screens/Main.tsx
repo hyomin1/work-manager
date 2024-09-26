@@ -22,7 +22,9 @@ function Main() {
     queryFn: () => getInform(currentDate),
     refetchInterval: 300000, // 5분마다 refetch
   });
-  console.log(inform);
+
+  const [isShow, setIsShow] = useState(false);
+  const [showInput, setShowInput] = useState(false);
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
@@ -45,12 +47,21 @@ function Main() {
     setIsShow(true);
   };
 
-  const [isShow, setIsShow] = useState(false);
-
   const previous = () => {
     const prevDate = new Date(currentDate);
     prevDate.setDate(prevDate.getDate() - 1);
     setCurrentDate(prevDate);
+    setCurrentPage(1);
+    setShowInput(false);
+  };
+
+  const selectDate = () => {
+    setShowInput((prev) => !prev);
+  };
+
+  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCurrentDate(new Date(e.target.value));
+    setShowInput(false);
     setCurrentPage(1);
   };
 
@@ -59,6 +70,7 @@ function Main() {
     nextDate.setDate(nextDate.getDate() + 1);
     setCurrentDate(nextDate);
     setCurrentPage(1);
+    setShowInput(false);
   };
 
   useEffect(() => {
@@ -70,19 +82,30 @@ function Main() {
       {isShow && <AdminLogin setIsShow={setIsShow} />}
       <div className="sm:w-full w-[80%] flex flex-col items-center ">
         <div className="mt-4 mb-24 flex items-center justify-center w-[100%] ">
-          <IoIosArrowBack
-            className="w-8 h-9 hover:opacity-60"
-            onClick={previous}
-          />
+          <button onClick={previous} className="hover:opacity-60">
+            <IoIosArrowBack className="w-8 h-9" />
+          </button>
+          <button onClick={selectDate}>
+            <span className="font-bold sm:text-xl text-3xl mx-8 hover:opacity-60">
+              {calDate(currentDate)}
+            </span>
+          </button>
 
-          <span className="font-bold sm:text-lg text-3xl mx-8 ">
-            {calDate(currentDate)}
-          </span>
-          <IoIosArrowForward
-            className="w-8 h-9 hover:opacity-60"
-            onClick={next}
-          />
+          <button onClick={next} className="hover:opacity-60">
+            <IoIosArrowForward className="w-8 h-9" />
+          </button>
         </div>
+
+        {showInput && (
+          <div className="w-[100%] flex justify-center">
+            <input
+              type="date"
+              className="sm:w-full w-[60%] my-4 p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 ease-in-out"
+              onChange={handleDateChange}
+            />
+          </div>
+        )}
+
         <div className="w-[100%] flex justify-between items-center border border-t-gray-300 rounded-t-2xl">
           <span className="sm:text-lg text-xl w-[50%] font-bold ml-3">
             현황
