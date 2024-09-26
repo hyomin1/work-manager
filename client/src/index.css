@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .button-effect {
+    @apply hover:opacity-90 transition-all duration-300 shadow-lg transform hover:scale-105;
+  }
+}

@@ -3,8 +3,8 @@ import React, { useEffect, useState } from "react";
 import { IoIosArrowBack } from "react-icons/io";
 import { IoIosArrowForward } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
-import { calDate, getInform } from "../api";
-import AdminLogin from "../components/AdminLogin";
+import { calDate, getEmployeeInform } from "../../api";
+import AdminLogin from "../../components/AdminLogin";
 import { SlRefresh } from "react-icons/sl";
 
 interface IInform {
@@ -19,9 +19,10 @@ function Main() {
   const [currentDate, setCurrentDate] = useState(new Date());
   const { data: inform, refetch } = useQuery<IInform[]>({
     queryKey: ["inform"],
-    queryFn: () => getInform(currentDate),
+    queryFn: () => getEmployeeInform(currentDate),
     refetchInterval: 300000, // 5분마다 refetch
   });
+  console.log(inform, currentDate);
 
   const [isShow, setIsShow] = useState(false);
   const [showInput, setShowInput] = useState(false);
@@ -88,7 +89,7 @@ function Main() {
           <button>
             <span
               onClick={selectDate}
-              className="font-bold sm:text-xl text-3xl mx-8 hover:opacity-60"
+              className="font-bold sm:text-xl text-3xl mx-8 "
             >
               {calDate(currentDate)}
             </span>
@@ -116,19 +117,19 @@ function Main() {
           </span>
           <div className="p-4 items-center flex w-[50%] justify-end">
             <button
-              className="sm:whitespace-nowrap bg-[#00ab39] rounded-lg text-white py-2 px-4 hover:opacity-60 mr-4 sm:mr-2"
+              className="sm:whitespace-nowrap bg-[#00ab39] rounded-lg text-white py-2 px-4 button-effect mr-4 sm:mr-2"
               onClick={onClickInputInform}
             >
               입력
             </button>
             <button
-              className="sm:whitespace-nowrap bg-[#007BFF] rounded-lg text-white py-2 px-4 hover:opacity-60 ml-4 sm:ml-2"
+              className="sm:whitespace-nowrap bg-[#007BFF] rounded-lg text-white py-2 px-4 hover:opacity-60 ml-4 sm:ml-2 button-effect"
               onClick={onClickAdmin}
             >
               관리
             </button>
             <div className="h-10 border border-gray-300 mx-4" />
-            <button className="hover:opacity-60" onClick={() => refetch()}>
+            <button className="button-effect" onClick={() => refetch()}>
               <SlRefresh className="w-7 h-7" />
             </button>
           </div>

@@ -1,6 +1,6 @@
 import { Schema, model } from "mongoose";
 
-interface IInform {
+interface IEmployeeInform {
   username: string;
   destination: string;
   business: string;
@@ -11,7 +11,7 @@ interface IInform {
   endDate?: Date;
   createdAt?: Date;
 }
-const informSchema = new Schema<IInform>(
+const employeeInformSchema = new Schema<IEmployeeInform>(
   {
     username: { type: String, required: true, trim: true },
     destination: { type: String, required: true, trim: true },
@@ -27,5 +27,8 @@ const informSchema = new Schema<IInform>(
   }
 );
 
-const Inform = model<IInform>("Inform", informSchema);
-export default Inform;
+const EmployeeInform = model<IEmployeeInform>(
+  "EmployeeInform",
+  employeeInformSchema
+);
+export default EmployeeInform;

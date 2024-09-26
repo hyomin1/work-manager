@@ -50,23 +50,23 @@ function AddData({ setIsAdding, type, queryClient }: IAddData) {
 
     switch (type) {
       case "name":
-        url = "/api/inform/addName";
+        url = "/api/employee-inform/addName";
         body = { username: inputValue };
         break;
       case "destination":
-        url = "/api/inform/addDestination";
+        url = "/api/employee-inform/addDestination";
         body = { destination: inputValue };
         break;
       case "business":
-        url = "/api/inform/addBusiness";
+        url = "/api/employee-inform/addBusiness";
         body = { business: inputValue };
         break;
       case "work":
-        url = "/api/inform/addWork";
+        url = "/api/employee-inform/addWork";
         body = { work: inputValue };
         break;
       case "car":
-        url = "/api/inform/addCar";
+        url = "/api/employee-inform/addCar";
         body = { car: inputValue };
         break;
       default:

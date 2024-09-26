@@ -1,10 +1,12 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "./App";
-import Main from "./screens/Main";
+import EmployeeMain from "./screens/employee/EmployeeMain";
 import InputInform from "./screens/InputInform";
 import Admin from "./screens/Admin";
 import Login from "./auth/Login";
 import Register from "./auth/Register";
+import SelectPages from "./screens/SelectPages";
+import DriveMain from "./screens/driving/DriveMain";
 
 const router = createBrowserRouter([
   {
@@ -20,8 +22,16 @@ const router = createBrowserRouter([
         element: <Register />,
       },
       {
-        path: "/main",
-        element: <Main />,
+        path: "/select",
+        element: <SelectPages />,
+      },
+      {
+        path: "/employee-status",
+        element: <EmployeeMain />,
+      },
+      {
+        path: "/driving-status",
+        element: <DriveMain />,
       },
       {
         path: "/input",

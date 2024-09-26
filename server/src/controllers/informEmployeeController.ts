@@ -1,11 +1,12 @@
 // 이름, 차량, 행선지, 상태 추가 삭제 제어
 import { Request, Response } from "express";
-import Name from "../models/employee/Name";
+import Name from "../models/Name";
 import Destination from "../models/employee/Destination";
 import Work from "../models/employee/Work";
-import Car from "../models/employee/Car";
-import Inform from "../models/employee/Inform";
+import Car from "../models/Car";
+import Inform from "../models/employee/EmployeeInform";
 import Business from "../models/employee/Business";
+import moment from "moment-timezone";
 
 //이름
 
@@ -284,6 +285,7 @@ export const addInform = async (req: Request, res: Response) => {
       }
       data.startDate = startDate;
       data.endDate = endDate;
+      console.log(data);
     }
 
     await Inform.create(data);
@@ -303,9 +305,12 @@ export const getInform = async (req: Request, res: Response) => {
   }
   try {
     const dateParam = req.query.date as string;
+    const localDate = new Date(dateParam);
 
-    const startOfDay = new Date(dateParam).setHours(0, 0, 0, 0);
-    const endOfDay = new Date(dateParam).setHours(23, 59, 59, 999);
+    const utcDate = new Date(localDate.getTime() - 9 * 60 * 60 * 1000);
+
+    const startOfDay = new Date(utcDate).setHours(0, 0, 0, 0);
+    const endOfDay = new Date(utcDate).setHours(23, 59, 59, 999);
 
     //25~27
     const allInforms = await Inform.find(
@@ -323,6 +328,8 @@ export const getInform = async (req: Request, res: Response) => {
         work: 1,
         car: 1,
         createdAt: 1,
+        startDate: 1,
+        endDate: 1,
       }
     );
 

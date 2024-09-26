@@ -21,14 +21,17 @@ import { IoIosArrowRoundBack } from "react-icons/io";
 
 function Input() {
   const [username, setName] = useState("");
+
   const [destination1, setDestination1] = useState("");
   const [destination2, setDestination2] = useState("");
   const [destination3, setDestination3] = useState("");
+
   const [business1, setBusiness1] = useState("");
   const [business2, setBusiness2] = useState("");
   const [business3, setBusiness3] = useState("");
-  const [business, setBusiness] = useState("");
+
   const [work, setWork] = useState("");
+
   const [car, setCar] = useState("");
 
   const selectedDestinations = [
@@ -121,9 +124,8 @@ function Input() {
     setCar(event.target.value);
   };
 
-  {
-    /* 일일 업무 아닌 경우 시작 날짜와 종료 날짜 설정 */
-  }
+  /* 일일 업무 아닌 경우 시작 날짜와 종료 날짜 설정 */
+
   const handleStartDateChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -175,7 +177,7 @@ function Input() {
 
     try {
       const requests = selectedDestinations.map((destination, index) =>
-        axiosApi.post("/api/inform/addInform", {
+        axiosApi.post("/api/employee-inform/addInform", {
           username,
           destination,
           business: selectedBusinesses[index],
@@ -190,13 +192,13 @@ function Input() {
 
       if (responses.every((res) => res.status === 200)) {
         alert("입력이 완료되었습니다.");
-        navigate("/main");
+        navigate("/employee-status");
       }
     } catch (error) {
       alert("정보 입력 중 오류가 발생하였습니다.");
     }
   };
-
+  console.log("c", startDate, endDate);
   return (
     <div className="w-full h-screen flex flex-col justify-start items-center p-10 bg-gray-50 sm:p-4 sm:overflow-y-auto">
       <div className="w-[90%] flex flex-col items-center rounded-lg sm:w-full bg-gray-50 overflow-x-auto">

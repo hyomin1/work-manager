@@ -1,28 +1,38 @@
 import axiosApi from "./axios";
 
+// 이름 정보
 export const getNames = async () => {
-  const res = await axiosApi.get("/api/inform/getName");
+  const res = await axiosApi.get("/api/employee-inform/getName");
   return res.data.allNames || [];
 };
+
+// 방문지 정보
 export const getDestinations = async () => {
-  const res = await axiosApi.get("/api/inform/getDestination");
+  const res = await axiosApi.get("/api/employee-inform/getDestination");
   return res.data.allDestinations || [];
 };
+
+// 사업명 정보
 export const getBusinesses = async () => {
-  const res = await axiosApi.get("/api/inform/getBusiness");
+  const res = await axiosApi.get("/api/employee-inform/getBusiness");
   return res.data.allBusinesses || [];
 };
-export const getCars = async () => {
-  const res = await axiosApi.get("/api/inform/getCar");
-  return res.data.allCars || [];
-};
+
+// 업무 정보
 export const getWorks = async () => {
-  const res = await axiosApi.get("/api/inform/getWork");
+  const res = await axiosApi.get("/api/employee-inform/getWork");
   return res.data.allWorks || [];
 };
 
-export const getInform = async (date: Date) => {
-  const res = await axiosApi.get(`/api/inform/getInform?date=${date}`);
+// 차량 정보
+export const getCars = async () => {
+  const res = await axiosApi.get("/api/employee-inform/getCar");
+  return res.data.allCars || [];
+};
+
+// 입력된 인원 상태 정보
+export const getEmployeeInform = async (date: Date) => {
+  const res = await axiosApi.get(`/api/employee-inform/getInform?date=${date}`);
 
   return res.data.allInforms || [];
 };

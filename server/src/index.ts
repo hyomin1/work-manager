@@ -7,7 +7,7 @@ import http from "http";
 import { connectDB } from "./config/db";
 import session from "express-session";
 import authRouter from "./routes/authRouter";
-import informRouter from "./routes/informRouter";
+import informRouter from "./routes/employeeInformRouter";
 import path from "path";
 
 const app: Express = express();
@@ -39,7 +39,7 @@ app.use(express.json());
 connectDB();
 
 app.use("/auth", authRouter);
-app.use("/api/inform", informRouter);
+app.use("/api/employee-inform", informRouter);
 
 app.use(express.static(path.join(__dirname, "../../client/build")));
 app.get("*", function (req, res) {

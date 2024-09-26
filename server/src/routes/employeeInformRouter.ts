@@ -17,7 +17,7 @@ import {
   removeDestination,
   removeName,
   removeWork,
-} from "../controllers/informController";
+} from "../controllers/informEmployeeController";
 
 const router = express.Router();
 
