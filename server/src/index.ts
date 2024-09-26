@@ -8,6 +8,7 @@ import { connectDB } from "./config/db";
 import session from "express-session";
 import authRouter from "./routes/authRouter";
 import informRouter from "./routes/informRouter";
+import path from "path";
 
 const app: Express = express();
 const port = 8080;
@@ -39,6 +40,11 @@ connectDB();
 
 app.use("/auth", authRouter);
 app.use("/api/inform", informRouter);
+
+app.use(express.static(path.join(__dirname, "../../client/build")));
+app.get("*", function (req, res) {
+  res.sendFile(path.join(__dirname, "../../client/build/index.html"));
+});
 
 httpServer.listen(port, () => {
   console.log(`Server is running on port ${port}`);

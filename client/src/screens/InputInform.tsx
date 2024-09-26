@@ -20,14 +20,24 @@ import { useNavigate } from "react-router-dom";
 import { IoIosArrowRoundBack } from "react-icons/io";
 
 function Input() {
-  // ... (이전 상태 및 함수들은 그대로 유지)
   const [username, setName] = useState("");
   const [destination1, setDestination1] = useState("");
   const [destination2, setDestination2] = useState("");
   const [destination3, setDestination3] = useState("");
+  const [business1, setBusiness1] = useState("");
+  const [business2, setBusiness2] = useState("");
+  const [business3, setBusiness3] = useState("");
   const [business, setBusiness] = useState("");
   const [work, setWork] = useState("");
   const [car, setCar] = useState("");
+
+  const selectedDestinations = [
+    destination1,
+    destination2,
+    destination3,
+  ].filter(Boolean);
+
+  const selectedBusinesses = [business1, business2, business3].filter(Boolean);
 
   // 0 : 기본 1 : 일일 업무 2: 주간/월간/연간 업무
   const [isDaily, setIsDaily] = useState(0);
@@ -87,10 +97,20 @@ function Input() {
     setDestination3(event.target.value);
   };
 
-  const handleBusinessChange = (
+  const handleBusinessChange1 = (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
-    setBusiness(event.target.value);
+    setBusiness1(event.target.value);
+  };
+  const handleBusinessChange2 = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    setBusiness2(event.target.value);
+  };
+  const handleBusinessChange3 = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    setBusiness3(event.target.value);
   };
 
   const handleStateChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -129,18 +149,12 @@ function Input() {
       return;
     }
 
-    const selectedDestinations = [
-      destination1,
-      destination2,
-      destination3,
-    ].filter(Boolean);
-
     if (selectedDestinations.length === 0) {
       alert("방문지를 선택해주세요");
       return;
     }
 
-    if (!business) {
+    if (selectedBusinesses.length === 0) {
       alert("사업명을 선택해주세요");
       return;
     }
@@ -160,11 +174,11 @@ function Input() {
     }
 
     try {
-      const requests = selectedDestinations.map((destination) =>
+      const requests = selectedDestinations.map((destination, index) =>
         axiosApi.post("/api/inform/addInform", {
           username,
           destination,
-          business,
+          business: selectedBusinesses[index],
           work,
           car,
           isDaily,
@@ -185,7 +199,7 @@ function Input() {
 
   return (
     <div className="w-full h-screen flex flex-col justify-start items-center p-10 bg-gray-50 sm:p-4 sm:overflow-y-auto">
-      <div className="w-[90%] flex flex-col items-center rounded-lg sm:w-full bg-gray-50">
+      <div className="w-[90%] flex flex-col items-center rounded-lg sm:w-full bg-gray-50 overflow-x-auto">
         <div className="mt-4 mb-20 flex items-center md:justify-center w-full sm:mb-10 sm:justify-between">
           <div
             className="md:hidden sm:hover:opacity-60 sm:w-[10%] flex items-center"
@@ -204,18 +218,22 @@ function Input() {
           <table className="w-full text-left sm:table-fixed ">
             <thead>
               <tr className="bg-gray-200 sm:hidden">
-                <th className="p-4 border-b border-gray-300">이름</th>
-                <th className="p-4 border-b border-gray-300">방문지</th>
-                <th className="p-4 border-b border-gray-300">사업명</th>
-                <th className="p-4 border-b border-gray-300">업무</th>
-                <th className="p-4 border-b border-gray-300">차량</th>
-                <th className="p-4 border-b border-gray-300">기간</th>
+                <th className="p-4 border-b border-r border-gray-300">이름</th>
+                <th className="p-4 border-b border-r border-gray-300">
+                  방문지
+                </th>
+                <th className="p-4 border-b border-r border-gray-300">
+                  사업명
+                </th>
+                <th className="p-4 border-b border-r border-gray-300">업무</th>
+                <th className="p-4 border-b border-r border-gray-300">차량</th>
+                <th className="p-4 border-b border-r border-gray-300">기간</th>
               </tr>
             </thead>
 
             <tbody>
-              <tr className="sm:flex sm:flex-col">
-                <td className="sm:mb-4 sm:w-full">
+              <tr className="sm:flex sm:flex-col table-auto">
+                <td className="sm:mb-4 sm:w-full md:border-r border-gray-300 md:border-b">
                   <div className="sm:font-bold sm:mb-2 md:hidden">이름</div>
                   <select
                     defaultValue=""
@@ -235,7 +253,7 @@ function Input() {
                   </select>
                 </td>
 
-                <td className="flex flex-col sm:mb-4 sm:w-full">
+                <td className="flex flex-col sm:mb-4 sm:w-full md:border-r border-gray-300 px-2 md:border-b">
                   <div className="sm:font-bold sm:mb-2 md:hidden">방문지</div>
                   {[
                     handleDestinationChange1,
@@ -264,27 +282,34 @@ function Input() {
                   ))}
                 </td>
 
-                <td className="sm:mb-4 sm:w-full">
+                <td className="sm:mb-4 sm:w-full w-[42%] md:border-r border-gray-300 md:border-b">
                   <div className="sm:font-bold sm:mb-2 md:hidden">사업명</div>
-                  <select
-                    defaultValue=""
-                    onChange={handleBusinessChange}
-                    className="hover:opacity-60 border rounded-md p-2 ml-4 sm:w-full sm:ml-0"
-                  >
-                    <option disabled value="">
-                      선택
-                    </option>
-                    {businesses
-                      ?.sort((a, b) => a.business.localeCompare(b.business))
-                      .map((item, index) => (
-                        <option key={index} value={item.business}>
-                          {item.business}
-                        </option>
-                      ))}
-                  </select>
+                  {[
+                    handleBusinessChange1,
+                    handleBusinessChange2,
+                    handleBusinessChange3,
+                  ].map((handler, index) => (
+                    <select
+                      key={index}
+                      defaultValue=""
+                      onChange={handler}
+                      className="hover:opacity-60 border rounded-md p-2 my-4 ml-2 sm:w-full sm:ml-0 sm:my-2 "
+                    >
+                      <option disabled value="">
+                        사업명 선택
+                      </option>
+                      {businesses
+                        ?.sort((a, b) => a.business.localeCompare(b.business))
+                        .map((item, index) => (
+                          <option key={index} value={item.business}>
+                            {item.business}
+                          </option>
+                        ))}
+                    </select>
+                  ))}
                 </td>
 
-                <td className="sm:mb-4 sm:w-full">
+                <td className="sm:mb-4 sm:w-full md:border-r border-gray-300 px-2 md:border-b">
                   <div className="sm:font-bold sm:mb-2 md:hidden">업무</div>
                   <select
                     defaultValue=""
@@ -292,7 +317,7 @@ function Input() {
                     className="hover:opacity-60 border rounded-md p-2 sm:w-full"
                   >
                     <option disabled value="">
-                      선택
+                      업무 선택
                     </option>
                     {works
                       ?.sort((a, b) => a.work.localeCompare(b.work))
@@ -304,7 +329,7 @@ function Input() {
                   </select>
                 </td>
 
-                <td className="sm:mb-4 sm:w-full">
+                <td className="sm:mb-4 sm:w-full md:border-r md:border-b border-gray-300 px-2">
                   <div className="sm:font-bold sm:mb-2 md:hidden">차량</div>
                   <select
                     defaultValue=""
@@ -323,7 +348,7 @@ function Input() {
                   </select>
                 </td>
 
-                <td className="sm:mb-4 sm:w-full">
+                <td className="sm:mb-4 sm:w-full md:border-r md:border-b border-gray-300 px-2">
                   <div className="sm:font-bold sm:mb-2 md:hidden">기간</div>
                   <div className="sm:flex sm:flex-col">
                     <label className="sm:flex sm:items-center sm:mb-2 md:mr-4">

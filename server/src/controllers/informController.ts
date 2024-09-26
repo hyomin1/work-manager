@@ -259,6 +259,7 @@ export const addInform = async (req: Request, res: Response) => {
     startDate,
     endDate,
   } = req.body;
+
   try {
     if (
       !username ||

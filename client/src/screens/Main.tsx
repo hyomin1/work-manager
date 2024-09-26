@@ -85,8 +85,11 @@ function Main() {
           <button onClick={previous} className="hover:opacity-60">
             <IoIosArrowBack className="w-8 h-9" />
           </button>
-          <button onClick={selectDate}>
-            <span className="font-bold sm:text-xl text-3xl mx-8 hover:opacity-60">
+          <button>
+            <span
+              onClick={selectDate}
+              className="font-bold sm:text-xl text-3xl mx-8 hover:opacity-60"
+            >
               {calDate(currentDate)}
             </span>
           </button>
@@ -100,6 +103,7 @@ function Main() {
           <div className="w-[100%] flex justify-center">
             <input
               type="date"
+              value={currentDate.toISOString().split("T")[0] || ""}
               className="sm:w-full w-[60%] my-4 p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 ease-in-out"
               onChange={handleDateChange}
             />
