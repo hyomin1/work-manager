@@ -1,31 +1,21 @@
-import { TABS } from "../constants/adminTabs";
-
 interface TabHeaderProps {
-  activeTab: string;
-  onTabClick: (tab: string) => void;
+  headers: string[];
 }
 
-function TabHeader({ activeTab, onTabClick }: TabHeaderProps) {
+function TabHeader({ headers }: TabHeaderProps) {
   return (
-    <div className="w-[100%]">
-      <div className="text-left whitespace-nowrap sm:text-sm flex w-[100%]">
-        {TABS.map((tab) => (
-          <div
-            key={tab.key}
-            className={`p-4 font-bold w-[20%] cursor-pointer ${
-              tab.key === TABS[0].key ? "rounded-tl-xl" : ""
-            } ${
-              tab.key === TABS[TABS.length - 1].key ? "rounded-tr-xl" : ""
-            } hover:opacity-60 ${
-              activeTab === tab.key ? "bg-blue-500 text-white" : "bg-gray-200"
-            }`}
-            onClick={() => onTabClick(tab.key)}
+    <thead className="w-[100%]">
+      <tr className="bg-gray-200 sm:text-xs">
+        {headers.map((header, index) => (
+          <th
+            key={index}
+            className="p-4 border-b border-gray-300 sm:whitespace-nowrap"
           >
-            {tab.label}
-          </div>
+            {header}
+          </th>
         ))}
-      </div>
-    </div>
+      </tr>
+    </thead>
   );
 }
 

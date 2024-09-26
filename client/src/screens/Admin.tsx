@@ -3,8 +3,8 @@ import { useQueryClient } from "@tanstack/react-query";
 
 import { formDate } from "../api";
 import Page from "../components/Page";
-import TabHeader from "../components/TabHeader";
-import TabContent from "../components/TabContent";
+import TabHeaderAdmin from "../components/TabHeaderAdmin";
+import TabContentAdmin from "../components/TabContentAdmin";
 import { useAdminData } from "../hooks/useAdminData";
 import { useNavigate } from "react-router-dom";
 import { IoIosArrowRoundBack } from "react-icons/io";
@@ -49,9 +49,9 @@ function Admin() {
         </div>
 
         <div className="w-[100%] ">
-          <TabHeader activeTab={activeTab} onTabClick={handleTabClick} />
+          <TabHeaderAdmin activeTab={activeTab} onTabClick={handleTabClick} />
 
-          <TabContent
+          <TabContentAdmin
             activeTab={activeTab}
             data={data}
             removeItem={removeItem}

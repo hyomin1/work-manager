@@ -6,7 +6,7 @@ interface IPage {
 
 function Page({ totalPage, page, onPageChange }: IPage) {
   return (
-    <div>
+    <div className="mt-4">
       {Array.from({ length: totalPage }, (_, index) => (
         <button
           key={index + 1}

@@ -198,7 +198,7 @@ function Input() {
       alert("정보 입력 중 오류가 발생하였습니다.");
     }
   };
-  console.log("c", startDate, endDate);
+
   return (
     <div className="w-full h-screen flex flex-col justify-start items-center p-10 bg-gray-50 sm:p-4 sm:overflow-y-auto">
       <div className="w-[90%] flex flex-col items-center rounded-lg sm:w-full bg-gray-50 overflow-x-auto">

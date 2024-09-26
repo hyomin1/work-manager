@@ -6,6 +6,9 @@ import { useNavigate } from "react-router-dom";
 import { calDate, getEmployeeInform } from "../../api";
 import AdminLogin from "../../components/AdminLogin";
 import { SlRefresh } from "react-icons/sl";
+import TabHeader from "../../components/TabHeader";
+import Page from "../../components/Page";
+import { employeeHeaders } from "../../constants/headers";
 
 interface IInform {
   username: string;
@@ -17,12 +20,12 @@ interface IInform {
 }
 function Main() {
   const [currentDate, setCurrentDate] = useState(new Date());
+
   const { data: inform, refetch } = useQuery<IInform[]>({
     queryKey: ["inform"],
     queryFn: () => getEmployeeInform(currentDate),
     refetchInterval: 300000, // 5분마다 refetch
   });
-  console.log(inform, currentDate);
 
   const [isShow, setIsShow] = useState(false);
   const [showInput, setShowInput] = useState(false);
@@ -89,7 +92,7 @@ function Main() {
           <button>
             <span
               onClick={selectDate}
-              className="font-bold sm:text-xl text-3xl mx-8 "
+              className="font-bold sm:text-xl text-3xl mx-8 hover:opacity-70"
             >
               {calDate(currentDate)}
             </span>
@@ -129,33 +132,15 @@ function Main() {
               관리
             </button>
             <div className="h-10 border border-gray-300 mx-4" />
-            <button className="button-effect" onClick={() => refetch()}>
-              <SlRefresh className="w-7 h-7" />
+            <button className="" onClick={() => refetch()}>
+              <SlRefresh className="w-7 h-7 hover:opacity-60" />
             </button>
           </div>
         </div>
-        <table className="w-[100%] rounded-2xl shadow-lg text-left table-auto">
-          <thead className="w-[100%]">
-            <tr className="bg-gray-200 sm:text-xs">
-              <th className="p-4 border-b border-gray-300 sm:whitespace-nowrap">
-                이름
-              </th>
-              <th className="p-4 border-b border-gray-300 sm:whitespace-nowrap">
-                방문지
-              </th>
-              <th className="p-4 border-b border-gray-300 sm:whitespace-nowrap">
-                사업명
-              </th>
-              <th className="p-4 border-b border-gray-300 sm:whitespace-nowrap">
-                업무
-              </th>
-              <th className="p-4 border-b border-gray-300 sm:whitespace-nowrap">
-                차량
-              </th>
-            </tr>
-          </thead>
+        <table className="w-[100%] rounded-2xl shadow-lg text-left table-auto overflow-y-auto">
+          <TabHeader headers={employeeHeaders} />
 
-          <tbody className="rounded-b-xl">
+          <tbody className="rounded-b-xl ">
             {inform
               ?.sort((a, b) => {
                 if (a.destination === b.destination) {
@@ -190,21 +175,11 @@ function Main() {
       </div>
 
       {/* 페이지네이션 */}
-      <div className="mt-4">
-        {Array.from({ length: totalPages }, (_, index) => (
-          <button
-            key={index + 1}
-            className={`mx-1 px-3 py-1 rounded hover:opacity-60 ${
-              currentPage === index + 1
-                ? "bg-blue-500 text-white"
-                : "bg-gray-200"
-            }`}
-            onClick={() => handleClick(index + 1)}
-          >
-            {index + 1}
-          </button>
-        ))}
-      </div>
+      <Page
+        totalPage={totalPages}
+        page={currentPage}
+        onPageChange={handleClick}
+      />
     </div>
   );
 }

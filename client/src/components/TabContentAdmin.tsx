@@ -12,7 +12,7 @@ interface TabContentProps {
   queryClient: QueryClient;
 }
 
-const TabContent = ({
+const TabContentAdmin = ({
   activeTab,
   data,
   removeItem,
@@ -81,4 +81,4 @@ const TabContent = ({
   );
 };
 
-export default TabContent;
+export default TabContentAdmin;

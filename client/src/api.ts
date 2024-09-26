@@ -55,3 +55,10 @@ export const calDate = (date: Date) => {
 
   return `${year}년 ${month}월 ${day}일 (${dayOfWeek})`;
 };
+
+export const calYearMonth = (date: Date) => {
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1;
+
+  return `${year}년 ${month}월`;
+};

@@ -6,7 +6,6 @@ import Work from "../models/employee/Work";
 import Car from "../models/Car";
 import Inform from "../models/employee/EmployeeInform";
 import Business from "../models/employee/Business";
-import moment from "moment-timezone";
 
 //이름
 
@@ -285,7 +284,6 @@ export const addInform = async (req: Request, res: Response) => {
       }
       data.startDate = startDate;
       data.endDate = endDate;
-      console.log(data);
     }
 
     await Inform.create(data);
@@ -312,7 +310,6 @@ export const getInform = async (req: Request, res: Response) => {
     const startOfDay = new Date(utcDate).setHours(0, 0, 0, 0);
     const endOfDay = new Date(utcDate).setHours(23, 59, 59, 999);
 
-    //25~27
     const allInforms = await Inform.find(
       {
         $or: [
