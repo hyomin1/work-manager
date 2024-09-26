@@ -12,23 +12,15 @@ function AdminLogin({ setIsShow }: IAdminLoginProps) {
 
   const navigate = useNavigate();
 
-  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const onAdminLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const res = await axiosApi.post("/adminLogin", {
+    const res = await axiosApi.post("/auth/adminLogin", {
       userId,
       password,
     });
     if (res.status === 200) {
       navigate("/admin");
     }
-  };
-
-  const test = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const res = await axiosApi.post("/join", {
-      userId,
-      password,
-    });
   };
 
   const handleId = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -49,7 +41,7 @@ function AdminLogin({ setIsShow }: IAdminLoginProps) {
     <div className="w-full h-screen flex items-center justify-center absolute z-10  bg-black bg-opacity-65 top-0">
       <form
         className="flex flex-col w-96 h-80 p-6 bg-white rounded-lg shadow-lg"
-        onSubmit={onSubmit}
+        onSubmit={onAdminLogin}
       >
         <h2 className="text-center text-xl font-bold mb-4">관리자 로그인</h2>
         <input

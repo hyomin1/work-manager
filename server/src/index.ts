@@ -8,7 +8,6 @@ import { connectDB } from "./config/db";
 import session from "express-session";
 import authRouter from "./routes/authRouter";
 import informRouter from "./routes/informRouter";
-import { adminLogin, joinAdmin } from "./controllers/adminController";
 
 const app: Express = express();
 const port = 8080;
@@ -35,9 +34,6 @@ app.use(
   })
 );
 app.use(express.json());
-
-app.post("/join", joinAdmin);
-app.post("/adminLogin", adminLogin);
 
 connectDB();
 

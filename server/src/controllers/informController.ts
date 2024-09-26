@@ -1,11 +1,11 @@
 // 이름, 차량, 행선지, 상태 추가 삭제 제어
 import { Request, Response } from "express";
-import Name from "../models/Name";
-import Destination from "../models/Destination";
-import Work from "../models/Work";
-import Car from "../models/Car";
-import Inform from "../models/Inform";
-import Business from "../models/Business";
+import Name from "../models/employee/Name";
+import Destination from "../models/employee/Destination";
+import Work from "../models/employee/Work";
+import Car from "../models/employee/Car";
+import Inform from "../models/employee/Inform";
+import Business from "../models/employee/Business";
 
 //이름
 
