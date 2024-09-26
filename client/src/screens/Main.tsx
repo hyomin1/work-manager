@@ -22,6 +22,7 @@ function Main() {
     queryFn: () => getInform(currentDate),
     refetchInterval: 300000, // 5분마다 refetch
   });
+  console.log(inform);
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;

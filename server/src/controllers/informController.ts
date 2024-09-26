@@ -302,10 +302,10 @@ export const getInform = async (req: Request, res: Response) => {
   }
   try {
     const dateParam = req.query.date as string;
-    const date = new Date(dateParam);
 
-    const startOfDay = new Date(date.setHours(0, 0, 0, 0));
-    const endOfDay = new Date(date.setHours(23, 59, 59, 999));
+    const startOfDay = new Date(dateParam).setHours(0, 0, 0, 0);
+    const endOfDay = new Date(dateParam).setHours(23, 59, 59, 999);
+
     //25~27
     const allInforms = await Inform.find(
       {

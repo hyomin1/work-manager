@@ -22,8 +22,7 @@ export const getWorks = async () => {
 };
 
 export const getInform = async (date: Date) => {
-  const formatDate = date.toISOString().split("T")[0];
-  const res = await axiosApi.get(`/api/inform/getInform?date=${formatDate}`);
+  const res = await axiosApi.get(`/api/inform/getInform?date=${date}`);
 
   return res.data.allInforms || [];
 };

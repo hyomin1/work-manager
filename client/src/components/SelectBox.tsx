@@ -17,7 +17,7 @@ function SelectBox({
     <select
       defaultValue=""
       onChange={onChange}
-      className={`w-[100%] hover:opacity-60 border rounded-md p-2 ${className}`}
+      className={` w-[100%] hover:opacity-60 border rounded-md p-2 ${className}`}
     >
       <option disabled value="">
         {placeholder}

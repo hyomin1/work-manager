@@ -3,12 +3,11 @@ import "dotenv/config";
 import express, { Express, Request, Response } from "express";
 import cors from "cors";
 import http from "http";
+
 import { connectDB } from "./config/db";
 import session from "express-session";
-
 import authRouter from "./routes/authRouter";
 import informRouter from "./routes/informRouter";
-
 import { adminLogin, joinAdmin } from "./controllers/adminController";
 
 const app: Express = express();

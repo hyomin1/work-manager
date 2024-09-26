@@ -4,6 +4,7 @@ import { FaPlus } from "react-icons/fa6";
 import { TABS } from "../constants/adminTabs";
 import { IoClose } from "react-icons/io5";
 import { QueryClient } from "@tanstack/react-query";
+import { FaTrash } from "react-icons/fa";
 
 interface TabContentProps {
   activeTab: string;
@@ -34,7 +35,7 @@ const TabContent = ({
           목록
         </div>
 
-        <div>
+        <div className="mr-5">
           <button
             className="bg-[#00ab39] rounded-full text-white p-2 hover:opacity-60 font-bold"
             onClick={() => setIsAdding(true)}
@@ -54,12 +55,12 @@ const TabContent = ({
             {item[activeTabConfig?.dataKey || ""]}
           </div>
 
-          <div className="">
+          <div className="mr-4">
             <button
-              className="bg-[#FF0000] rounded-full text-white p-2 hover:opacity-60 font-bold"
+              className="bg-[] rounded-full  p-2 hover:opacity-60 font-bold"
               onClick={() => removeItem(item._id)}
             >
-              <IoClose className="w-5 h-5 sm:w-3 sm:h-3" />
+              <FaTrash className="w-7 h-7 sm:w-5 sm:h-5" />
             </button>
           </div>
         </div>

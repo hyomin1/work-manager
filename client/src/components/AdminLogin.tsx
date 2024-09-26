@@ -57,6 +57,7 @@ function AdminLogin({ setIsShow }: IAdminLoginProps) {
           onChange={handleId}
           value={userId}
           className="mb-4 p-2 border rounded"
+          autoFocus
         />
         <input
           type="password"
