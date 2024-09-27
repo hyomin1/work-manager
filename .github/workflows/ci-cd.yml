@@ -9,29 +9,29 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: 체크아웃 코드
-      - uses: actions/checkout@v2
+      - name: 체크아웃
+        uses: actions/checkout@v2
 
       - name: Node.js 설치
         uses: actions/setup-node@v2
         with:
-          node-version: '20.17.0'
+          node-version: "20.17.0"
 
       - name: 의존성 설치
-       run: |
-        cd client
-        npm install
-      
+        run: |
+          cd client
+          npm install
+
       - name: React 앱 빌드
-       run : |
-        cd client
-        npm run build
+        run: |
+          cd client
+          npm run build
 
       - name: Express 서버 의존성 설치
-       run: |
-        cd server
-        npm install
-        
+        run: |
+          cd server
+          npm install
+
       - name: 배포
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
@@ -42,5 +42,3 @@ jobs:
           chmod 600 private_key.pem
 
           scp -i private_key.pem -r client/build/* root@$SERVER_IP :/var/www/html/employee-status
-
-          
