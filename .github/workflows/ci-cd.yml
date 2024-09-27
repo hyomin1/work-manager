@@ -41,4 +41,4 @@ jobs:
           echo "${SSH_PRIVATE_KEY}" > private_key.pem
           chmod 600 private_key.pem
 
-          scp -i private_key.pem -r client/build/* root@$SERVER_IP :/var/www/html/employee-status
+          scp -i private_key.pem -r client/build/* root@$SERVER_IP:/var/www/html/employee-status
