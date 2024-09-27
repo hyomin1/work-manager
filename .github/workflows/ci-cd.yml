@@ -42,4 +42,4 @@ jobs:
           chmod 600 private_key.pem
 
 
-          scp -i private_key.pem -P 2022 -r client/build/* root@$SERVER_IP:/var/www/html/employee-status
+          scp -i private_key.pem -P 2022 -r client/build/* root@172.16.142.101:/var/www/html/employee-status
