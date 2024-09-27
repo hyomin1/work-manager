@@ -40,5 +40,7 @@ jobs:
         run: |
           echo "${SSH_PRIVATE_KEY}" > private_key.pem
           chmod 600 private_key.pem
+          echo "SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }} $SERVER_IP"
+          echo "SERVER_IP: ${{ secrets.SERVER_IP }}"
 
           scp -i private_key.pem -P 2022 -r client/build/* root@$SERVER_IP:/var/www/html/employee-status
