@@ -1,9 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-interface ITabHeaderActionProps {
-  isShow: boolean;
-}
+import AdminLogin from "./AdminLogin";
 
 function TabHeaderAction() {
   const navigate = useNavigate();
@@ -17,8 +14,8 @@ function TabHeaderAction() {
     setIsShow(true);
   };
   return (
-    <div className="w-[100%] flex justify-between items-center border border-t-gray-300 rounded-t-2xl">
-      <span className="sm:text-lg text-xl w-[50%] font-bold ml-3">현황</span>
+    <div className="w-[100%] flex justify-end items-center border border-t-gray-300 rounded-t-2xl">
+      {isShow && <AdminLogin setIsShow={setIsShow} />}
       <div className="p-4 items-center flex w-[50%] justify-end">
         <button
           className="sm:whitespace-nowrap bg-[#00ab39] rounded-lg text-white py-2 px-4 button-effect mr-4 sm:mr-2"

@@ -1,7 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
 import React, { useEffect, useState } from "react";
-import { IoIosArrowBack } from "react-icons/io";
-import { IoIosArrowForward } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import { calDate, getEmployeeInform } from "../../api";
 import AdminLogin from "../../components/AdminLogin";
@@ -9,6 +7,7 @@ import { SlRefresh } from "react-icons/sl";
 import TabHeader from "../../components/TabHeader";
 import Page from "../../components/Page";
 import { employeeHeaders } from "../../constants/headers";
+import Title from "../../components/Title";
 
 interface IInform {
   username: string;
@@ -22,7 +21,7 @@ function Main() {
   const [currentDate, setCurrentDate] = useState(new Date());
 
   const { data: inform, refetch } = useQuery<IInform[]>({
-    queryKey: ["inform"],
+    queryKey: ["employeeInform"],
     queryFn: () => getEmployeeInform(currentDate),
     refetchInterval: 300000, // 5분마다 refetch
   });
@@ -51,30 +50,10 @@ function Main() {
     setIsShow(true);
   };
 
-  const previous = () => {
-    const prevDate = new Date(currentDate);
-    prevDate.setDate(prevDate.getDate() - 1);
-    setCurrentDate(prevDate);
-    setCurrentPage(1);
-    setShowInput(false);
-  };
-
-  const selectDate = () => {
-    setShowInput((prev) => !prev);
-  };
-
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCurrentDate(new Date(e.target.value));
     setShowInput(false);
     setCurrentPage(1);
-  };
-
-  const next = () => {
-    const nextDate = new Date(currentDate);
-    nextDate.setDate(nextDate.getDate() + 1);
-    setCurrentDate(nextDate);
-    setCurrentPage(1);
-    setShowInput(false);
   };
 
   useEffect(() => {
@@ -85,23 +64,13 @@ function Main() {
     <div className="w-full h-screen flex flex-col justify-between items-center sm:p-2 p-10 bg-gray-50">
       {isShow && <AdminLogin setIsShow={setIsShow} />}
       <div className="sm:w-full w-[80%] flex flex-col items-center ">
-        <div className="mt-4 mb-24 flex items-center justify-center w-[100%] ">
-          <button onClick={previous} className="hover:opacity-60">
-            <IoIosArrowBack className="w-8 h-9" />
-          </button>
-          <button>
-            <span
-              onClick={selectDate}
-              className="font-bold sm:text-xl text-3xl mx-8 hover:opacity-70"
-            >
-              {calDate(currentDate)}
-            </span>
-          </button>
-
-          <button onClick={next} className="hover:opacity-60">
-            <IoIosArrowForward className="w-8 h-9" />
-          </button>
-        </div>
+        <Title
+          currentDate={currentDate}
+          setCurrentDate={setCurrentDate}
+          setShowInput={setShowInput}
+          calDate={calDate}
+          category="employee"
+        />
 
         {showInput && (
           <div className="w-[100%] flex justify-center">
@@ -114,10 +83,7 @@ function Main() {
           </div>
         )}
 
-        <div className="w-[100%] flex justify-between items-center border border-t-gray-300 rounded-t-2xl">
-          <span className="sm:text-lg text-xl w-[50%] font-bold ml-3">
-            현황
-          </span>
+        <div className="w-[100%] flex justify-end items-center border border-t-gray-300 rounded-t-2xl">
           <div className="p-4 items-center flex w-[50%] justify-end">
             <button
               className="sm:whitespace-nowrap bg-[#00ab39] rounded-lg text-white py-2 px-4 button-effect mr-4 sm:mr-2"
@@ -137,9 +103,9 @@ function Main() {
             </button>
           </div>
         </div>
+
         <table className="w-[100%] rounded-2xl shadow-lg text-left table-auto overflow-y-auto">
           <TabHeader headers={employeeHeaders} />
-
           <tbody className="rounded-b-xl ">
             {inform
               ?.sort((a, b) => {
