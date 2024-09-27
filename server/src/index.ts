@@ -29,7 +29,7 @@ app.use(
 
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: ["http://localhost:3000", "http://172.16.142.101"],
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     credentials: true,
   })
@@ -38,6 +38,7 @@ app.use(express.json());
 
 connectDB();
 
+//api 이하로 바꾸기
 app.use("/auth", authRouter);
 app.use("/api/employee-inform", informRouter);
 

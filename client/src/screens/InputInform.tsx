@@ -295,7 +295,7 @@ function Input() {
                       key={index}
                       defaultValue=""
                       onChange={handler}
-                      className="hover:opacity-60 border rounded-md p-2 my-4 ml-2 sm:w-full sm:ml-0 sm:my-2 "
+                      className="hover:opacity-60 border rounded-md p-2 my-4 ml-2 sm:w-full sm:ml-0 sm:my-2 w-[90%]"
                     >
                       <option disabled value="">
                         사업명 선택
