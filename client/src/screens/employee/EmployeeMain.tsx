@@ -31,7 +31,6 @@ function Main() {
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
-
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const totalPages = inform ? Math.ceil(inform.length / itemsPerPage) : 0;
@@ -43,7 +42,7 @@ function Main() {
   };
 
   const onClickInputInform = () => {
-    navigate("/input");
+    navigate("/employee-input");
   };
 
   const onClickAdmin = () => {
@@ -83,7 +82,8 @@ function Main() {
           </div>
         )}
 
-        <div className="w-[100%] flex justify-end items-center border border-t-gray-300 rounded-t-2xl">
+        <div className="w-[100%] flex justify-between items-center border border-t-gray-300 rounded-t-2xl">
+          <span className="font-bold text-xl ml-4">목록</span>
           <div className="p-4 items-center flex w-[50%] justify-end">
             <button
               className="sm:whitespace-nowrap bg-[#00ab39] rounded-lg text-white py-2 px-4 button-effect mr-4 sm:mr-2"
@@ -98,7 +98,7 @@ function Main() {
               관리
             </button>
             <div className="h-10 border border-gray-300 mx-4" />
-            <button className="" onClick={() => refetch()}>
+            <button onClick={() => refetch()}>
               <SlRefresh className="w-7 h-7 hover:opacity-60" />
             </button>
           </div>

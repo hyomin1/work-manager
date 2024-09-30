@@ -18,6 +18,8 @@ import {
 import axiosApi from "../axios";
 import { useNavigate } from "react-router-dom";
 import { IoIosArrowRoundBack } from "react-icons/io";
+import TabInputHeader from "../components/TabInputHeader";
+import { employeeInputHeaders } from "../constants/headers";
 
 function Input() {
   const [username, setName] = useState("");
@@ -191,7 +193,7 @@ function Input() {
       const responses = await Promise.all(requests);
 
       if (responses.every((res) => res.status === 200)) {
-        alert("입력이 완료되었습니다.");
+        alert("정보 입력 완료");
         navigate("/employee-status");
       }
     } catch (error) {
@@ -218,20 +220,7 @@ function Input() {
 
         <div className="w-full sm:overflow-x-auto">
           <table className="w-full text-left sm:table-fixed ">
-            <thead>
-              <tr className="bg-gray-200 sm:hidden">
-                <th className="p-4 border-b border-r border-gray-300">이름</th>
-                <th className="p-4 border-b border-r border-gray-300">
-                  방문지
-                </th>
-                <th className="p-4 border-b border-r border-gray-300">
-                  사업명
-                </th>
-                <th className="p-4 border-b border-r border-gray-300">업무</th>
-                <th className="p-4 border-b border-r border-gray-300">차량</th>
-                <th className="p-4 border-b border-r border-gray-300">기간</th>
-              </tr>
-            </thead>
+            <TabInputHeader headers={employeeInputHeaders} />
 
             <tbody>
               <tr className="sm:flex sm:flex-col table-auto">

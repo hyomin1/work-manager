@@ -53,7 +53,7 @@ function Title({
         <button>
           <span
             onClick={selectDate}
-            className="font-bold sm:text-xl text-3xl mx-8 hover:opacity-70"
+            className="font-bold  md:text-3xl mx-8 hover:opacity-70"
           >
             {category === "driving" &&
               calYearMonth &&

@@ -7,7 +7,8 @@ import http from "http";
 import { connectDB } from "./config/db";
 import session from "express-session";
 import authRouter from "./routes/authRouter";
-import informRouter from "./routes/employeeInformRouter";
+import employeeInformRouter from "./routes/employeeInformRouter";
+import drivingInformRouter from "./routes/drivingInformRouter";
 import path from "path";
 
 const app: Express = express();
@@ -40,7 +41,8 @@ connectDB();
 
 //api 이하로 바꾸기
 app.use("/auth", authRouter);
-app.use("/api/employee-inform", informRouter);
+app.use("/api/employee-inform", employeeInformRouter);
+app.use("/api/driving-inform", drivingInformRouter);
 
 app.use(express.static(path.join(__dirname, "../../client/build")));
 app.get("*", function (req, res) {

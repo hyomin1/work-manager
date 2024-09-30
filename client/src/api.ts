@@ -37,6 +37,17 @@ export const getEmployeeInform = async (date: Date) => {
   return res.data.allInforms || [];
 };
 
+export const getDrivingInform = async (
+  year: number,
+  month: number,
+  car: string
+) => {
+  const res = await axiosApi.get(
+    `/api/driving-inform/getInform?year=${year}&month=${month}&car=${car}&date=${new Date()}`
+  );
+  return res.data.allDrivingInforms || [];
+};
+
 const today = new Date();
 const year = today.getFullYear();
 const month = today.getMonth() + 1;
@@ -61,4 +72,20 @@ export const calYearMonth = (date: Date) => {
   const month = date.getMonth() + 1;
 
   return `${year}년 ${month}월`;
+};
+
+export const calYear = (date: Date) => {
+  return date.getFullYear();
+};
+
+export const calMonth = (date: Date) => {
+  return date.getMonth() + 1;
+};
+
+export const calCarDay = (date: Date) => {
+  const carDate = new Date(date);
+
+  const month = carDate.getMonth() + 1;
+  const day = carDate.getDate();
+  return `${month}/${day}`;
 };

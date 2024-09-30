@@ -7,6 +7,7 @@ import Login from "./auth/Login";
 import Register from "./auth/Register";
 import SelectPages from "./screens/SelectPages";
 import DriveMain from "./screens/driving/DriveMain";
+import DriveInput from "./screens/driving/DriveInput";
 
 const router = createBrowserRouter([
   {
@@ -34,8 +35,12 @@ const router = createBrowserRouter([
         element: <DriveMain />,
       },
       {
-        path: "/input",
+        path: "/employee-input",
         element: <InputInform />,
+      },
+      {
+        path: "/driving-input",
+        element: <DriveInput />,
       },
       {
         path: "/admin",

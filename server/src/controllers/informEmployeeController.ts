@@ -288,7 +288,7 @@ export const addInform = async (req: Request, res: Response) => {
 
     await Inform.create(data);
 
-    return res.status(200).json({ message: "정보 입력 성공" });
+    return res.status(200).json({ message: "정보 입력 완료" });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: "서버 에러" });
