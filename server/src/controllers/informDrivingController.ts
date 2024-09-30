@@ -71,6 +71,7 @@ export const getInform = async (req: Request, res: Response) => {
         toll: 1,
       }
     );
+
     return res.status(200).json({ allDrivingInforms });
   } catch (error) {
     console.error(error);

@@ -36,7 +36,7 @@ function DriveMain() {
     queryKey: ["drivingInform"],
     queryFn: () =>
       getDrivingInform(calYear(currentDate), calMonth(currentDate), carNum),
-    refetchInterval: 300000, // 5분마다 refetch
+    refetchInterval: 300_000,
   });
 
   const [currentDate, setCurrentDate] = useState(new Date());

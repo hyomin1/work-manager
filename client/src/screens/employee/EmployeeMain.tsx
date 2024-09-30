@@ -23,7 +23,7 @@ function Main() {
   const { data: inform, refetch } = useQuery<IInform[]>({
     queryKey: ["employeeInform"],
     queryFn: () => getEmployeeInform(currentDate),
-    refetchInterval: 300000, // 5분마다 refetch
+    refetchInterval: 300_000, // 5분마다 refetch
   });
 
   const [isShow, setIsShow] = useState(false);

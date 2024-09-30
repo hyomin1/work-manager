@@ -46,7 +46,7 @@ function Login() {
     <div className="w-full h-screen flex items-center justify-center ">
       <form
         onSubmit={handleSubmit(onLogin)}
-        className="flex flex-col sm:w-[80%] w-[30%] p-6 bg-white rounded-lg shadow-lg"
+        className="flex flex-col sm:w-[90%] md:w-[30%] p-6 bg-white rounded-lg shadow-lg"
       >
         <span className="font-bold text-2xl mb-4">로그인</span>
         <label className="mb-2" htmlFor="userId">
@@ -81,14 +81,14 @@ function Login() {
         <div className="flex justify-between">
           <button
             type="submit"
-            className="bg-blue-500 text-white px-8 py-3 rounded hover:opacity-80"
+            className="bg-blue-500 text-white sm:whitespace-nowrap px-8 py-3 rounded hover:opacity-80"
           >
             로그인
           </button>
           <button
             onClick={onRegister}
             type="button"
-            className="bg-gray-300 px-8 py-3 rounded hover:opacity-80"
+            className="bg-gray-300 px-8 py-3 rounded sm:whitespace-nowrap  hover:opacity-80"
           >
             회원가입
           </button>
