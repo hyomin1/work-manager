@@ -8,8 +8,6 @@ import { useQuery } from "@tanstack/react-query";
 import { ICars, IEtcNames, INames } from "../../interfaces/interface";
 import axiosApi from "../../axios";
 
-const data = ["주차비", "수리비"];
-
 function DriveInput() {
   const navigate = useNavigate();
   const [username, setName] = useState("");
@@ -119,7 +117,7 @@ function DriveInput() {
       alert("정보 입력 중 오류가 발생하였습니다.");
     }
   };
-  if (namesLoading || carsLoading) {
+  if (namesLoading || carsLoading || etcNamesLoading) {
     return <div>Loading...</div>;
   }
 
