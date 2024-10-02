@@ -15,7 +15,7 @@ function TabHeader({ headers, category }: TabHeaderProps) {
           <th
             key={index}
             className={`${
-              category === "driving" ? "p-1" : "p-4"
+              category === "driving" ? "p-1" : "md:p-4 sm:p-2"
             } border-b border-gray-300 sm:whitespace-nowrap`}
           >
             {header}

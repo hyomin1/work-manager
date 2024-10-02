@@ -4,14 +4,14 @@ module.exports = {
   theme: {
     extend: {},
     screens: {
-      sm: { min: "340px", max: "450px" },
-      md: { min: "451px" },
+      sm: { min: "340px", max: "540px" },
+      md: { min: "541px" },
     },
   },
   plugins: [],
   variants: {
     extend: {
-      display: ["print"],
+      display: ["print"], // 인쇄 버튼 누를 때 display: none; 하기 위함
     },
   },
 };

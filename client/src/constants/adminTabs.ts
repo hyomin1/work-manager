@@ -4,5 +4,5 @@ export const TABS = [
   { key: "business", label: "사업명", dataKey: "business" },
   { key: "work", label: "업무", dataKey: "work" },
   { key: "car", label: "차량", dataKey: "car" },
-  { key: "etcName", label: "기타 비용", dataKey: "etcName" },
+  { key: "etcName", label: "비용", dataKey: "etcName" },
 ];

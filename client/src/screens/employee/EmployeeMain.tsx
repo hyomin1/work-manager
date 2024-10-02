@@ -30,7 +30,7 @@ function Main() {
   const [showInput, setShowInput] = useState(false);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
+  const itemsPerPage = 11;
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const totalPages = inform ? Math.ceil(inform.length / itemsPerPage) : 0;
@@ -83,30 +83,30 @@ function Main() {
         )}
 
         <div className="w-[100%] flex justify-between items-center border border-t-gray-300 rounded-t-2xl">
-          <span className="font-bold text-xl ml-4">목록</span>
+          <span className="font-bold md:text-xl ml-4">목록</span>
           <div className="p-4 items-center flex w-[50%] justify-end">
             <button
-              className="sm:whitespace-nowrap bg-[#00ab39] rounded-lg text-white py-2 px-4 button-effect mr-4 sm:mr-2"
+              className="sm:whitespace-nowrap bg-[#00ab39] rounded-lg text-white md:py-2 sm:py-1 sm:text-sm px-4 button-effect mr-4 sm:mr-2"
               onClick={onClickInputInform}
             >
               입력
             </button>
             <button
-              className="sm:whitespace-nowrap bg-[#007BFF] rounded-lg text-white py-2 px-4 hover:opacity-60 ml-4 sm:ml-2 button-effect"
+              className="sm:whitespace-nowrap bg-[#007BFF] rounded-lg text-white md:py-2 sm:py-1 sm:text-sm px-4 hover:opacity-60 ml-4 sm:ml-2 button-effect"
               onClick={onClickAdmin}
             >
               관리
             </button>
-            <div className="h-10 border border-gray-300 mx-4" />
+            <div className="md:h-10 sm:h-8 border border-gray-300 mx-4" />
             <button onClick={() => refetch()}>
-              <SlRefresh className="w-7 h-7 hover:opacity-60" />
+              <SlRefresh className="md:w-7 md:h-7 sm:w-5 sm:h-5 hover:opacity-60" />
             </button>
           </div>
         </div>
 
-        <table className="w-[100%] rounded-2xl shadow-lg text-left table-auto overflow-y-auto">
+        <table className="w-[100%] rounded-2xl shadow-lg text-left table-auto ">
           <TabHeader headers={employeeHeaders} category="employee" />
-          <tbody className="rounded-b-xl ">
+          <tbody className="rounded-b-xl overflow-y-auto h-full">
             {inform
               ?.sort((a, b) => {
                 if (a.destination === b.destination) {
@@ -119,21 +119,25 @@ function Main() {
               .map((item, index) => (
                 <tr
                   key={index}
-                  className={`hover:bg-gray-100 sm:text-sm ${
+                  className={`hover:bg-gray-100 sm:text-sm w-[100%] ${
                     index % 2 === 0 ? "bg-white" : "bg-gray-50"
                   }`}
                 >
-                  <td className="p-4 border-b border-gray-200 whitespace-nowrap">
+                  <td className="md:p-4 sm:px-1 border-b border-gray-200 whitespace-nowrap">
                     {item.username}
                   </td>
-                  <td className="p-4 border-b border-gray-200 ">
+                  <td className="md:p-4 border-b border-gray-200 ">
                     {item.destination}
                   </td>
-                  <td className="p-4 border-b border-gray-200 ">
+                  <td className="md:p-4 border-b border-gray-200 ">
                     {item.business}
                   </td>
-                  <td className="p-4 border-b border-gray-200 ">{item.work}</td>
-                  <td className="p-4 border-b border-gray-200">{item.car}</td>
+                  <td className="md:p-4 border-b border-gray-200 ">
+                    {item.work}
+                  </td>
+                  <td className="md:p-4 border-b border-gray-200">
+                    {item.car}
+                  </td>
                 </tr>
               ))}
           </tbody>

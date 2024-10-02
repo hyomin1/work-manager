@@ -30,11 +30,11 @@ const TabContentAdmin = ({
         />
       )}
       <div className="flex justify-between items-center border-b border-gray-200">
-        <div className="bg-white p-4  font-bold text-xl whitespace-nowrap sm:text-lg">
+        <div className="bg-white p-4 font-bold text-xl whitespace-nowrap sm:text-lg">
           목록
         </div>
 
-        <div className="mr-5">
+        <div className="mr-1">
           <button
             className="bg-[#00ab39] rounded-full text-white p-2 hover:opacity-60 font-bold"
             onClick={() => setIsAdding(true)}
@@ -67,7 +67,7 @@ const TabContentAdmin = ({
               {item[activeTabConfig?.dataKey || ""]}
             </div>
 
-            <div className="mr-4">
+            <div>
               <button
                 className="bg-[] rounded-full  p-2 hover:opacity-60 font-bold"
                 onClick={() => removeItem(item._id)}

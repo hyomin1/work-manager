@@ -12,7 +12,7 @@ function TabHeaderAdmin({ activeTab, onTabClick }: TabHeaderProps) {
         {TABS.map((tab) => (
           <div
             key={tab.key}
-            className={`p-4 font-bold w-[20%] cursor-pointer ${
+            className={`p-4 font-bold w-[16.666667%] cursor-pointer sm:flex sm:justify-center sm:items-center ${
               tab.key === TABS[0].key ? "rounded-tl-xl" : ""
             } ${
               tab.key === TABS[TABS.length - 1].key ? "rounded-tr-xl" : ""
@@ -21,7 +21,7 @@ function TabHeaderAdmin({ activeTab, onTabClick }: TabHeaderProps) {
             }`}
             onClick={() => onTabClick(tab.key)}
           >
-            {tab.label}
+            <span>{tab.label}</span>
           </div>
         ))}
       </div>
