@@ -158,7 +158,7 @@ function DriveMain() {
             </div>
           </div>
           {isMobile ? (
-            <div className="">
+            <div className="sm:w-full">
               {drivingInform
                 ?.sort((a, b) => {
                   if (
