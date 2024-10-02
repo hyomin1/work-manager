@@ -9,4 +9,9 @@ module.exports = {
     },
   },
   plugins: [],
+  variants: {
+    extend: {
+      display: ["print"],
+    },
+  },
 };

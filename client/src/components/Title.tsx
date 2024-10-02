@@ -46,8 +46,8 @@ function Title({
 
   return (
     <div>
-      <div className="mt-4 mb-4 flex items-center justify-center w-[100%] ">
-        <button onClick={previous} className="hover:opacity-60">
+      <div className="mt-2 mb-4 flex items-center justify-center w-[100%] ">
+        <button onClick={previous} className="hover:opacity-60 print-hidden">
           <IoIosArrowBack className="w-8 h-9" />
         </button>
         <button>
@@ -63,7 +63,7 @@ function Title({
           </span>
         </button>
 
-        <button onClick={next} className="hover:opacity-60">
+        <button onClick={next} className="hover:opacity-60 print-hidden">
           <IoIosArrowForward className="w-8 h-9" />
         </button>
       </div>

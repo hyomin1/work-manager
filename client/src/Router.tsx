@@ -1,10 +1,10 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "./App";
 import EmployeeMain from "./screens/employee/EmployeeMain";
-import InputInform from "./screens/InputInform";
+import InputInform from "./screens/employee/InputInform";
 import Admin from "./screens/Admin";
-import Login from "./auth/Login";
-import Register from "./auth/Register";
+import Login from "./screens/auth/Login";
+import Register from "./screens/auth/Register";
 import SelectPages from "./screens/SelectPages";
 import DriveMain from "./screens/driving/DriveMain";
 import DriveInput from "./screens/driving/DriveInput";

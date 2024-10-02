@@ -20,13 +20,12 @@ interface IDrivingInform {
   createdAt: Date;
   username: string;
   drivingDestination: string;
-  startTime: string;
-  endTime: string;
   startKM: string;
   endKM: string;
   totalKM: number;
   fuelCost: number;
   toll: number;
+  etc: { name: string; cost: number };
 }
 
 function DriveMain() {
@@ -42,7 +41,7 @@ function DriveMain() {
   const [currentDate, setCurrentDate] = useState(new Date());
 
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 8;
+  const itemsPerPage = 25;
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const totalPages = drivingInform
@@ -85,11 +84,17 @@ function DriveMain() {
   };
   const totalFuelCost =
     drivingInform?.reduce((acc, item) => acc + item.fuelCost, 0) || 0;
+
   const totalToll =
     drivingInform?.reduce((acc, item) => acc + item.toll, 0) || 0;
-  const grandTotal = totalFuelCost + totalToll;
+
+  const totalEtcCost =
+    drivingInform?.reduce((acc, item) => acc + item.etc.cost, 0) || 0;
+
+  const grandTotal = totalFuelCost + totalToll + totalEtcCost;
+
   return (
-    <div className="w-full h-screen flex flex-col justify-between items-center sm:p-2 p-10 bg-gray-50">
+    <div className="w-full h-screen flex flex-col justify-between items-center sm:p-2 p-4 bg-gray-50">
       {isShow && <AdminLogin setIsShow={setIsShow} />}
       <div className="sm:w-full w-[90%] flex flex-col items-center ">
         <Title
@@ -102,7 +107,7 @@ function DriveMain() {
 
         <div className="w-full flex justify-between mb-2 items-center ">
           <select
-            className="md:w-[20%] hover:opacity-60 font-bold h-12 border border-gray-300 rounded-lg p-2"
+            className="md:w-[30%] hover:opacity-60 font-bold h-12 border border-gray-300 rounded-lg p-2"
             onChange={onChangeCarNum}
             defaultValue=""
           >
@@ -127,20 +132,20 @@ function DriveMain() {
         </div>
 
         <>
-          <div className="w-[100%] flex justify-between items-center border border-t-gray-300 rounded-t-2xl">
+          <div className="w-[100%] flex justify-between items-center border border-t-gray-300 rounded-t-2xl md:h-16 print-hidden">
             <span className="font-bold text-xl ml-4">목록</span>
             <div className="p-4 items-center flex w-[50%] justify-end">
               <button
-                className="sm:whitespace-nowrap bg-[#00ab39] rounded-lg text-white py-2 px-4 button-effect mr-4 sm:mr-2"
+                className="sm:whitespace-nowrap bg-[#00ab39] rounded-lg text-white h-10 py-2 px-4 button-effect mr-4 sm:mr-2 flex justify-center items-center"
                 onClick={onClickInputInform}
               >
-                입력
+                <span>입력</span>
               </button>
               <button
-                className="sm:whitespace-nowrap bg-[#007BFF] rounded-lg text-white py-2 px-4 hover:opacity-60 ml-4 sm:ml-2 button-effect"
+                className="sm:whitespace-nowrap bg-[#007BFF] rounded-lg text-white h-10 py-2 px-4 hover:opacity-60 ml-4 sm:ml-2 button-effect flex justify-center items-center"
                 onClick={onClickAdmin}
               >
-                관리
+                <span>관리</span>
               </button>
               <div className="h-10 border border-gray-300 mx-4" />
               <button className="" onClick={() => refetch()}>
@@ -148,10 +153,12 @@ function DriveMain() {
               </button>
             </div>
           </div>
+
           <table className="w-[100%] rounded-2xl shadow-lg text-left table-auto">
-            <TabHeader headers={drivingHeaders} />
-            <tbody className="rounded-b-xl">
+            <TabHeader headers={drivingHeaders} category="driving" />
+            <tbody className="rounded-b-xl md:text-xs">
               {drivingInform
+                ?.sort((a, b) => a.username.localeCompare(b.username))
                 ?.slice(indexOfFirstItem, indexOfLastItem)
                 .map((item, index) => (
                   <tr
@@ -160,33 +167,34 @@ function DriveMain() {
                       index % 2 === 0 ? "bg-white" : "bg-gray-50"
                     }`}
                   >
-                    <td className="p-4 border-b border-gray-200 whitespace-nowrap">
+                    <td className="p-2 border-b border-gray-200 whitespace-nowrap w-[3%]">
                       {calCarDay(item.createdAt)}
                     </td>
-                    <td className="p-4 border-b border-gray-200 whitespace-nowrap">
+                    <td className="p-2 border-b border-gray-200 whitespace-nowrap w-[4%]">
                       {item.username}
                     </td>
-                    <td className="p-4 border-b border-gray-200 whitespace-nowrap">
+                    <td className="p-2 border-b border-gray-200 whitespace-nowrap w-[25%]">
                       {item.drivingDestination}
                     </td>
-                    <td className="p-4 border-b border-gray-200 whitespace-nowrap">
-                      {item.startTime} ~ {item.endTime}
-                    </td>
 
-                    <td className="p-4 border-b border-gray-200 whitespace-nowrap">
+                    <td className="p-2 border-b border-gray-200 whitespace-nowrap w-[5%]">
                       {item.startKM} km
                     </td>
-                    <td className="p-4 border-b border-gray-200 whitespace-nowrap">
+                    <td className="p-2 border-b border-gray-200 whitespace-nowrap w-[5%]">
                       {item.endKM} km
                     </td>
-                    <td className="p-4 border-b border-gray-200 whitespace-nowrap">
+                    <td className="p-2 border-b border-gray-200 whitespace-nowrap w-[5%]">
                       {item.totalKM} km
                     </td>
-                    <td className="p-4 border-b border-gray-200 whitespace-nowrap">
+                    <td className="p-2 border-b border-gray-200 whitespace-nowrap w-[5%]">
                       {item.fuelCost}
                     </td>
-                    <td className="p-4 border-b border-gray-200 whitespace-nowrap">
+                    <td className="p-2 border-b border-gray-200 whitespace-nowrap w-[5%]">
                       {item.toll}
+                    </td>
+                    <td className="p-2 border-b border-gray-200 whitespace-nowrap w-[5%]">
+                      {item.etc.cost > 0 &&
+                        `${item.etc.cost} (${item.etc.name})`}
                     </td>
                   </tr>
                 ))}
@@ -197,14 +205,17 @@ function DriveMain() {
                 <td />
                 <td />
                 <td />
-                <td />
-                <td className="p-4 border-b border-gray-200 whitespace-nowrap font-bold text-lg">
+
+                <td className="p-2 border-b border-gray-200 whitespace-nowrap font-bold md:text-xs w-[5%]">
                   {totalFuelCost}
                 </td>
-                <td className="p-4 border-b border-gray-200 whitespace-nowrap font-bold text-lg">
+                <td className="p-2 border-b border-gray-200 whitespace-nowrap font-bold md:text-xs w-[5%]">
                   {totalToll}
                 </td>
-                <td className="p-4 border-b border-gray-200 whitespace-nowrap font-bold text-lg">
+                <td className="p-2 border-b border-gray-200 whitespace-nowrap font-bold md:text-xs w-[5%]">
+                  {totalEtcCost}
+                </td>
+                <td className="p-2 border-b border-gray-200 whitespace-nowrap font-bold md:text-xs w-[2%]">
                   {grandTotal}
                 </td>
               </tr>

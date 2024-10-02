@@ -7,19 +7,19 @@ import {
   getDestinations,
   getNames,
   getWorks,
-} from "../api";
+} from "../../api";
 import {
   IBusinesses,
   ICars,
   IDestinations,
   INames,
   IWorks,
-} from "../interfaces/interface";
-import axiosApi from "../axios";
+} from "../../interfaces/interface";
+import axiosApi from "../../axios";
 import { useNavigate } from "react-router-dom";
 import { IoIosArrowRoundBack } from "react-icons/io";
-import TabInputHeader from "../components/TabInputHeader";
-import { employeeInputHeaders } from "../constants/headers";
+import TabInputHeader from "../../components/TabInputHeader";
+import { employeeInputHeaders } from "../../constants/headers";
 
 function Input() {
   const [username, setName] = useState("");

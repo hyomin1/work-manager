@@ -3,24 +3,29 @@ import { IoIosArrowRoundBack } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import TabInputHeader from "../../components/TabInputHeader";
 import { drivingInputHeaders } from "../../constants/headers";
-import { formDate, getCars, getNames } from "../../api";
+import { formDate, getCars, getEtcNames, getNames } from "../../api";
 import { useQuery } from "@tanstack/react-query";
-import { ICars, INames } from "../../interfaces/interface";
+import { ICars, IEtcNames, INames } from "../../interfaces/interface";
 import axiosApi from "../../axios";
+
+const data = ["주차비", "수리비"];
 
 function DriveInput() {
   const navigate = useNavigate();
   const [username, setName] = useState("");
   const [car, setCar] = useState("");
   const [drivingDestination, setDrivingDestination] = useState("");
-  const [startTime, setStartTime] = useState("");
-  const [endTime, setEndTime] = useState("");
 
   const [startKM, setStartKM] = useState(0);
   const [endKM, setEndKM] = useState(0);
 
   const [fuelCost, setFuelCost] = useState(0);
   const [toll, setToll] = useState(0);
+
+  const [etc, setEtc] = useState<{ name: string; cost: number }>({
+    name: "", // 초기값 설정
+    cost: 0,
+  });
 
   const { data: names, isLoading: namesLoading } = useQuery<INames[]>({
     queryKey: ["names"],
@@ -30,6 +35,11 @@ function DriveInput() {
   const { data: cars, isLoading: carsLoading } = useQuery<ICars[]>({
     queryKey: ["cars"],
     queryFn: getCars,
+  });
+
+  const { data: etcNames, isLoading: etcNamesLoading } = useQuery<IEtcNames[]>({
+    queryKey: ["etcNames"],
+    queryFn: getEtcNames,
   });
 
   const handleNameChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -43,14 +53,7 @@ function DriveInput() {
   ) => {
     setDrivingDestination(event.target.value);
   };
-  const handleStartTimeChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setStartTime(event.target.value);
-  };
-  const handleEndTimeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setEndTime(event.target.value);
-  };
+
   const handleStartKMChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setStartKM(parseInt(event.target.value));
   };
@@ -62,6 +65,13 @@ function DriveInput() {
   };
   const handleTollChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setToll(parseInt(event.target.value));
+  };
+  const handleEtcNameChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setEtc({ name: event.target.value, cost: etc.cost }); // ���기값 설정
+  };
+
+  const handleEtcCostChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setEtc({ name: etc.name, cost: parseInt(event.target.value) }); // ���기값 설정
   };
 
   const onClickComplete = async () => {
@@ -77,13 +87,17 @@ function DriveInput() {
       alert("행선지를 입력해주세요");
       return;
     }
-    if (!startTime || !endTime) {
-      alert("사용 시간을 입력해주세요.");
-      return;
-    }
+
     if (!startKM || !endKM) {
       alert("주행거리를 입력해주세요.");
-
+      return;
+    }
+    if (etc.name && !etc.cost) {
+      alert("비용을 입력해주세요.");
+      return;
+    }
+    if (etc.cost && !etc.name) {
+      alert("항목을 선택해주세요.");
       return;
     }
     try {
@@ -91,12 +105,11 @@ function DriveInput() {
         username,
         car,
         drivingDestination,
-        startTime,
-        endTime,
         startKM,
         endKM,
         fuelCost,
         toll,
+        etc,
       });
       if (res.status === 200) {
         alert(res.data.message);
@@ -170,7 +183,7 @@ function DriveInput() {
                       ))}
                   </select>
                 </td>
-                <td className="sm:mb-4 sm:w-full md:border-r border-gray-300 md:border-b">
+                <td className="sm:mb-4 sm:w-full md:border-r border-gray-300 md:border-b w-[23%]">
                   <div className="sm:font-bold sm:mb-2 md:hidden">행선지</div>
                   <input
                     type="text"
@@ -179,34 +192,7 @@ function DriveInput() {
                   />
                 </td>
 
-                <td className="sm:mb-4 sm:w-full md:border-r border-gray-300 md:border-b md:w-[20%]">
-                  <div className="sm:font-bold sm:mb-2 md:hidden">사용시간</div>
-                  <div className="flex justify-between w-full">
-                    <div className="flex flex-col w-1/2 mr-2">
-                      <label className="font-semibold" htmlFor="startTime">
-                        시작
-                      </label>
-                      <input
-                        id="startTime"
-                        type="time"
-                        className="border rounded-md p-2 w-full focus:outline-none focus:ring-2 focus:ring-green-400 transition duration-150 ease-in-out hover:opacity-60"
-                        onChange={handleStartTimeChange}
-                      />
-                    </div>
-                    <div className="flex flex-col w-1/2 ml-2">
-                      <label className="font-semibold" htmlFor="endTime">
-                        종료
-                      </label>
-                      <input
-                        id="endTime"
-                        type="time"
-                        className="border rounded-md p-2 w-full focus:outline-none focus:ring-2 focus:ring-green-400 transition duration-150 ease-in-out hover:opacity-60"
-                        onChange={handleEndTimeChange}
-                      />
-                    </div>
-                  </div>
-                </td>
-                <td className="sm:mb-4 sm:w-full md:border-r border-gray-300 md:border-b md:w-[7%]">
+                <td className="sm:mb-4 sm:w-full md:border-r border-gray-300 md:border-b md:w-[5%]">
                   <div className="sm:font-bold sm:mb-2 md:hidden">출발(Km)</div>
                   <input
                     type="number"
@@ -214,7 +200,7 @@ function DriveInput() {
                     className="border rounded-md p-2 w-full focus:outline-none focus:ring-2 focus:ring-green-400 transition duration-150 ease-in-out hover:opacity-60"
                   />
                 </td>
-                <td className="sm:mb-4 sm:w-full md:border-r border-gray-300 md:border-b md:w-[7%]">
+                <td className="sm:mb-4 sm:w-full md:border-r border-gray-300 md:border-b md:w-[5%]">
                   <div className="sm:font-bold sm:mb-2 md:hidden">도착(Km)</div>
                   <input
                     type="number"
@@ -222,7 +208,7 @@ function DriveInput() {
                     className="border rounded-md p-2 w-full focus:outline-none focus:ring-2 focus:ring-green-400 transition duration-150 ease-in-out hover:opacity-60"
                   />
                 </td>
-                <td className="sm:mb-4 sm:w-full md:border-r border-gray-300 md:border-b md:w-[6%]">
+                <td className="sm:mb-4 sm:w-full md:border-r border-gray-300 md:border-b md:w-[5%]">
                   <div className="sm:font-bold sm:mb-2 md:hidden">주유비</div>
                   <input
                     type="number"
@@ -231,7 +217,7 @@ function DriveInput() {
                     className="border rounded-md p-2 w-full focus:outline-none focus:ring-2 focus:ring-green-400  transition duration-150 ease-in-out hover:opacity-60"
                   />
                 </td>
-                <td className="sm:mb-4 sm:w-full md:border-r border-gray-300 md:border-b md:w-[6%]">
+                <td className="sm:mb-4 sm:w-full md:border-r border-gray-300 md:border-b md:w-[5%]">
                   <div className="sm:font-bold sm:mb-2 md:hidden">하이패스</div>
                   <input
                     type="number"
@@ -239,6 +225,35 @@ function DriveInput() {
                     value={toll}
                     className="border rounded-md p-2 w-full focus:outline-none focus:ring-2 focus:ring-green-400 transition duration-150 ease-in-out  hover:opacity-60"
                   />
+                </td>
+                <td className="sm:mb-4 sm:w-full md:border-r border-gray-300 md:border-b md:w-[10%]">
+                  <div className="sm:font-bold sm:mb-2 md:hidden">
+                    기타 비용
+                  </div>
+                  <div className="flex">
+                    <select
+                      defaultValue=""
+                      onChange={handleEtcNameChange}
+                      className="hover:opacity-60 border rounded-md p-2 ml-3 sm:w-full sm:ml-0 md:mr-2"
+                    >
+                      <option disabled value="">
+                        항목 선택
+                      </option>
+                      {etcNames
+                        ?.sort((a, b) => a.etcName.localeCompare(b.etcName))
+                        .map((item, index) => (
+                          <option key={index} value={item.etcName}>
+                            {item.etcName}
+                          </option>
+                        ))}
+                    </select>
+                    <input
+                      type="number"
+                      value={etc.cost}
+                      onChange={handleEtcCostChange}
+                      className="border rounded-md p-2 w-full focus:outline-none focus:ring-2 focus:ring-green-400  transition duration-150 ease-in-out hover:opacity-60"
+                    />
+                  </div>
                 </td>
               </tr>
             </tbody>

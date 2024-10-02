@@ -2,6 +2,7 @@ import {
   getBusinesses,
   getCars,
   getDestinations,
+  getEtcNames,
   getNames,
   getWorks,
 } from "../api";
@@ -20,6 +21,7 @@ export function useAdminData(
     business: getBusinesses,
     work: getWorks,
     car: getCars,
+    etcName: getEtcNames,
   }[activeTab];
 
   const { data } = useQuery({

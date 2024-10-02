@@ -1,5 +1,11 @@
 import express from "express";
-import { addInform, getInform } from "../controllers/informDrivingController";
+import {
+  addEtcName,
+  addInform,
+  getEtcName,
+  getInform,
+  removeEtcName,
+} from "../controllers/informDrivingController";
 
 const router = express.Router();
 

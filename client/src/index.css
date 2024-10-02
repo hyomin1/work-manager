@@ -7,3 +7,11 @@
     @apply hover:opacity-90 transition-all duration-300 shadow-lg transform hover:scale-105;
   }
 }
+
+@layer utilities {
+  @media print {
+    .print-hidden {
+      display: none;
+    }
+  }
+}

@@ -105,7 +105,7 @@ function Main() {
         </div>
 
         <table className="w-[100%] rounded-2xl shadow-lg text-left table-auto overflow-y-auto">
-          <TabHeader headers={employeeHeaders} />
+          <TabHeader headers={employeeHeaders} category="employee" />
           <tbody className="rounded-b-xl ">
             {inform
               ?.sort((a, b) => {

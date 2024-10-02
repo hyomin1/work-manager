@@ -17,8 +17,8 @@ const SelectPages = () => {
     <div className="bg-gradient-to-br from-blue-500 to-green-500 min-h-screen flex flex-col justify-center items-center p-4">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-3xl">
         <SelectionCard
-          title="인원 현황"
-          description="인원 상태 및 정보 확인"
+          title="근무 현황"
+          description="근무 현황 확인"
           icon={<Users size={40} />}
           color="bg-[#00ab39]"
           onClick={() => navigate("/employee-status")}

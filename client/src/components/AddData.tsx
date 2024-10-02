@@ -33,6 +33,8 @@ function AddData({ setIsAdding, type, queryClient }: IAddData) {
         return "업무";
       case "car":
         return "차량";
+      case "etcName":
+        return "기타 비용";
       default:
         return "";
     }
@@ -68,6 +70,10 @@ function AddData({ setIsAdding, type, queryClient }: IAddData) {
       case "car":
         url = "/api/employee-inform/addCar";
         body = { car: inputValue };
+        break;
+      case "etcName":
+        url = "/api/employee-inform/addEtcName";
+        body = { etcName: inputValue };
         break;
       default:
         return;

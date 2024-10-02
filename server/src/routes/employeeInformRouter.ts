@@ -18,6 +18,11 @@ import {
   removeName,
   removeWork,
 } from "../controllers/informEmployeeController";
+import {
+  addEtcName,
+  getEtcName,
+  removeEtcName,
+} from "../controllers/informDrivingController";
 
 const router = express.Router();
 
@@ -45,6 +50,11 @@ router.delete("/removeWork/:id", removeWork);
 router.get("/getCar", getCar);
 router.post("/addCar", addCar);
 router.delete("/removeCar/:id", removeCar);
+
+// 기타 비용 관련
+router.post("/addEtcName", addEtcName);
+router.delete("/removeEtcName/:id", removeEtcName);
+router.get("/getEtcName", getEtcName);
 
 // 종합 정보 관련
 router.get("/getInform", getInform);

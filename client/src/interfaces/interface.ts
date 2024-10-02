@@ -18,3 +18,8 @@ export interface IWorks {
   _id: string;
   work: string;
 }
+
+export interface IEtcNames {
+  _id: string;
+  etcName: string;
+}

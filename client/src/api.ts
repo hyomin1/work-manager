@@ -30,6 +30,11 @@ export const getCars = async () => {
   return res.data.allCars || [];
 };
 
+export const getEtcNames = async () => {
+  const res = await axiosApi.get("/api/employee-inform/getEtcName");
+  return res.data.allEtcNames || [];
+};
+
 // 입력된 인원 상태 정보
 export const getEmployeeInform = async (date: Date) => {
   const res = await axiosApi.get(`/api/employee-inform/getInform?date=${date}`);
