@@ -230,6 +230,27 @@ function DriveMain() {
                     </div>
                   </div>
                 ))}
+              <div className="border border-gray-300 p-4 rounded-lg bg-white shadow-md grid grid-cols-3 space-x-0 text-sm gap-2 mb-1 w-full">
+                <div className="flex flex-col">
+                  <span className="font-bold">주유비</span>
+                  <span>{totalFuelCost}</span>
+                </div>
+                <div className="flex flex-col">
+                  <span className="font-bold">하이패스</span>
+                  <span>{totalToll}</span>
+                </div>
+                <div className="flex flex-col">
+                  <span className="font-bold">기타 비용</span>
+                  <span>{totalEtcCost}</span>
+                </div>
+                <div className="flex ">
+                  <span className="font-bold">총계</span>
+                </div>
+                <div />
+                <div>
+                  <span>{grandTotal}</span>
+                </div>
+              </div>
             </div>
           ) : (
             <table className="w-[100%] rounded-2xl shadow-lg text-left table-auto">
