@@ -20,12 +20,18 @@ const handleResponseInterceptor = async (
     const errType = error.response.data as { type: string };
 
     alert(errMsg.error);
+
     // 유저 아닌 경우
-    if (errType.type === "not user") {
+    if (errType.type === "not User") {
       window.location.href = "/";
+    } else if (errType.type === "not admin") {
+      //alert("관리자 권한이 없습니다.");
+      const currentUrl = window.location.href;
+
+      window.location.href = currentUrl;
     }
 
-    window.location.href = "/";
+    //window.location.href = "/";
     return new Promise(() => {});
   } else if (error.response?.status === 404) {
     const errMsg = error.response.data as { error: string };

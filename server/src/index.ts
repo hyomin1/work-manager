@@ -23,7 +23,7 @@ app.use(
     saveUninitialized: false,
     //cookie: { secure: false }, // for HTTPS시 true로 설정
     cookie: {
-      maxAge: 60 * 1000 * 30, // 30분
+      maxAge: 60 * 1000 * 60 * 8, // 로그인 세션 8시간 유지
     },
   })
 );

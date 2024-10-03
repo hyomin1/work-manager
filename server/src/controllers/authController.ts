@@ -67,7 +67,9 @@ export const adminLogin = async (req: Request, res: Response) => {
       return res.status(401).json({ error: "비밀번호가 일치하지 않습니다." });
     }
     if (admin.role !== "admin") {
-      return res.status(403).json({ error: "관리자 권한이 없습니다." });
+      return res
+        .status(403)
+        .json({ error: "관리자 권한이 없습니다.", type: "not admin" });
     }
     req.session.isAdmin = true;
     return res.json({ message: "로그인 성공" });

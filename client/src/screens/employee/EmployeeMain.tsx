@@ -8,6 +8,8 @@ import TabHeader from "../../components/TabHeader";
 import Page from "../../components/Page";
 import { employeeHeaders } from "../../constants/headers";
 import Title from "../../components/Title";
+import { ArrowLeft } from "lucide-react";
+import ArrowBack from "../../components/ArrowBack";
 
 interface IInform {
   username: string;
@@ -62,14 +64,18 @@ function Main() {
   return (
     <div className="w-full h-screen flex flex-col justify-between items-center sm:p-2 p-10 bg-gray-50">
       {isShow && <AdminLogin setIsShow={setIsShow} />}
-      <div className="sm:w-full w-[80%] flex flex-col items-center ">
-        <Title
-          currentDate={currentDate}
-          setCurrentDate={setCurrentDate}
-          setShowInput={setShowInput}
-          calDate={calDate}
-          category="employee"
-        />
+      <div className="sm:w-full w-[80%] flex flex-col items-center">
+        <div className="w-full flex justify-between items-center mb-2">
+          <ArrowBack />
+          <Title
+            currentDate={currentDate}
+            setCurrentDate={setCurrentDate}
+            setShowInput={setShowInput}
+            calDate={calDate}
+            category="employee"
+          />
+          <div className="w-[15%]" />
+        </div>
 
         {showInput && (
           <div className="w-[100%] flex justify-center">

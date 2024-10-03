@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { IoIosArrowRoundBack } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import TabInputHeader from "../../components/TabInputHeader";
 import { drivingInputHeaders } from "../../constants/headers";
@@ -7,6 +6,7 @@ import { formDate, getCars, getEtcNames, getNames } from "../../api";
 import { useQuery } from "@tanstack/react-query";
 import { ICars, IEtcNames, INames } from "../../interfaces/interface";
 import axiosApi from "../../axios";
+import ArrowBack from "../../components/ArrowBack";
 
 function DriveInput() {
   const navigate = useNavigate();
@@ -125,15 +125,14 @@ function DriveInput() {
     <div className="w-full h-screen flex flex-col justify-start items-center p-10 bg-gray-50 sm:p-4 sm:overflow-y-auto">
       <div className="w-[90%] flex flex-col items-center rounded-lg sm:w-full bg-gray-50 overflow-x-auto">
         <div className="mt-4 mb-20 flex items-center md:justify-center w-full sm:mb-10 sm:justify-between">
-          <div
-            className="md:hidden sm:hover:opacity-60 sm:w-[10%] flex items-center"
-            onClick={() => navigate(-1)}
-          >
-            <IoIosArrowRoundBack className="w-10 h-8" />
+          <div className="w-full flex justify-between items-center">
+            <ArrowBack />
+            <div className="sm:w-[80%] flex items-center justify-center">
+              <span className=" font-bold text-3xl sm:text-xl">{formDate}</span>
+            </div>
+            <div className="w-[15%]" />
           </div>
-          <div className="sm:w-[80%] flex items-center justify-center">
-            <span className=" font-bold text-3xl sm:text-xl">{formDate}</span>
-          </div>
+
           <div className="md-hidden sm:w-[10%]" />
         </div>
 
