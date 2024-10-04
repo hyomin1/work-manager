@@ -81,7 +81,7 @@ function Main() {
     <div className="w-full h-screen flex flex-col justify-between items-center sm:p-2 p-10 bg-gray-50">
       {isShow && <AdminLogin setIsShow={setIsShow} />}
       <div className="sm:w-full w-[80%] flex flex-col items-center">
-        <div className="w-full flex justify-between items-center mb-2">
+        <div className="w-full flex justify-between items-center mb-4 mt-2 sm:mt-4">
           <ArrowBack />
           <Title
             currentDate={currentDate}
@@ -94,7 +94,7 @@ function Main() {
         </div>
 
         {showInput && (
-          <div className="w-[100%] flex justify-center">
+          <div className="w-[17%] flex justify-center">
             <input
               type="date"
               value={currentDate.toISOString().split("T")[0] || ""}
@@ -145,22 +145,22 @@ function Main() {
                     index % 2 === 0 ? "bg-white" : "bg-gray-50"
                   }`}
                 >
-                  <td className="md:p-4 sm:px-1 border-b border-gray-200 whitespace-nowrap">
+                  <td className="md:p-4 sm:p-2 border-b border-gray-200 whitespace-nowrap">
                     {item.username}
                   </td>
-                  <td className="md:p-4 border-b border-gray-200 ">
+                  <td className="md:p-4 sm:p-1 border-b border-gray-200 ">
                     {item.destination}
                   </td>
-                  <td className="md:p-4 border-b border-gray-200 ">
+                  <td className="md:p-4 sm:p-1 border-b border-gray-200 ">
                     {item.business}
                   </td>
-                  <td className="md:p-4 border-b border-gray-200 ">
+                  <td className="md:p-4 sm:p-1 border-b border-gray-200 ">
                     {item.work}
                   </td>
-                  <td className="md:p-4 border-b border-gray-200">
+                  <td className="md:p-4 sm:p-1 border-b border-gray-200">
                     {item.car}
                   </td>
-                  <td className="md:p-4 border-b border-gray-200">
+                  <td className="md:p-4 sm:p-1 border-b border-gray-200">
                     {item.isOwner && (
                       <X
                         onClick={() => deleteInform(item._id)}

@@ -86,7 +86,7 @@ const TabContentAdmin = ({
         />
       )}
       <div className="flex justify-between items-center border-b border-gray-200">
-        <div className="bg-white p-4 font-bold text-lg whitespace-nowrap sm:text-lg ">
+        <div className="bg-white p-4 font-bold sm:text-sm md:text-lg whitespace-nowrap sm:text-lg ">
           {activeTab === "business" ? (
             <select
               defaultValue=""

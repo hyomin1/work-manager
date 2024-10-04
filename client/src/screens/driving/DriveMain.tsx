@@ -102,7 +102,7 @@ function DriveMain() {
     <div className="w-full h-screen flex flex-col justify-between items-center sm:p-2 p-4 bg-gray-50">
       {isShow && <AdminLogin setIsShow={setIsShow} />}
       <div className="sm:w-full w-[90%] flex flex-col items-center ">
-        <div className="w-full flex justify-between items-center">
+        <div className="w-full flex justify-between items-center mb-4 mt-2 sm:mt-4">
           <ArrowBack />
           <Title
             currentDate={currentDate}
@@ -130,7 +130,7 @@ function DriveMain() {
                 .map((car) => <option key={car._id}>{car.car}</option>)}
           </select>
           {showInput && (
-            <div className="w-[60%] flex justify-center hover:opacity-60">
+            <div className="w-[17%] flex justify-center hover:opacity-60">
               <input
                 type="month"
                 onChange={handleDateChange}

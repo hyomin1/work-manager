@@ -11,7 +11,7 @@ function ArrowBack() {
     <div className="w-[15%]">
       <ArrowLeft
         onClick={goBack}
-        className="w-12 h-8 hover:opacity-60 print-hidden"
+        className="md:w-12 md:h-8 hover:opacity-60 print-hidden"
       />
     </div>
   );

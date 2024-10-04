@@ -14,7 +14,7 @@ export async function removeItem(
       }/${id}`
     );
     if (res.status === 200) {
-      alert("성공적으로 삭제하였습니다.");
+      alert("삭제되었습니다");
       queryClient.invalidateQueries({ queryKey: [type] });
       return true;
     }
