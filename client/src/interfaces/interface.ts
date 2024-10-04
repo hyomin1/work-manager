@@ -9,6 +9,7 @@ export interface IDestinations {
 export interface IBusinesses {
   _id: string;
   business: string;
+  destinationId: string;
 }
 export interface ICars {
   _id: string;

@@ -6,9 +6,10 @@ interface IAddData {
   setIsAdding: React.Dispatch<React.SetStateAction<boolean>>;
   type: string;
   queryClient: QueryClient;
+  destination?: string;
 }
 
-function AddData({ setIsAdding, type, queryClient }: IAddData) {
+function AddData({ setIsAdding, type, queryClient, destination }: IAddData) {
   const [inputValue, setInputValue] = useState("");
 
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -61,7 +62,10 @@ function AddData({ setIsAdding, type, queryClient }: IAddData) {
         break;
       case "business":
         url = "/api/employee-inform/addBusiness";
-        body = { business: inputValue };
+        body = {
+          business: inputValue,
+          destinationId: destination?.split(",")[0],
+        };
         break;
       case "work":
         url = "/api/employee-inform/addWork";
@@ -96,13 +100,19 @@ function AddData({ setIsAdding, type, queryClient }: IAddData) {
         <h2 className="text-center text-xl font-bold mb-4">
           {changeName()} 등록
         </h2>
-        <input
-          ref={inputRef}
-          placeholder="입력"
-          value={inputValue}
-          onChange={handleOnChange}
-          className="mb-4 p-2 border rounded"
-        />
+        <div className="flex flex-col">
+          {type === "business" && destination && (
+            <span className="font-bold mb-2">{destination.split(",")[1]}</span>
+          )}
+          <input
+            ref={inputRef}
+            placeholder="입력"
+            value={inputValue}
+            onChange={handleOnChange}
+            className="mb-4 p-2 border rounded"
+          />
+        </div>
+
         <div className="flex justify-between">
           <button
             type="submit"

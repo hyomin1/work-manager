@@ -24,25 +24,16 @@ import ArrowBack from "../../components/ArrowBack";
 function Input() {
   const [username, setName] = useState("");
 
-  const [destination1, setDestination1] = useState("");
-  const [destination2, setDestination2] = useState("");
-  const [destination3, setDestination3] = useState("");
-
-  const [business1, setBusiness1] = useState("");
-  const [business2, setBusiness2] = useState("");
-  const [business3, setBusiness3] = useState("");
+  const [destinations, setDestinations] = useState(["", "", ""]);
+  const [businesses, setBusinesses] = useState(["", "", ""]);
+  const [works, setWorks] = useState(["", "", ""]);
 
   const [work, setWork] = useState("");
 
   const [car, setCar] = useState("");
 
-  const selectedDestinations = [
-    destination1,
-    destination2,
-    destination3,
-  ].filter(Boolean);
-
-  const selectedBusinesses = [business1, business2, business3].filter(Boolean);
+  const selectedDestinations = destinations.filter(Boolean);
+  const selectedBusinesses = businesses.filter(Boolean);
 
   // 0 : 기본 1 : 일일 업무 2: 주간/월간/연간 업무
   const [isDaily, setIsDaily] = useState(0);
@@ -56,21 +47,21 @@ function Input() {
     queryKey: ["names"],
     queryFn: getNames,
   });
-  const { data: destinations, isLoading: destinationsLoading } = useQuery<
+  const { data: destinationsData, isLoading: destinationsLoading } = useQuery<
     IDestinations[]
   >({
     queryKey: ["destinations"],
     queryFn: getDestinations,
   });
 
-  const { data: businesses, isLoading: businessesLoading } = useQuery<
+  const { data: businessesData, isLoading: businessesLoading } = useQuery<
     IBusinesses[]
   >({
     queryKey: ["businesses"],
     queryFn: getBusinesses,
   });
 
-  const { data: works, isLoading: worksLoading } = useQuery<IWorks[]>({
+  const { data: workData, isLoading: worksLoading } = useQuery<IWorks[]>({
     queryKey: ["works"],
     queryFn: getWorks,
   });
@@ -84,39 +75,31 @@ function Input() {
     setName(event.target.value);
   };
 
-  const handleDestinationChange1 = (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    setDestination1(event.target.value);
-  };
+  const handleDestinationChange =
+    (index: number) => (event: React.ChangeEvent<HTMLSelectElement>) => {
+      const newDestinations = [...destinations];
+      newDestinations[index] = event.target.value;
+      setDestinations(newDestinations);
 
-  const handleDestinationChange2 = (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    setDestination2(event.target.value);
-  };
+      // Reset the corresponding business when destination changes
+      const newBusinesses = [...businesses];
+      newBusinesses[index] = "";
+      setBusinesses(newBusinesses);
+    };
 
-  const handleDestinationChange3 = (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    setDestination3(event.target.value);
-  };
+  const handleBusinessChange =
+    (index: number) => (event: React.ChangeEvent<HTMLSelectElement>) => {
+      const newBusinesses = [...businesses];
+      newBusinesses[index] = event.target.value;
+      setBusinesses(newBusinesses);
+    };
 
-  const handleBusinessChange1 = (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    setBusiness1(event.target.value);
-  };
-  const handleBusinessChange2 = (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    setBusiness2(event.target.value);
-  };
-  const handleBusinessChange3 = (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    setBusiness3(event.target.value);
-  };
+  const handleWorkChange =
+    (index: number) => (event: React.ChangeEvent<HTMLSelectElement>) => {
+      const newWorks = [...works];
+      newWorks[index] = event.target.value;
+      setWorks(newWorks);
+    };
 
   const handleStateChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setWork(event.target.value);
@@ -163,7 +146,7 @@ function Input() {
       return;
     }
 
-    if (!work) {
+    if (works.length === 0) {
       alert("업무를 선택해주세요");
       return;
     }
@@ -181,9 +164,9 @@ function Input() {
       const requests = selectedDestinations.map((destination, index) =>
         axiosApi.post("/api/employee-inform/addInform", {
           username,
-          destination,
+          destination: selectedDestinations[index].split(",")[1],
           business: selectedBusinesses[index],
-          work,
+          work: works[index],
           car,
           isDaily,
           ...(isDaily === 1 ? {} : { startDate, endDate }),
@@ -197,7 +180,7 @@ function Input() {
         navigate("/employee-status");
       }
     } catch (error) {
-      alert("정보 입력 중 오류가 발생하였습니다.");
+      //alert("정보 입력 중 오류가 발생하였습니다.");
     }
   };
 
@@ -244,26 +227,23 @@ function Input() {
 
                 <td className="flex flex-col sm:mb-4 sm:w-full md:border-r border-gray-300 px-2 md:border-b">
                   <div className="sm:font-bold sm:mb-2 md:hidden">방문지</div>
-                  {[
-                    handleDestinationChange1,
-                    handleDestinationChange2,
-                    handleDestinationChange3,
-                  ].map((handler, index) => (
+                  {[0, 1, 2].map((index) => (
                     <select
                       key={index}
-                      defaultValue=""
-                      onChange={handler}
+                      value={destinations[index]}
+                      onChange={handleDestinationChange(index)}
                       className="hover:opacity-60 border rounded-md p-2 my-4 ml-2 sm:w-full sm:ml-0 sm:my-2"
                     >
-                      <option disabled value="">
-                        방문지 선택
-                      </option>
-                      {destinations
+                      <option value="">방문지 선택</option>
+                      {destinationsData
                         ?.sort((a, b) =>
                           a.destination.localeCompare(b.destination)
                         )
                         .map((item, idx) => (
-                          <option key={idx} value={item.destination}>
+                          <option
+                            key={idx}
+                            value={`${item._id},${item.destination}`}
+                          >
                             {item.destination}
                           </option>
                         ))}
@@ -273,24 +253,23 @@ function Input() {
 
                 <td className="sm:mb-4 sm:w-full w-[42%] md:border-r border-gray-300 md:border-b">
                   <div className="sm:font-bold sm:mb-2 md:hidden">사업명</div>
-                  {[
-                    handleBusinessChange1,
-                    handleBusinessChange2,
-                    handleBusinessChange3,
-                  ].map((handler, index) => (
+                  {[0, 1, 2].map((index) => (
                     <select
                       key={index}
-                      defaultValue=""
-                      onChange={handler}
+                      value={businesses[index]}
+                      onChange={handleBusinessChange(index)}
                       className="hover:opacity-60 border rounded-md p-2 my-4 ml-2 sm:w-full sm:ml-0 sm:my-2 w-[90%]"
                     >
-                      <option disabled value="">
-                        사업명 선택
-                      </option>
-                      {businesses
+                      <option value="">사업명 선택</option>
+                      {businessesData
+                        ?.filter(
+                          (business) =>
+                            business.destinationId ===
+                            destinations[index].split(",")[0]
+                        )
                         ?.sort((a, b) => a.business.localeCompare(b.business))
-                        .map((item, index) => (
-                          <option key={index} value={item.business}>
+                        .map((item, idx) => (
+                          <option key={idx} value={item.business}>
                             {item.business}
                           </option>
                         ))}
@@ -298,24 +277,27 @@ function Input() {
                   ))}
                 </td>
 
-                <td className="sm:mb-4 sm:w-full md:border-r border-gray-300 px-2 md:border-b">
+                <td className="flex flex-col sm:mb-4 sm:w-full md:border-r border-gray-300 px-2 md:border-b">
                   <div className="sm:font-bold sm:mb-2 md:hidden">업무</div>
-                  <select
-                    defaultValue=""
-                    onChange={handleStateChange}
-                    className="hover:opacity-60 border rounded-md p-2 sm:w-full"
-                  >
-                    <option disabled value="">
-                      업무 선택
-                    </option>
-                    {works
-                      ?.sort((a, b) => a.work.localeCompare(b.work))
-                      .map((item, index) => (
-                        <option key={index} value={item.work}>
-                          {item.work}
-                        </option>
-                      ))}
-                  </select>
+                  {[0, 1, 2].map((index) => (
+                    <select
+                      key={index}
+                      value={works[index]}
+                      onChange={handleWorkChange(index)}
+                      className="hover:opacity-60 border rounded-md p-2 my-4 ml-2 sm:w-full sm:ml-0 sm:my-2"
+                    >
+                      <option disabled value="">
+                        업무 선택
+                      </option>
+                      {workData
+                        ?.sort((a, b) => a.work.localeCompare(b.work))
+                        .map((item, index) => (
+                          <option key={index} value={item.work}>
+                            {item.work}
+                          </option>
+                        ))}
+                    </select>
+                  ))}
                 </td>
 
                 <td className="sm:mb-4 sm:w-full md:border-r md:border-b border-gray-300 px-2">
@@ -339,7 +321,7 @@ function Input() {
 
                 <td className="sm:mb-4 sm:w-full md:border-r md:border-b border-gray-300 px-2">
                   <div className="sm:font-bold sm:mb-2 md:hidden">기간</div>
-                  <div className="sm:flex sm:flex-col">
+                  <div className="flex flex-col">
                     <label className="sm:flex sm:items-center sm:mb-2 md:mr-4">
                       <input
                         type="radio"

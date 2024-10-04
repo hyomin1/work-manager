@@ -117,7 +117,7 @@ export const addBusiness = async (req: Request, res: Response) => {
     return res.status(400).json({ error: "사업명을 입력하세요." });
   }
   try {
-    await Business.create({ business });
+    await Business.create(req.body);
     return res.status(200).json({ message: "사업명 추가 성공" });
   } catch (error) {
     console.error(error);
@@ -146,7 +146,10 @@ export const removeBusiness = async (req: Request, res: Response) => {
 
 export const getBusiness = async (req: Request, res: Response) => {
   try {
-    const allBusinesses = await Business.find({}, { business: 1 });
+    const allBusinesses = await Business.find(
+      {},
+      { business: 1, destinationId: 1 }
+    );
 
     return res.status(200).json({ allBusinesses });
   } catch (error) {
