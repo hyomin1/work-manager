@@ -21,7 +21,7 @@ export const drivingInputHeaders = [
   "하이패스",
   "기타 비용",
 ];
-export const employeeHeaders = ["이름", "방문지", "사업명", "업무", "차량"];
+export const employeeHeaders = ["이름", "방문지", "사업명", "업무", "차량", ""];
 
 export const employeeInputHeaders = [
   "이름",

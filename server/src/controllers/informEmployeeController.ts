@@ -20,7 +20,7 @@ export const addName = async (req: Request, res: Response) => {
   }
   try {
     await Name.create({ username });
-    return res.status(200).json({ message: "이름 추가 성공" });
+    return res.status(200).json({ message: "이름 추가 완료" });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: "서버 에러" });
@@ -40,7 +40,7 @@ export const removeName = async (req: Request, res: Response) => {
         .status(404)
         .json({ error: "삭제할 이름이 존재하지 않습니다." });
     }
-    return res.status(200).json({ message: "이름 삭제 성공" });
+    return res.status(200).json({ message: "이름 삭제 완료" });
   } catch (error) {
     console.error(error, "d");
     return res.status(500).json({ error: "서버 에러" });
@@ -70,7 +70,7 @@ export const addDestination = async (req: Request, res: Response) => {
   }
   try {
     await Destination.create({ destination });
-    return res.status(200).json({ message: "방문지 추가 성공" });
+    return res.status(200).json({ message: "방문지 추가 완료" });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: "서버 에러" });
@@ -89,7 +89,7 @@ export const removeDestination = async (req: Request, res: Response) => {
         .status(404)
         .json({ error: "삭제할 행선지가 존재하지 않습니다." });
     }
-    return res.status(200).json({ message: "방문지 삭제 성공" });
+    return res.status(200).json({ message: "방문지 삭제 완료" });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: "서버 에러" });
@@ -119,7 +119,7 @@ export const addBusiness = async (req: Request, res: Response) => {
   }
   try {
     await Business.create(req.body);
-    return res.status(200).json({ message: "사업명 추가 성공" });
+    return res.status(200).json({ message: "사업명 추가 완료" });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: "서버 에러" });
@@ -138,7 +138,7 @@ export const removeBusiness = async (req: Request, res: Response) => {
         .status(404)
         .json({ error: "삭제할 사업명이 존재하지 않습니다." });
     }
-    return res.status(200).json({ message: "사업명 삭제 성공" });
+    return res.status(200).json({ message: "사업명 삭제 완료" });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: "서버 에러" });
@@ -170,7 +170,7 @@ export const addWork = async (req: Request, res: Response) => {
   }
   try {
     await Work.create({ work });
-    return res.status(200).json({ message: "상태 추가 성공" });
+    return res.status(200).json({ message: "상태 추가 완료" });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: "서버 에러" });
@@ -189,7 +189,7 @@ export const removeWork = async (req: Request, res: Response) => {
         .status(404)
         .json({ error: "삭제할 업무가 존재하지 않습니다." });
     }
-    return res.status(200).json({ message: "상태 삭제 성공" });
+    return res.status(200).json({ message: "상태 삭제 완료" });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: "서버 에러" });
@@ -216,7 +216,7 @@ export const addCar = async (req: Request, res: Response) => {
   }
   try {
     await Car.create({ car });
-    return res.status(200).json({ message: "차량 추가 성공" });
+    return res.status(200).json({ message: "차량 추가 완료" });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: "서버 에러" });
@@ -235,7 +235,7 @@ export const removeCar = async (req: Request, res: Response) => {
         .status(404)
         .json({ error: "삭제할 차량이 존재하지 않습니다." });
     }
-    return res.status(200).json({ message: "차량 삭제 성공" });
+    return res.status(200).json({ message: "차량 삭제 완료" });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: "서버 에러" });
@@ -277,6 +277,7 @@ export const addInform = async (req: Request, res: Response) => {
     }
     const data = {
       ...req.body,
+      writerId: req.session.userId,
       car: car === "선택 안함" ? "" : car,
     };
 
@@ -299,12 +300,29 @@ export const addInform = async (req: Request, res: Response) => {
   }
 };
 
+export const removeInform = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  try {
+    const deletedInform = await Inform.deleteOne({ _id: id });
+    if (!deletedInform) {
+      return res
+        .status(404)
+        .json({ error: "삭제할 정보가 존재하지 않습니다." });
+    }
+    return res.status(200).json({ message: "삭제 완료" });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "서버 에러" });
+  }
+};
+
 export const getInform = async (req: Request, res: Response) => {
   if (!req.session.isUser) {
     return res
       .status(403)
       .json({ type: "not User", error: "다시 로그인 해주세요" });
   }
+
   try {
     const dateParam = req.query.date as string;
     const localDate = new Date(dateParam);
@@ -314,7 +332,7 @@ export const getInform = async (req: Request, res: Response) => {
     const startOfDay = new Date(utcDate).setHours(0, 0, 0, 0);
     const endOfDay = new Date(utcDate).setHours(23, 59, 59, 999);
 
-    const allInforms = await Inform.find(
+    const Informs = await Inform.find(
       {
         $or: [
           { startDate: { $gte: startOfDay, $lte: endOfDay } }, // 시작일이 범위 내에 있는 경우
@@ -328,11 +346,19 @@ export const getInform = async (req: Request, res: Response) => {
         business: 1,
         work: 1,
         car: 1,
+        writerId: 1,
         createdAt: 1,
         startDate: 1,
         endDate: 1,
       }
     );
+
+    const allInforms = Informs.map((inform) => {
+      return {
+        ...inform.toObject(),
+        isOwner: inform.writerId.toString() === req.session.userId,
+      };
+    });
 
     return res.status(200).json({ allInforms });
   } catch (error) {

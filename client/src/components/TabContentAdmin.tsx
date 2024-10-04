@@ -6,6 +6,7 @@ import { QueryClient, useQuery } from "@tanstack/react-query";
 import { FaTrash } from "react-icons/fa";
 import { IDestinations } from "../interfaces/interface";
 import { getDestinations } from "../api";
+import { X } from "lucide-react";
 
 interface TabContentProps {
   activeTab: string;
@@ -111,7 +112,7 @@ const TabContentAdmin = ({
               className="bg-[] rounded-full p-2 hover:opacity-60 font-bold"
               onClick={() => removeItem(item._id)}
             >
-              <FaTrash className="w-7 h-7 sm:w-5 sm:h-5" />
+              <X className="w-7 h-7 sm:w-5 sm:h-5" />
             </button>
           </div>
         </div>

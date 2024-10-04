@@ -23,6 +23,7 @@ function Login() {
     if (res.status !== 201) {
       return;
     }
+
     navigate("/select");
     setValue("userId", "");
     setValue("password", "");

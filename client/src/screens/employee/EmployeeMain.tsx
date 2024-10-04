@@ -8,16 +8,19 @@ import TabHeader from "../../components/TabHeader";
 import Page from "../../components/Page";
 import { employeeHeaders } from "../../constants/headers";
 import Title from "../../components/Title";
-import { ArrowLeft } from "lucide-react";
 import ArrowBack from "../../components/ArrowBack";
+import { X } from "lucide-react";
+import axiosApi from "../../axios";
 
 interface IInform {
+  _id: string;
   username: string;
   destination: string;
   business: string;
   work: string;
   car: string;
   createdAt: Date;
+  isOwner: boolean;
 }
 function Main() {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -55,6 +58,19 @@ function Main() {
     setCurrentDate(new Date(e.target.value));
     setShowInput(false);
     setCurrentPage(1);
+  };
+
+  const deleteInform = async (id: string) => {
+    const isConfirm = window.confirm("삭제하시겠습니까?");
+    if (isConfirm) {
+      const res = await axiosApi.delete(
+        `/api/employee-inform/removeInform/${id}`
+      );
+      if (res.status === 200) {
+        alert("삭제완료되었습니다.");
+        refetch();
+      }
+    }
   };
 
   useEffect(() => {
@@ -125,7 +141,7 @@ function Main() {
               .map((item, index) => (
                 <tr
                   key={index}
-                  className={`hover:bg-gray-100 sm:text-sm w-[100%] ${
+                  className={`sm:text-sm w-[100%] ${
                     index % 2 === 0 ? "bg-white" : "bg-gray-50"
                   }`}
                 >
@@ -143,6 +159,14 @@ function Main() {
                   </td>
                   <td className="md:p-4 border-b border-gray-200">
                     {item.car}
+                  </td>
+                  <td className="md:p-4 border-b border-gray-200">
+                    {item.isOwner && (
+                      <X
+                        onClick={() => deleteInform(item._id)}
+                        className="hover:opacity-60 w-6 h-6"
+                      />
+                    )}
                   </td>
                 </tr>
               ))}

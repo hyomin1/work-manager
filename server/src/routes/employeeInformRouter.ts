@@ -15,6 +15,7 @@ import {
   removeBusiness,
   removeCar,
   removeDestination,
+  removeInform,
   removeName,
   removeWork,
 } from "../controllers/informEmployeeController";
@@ -52,12 +53,13 @@ router.post("/addCar", addCar);
 router.delete("/removeCar/:id", removeCar);
 
 // 기타 비용 관련
+router.get("/getEtcName", getEtcName);
 router.post("/addEtcName", addEtcName);
 router.delete("/removeEtcName/:id", removeEtcName);
-router.get("/getEtcName", getEtcName);
 
 // 종합 정보 관련
 router.get("/getInform", getInform);
 router.post("/addInform", addInform);
+router.delete("/removeInform/:id", removeInform);
 
 export default router;

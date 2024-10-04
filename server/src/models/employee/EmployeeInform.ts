@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+import mongoose, { ObjectId, Schema, model } from "mongoose";
 
 interface IEmployeeInform {
   username: string;
@@ -7,6 +7,7 @@ interface IEmployeeInform {
   work: string;
   car: string;
   isDaily: number;
+  writerId: ObjectId;
   startDate?: Date;
   endDate?: Date;
   createdAt?: Date;
@@ -18,6 +19,7 @@ const employeeInformSchema = new Schema<IEmployeeInform>(
     business: { type: String, required: true, trim: true },
     work: { type: String, required: true, trim: true },
     isDaily: { type: Number, default: 0 },
+    writerId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     startDate: { type: Date, default: new Date() },
     endDate: { type: Date, default: new Date() },
     car: { type: String, trim: true },
