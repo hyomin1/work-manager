@@ -29,6 +29,7 @@ export const addName = async (req: Request, res: Response) => {
 
 export const removeName = async (req: Request, res: Response) => {
   const { id } = req.params;
+
   if (!req.session.isAdmin) {
     return res.status(403).json({ error: "관리자 권한이 필요합니다." });
   }
@@ -41,7 +42,7 @@ export const removeName = async (req: Request, res: Response) => {
     }
     return res.status(200).json({ message: "이름 삭제 성공" });
   } catch (error) {
-    console.error(error);
+    console.error(error, "d");
     return res.status(500).json({ error: "서버 에러" });
   }
 };

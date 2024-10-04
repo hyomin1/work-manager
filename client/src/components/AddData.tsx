@@ -24,7 +24,7 @@ function AddData({ setIsAdding, type, queryClient, destination }: IAddData) {
 
   const changeName = () => {
     switch (type) {
-      case "name":
+      case "username":
         return "이름";
       case "destination":
         return "방문지";
@@ -52,7 +52,7 @@ function AddData({ setIsAdding, type, queryClient, destination }: IAddData) {
     let body = {};
 
     switch (type) {
-      case "name":
+      case "username":
         url = "/api/employee-inform/addName";
         body = { username: inputValue };
         break;

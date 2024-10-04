@@ -29,7 +29,7 @@ const router = express.Router();
 // 이름 관련
 router.get("/getName", getName);
 router.post("/addName", addName);
-router.delete("/removeName/:id", removeName);
+router.delete("/removeUsername/:id", removeName);
 
 // 방문지 관련
 router.get("/getDestination", getDestination);

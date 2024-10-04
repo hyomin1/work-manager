@@ -10,14 +10,11 @@ import ArrowBack from "../components/ArrowBack";
 function Admin() {
   const queryClient = useQueryClient();
 
-  const [activeTab, setActiveTab] = useState<string>("name");
+  const [activeTab, setActiveTab] = useState<string>("username");
 
   const [page, setPage] = useState(1);
-  const { data, totalPages, removeItem } = useAdminData(
-    activeTab,
-    page,
-    queryClient
-  );
+  const { data, removeItem } = useAdminData(activeTab, page, queryClient);
+  const [destination, setDestination] = useState("");
 
   const handleTabClick = (tab: string) => {
     setPage(1);
@@ -26,6 +23,20 @@ function Admin() {
   const handlePage = (page: number) => {
     setPage(page);
   };
+  const filteredData = data.filter((item) => {
+    if (activeTab === "business") {
+      return item.destinationId === destination.split(",")[0].trim();
+    }
+    return true; // business 탭이 아니면 필터링 없이 모든 항목 반환
+  });
+  const itemsPerPage = 10;
+  const indexOfLastItem = page * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const paginatedData = filteredData.slice(indexOfFirstItem, indexOfLastItem);
+
+  const totalPages = paginatedData
+    ? Math.ceil(filteredData.length / itemsPerPage)
+    : 0;
 
   return (
     <div className="w-full h-screen flex flex-col justify-between items-center sm:p-2 p-10">
@@ -47,9 +58,11 @@ function Admin() {
 
           <TabContentAdmin
             activeTab={activeTab}
-            data={data}
+            data={paginatedData}
             removeItem={removeItem}
             queryClient={queryClient}
+            destination={destination}
+            setDestination={setDestination}
           />
         </div>
       </div>
