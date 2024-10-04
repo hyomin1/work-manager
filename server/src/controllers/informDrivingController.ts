@@ -34,6 +34,28 @@ export const removeEtcName = async (req: Request, res: Response) => {
     return res.status(500).json({ error: "서버 에러" });
   }
 };
+export const editEtcName = async (req: Request, res: Response) => {
+  const { id, etcName } = req.body;
+  if (!req.session.isAdmin) {
+    return res.status(403).json({ error: "관리자 권한이 필요합니다." });
+  }
+  try {
+    const editEtcName = await Etc.findByIdAndUpdate(
+      id,
+      { etcName },
+      { new: true }
+    );
+    if (!editEtcName) {
+      return res
+        .status(404)
+        .json({ error: "수정할 비용이 존재하지 않습니다." });
+    }
+    return res.status(200).json({ message: "비용 수정 완료" });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "서버 에러" });
+  }
+};
 
 export const getEtcName = async (req: Request, res: Response) => {
   try {

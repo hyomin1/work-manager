@@ -42,7 +42,30 @@ export const removeName = async (req: Request, res: Response) => {
     }
     return res.status(200).json({ message: "이름 삭제 완료" });
   } catch (error) {
-    console.error(error, "d");
+    console.error(error);
+    return res.status(500).json({ error: "서버 에러" });
+  }
+};
+
+export const editName = async (req: Request, res: Response) => {
+  const { id, username } = req.body;
+  if (!req.session.isAdmin) {
+    return res.status(403).json({ error: "관리자 권한이 필요합니다." });
+  }
+  try {
+    const editName = await Name.findByIdAndUpdate(
+      id,
+      { username },
+      { new: true }
+    );
+    if (!editName) {
+      return res
+        .status(404)
+        .json({ error: "수정할 이름이 존재하지 않습니다." });
+    }
+    return res.status(200).json({ message: "이름 수정 완료" });
+  } catch (error) {
+    console.error(error);
     return res.status(500).json({ error: "서버 에러" });
   }
 };
@@ -95,6 +118,28 @@ export const removeDestination = async (req: Request, res: Response) => {
     return res.status(500).json({ error: "서버 에러" });
   }
 };
+export const editDestination = async (req: Request, res: Response) => {
+  const { id, destination } = req.body;
+  if (!req.session.isAdmin) {
+    return res.status(403).json({ error: "관리자 권한이 필요합니다." });
+  }
+  try {
+    const editDestination = await Destination.findByIdAndUpdate(
+      id,
+      { destination },
+      { new: true }
+    );
+    if (!editDestination) {
+      return res
+        .status(404)
+        .json({ error: "수정할 방문지가 존재하지 않습니다." });
+    }
+    return res.status(200).json({ message: "방문지 수정 완료" });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "서버 에러" });
+  }
+};
 
 export const getDestination = async (req: Request, res: Response) => {
   try {
@@ -139,6 +184,28 @@ export const removeBusiness = async (req: Request, res: Response) => {
         .json({ error: "삭제할 사업명이 존재하지 않습니다." });
     }
     return res.status(200).json({ message: "사업명 삭제 완료" });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "서버 에러" });
+  }
+};
+export const editBusiness = async (req: Request, res: Response) => {
+  const { id, business } = req.body;
+  if (!req.session.isAdmin) {
+    return res.status(403).json({ error: "관리자 권한이 필요합니다." });
+  }
+  try {
+    const editBusiness = await Business.findByIdAndUpdate(
+      id,
+      { business },
+      { new: true }
+    );
+    if (!editBusiness) {
+      return res
+        .status(404)
+        .json({ error: "수정할 사업명이 존재하지 않습니다." });
+    }
+    return res.status(200).json({ message: "사업명 수정 완료" });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: "서버 에러" });
@@ -195,6 +262,24 @@ export const removeWork = async (req: Request, res: Response) => {
     return res.status(500).json({ error: "서버 에러" });
   }
 };
+export const editWork = async (req: Request, res: Response) => {
+  const { id, work } = req.body;
+  if (!req.session.isAdmin) {
+    return res.status(403).json({ error: "관리자 권한이 필요합니다." });
+  }
+  try {
+    const editWork = await Work.findByIdAndUpdate(id, { work }, { new: true });
+    if (!editWork) {
+      return res
+        .status(404)
+        .json({ error: "수정할 업무가 존재하지 않습니다." });
+    }
+    return res.status(200).json({ message: "업무 수정 완료" });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "서버 에러" });
+  }
+};
 
 export const getWork = async (req: Request, res: Response) => {
   try {
@@ -236,6 +321,25 @@ export const removeCar = async (req: Request, res: Response) => {
         .json({ error: "삭제할 차량이 존재하지 않습니다." });
     }
     return res.status(200).json({ message: "차량 삭제 완료" });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "서버 에러" });
+  }
+};
+
+export const editCar = async (req: Request, res: Response) => {
+  const { id, car } = req.body;
+  if (!req.session.isAdmin) {
+    return res.status(403).json({ error: "관리자 권한이 필요합니다." });
+  }
+  try {
+    const editCar = await Car.findByIdAndUpdate(id, { car }, { new: true });
+    if (!editCar) {
+      return res
+        .status(404)
+        .json({ error: "수정할 차량이 존재하지 않습니다." });
+    }
+    return res.status(200).json({ message: "차량 수정 완료" });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: "서버 에러" });

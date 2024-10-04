@@ -6,6 +6,8 @@ import { QueryClient, useQuery } from "@tanstack/react-query";
 import { IDestinations } from "../interfaces/interface";
 import { getDestinations } from "../api";
 import { X, Edit } from "lucide-react";
+import axiosApi from "../axios";
+import EditData from "./EditData";
 
 interface TabContentProps {
   activeTab: string;
@@ -26,7 +28,11 @@ const TabContentAdmin = ({
   setDestination,
 }: TabContentProps) => {
   const [isAdding, setIsAdding] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
   const activeTabConfig = TABS.find((tab) => tab.key === activeTab);
+
+  const [item, setItem] = useState<{ [key: string]: string } | null>(null); // 수정할 아이템
+  const [itemId, setItemId] = useState(""); //수정할 아이템 _id
 
   const { data: destinations, isLoading: destinationsLoading } = useQuery<
     IDestinations[]
@@ -47,6 +53,12 @@ const TabContentAdmin = ({
     }
     setIsAdding(true);
   };
+
+  const editItem = (id: string, item: any) => {
+    setItemId(id);
+    setItem({ [activeTab]: item[activeTab] });
+    setIsEditing(true);
+  };
   useEffect(() => {
     if (activeTab !== "business") {
       setDestination(""); // 다른 탭으로 변경 시 destination을 초기화
@@ -61,6 +73,16 @@ const TabContentAdmin = ({
           type={activeTab}
           queryClient={queryClient}
           destination={destination}
+        />
+      )}
+      {isEditing && (
+        <EditData
+          setIsEditing={setIsEditing}
+          type={activeTab}
+          queryClient={queryClient}
+          destination={destination}
+          itemId={itemId}
+          item={item}
         />
       )}
       <div className="flex justify-between items-center border-b border-gray-200">
@@ -111,7 +133,10 @@ const TabContentAdmin = ({
           </div>
 
           <div className="flex items-center">
-            <button className="p-2 hover:opacity-60 ">
+            <button
+              onClick={() => editItem(item._id, item)}
+              className="p-2 hover:opacity-60 "
+            >
               <Edit className="w-7 h-7 sm:w-5 sm:h-5" />
             </button>
             <button
