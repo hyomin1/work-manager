@@ -3,10 +3,9 @@ import AddData from "./AddData";
 import { FaPlus } from "react-icons/fa6";
 import { TABS } from "../constants/adminTabs";
 import { QueryClient, useQuery } from "@tanstack/react-query";
-import { FaTrash } from "react-icons/fa";
 import { IDestinations } from "../interfaces/interface";
 import { getDestinations } from "../api";
-import { X } from "lucide-react";
+import { X, Edit } from "lucide-react";
 
 interface TabContentProps {
   activeTab: string;
@@ -65,9 +64,13 @@ const TabContentAdmin = ({
         />
       )}
       <div className="flex justify-between items-center border-b border-gray-200">
-        <div className="bg-white p-4 font-bold text-xl whitespace-nowrap sm:text-lg">
+        <div className="bg-white p-4 font-bold text-lg whitespace-nowrap sm:text-lg ">
           {activeTab === "business" ? (
-            <select defaultValue="" onChange={handleDestination}>
+            <select
+              defaultValue=""
+              onChange={handleDestination}
+              className="hover:opacity-60 border rounded-md p-2 sm:w-full sm:ml-0"
+            >
               <option disabled value="">
                 방문지 선택
               </option>
@@ -107,9 +110,12 @@ const TabContentAdmin = ({
             )}
           </div>
 
-          <div>
+          <div className="flex items-center">
+            <button className="p-2 hover:opacity-60 ">
+              <Edit className="w-7 h-7 sm:w-5 sm:h-5" />
+            </button>
             <button
-              className="bg-[] rounded-full p-2 hover:opacity-60 font-bold"
+              className="p-2 hover:opacity-60 "
               onClick={() => removeItem(item._id)}
             >
               <X className="w-7 h-7 sm:w-5 sm:h-5" />

@@ -16,24 +16,28 @@ import {
   IWorks,
 } from "../../interfaces/interface";
 import axiosApi from "../../axios";
-import { useNavigate } from "react-router-dom";
 import TabInputHeader from "../../components/TabInputHeader";
 import { employeeInputHeaders } from "../../constants/headers";
 import ArrowBack from "../../components/ArrowBack";
+import { useNavigate } from "react-router-dom";
 
 function Input() {
   const [username, setName] = useState("");
 
   const [destinations, setDestinations] = useState(["", "", ""]);
-  const [businesses, setBusinesses] = useState(["", "", ""]);
-  const [works, setWorks] = useState(["", "", ""]);
+  const [inputDestination, setInputDestination] = useState("");
 
-  const [work, setWork] = useState("");
+  const [businesses, setBusinesses] = useState(["", "", ""]);
+  const [inputBusiness, setInputBusiness] = useState("");
+
+  const [works, setWorks] = useState(["", "", ""]);
+  const [inputWork, setInputWork] = useState(""); // 업무 직접 입력은 아니지만 직접 입력한 방문지와 사업명의 매핑하기 위한 변수
 
   const [car, setCar] = useState("");
 
   const selectedDestinations = destinations.filter(Boolean);
   const selectedBusinesses = businesses.filter(Boolean);
+  const selectedWorks = works.filter(Boolean);
 
   // 0 : 기본 1 : 일일 업무 2: 주간/월간/연간 업무
   const [isDaily, setIsDaily] = useState(0);
@@ -81,11 +85,16 @@ function Input() {
       newDestinations[index] = event.target.value;
       setDestinations(newDestinations);
 
-      // Reset the corresponding business when destination changes
       const newBusinesses = [...businesses];
       newBusinesses[index] = "";
       setBusinesses(newBusinesses);
     };
+
+  const handleInputDestinationChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setInputDestination(event.target.value);
+  };
 
   const handleBusinessChange =
     (index: number) => (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -94,6 +103,12 @@ function Input() {
       setBusinesses(newBusinesses);
     };
 
+  const handleInputBusinessChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setInputBusiness(event.target.value);
+  };
+
   const handleWorkChange =
     (index: number) => (event: React.ChangeEvent<HTMLSelectElement>) => {
       const newWorks = [...works];
@@ -101,8 +116,10 @@ function Input() {
       setWorks(newWorks);
     };
 
-  const handleStateChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setWork(event.target.value);
+  const handleInputWorkChange = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    setInputWork(event.target.value);
   };
 
   const handleCarChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -131,23 +148,62 @@ function Input() {
   }
 
   const onClickComplete = async () => {
+    const destArr = selectedDestinations
+      .map((destination) => {
+        const parts = destination.split(",");
+        return parts[1] ? parts[1].trim() : null;
+      })
+      .filter((dest) => dest !== null && dest !== "")
+      .concat(inputDestination.trim())
+      .filter(Boolean);
+
+    const businessArr = selectedBusinesses
+      .map((business) => business.trim())
+      .filter((business) => business !== null && business !== "")
+      .concat(inputBusiness.trim())
+      .filter(Boolean);
+
+    const workArr = selectedWorks
+      .map((work) => work.trim())
+      .filter((work) => work !== null && work !== "")
+      .concat(inputWork.trim())
+      .filter(Boolean);
+    // 에러 조금 봐보기
     if (!username) {
       alert("이름을 선택해주세요");
       return;
     }
 
-    if (selectedDestinations.length === 0) {
+    if (destArr.length === 0) {
       alert("방문지를 선택해주세요");
       return;
     }
 
-    if (selectedBusinesses.length === 0) {
+    if (businessArr.length === 0) {
       alert("사업명을 선택해주세요");
       return;
     }
+    if (destArr.length !== businessArr.length) {
+      alert("방문지와 사업명의 수가 일치하지 않습니다");
+      return;
+    }
 
-    if (works.length === 0) {
+    if (workArr.length === 0) {
       alert("업무를 선택해주세요");
+      return;
+    }
+    if (
+      destArr.length === businessArr.length &&
+      destArr.length > workArr.length
+    ) {
+      alert("업무를 선택해주세요");
+      return;
+    }
+    if (
+      destArr.length === businessArr.length &&
+      destArr.length < workArr.length
+    ) {
+      alert("업무의 개수가 많습니다");
       return;
     }
 
@@ -160,27 +216,23 @@ function Input() {
       return;
     }
 
-    try {
-      const requests = selectedDestinations.map((destination, index) =>
-        axiosApi.post("/api/employee-inform/addInform", {
-          username,
-          destination: selectedDestinations[index].split(",")[1],
-          business: selectedBusinesses[index],
-          work: works[index],
-          car,
-          isDaily,
-          ...(isDaily === 1 ? {} : { startDate, endDate }),
-        })
-      );
+    const requests = destArr.map((destination, index) =>
+      axiosApi.post("/api/employee-inform/addInform", {
+        username,
+        destination: destArr[index],
+        business: businessArr[index],
+        work: workArr[index],
+        car,
+        isDaily,
+        ...(isDaily === 1 ? {} : { startDate, endDate }),
+      })
+    );
 
-      const responses = await Promise.all(requests);
+    const responses = await Promise.all(requests);
 
-      if (responses.every((res) => res.status === 200)) {
-        alert("정보 입력 완료");
-        navigate("/employee-status");
-      }
-    } catch (error) {
-      //alert("정보 입력 중 오류가 발생하였습니다.");
+    if (responses.every((res) => res.status === 200)) {
+      alert("정보 입력 완료");
+      navigate("/employee-status");
     }
   };
 
@@ -249,6 +301,12 @@ function Input() {
                         ))}
                     </select>
                   ))}
+                  <input
+                    value={inputDestination}
+                    onChange={handleInputDestinationChange}
+                    className="hover:opacity-60 border rounded-md p-2 my-4 ml-2 sm:w-full sm:ml-0 sm:my-2"
+                    placeholder="방문지 직접 입력"
+                  />
                 </td>
 
                 <td className="sm:mb-4 sm:w-full w-[42%] md:border-r border-gray-300 md:border-b">
@@ -275,9 +333,15 @@ function Input() {
                         ))}
                     </select>
                   ))}
+                  <input
+                    value={inputBusiness}
+                    onChange={handleInputBusinessChange}
+                    className="hover:opacity-60 border rounded-md p-2 my-4 ml-2 sm:w-full sm:ml-0 sm:my-2 md:w-[90%]"
+                    placeholder="사업명 직접 입력"
+                  />
                 </td>
 
-                <td className="flex flex-col sm:mb-4 sm:w-full md:border-r border-gray-300 px-2 md:border-b">
+                <td className="sm:mb-4 sm:w-full md:border-r border-gray-300 md:border-b flex flex-col">
                   <div className="sm:font-bold sm:mb-2 md:hidden">업무</div>
                   {[0, 1, 2].map((index) => (
                     <select
@@ -298,6 +362,22 @@ function Input() {
                         ))}
                     </select>
                   ))}
+                  <select
+                    defaultValue=""
+                    className="hover:opacity-60 border rounded-md p-2 my-4 ml-2 sm:w-full sm:ml-0 sm:my-2"
+                    onChange={handleInputWorkChange}
+                  >
+                    <option disabled value="">
+                      업무 선택
+                    </option>
+                    {workData
+                      ?.sort((a, b) => a.work.localeCompare(b.work))
+                      .map((item, index) => (
+                        <option key={index} value={item.work}>
+                          {item.work}
+                        </option>
+                      ))}
+                  </select>
                 </td>
 
                 <td className="sm:mb-4 sm:w-full md:border-r md:border-b border-gray-300 px-2">
