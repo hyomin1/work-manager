@@ -237,15 +237,15 @@ function Input() {
   };
 
   return (
-    <div className="w-full h-screen flex flex-col justify-start items-center p-10 bg-gray-50 sm:p-4 sm:overflow-y-auto">
-      <div className="w-[90%] flex flex-col items-center rounded-lg sm:w-full bg-gray-50 overflow-x-auto">
-        <div className="mt-4 mb-20 flex items-center md:justify-center w-full sm:mb-10 sm:justify-between">
-          <div className="w-full flex justify-between items-center">
+    <div className="flex flex-col items-center justify-start w-full h-screen p-10 bg-gray-50 sm:p-4 sm:overflow-y-auto">
+      <div className="w-[100%] flex flex-col items-center rounded-lg sm:w-full bg-gray-50 overflow-x-auto">
+        <div className="flex items-center w-full mt-4 mb-20 md:justify-center sm:mb-10 sm:justify-between">
+          <div className="flex items-center justify-between w-full">
             <ArrowBack />
             <div className="sm:w-[80%] flex items-center justify-center">
-              <span className=" font-bold text-3xl sm:text-xl">{formDate}</span>
+              <span className="text-3xl font-bold sm:text-xl">{formDate}</span>
             </div>
-            <div className="w-[15%]" />
+            <div className="w-[15%] " />
           </div>
 
           <div className="md-hidden sm:w-[10%]" />
@@ -256,13 +256,13 @@ function Input() {
             <TabInputHeader headers={employeeInputHeaders} />
 
             <tbody>
-              <tr className="sm:flex sm:flex-col table-auto">
-                <td className="sm:mb-4 sm:w-full md:border-r border-gray-300 md:border-b">
+              <tr className="table-auto sm:flex sm:flex-col">
+                <td className="border-gray-300 sm:mb-4 sm:w-full md:border-r md:border-b">
                   <div className="sm:font-bold sm:mb-2 md:hidden">이름</div>
                   <select
                     defaultValue=""
                     onChange={handleNameChange}
-                    className="hover:opacity-60 border rounded-md p-2 ml-3 sm:w-full sm:ml-0"
+                    className="p-2 ml-3 border rounded-md hover:opacity-60 sm:w-full sm:ml-0"
                   >
                     <option disabled value="">
                       이름 선택
@@ -277,14 +277,14 @@ function Input() {
                   </select>
                 </td>
 
-                <td className="flex flex-col sm:mb-4 sm:w-full md:border-r border-gray-300 px-2 md:border-b">
+                <td className="flex flex-col px-2 border-gray-300 sm:mb-4 sm:w-full md:border-r md:border-b">
                   <div className="sm:font-bold sm:mb-2 md:hidden">방문지</div>
                   {[0, 1, 2].map((index) => (
                     <select
                       key={index}
                       value={destinations[index]}
                       onChange={handleDestinationChange(index)}
-                      className="hover:opacity-60 border rounded-md p-2 my-4 ml-2 sm:w-full sm:ml-0 sm:my-2"
+                      className="p-2 my-4 ml-2 border rounded-md hover:opacity-60 sm:w-full sm:ml-0 sm:my-2"
                     >
                       <option value="">방문지 선택</option>
                       {destinationsData
@@ -304,7 +304,7 @@ function Input() {
                   <input
                     value={inputDestination}
                     onChange={handleInputDestinationChange}
-                    className="hover:opacity-60 border rounded-md p-2 my-4 ml-2 sm:w-full sm:ml-0 sm:my-2"
+                    className="p-2 my-4 ml-2 border rounded-md hover:opacity-60 sm:w-full sm:ml-0 sm:my-2"
                     placeholder="방문지 직접 입력"
                   />
                 </td>
@@ -341,14 +341,14 @@ function Input() {
                   />
                 </td>
 
-                <td className="sm:mb-4 sm:w-full md:border-r border-gray-300 md:border-b flex flex-col">
+                <td className="flex flex-col border-gray-300 sm:mb-4 sm:w-full md:border-r md:border-b">
                   <div className="sm:font-bold sm:mb-2 md:hidden">업무</div>
                   {[0, 1, 2].map((index) => (
                     <select
                       key={index}
                       value={works[index]}
                       onChange={handleWorkChange(index)}
-                      className="hover:opacity-60 border rounded-md p-2 my-4 ml-2 sm:w-full sm:ml-0 sm:my-2"
+                      className="p-2 my-4 ml-2 border rounded-md hover:opacity-60 sm:w-full sm:ml-0 sm:my-2"
                     >
                       <option disabled value="">
                         업무 선택
@@ -364,7 +364,7 @@ function Input() {
                   ))}
                   <select
                     defaultValue=""
-                    className="hover:opacity-60 border rounded-md p-2 my-4 ml-2 sm:w-full sm:ml-0 sm:my-2"
+                    className="p-2 my-4 ml-2 border rounded-md hover:opacity-60 sm:w-full sm:ml-0 sm:my-2"
                     onChange={handleInputWorkChange}
                   >
                     <option disabled value="">
@@ -380,12 +380,12 @@ function Input() {
                   </select>
                 </td>
 
-                <td className="sm:mb-4 sm:w-full md:border-r md:border-b border-gray-300 px-2">
+                <td className="px-2 border-gray-300 sm:mb-4 sm:w-full md:border-r md:border-b">
                   <div className="sm:font-bold sm:mb-2 md:hidden">차량</div>
                   <select
                     defaultValue=""
                     onChange={handleCarChange}
-                    className="hover:opacity-60 border rounded-md p-2 sm:w-full"
+                    className="p-2 border rounded-md hover:opacity-60 sm:w-full"
                   >
                     <option disabled value="">
                       차량 선택
@@ -399,7 +399,7 @@ function Input() {
                   </select>
                 </td>
 
-                <td className="sm:mb-4 sm:w-full md:border-r md:border-b border-gray-300 px-2">
+                <td className="px-2 border-gray-300 sm:mb-4 sm:w-full md:border-r md:border-b w-[10%]">
                   <div className="sm:font-bold sm:mb-2 md:hidden">기간</div>
                   <div className="flex flex-col">
                     <label className="sm:flex sm:items-center sm:mb-2 md:mr-4">
@@ -426,19 +426,19 @@ function Input() {
                   {isDaily === 2 && (
                     <div className="flex mt-4 sm:flex-col ">
                       <div className="flex flex-col md:mr-2">
-                        <span className="font-bold  mb-2">시작일</span>
+                        <span className="mb-2 font-bold">시작일</span>
                         <input
                           type="date"
                           onChange={handleStartDateChange}
-                          className="p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 ease-in-out"
+                          className="p-2 transition duration-200 ease-in-out border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                         />
                       </div>
                       <div className="flex flex-col sm:mt-2">
-                        <span className="font-bold mb-2">종료일</span>
+                        <span className="mb-2 font-bold">종료일</span>
                         <input
                           type="date"
                           onChange={handleEndDateChange}
-                          className="p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 ease-in-out"
+                          className="p-2 transition duration-200 ease-in-out border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                         />
                       </div>
                     </div>
@@ -448,7 +448,7 @@ function Input() {
             </tbody>
           </table>
         </div>
-        <div className="w-full flex justify-center mt-8">
+        <div className="flex justify-center w-full mt-8">
           <button
             onClick={onClickComplete}
             className="bg-[#00ab39] rounded-lg text-white py-2 px-4 hover:opacity-60 w-[15%] h-12 font-bold text-xl sm:w-full my-2"

@@ -99,10 +99,10 @@ function DriveMain() {
   const grandTotal = totalFuelCost + totalToll + totalEtcCost;
 
   return (
-    <div className="w-full h-screen flex flex-col justify-between items-center sm:p-2 p-4 bg-gray-50">
+    <div className="flex flex-col items-center justify-between w-full h-screen p-4 sm:p-2 bg-gray-50">
       {isShow && <AdminLogin setIsShow={setIsShow} />}
       <div className="sm:w-full w-[90%] flex flex-col items-center ">
-        <div className="w-full flex justify-between items-center mb-4 mt-2 sm:mt-4">
+        <div className="flex items-center justify-between w-full mt-2 mb-4 sm:mt-4">
           <ArrowBack />
           <Title
             currentDate={currentDate}
@@ -115,9 +115,9 @@ function DriveMain() {
           <div className="w-[15%]" />
         </div>
 
-        <div className="w-full flex justify-between mb-2 items-center ">
+        <div className="flex items-center justify-between w-full mb-2 ">
           <select
-            className="md:w-[22%] sm:w-[50%] hover:opacity-60 font-bold h-12 border border-gray-300 rounded-lg p-2"
+            className="md:w-[22%] sm:w-[50%] hover:opacity-60 font-bold h-10 border border-gray-300 rounded-lg p-2 text-sm"
             onChange={onChangeCarNum}
             defaultValue=""
           >
@@ -143,7 +143,7 @@ function DriveMain() {
 
         <>
           <div className="w-[100%] flex justify-between items-center border border-t-gray-300 rounded-t-2xl md:h-16 print-hidden">
-            <span className="font-bold md:text-xl ml-4">목록</span>
+            <span className="ml-4 font-bold md:text-xl">목록</span>
             <div className="p-4 items-center flex w-[50%] justify-end">
               <button
                 className="sm:whitespace-nowrap bg-[#00ab39] rounded-lg text-white md:py-2 sm:py-1 sm:text-sm px-4 button-effect mr-4 sm:mr-2"
@@ -157,7 +157,7 @@ function DriveMain() {
               >
                 <span>관리</span>
               </button>
-              <div className="md:h-10 sm:h-8 border border-gray-300 mx-4" />
+              <div className="mx-4 border border-gray-300 md:h-10 sm:h-8" />
               <button className="" onClick={() => refetch()}>
                 <SlRefresh className="md:w-7 md:h-7 sm:w-5 sm:h-5 hover:opacity-60" />
               </button>
@@ -187,45 +187,45 @@ function DriveMain() {
                 .map((item, index) => (
                   <div
                     key={index}
-                    className="border border-gray-300 p-4 rounded-lg bg-white shadow-md grid grid-cols-3 space-x-0 text-sm gap-2 mb-1"
+                    className="grid grid-cols-3 gap-2 p-4 mb-1 space-x-0 text-sm bg-white border border-gray-300 rounded-lg shadow-md"
                   >
                     <div className="flex flex-col ">
-                      <span className="font-bold mb-1">날짜</span>
+                      <span className="mb-1 font-bold">날짜</span>
                       <span>{calCarDay(item.createdAt)}</span>
                     </div>
 
                     <div className="flex flex-col">
-                      <span className="font-bold mb-1">운전자</span>
+                      <span className="mb-1 font-bold">운전자</span>
                       <span>{item.username}</span>
                     </div>
                     <div className="flex flex-col">
-                      <span className="font-bold mb-1 whitespace-nowrap">
+                      <span className="mb-1 font-bold whitespace-nowrap">
                         행선지
                       </span>
                       <p>{item.drivingDestination}</p>
                     </div>
                     <div className="flex flex-col">
-                      <span className="font-bold mb-1">출발(km)</span>
+                      <span className="mb-1 font-bold">출발(km)</span>
                       <span>{item.startKM} km</span>
                     </div>
                     <div className="flex flex-col">
-                      <span className="font-bold mb-1">도착(km)</span>
+                      <span className="mb-1 font-bold">도착(km)</span>
                       <span>{item.endKM} km</span>
                     </div>
                     <div className="flex flex-col">
-                      <span className="font-bold mb-1">주행거리</span>
+                      <span className="mb-1 font-bold">주행거리</span>
                       <p>{item.totalKM} km</p>
                     </div>
                     <div className="flex flex-col">
-                      <span className="font-bold mb-1">주유비</span>
+                      <span className="mb-1 font-bold">주유비</span>
                       <span>{item.fuelCost}</span>
                     </div>
                     <div className="flex flex-col">
-                      <span className="font-bold mb-1">하이패스</span>
+                      <span className="mb-1 font-bold">하이패스</span>
                       <span> {item.toll}</span>
                     </div>
                     <div className="flex flex-col">
-                      <span className="font-bold mb-1">기타 비용</span>
+                      <span className="mb-1 font-bold">기타 비용</span>
                       <span>
                         {item.etc.cost > 0 && (
                           <p>
@@ -236,7 +236,7 @@ function DriveMain() {
                     </div>
                   </div>
                 ))}
-              <div className="border border-gray-300 p-4 rounded-lg bg-white shadow-md grid grid-cols-3 space-x-0 text-sm gap-2 mb-1 w-full">
+              <div className="grid w-full grid-cols-3 gap-2 p-4 mb-1 space-x-0 text-sm bg-white border border-gray-300 rounded-lg shadow-md">
                 <div className="flex flex-col">
                   <span className="font-bold">주유비</span>
                   <span>{totalFuelCost}</span>

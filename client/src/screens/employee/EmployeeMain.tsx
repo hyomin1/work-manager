@@ -78,10 +78,10 @@ function Main() {
   }, [currentDate, refetch]);
 
   return (
-    <div className="w-full h-screen flex flex-col justify-between items-center sm:p-2 p-10 bg-gray-50">
+    <div className="flex flex-col items-center justify-between w-full h-screen p-10 sm:p-2 bg-gray-50">
       {isShow && <AdminLogin setIsShow={setIsShow} />}
-      <div className="sm:w-full w-[80%] flex flex-col items-center">
-        <div className="w-full flex justify-between items-center mb-4 mt-2 sm:mt-4">
+      <div className="sm:w-full w-[90%] flex flex-col items-center">
+        <div className="flex items-center justify-between w-full mt-2 mb-4 sm:mt-4">
           <ArrowBack />
           <Title
             currentDate={currentDate}
@@ -94,7 +94,7 @@ function Main() {
         </div>
 
         {showInput && (
-          <div className="w-[17%] flex justify-center">
+          <div className="w-[21%] sm:w-[40%] flex justify-center">
             <input
               type="date"
               value={currentDate.toISOString().split("T")[0] || ""}
@@ -105,7 +105,7 @@ function Main() {
         )}
 
         <div className="w-[100%] flex justify-between items-center border border-t-gray-300 rounded-t-2xl">
-          <span className="font-bold md:text-xl ml-4">목록</span>
+          <span className="ml-4 font-bold md:text-xl">목록</span>
           <div className="p-4 items-center flex w-[50%] justify-end">
             <button
               className="sm:whitespace-nowrap bg-[#00ab39] rounded-lg text-white md:py-2 sm:py-1 sm:text-sm px-4 button-effect mr-4 sm:mr-2"
@@ -119,7 +119,7 @@ function Main() {
             >
               관리
             </button>
-            <div className="md:h-10 sm:h-8 border border-gray-300 mx-4" />
+            <div className="mx-4 border border-gray-300 md:h-10 sm:h-8" />
             <button onClick={() => refetch()}>
               <SlRefresh className="md:w-7 md:h-7 sm:w-5 sm:h-5 hover:opacity-60" />
             </button>
@@ -128,7 +128,7 @@ function Main() {
 
         <table className="w-[100%] rounded-2xl shadow-lg text-left table-auto ">
           <TabHeader headers={employeeHeaders} category="employee" />
-          <tbody className="rounded-b-xl overflow-y-auto h-full">
+          <tbody className="h-full overflow-y-auto rounded-b-xl">
             {inform
               ?.sort((a, b) => {
                 if (a.destination === b.destination) {
@@ -145,26 +145,26 @@ function Main() {
                     index % 2 === 0 ? "bg-white" : "bg-gray-50"
                   }`}
                 >
-                  <td className="md:p-4 sm:p-2 border-b border-gray-200 whitespace-nowrap">
+                  <td className="border-b border-gray-200 md:p-4 sm:p-2 whitespace-nowrap">
                     {item.username}
                   </td>
-                  <td className="md:p-4 sm:p-1 border-b border-gray-200 ">
+                  <td className="border-b border-gray-200 md:p-4 sm:p-1 ">
                     {item.destination}
                   </td>
-                  <td className="md:p-4 sm:p-1 border-b border-gray-200 ">
+                  <td className="border-b border-gray-200 md:p-4 sm:p-1 ">
                     {item.business}
                   </td>
-                  <td className="md:p-4 sm:p-1 border-b border-gray-200 ">
+                  <td className="border-b border-gray-200 md:p-4 sm:p-1 ">
                     {item.work}
                   </td>
-                  <td className="md:p-4 sm:p-1 border-b border-gray-200">
+                  <td className="border-b border-gray-200 md:p-4 sm:p-1">
                     {item.car}
                   </td>
-                  <td className="md:p-4 sm:p-1 border-b border-gray-200">
+                  <td className="border-b border-gray-200 md:p-4 sm:p-1">
                     {item.isOwner && (
                       <X
                         onClick={() => deleteInform(item._id)}
-                        className="hover:opacity-60 w-6 h-6"
+                        className="w-6 h-6 hover:opacity-60"
                       />
                     )}
                   </td>
