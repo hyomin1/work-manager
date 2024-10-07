@@ -6,7 +6,6 @@ import { QueryClient, useQuery } from "@tanstack/react-query";
 import { IDestinations } from "../interfaces/interface";
 import { getDestinations } from "../api";
 import { X, Edit } from "lucide-react";
-import axiosApi from "../axios";
 import EditData from "./EditData";
 
 interface TabContentProps {
@@ -34,9 +33,7 @@ const TabContentAdmin = ({
   const [item, setItem] = useState<{ [key: string]: string } | null>(null); // 수정할 아이템
   const [itemId, setItemId] = useState(""); //수정할 아이템 _id
 
-  const { data: destinations, isLoading: destinationsLoading } = useQuery<
-    IDestinations[]
-  >({
+  const { data: destinations } = useQuery<IDestinations[]>({
     queryKey: ["destinations"],
     queryFn: getDestinations,
     enabled: activeTab === "business",

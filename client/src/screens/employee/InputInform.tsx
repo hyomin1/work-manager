@@ -168,7 +168,7 @@ function Input() {
       .filter((work) => work !== null && work !== "")
       .concat(inputWork.trim())
       .filter(Boolean);
-    // 에러 조금 봐보기
+
     if (!username) {
       alert("이름을 선택해주세요");
       return;

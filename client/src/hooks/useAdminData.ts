@@ -14,7 +14,6 @@ export function useAdminData(
   page: number,
   queryClient: QueryClient
 ) {
-  const pageCount = 10;
   const queryFn = {
     username: getNames,
     destination: getDestinations,
