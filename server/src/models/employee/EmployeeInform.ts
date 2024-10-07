@@ -15,8 +15,8 @@ interface IEmployeeInform {
 const employeeInformSchema = new Schema<IEmployeeInform>(
   {
     username: { type: String, required: true, trim: true },
-    destination: { type: String, required: true, trim: true },
-    business: { type: String, required: true, trim: true },
+    destination: { type: String, trim: true },
+    business: { type: String, trim: true },
     work: { type: String, required: true, trim: true },
     isDaily: { type: Number, default: 0 },
     writerId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },

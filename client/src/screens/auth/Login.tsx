@@ -24,7 +24,7 @@ function Login() {
       return;
     }
 
-    navigate("/select");
+    navigate("/home");
     setValue("userId", "");
     setValue("password", "");
   };
@@ -36,7 +36,7 @@ function Login() {
     const res = await axiosApi.get("/auth/checkSession");
     // 세션 존재 시 바로 메인 화면
     if (res.status === 200) {
-      navigate("/select");
+      navigate("/home");
     }
   };
   useEffect(() => {

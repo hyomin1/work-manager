@@ -286,7 +286,11 @@ function Input() {
                       onChange={handleDestinationChange(index)}
                       className="p-2 my-4 ml-2 border rounded-md hover:opacity-60 sm:w-full sm:ml-0 sm:my-2"
                     >
-                      <option value="">방문지 선택</option>
+                      <option disabled value="">
+                        방문지 선택
+                      </option>
+
+                      <option value=",선택 안함">선택 안함</option>
                       {destinationsData
                         ?.sort((a, b) =>
                           a.destination.localeCompare(b.destination)
@@ -318,7 +322,13 @@ function Input() {
                       onChange={handleBusinessChange(index)}
                       className="hover:opacity-60 border rounded-md p-2 my-4 ml-2 sm:w-full sm:ml-0 sm:my-2 w-[90%]"
                     >
-                      <option value="">사업명 선택</option>
+                      <option disabled value="">
+                        사업명 선택
+                      </option>
+                      {destinations.includes(",선택 안함") && (
+                        <option value="선택 안함">선택 안함</option>
+                      )}
+
                       {businessesData
                         ?.filter(
                           (business) =>

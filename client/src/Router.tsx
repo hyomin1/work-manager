@@ -23,7 +23,7 @@ const router = createBrowserRouter([
         element: <Register />,
       },
       {
-        path: "/select",
+        path: "/home",
         element: <SelectPages />,
       },
       {

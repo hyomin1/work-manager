@@ -379,10 +379,13 @@ export const addInform = async (req: Request, res: Response) => {
     ) {
       return res.status(400).json({ error: "정보를 입력해야 합니다." });
     }
+
     const data = {
       ...req.body,
       writerId: req.session.userId,
       car: car === "선택 안함" ? "" : car,
+      destination: destination === "선택 안함" ? "" : destination,
+      business: business === "선택 안함" ? "" : business,
     };
 
     if (isDaily === 2) {
