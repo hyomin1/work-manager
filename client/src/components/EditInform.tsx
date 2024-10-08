@@ -55,7 +55,7 @@ function EditInform({ item, setEditingItemId }: IEditInformProps) {
       }
     }
   }, [businessData, destinationsData]);
-  console.log(car);
+
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!username) {

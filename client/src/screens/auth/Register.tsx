@@ -37,17 +37,18 @@ function Login() {
   };
 
   return (
-    <div className="w-full h-screen flex items-center justify-center ">
+    <div className="w-full h-screen flex items-center justify-center bg-custom-gradient">
       <form
         onSubmit={handleSubmit(onRegister)}
-        className="flex flex-col sm:w-[80%] w-[30%]  p-6 bg-white rounded-lg shadow-lg"
+        className="flex flex-col sm:w-[80%] w-[30%]  p-6 bg-white rounded-lg shadow-custom-shadow"
       >
         <span className="font-bold text-2xl mb-4">회원가입</span>
-        <label className="mb-2" htmlFor="userId">
+        <label className="mb-2 text-sm" htmlFor="userId">
           아이디
         </label>
         <input
           className="p-3 border rounded mb-4"
+          placeholder="아이디"
           id="userId"
           {...register("userId", { required: true })}
           autoFocus
@@ -57,12 +58,13 @@ function Login() {
             아이디를 입력해주세요
           </span>
         )}
-        <label className="mb-2" htmlFor="password">
+        <label className="mb-2 text-sm" htmlFor="password">
           패스워드
         </label>
         <input
           id="password"
           type="password"
+          placeholder="패스워드"
           className="p-3 border rounded mb-4"
           {...register("password", { required: true })}
         />
@@ -71,12 +73,13 @@ function Login() {
             패스워드를 입력해주세요
           </span>
         )}
-        <label className="mb-2" htmlFor="passwordConfirm">
+        <label className="mb-2 text-sm" htmlFor="passwordConfirm">
           패스워드 확인
         </label>
         <input
           id="passwordConfirm"
           type="password"
+          placeholder="패스워드 확인"
           className=" p-3 border rounded mb-4"
           {...register("passwordConfirm", {
             required: true,

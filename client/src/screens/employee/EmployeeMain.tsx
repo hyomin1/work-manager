@@ -76,7 +76,7 @@ function Main() {
   }, [currentDate, refetch]);
 
   return (
-    <div className="flex flex-col items-center justify-between w-full h-screen p-10 sm:p-2 bg-gray-50">
+    <div className="flex flex-col items-center justify-between w-full h-screen p-10 sm:p-2 bg-gray-50 ">
       {isShow && <AdminLogin setIsShow={setIsShow} />}
       <div className="sm:w-full w-[90%] flex flex-col items-center">
         <div className="flex items-center justify-between w-full mt-2 mb-4 sm:mt-4">

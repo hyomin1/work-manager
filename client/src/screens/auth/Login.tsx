@@ -61,13 +61,13 @@ function Login() {
   }, [cookies.rememberUserId]);
 
   return (
-    <div className="w-full h-screen flex items-center justify-center ">
+    <div className="w-full h-screen flex items-center justify-center bg-custom-gradient ">
       <form
         onSubmit={handleSubmit(onLogin)}
-        className="flex flex-col sm:w-[90%] md:w-[30%] p-6 bg-white rounded-lg shadow-lg"
+        className="flex flex-col sm:w-[90%] md:w-[30%] p-6 bg-white rounded-lg shadow-custom-shadow"
       >
         <span className="font-bold text-2xl mb-4">로그인</span>
-        <label className="mb-2" htmlFor="userId">
+        <label className="mb-2 text-sm" htmlFor="userId">
           아이디
         </label>
         <input
@@ -82,11 +82,11 @@ function Login() {
             아이디를 입력해주세요
           </span>
         )}
-        <label className="mb-2" htmlFor="password">
+        <label className="mb-2 text-sm" htmlFor="password">
           패스워드
         </label>
         <input
-          placeholder="비밀번호"
+          placeholder="패스워드"
           type="password"
           className="mb-4 p-3 border rounded"
           {...register("password", { required: true })}
@@ -113,17 +113,17 @@ function Login() {
             아이디 저장
           </label>
         </div>
-        <div className="flex justify-between">
+        <div className="flex justify-between mt-4">
           <button
             type="submit"
-            className="bg-blue-500 text-white sm:whitespace-nowrap px-8 py-3 rounded hover:opacity-80"
+            className="bg-blue-500 text-white whitespace-nowrap px-8 py-3 rounded hover:opacity-80"
           >
             로그인
           </button>
           <button
             onClick={onRegister}
             type="button"
-            className="bg-gray-300 px-8 py-3 rounded sm:whitespace-nowrap  hover:opacity-80"
+            className="bg-gray-300 px-8 py-3 rounded whitespace-nowrap  hover:opacity-80"
           >
             회원가입
           </button>
