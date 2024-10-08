@@ -20,8 +20,8 @@ const employeeInformSchema = new Schema<IEmployeeInform>(
     work: { type: String, required: true, trim: true },
     isDaily: { type: Number, default: 0 },
     writerId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-    startDate: { type: Date, default: new Date() },
-    endDate: { type: Date, default: new Date() },
+    startDate: { type: Date },
+    endDate: { type: Date },
     car: { type: String, trim: true },
   },
   {

@@ -367,6 +367,7 @@ export const addInform = async (req: Request, res: Response) => {
     startDate,
     endDate,
   } = req.body;
+  console.log(startDate, endDate);
 
   try {
     if (
@@ -396,6 +397,9 @@ export const addInform = async (req: Request, res: Response) => {
       }
       data.startDate = startDate;
       data.endDate = endDate;
+    } else if (isDaily === 1) {
+      data.startDate = new Date();
+      data.endDate = new Date();
     }
 
     await Inform.create(data);
@@ -435,7 +439,7 @@ export const getInform = async (req: Request, res: Response) => {
     const localDate = new Date(dateParam);
 
     const utcDate = new Date(localDate.getTime() - 9 * 60 * 60 * 1000);
-
+    console.log(localDate, utcDate);
     const startOfDay = new Date(utcDate).setHours(0, 0, 0, 0);
     const endOfDay = new Date(utcDate).setHours(23, 59, 59, 999);
 
