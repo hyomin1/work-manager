@@ -241,7 +241,7 @@ function Input() {
       <div className="w-[100%] flex flex-col items-center rounded-lg sm:w-full bg-gray-50 overflow-x-auto">
         <div className="flex items-center w-full mt-4 mb-20 md:justify-center sm:mb-10 sm:justify-between">
           <div className="flex items-center justify-between w-full">
-            <ArrowBack />
+            <ArrowBack type="home" />
             <div className="sm:w-[80%] flex items-center justify-center">
               <span className="text-3xl font-bold sm:text-xl">{formDate}</span>
             </div>

@@ -1,9 +1,17 @@
 import { ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-function ArrowBack() {
+interface IArrowProps {
+  type: string;
+}
+
+function ArrowBack({ type }: IArrowProps) {
   const navigate = useNavigate();
   const goBack = () => {
+    if (type === "home") {
+      navigate("/home");
+      return;
+    }
     navigate(-1);
   };
   return (

@@ -82,7 +82,7 @@ function Main() {
       {isShow && <AdminLogin setIsShow={setIsShow} />}
       <div className="sm:w-full w-[90%] flex flex-col items-center">
         <div className="flex items-center justify-between w-full mt-2 mb-4 sm:mt-4">
-          <ArrowBack />
+          <ArrowBack type="home" />
           <Title
             currentDate={currentDate}
             setCurrentDate={setCurrentDate}
