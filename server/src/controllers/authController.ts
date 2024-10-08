@@ -48,6 +48,22 @@ export const loginUser = async (req: Request, res: Response) => {
   }
 };
 
+export const logoutUser = async (req: Request, res: Response) => {
+  try {
+    req.session.destroy((err) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).json({ error: "서버 에러" });
+      }
+      res.clearCookie("connect.sid"); // 세션 쿠키 삭제
+      return res.status(200).json({ message: "로그아웃 성공" });
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "서버 에러" });
+  }
+};
+
 export const checkSession = async (req: Request, res: Response) => {
   if (req.session.isUser) {
     return res.status(200).json();

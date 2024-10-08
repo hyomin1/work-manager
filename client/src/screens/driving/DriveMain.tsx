@@ -18,6 +18,7 @@ import { SlRefresh } from "react-icons/sl";
 import Page from "../../components/Page";
 import { useMediaQuery } from "react-responsive";
 import ArrowBack from "./../../components/ArrowBack";
+import Logout from "../../components/Logout";
 
 interface IDrivingInform {
   createdAt: Date;
@@ -102,7 +103,7 @@ function DriveMain() {
     <div className="flex flex-col items-center justify-between w-full h-screen p-4 sm:p-2 bg-gray-50">
       {isShow && <AdminLogin setIsShow={setIsShow} />}
       <div className="sm:w-full w-[90%] flex flex-col items-center ">
-        <div className="flex items-center justify-between w-full mt-2 mb-4 sm:mt-4">
+        <div className="flex items-center justify-between w-full mt-4 mb-4 sm:mt-4">
           <ArrowBack type="home" />
           <Title
             currentDate={currentDate}
@@ -112,7 +113,7 @@ function DriveMain() {
             category="driving"
           />
 
-          <div className="w-[15%]" />
+          <Logout />
         </div>
 
         <div className="flex items-center justify-between w-full mb-2 ">

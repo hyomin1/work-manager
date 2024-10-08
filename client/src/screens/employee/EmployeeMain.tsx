@@ -11,6 +11,7 @@ import Title from "../../components/Title";
 import ArrowBack from "../../components/ArrowBack";
 import { X } from "lucide-react";
 import axiosApi from "../../axios";
+import Logout from "../../components/Logout";
 
 interface IInform {
   _id: string;
@@ -83,6 +84,7 @@ function Main() {
       <div className="sm:w-full w-[90%] flex flex-col items-center">
         <div className="flex items-center justify-between w-full mt-2 mb-4 sm:mt-4">
           <ArrowBack type="home" />
+
           <Title
             currentDate={currentDate}
             setCurrentDate={setCurrentDate}
@@ -90,7 +92,7 @@ function Main() {
             calDate={calDate}
             category="employee"
           />
-          <div className="w-[15%]" />
+          <Logout />
         </div>
 
         {showInput && (
