@@ -24,3 +24,14 @@ export interface IEtcNames {
   _id: string;
   etcName: string;
 }
+
+export interface IInform {
+  _id: string;
+  username: string;
+  destination: string;
+  business: string;
+  work: string;
+  car: string;
+  createdAt: Date;
+  isOwner: boolean;
+}

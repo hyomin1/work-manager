@@ -9,9 +9,11 @@ import {
   editBusiness,
   editCar,
   editDestination,
+  editInform,
   editName,
   editWork,
   getBusiness,
+  getBusinesses,
   getCar,
   getDestination,
   getInform,
@@ -46,7 +48,8 @@ router.patch("/editDestination", editDestination);
 router.delete("/removeDestination/:id", removeDestination);
 
 // 사업명 관련
-router.get("/getBusiness", getBusiness);
+router.get("/getBusinesses", getBusinesses);
+router.get("/getBusiness/:business", getBusiness);
 router.post("/addBusiness", addBusiness);
 router.patch("/editBusiness", editBusiness);
 router.delete("/removeBusiness/:id", removeBusiness);
@@ -73,5 +76,6 @@ router.patch("/editEtcName", editEtcName);
 router.get("/getInform", getInform);
 router.post("/addInform", addInform);
 router.delete("/removeInform/:id", removeInform);
+router.put("/editInform", editInform);
 
 export default router;

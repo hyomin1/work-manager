@@ -14,8 +14,17 @@ export const getDestinations = async () => {
 
 // 사업명 정보
 export const getBusinesses = async () => {
-  const res = await axiosApi.get("/api/employee-inform/getBusiness");
+  const res = await axiosApi.get("/api/employee-inform/getBusinesses");
+
   return res.data.allBusinesses || [];
+};
+
+export const getBusiness = async (business: string) => {
+  const res = await axiosApi.get(
+    `/api/employee-inform/getBusiness/${business}`
+  );
+
+  return res.data.business || "";
 };
 
 // 업무 정보

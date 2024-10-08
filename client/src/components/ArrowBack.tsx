@@ -7,6 +7,7 @@ interface IArrowProps {
 
 function ArrowBack({ type }: IArrowProps) {
   const navigate = useNavigate();
+
   const goBack = () => {
     if (type === "home") {
       navigate("/home");

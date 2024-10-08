@@ -212,7 +212,7 @@ export const editBusiness = async (req: Request, res: Response) => {
   }
 };
 
-export const getBusiness = async (req: Request, res: Response) => {
+export const getBusinesses = async (req: Request, res: Response) => {
   try {
     const allBusinesses = await Business.find(
       {},
@@ -220,6 +220,22 @@ export const getBusiness = async (req: Request, res: Response) => {
     );
 
     return res.status(200).json({ allBusinesses });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "서버 에러" });
+  }
+};
+
+export const getBusiness = async (req: Request, res: Response) => {
+  try {
+    const business = await Business.findOne(
+      { business: req.params.business },
+      {
+        business: 1,
+        destinationId: 1,
+      }
+    );
+    return res.status(200).json({ business });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: "서버 에러" });
@@ -420,6 +436,32 @@ export const removeInform = async (req: Request, res: Response) => {
         .json({ error: "삭제할 정보가 존재하지 않습니다." });
     }
     return res.status(200).json({ message: "삭제 완료" });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "서버 에러" });
+  }
+};
+
+export const editInform = async (req: Request, res: Response) => {
+  const { _id, username, destination, business, work, car } = req.body;
+  try {
+    const editInform = await Inform.findByIdAndUpdate(
+      _id,
+      {
+        username,
+        destination,
+        business,
+        work,
+        car: car === "선택 안함" ? "" : car,
+      },
+      {
+        new: true,
+      }
+    );
+    if (!editInform) {
+      return res.status(404).json({ error: "정보를 찾을 수 없습니다." });
+    }
+    return res.status(200).json({ message: "정보 수정 완료" });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: "서버 에러" });

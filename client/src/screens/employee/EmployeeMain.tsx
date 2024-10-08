@@ -9,20 +9,12 @@ import Page from "../../components/Page";
 import { employeeHeaders } from "../../constants/headers";
 import Title from "../../components/Title";
 import ArrowBack from "../../components/ArrowBack";
-import { X } from "lucide-react";
+import { Edit, X } from "lucide-react";
 import axiosApi from "../../axios";
 import Logout from "../../components/Logout";
+import EditInform from "../../components/EditInform";
+import { IInform } from "../../interfaces/interface";
 
-interface IInform {
-  _id: string;
-  username: string;
-  destination: string;
-  business: string;
-  work: string;
-  car: string;
-  createdAt: Date;
-  isOwner: boolean;
-}
 function Main() {
   const [currentDate, setCurrentDate] = useState(new Date());
 
@@ -34,6 +26,7 @@ function Main() {
 
   const [isShow, setIsShow] = useState(false);
   const [showInput, setShowInput] = useState(false);
+  const [editingItemId, setEditingItemId] = useState("");
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 11;
@@ -59,6 +52,10 @@ function Main() {
     setCurrentDate(new Date(e.target.value));
     setShowInput(false);
     setCurrentPage(1);
+  };
+
+  const editInform = async (id: string) => {
+    setEditingItemId(id);
   };
 
   const deleteInform = async (id: string) => {
@@ -164,10 +161,22 @@ function Main() {
                   </td>
                   <td className="border-b border-gray-200 md:p-4 sm:p-1">
                     {item.isOwner && (
-                      <X
-                        onClick={() => deleteInform(item._id)}
-                        className="w-6 h-6 hover:opacity-60"
-                      />
+                      <div className="flex justify-evenly">
+                        <Edit
+                          onClick={() => editInform(item._id)}
+                          className="w-6 h-6 sm:w-5 sm:h-5 hover:opacity-60"
+                        />
+                        <X
+                          onClick={() => deleteInform(item._id)}
+                          className="w-6 h-6 sm:w-5 sm:h-5 hover:opacity-60"
+                        />
+                        {editingItemId === item._id && (
+                          <EditInform
+                            item={item}
+                            setEditingItemId={setEditingItemId}
+                          />
+                        )}
+                      </div>
                     )}
                   </td>
                 </tr>

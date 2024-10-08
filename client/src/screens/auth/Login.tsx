@@ -1,7 +1,8 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import axiosApi from "../../axios";
+import { useCookies } from "react-cookie";
 
 interface ILogin {
   userId: string;
@@ -16,17 +17,29 @@ function Login() {
     formState: { errors },
   } = useForm<ILogin>();
 
+  const [cookies, setCookie, removeCookie] = useCookies(["rememberUserId"]);
+
+  const [isRemember, setIsRemember] = useState(false);
+
   const navigate = useNavigate();
+
+  const onRememberId = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setIsRemember(e.target.checked);
+  };
 
   const onLogin = async (data: ILogin) => {
     const res = await axiosApi.post("/auth/login", data);
-    if (res.status !== 201) {
-      return;
-    }
+    if (res.status === 201) {
+      if (isRemember) {
+        setCookie("rememberUserId", data.userId, { path: "/" }); // 쿠키에 사용자 ID 저장
+      } else {
+        removeCookie("rememberUserId"); // 쿠키에서 사용자 ID 삭제
+      }
 
-    navigate("/home");
-    setValue("userId", "");
-    setValue("password", "");
+      navigate("/home");
+      setValue("userId", "");
+      setValue("password", "");
+    }
   };
   const onRegister = () => {
     navigate("/register");
@@ -41,7 +54,11 @@ function Login() {
   };
   useEffect(() => {
     checkSession();
-  }, []);
+    if (cookies.rememberUserId) {
+      setValue("userId", cookies.rememberUserId); // 쿠키에서 ID 불러오기
+      setIsRemember(true); // 체크박스 상태 업데이트
+    }
+  }, [cookies.rememberUserId]);
 
   return (
     <div className="w-full h-screen flex items-center justify-center ">
@@ -79,6 +96,23 @@ function Login() {
             패스워드를 입력해주세요
           </span>
         )}
+        <div className="flex items-center mb-2">
+          <input
+            id="remember"
+            checked={isRemember}
+            onChange={onRememberId}
+            className="w-4 h-4"
+            type="checkbox"
+          />
+          <label
+            htmlFor="remember"
+            className={`text-sm ml-1 ${
+              isRemember ? "text-black" : "text-gray-400"
+            }`}
+          >
+            아이디 저장
+          </label>
+        </div>
         <div className="flex justify-between">
           <button
             type="submit"

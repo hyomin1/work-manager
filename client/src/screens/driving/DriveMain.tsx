@@ -117,19 +117,6 @@ function DriveMain() {
         </div>
 
         <div className="flex items-center justify-between w-full mb-2 ">
-          <select
-            className="md:w-[22%] sm:w-[50%] hover:opacity-60 font-bold h-10 border border-gray-300 rounded-lg p-2 text-sm"
-            onChange={onChangeCarNum}
-            defaultValue=""
-          >
-            <option value="" disabled>
-              차량 선택
-            </option>
-            {cars &&
-              cars
-                .sort((a, b) => a.car.localeCompare(b.car))
-                .map((car) => <option key={car._id}>{car.car}</option>)}
-          </select>
           {showInput && (
             <div className="w-[17%] flex justify-center hover:opacity-60">
               <input
@@ -143,24 +130,39 @@ function DriveMain() {
         </div>
 
         <>
-          <div className="w-[100%] flex justify-between items-center border border-t-gray-300 rounded-t-2xl md:h-16 print-hidden">
-            <span className="ml-4 font-bold md:text-xl">목록</span>
-            <div className="p-4 items-center flex w-[50%] justify-end">
-              <button
-                className="sm:whitespace-nowrap bg-[#00ab39] rounded-lg text-white md:py-2 sm:py-1 sm:text-sm px-4 button-effect mr-4 sm:mr-2"
-                onClick={onClickInputInform}
-              >
-                <span>입력</span>
-              </button>
-              <button
-                className="sm:whitespace-nowrap bg-[#007BFF] rounded-lg text-white md:py-2 sm:py-1 sm:text-sm px-4 hover:opacity-60 ml-4 sm:ml-2 button-effect"
-                onClick={onClickAdmin}
-              >
-                <span>관리</span>
-              </button>
-              <div className="mx-4 border border-gray-300 md:h-10 sm:h-8" />
+          <div className="w-[100%] flex justify-between items-center border border-t-gray-300 rounded-t-2xl md:h-16 ">
+            <select
+              className="md:w-[20%] sm:w-[40%] hover:opacity-60 font-bold h-10 border border-gray-300 rounded-lg p-2 text-sm mx-4"
+              onChange={onChangeCarNum}
+              defaultValue=""
+            >
+              <option value="" disabled>
+                차량 선택
+              </option>
+              {cars &&
+                cars
+                  .sort((a, b) => a.car.localeCompare(b.car))
+                  .map((car) => <option key={car._id}>{car.car}</option>)}
+            </select>
+            <div className="p-4 items-center flex w-[50%] justify-end print-hidden">
+              <div className="flex sm:flex-col items-center justify-center">
+                <button
+                  className="sm:whitespace-nowrap bg-[#00ab39] rounded-lg text-white md:py-2 sm:py-1 sm:text-sm px-4 button-effect md:mr-4 sm:mb-2"
+                  onClick={onClickInputInform}
+                >
+                  <span>입력</span>
+                </button>
+                <button
+                  className="sm:whitespace-nowrap bg-[#007BFF] rounded-lg text-white md:py-2 sm:py-1 sm:text-sm px-4 hover:opacity-60 md:ml-4  button-effect"
+                  onClick={onClickAdmin}
+                >
+                  <span>관리</span>
+                </button>
+              </div>
+
+              <div className="mx-4 border border-gray-300 md:h-10 sm:h-12" />
               <button className="" onClick={() => refetch()}>
-                <SlRefresh className="md:w-7 md:h-7 sm:w-5 sm:h-5 hover:opacity-60" />
+                <SlRefresh className="md:w-7 md:h-7 sm:w-6 sm:h-6 hover:opacity-60" />
               </button>
             </div>
           </div>
