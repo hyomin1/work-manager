@@ -99,6 +99,8 @@ function DriveMain() {
   const totalEtcCost =
     drivingInform?.reduce((acc, item) => acc + item.etc.cost, 0) || 0;
 
+  const totalDrivingKM =
+    drivingInform?.reduce((acc, item) => acc + item.totalKM, 0) || 0;
   const grandTotal = totalFuelCost + totalToll + totalEtcCost;
 
   return (
@@ -334,7 +336,9 @@ function DriveMain() {
                   <td />
                   <td />
                   <td />
-                  <td />
+                  <td className="p-2 border-b border-gray-200 whitespace-nowrap font-bold md:text-xs w-[5%]">
+                    {totalDrivingKM} km
+                  </td>
 
                   <td className="p-2 border-b border-gray-200 whitespace-nowrap font-bold md:text-xs w-[5%]">
                     {totalFuelCost}
