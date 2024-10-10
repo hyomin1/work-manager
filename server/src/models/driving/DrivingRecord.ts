@@ -1,8 +1,8 @@
-import { model, Schema } from "mongoose";
+import mongoose, { model, ObjectId, Schema } from "mongoose";
 
 interface IDrivingRecord {
   username: string;
-  car: string;
+  car: ObjectId;
   drivingDestination: string;
   startKM: number;
   endKM: number;
@@ -15,7 +15,7 @@ interface IDrivingRecord {
 const drivingRecordSchema = new Schema<IDrivingRecord>(
   {
     username: { type: String, required: true },
-    car: { type: String, required: true },
+    car: { type: mongoose.Schema.Types.ObjectId, ref: "Car", required: true },
     drivingDestination: { type: String, required: true },
     startKM: { type: Number, required: true },
     endKM: { type: Number, required: true },
