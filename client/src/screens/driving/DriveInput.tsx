@@ -20,6 +20,8 @@ function DriveInput() {
   const [fuelCost, setFuelCost] = useState(0);
   const [toll, setToll] = useState(0);
 
+  const [driveDay, setDriveDay] = useState<Date>();
+
   const [etc, setEtc] = useState<{ name: string; cost: number }>({
     name: "", // 초기값 설정
     cost: 0,
@@ -39,6 +41,10 @@ function DriveInput() {
     queryKey: ["etcNames"],
     queryFn: getEtcNames,
   });
+
+  const handleDriveDayChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setDriveDay(new Date(event.target.value));
+  };
 
   const handleNameChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setName(event.target.value);
@@ -73,6 +79,11 @@ function DriveInput() {
   };
 
   const onClickComplete = async () => {
+    console.log(driveDay);
+    if (!driveDay) {
+      alert("날짜를 선택해주세요");
+      return;
+    }
     if (!username) {
       alert("운전자를 선택해주세요");
       return;
@@ -100,6 +111,7 @@ function DriveInput() {
     }
     try {
       const res = await axiosApi.post("/api/driving-inform/addInform", {
+        driveDay,
         username,
         car,
         drivingDestination,
@@ -120,7 +132,6 @@ function DriveInput() {
   if (namesLoading || carsLoading || etcNamesLoading) {
     return <div>Loading...</div>;
   }
-  console.log(cars);
 
   return (
     <div className="w-full h-screen flex flex-col justify-start items-center p-10 bg-gray-50 sm:p-4 sm:overflow-y-auto">
@@ -143,6 +154,13 @@ function DriveInput() {
 
             <tbody>
               <tr className="sm:flex sm:flex-col table-auto">
+                <td className="sm:mb-4 sm:w-full md:border-x border-gray-300 md:border-b w-[5%]">
+                  <input
+                    type="date"
+                    className="p-2 transition duration-200 ease-in-out border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    onChange={handleDriveDayChange}
+                  />
+                </td>
                 <td className="sm:mb-4 sm:w-full md:border-r border-gray-300 md:border-b w-[10%]">
                   <div className="sm:font-bold sm:mb-2 md:hidden">차량</div>
                   <select

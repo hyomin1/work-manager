@@ -21,6 +21,7 @@ import ArrowBack from "./../../components/ArrowBack";
 import Logout from "../../components/Logout";
 
 interface IDrivingInform {
+  driveDay: Date;
   createdAt: Date;
   username: string;
   drivingDestination: string;
@@ -40,6 +41,7 @@ function DriveMain() {
   const [currentDate, setCurrentDate] = useState(new Date());
 
   const [carNum, setCarNum] = useState("");
+  const [car, setCar] = useState("");
 
   const { data: drivingInform, refetch } = useQuery<IDrivingInform[]>({
     queryKey: ["drivingInform"],
@@ -56,6 +58,7 @@ function DriveMain() {
   const totalPages = drivingInform
     ? Math.ceil(drivingInform.length / itemsPerPage)
     : 0;
+
   useEffect(() => {
     refetch();
   }, [carNum, refetch, currentDate]);
@@ -73,8 +76,10 @@ function DriveMain() {
   };
 
   const onChangeCarNum = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    console.log(e.target.value);
-    setCarNum(e.target.value);
+    const carId = e.target.value.split(",")[0];
+    const carName = e.target.value.split(",")[1];
+    setCar(carName);
+    setCarNum(carId);
     setCurrentPage(1);
   };
 
@@ -102,11 +107,11 @@ function DriveMain() {
   const totalDrivingKM =
     drivingInform?.reduce((acc, item) => acc + item.totalKM, 0) || 0;
   const grandTotal = totalFuelCost + totalToll + totalEtcCost;
-
+  console.log(drivingInform);
   return (
     <div className="flex flex-col items-center justify-between w-full h-screen p-4 sm:p-2 bg-gray-50">
       {isShow && <AdminLogin setIsShow={setIsShow} />}
-      <div className="sm:w-full w-[90%] flex flex-col items-center ">
+      <div className="sm:w-full w-[80%] flex flex-col items-center ">
         <div className="flex items-center justify-between w-full mt-4 mb-4 sm:mt-4">
           <ArrowBack type="home" />
           <Title
@@ -120,7 +125,7 @@ function DriveMain() {
           <Logout />
         </div>
 
-        <div className="flex items-center justify-between w-full mb-2 ">
+        <div className="flex items-center justify-between w-full mb-2">
           {showInput && (
             <div className="w-[17%] flex justify-center hover:opacity-60">
               <input
@@ -134,7 +139,10 @@ function DriveMain() {
         </div>
 
         <>
-          <div className="w-[100%] flex justify-between items-center border border-t-gray-300 rounded-t-2xl md:h-16 ">
+          <div className="hidden w-full mb-4 font-bold print:flex">
+            <span>{car}</span>
+          </div>
+          <div className="w-[100%] flex justify-between items-center border border-t-gray-300 rounded-t-2xl md:h-16 print-hidden">
             <select
               className="md:w-[20%] sm:w-[40%] hover:opacity-60 font-bold h-10 border border-gray-300 rounded-lg p-2 text-sm mx-4"
               onChange={onChangeCarNum}
@@ -147,12 +155,12 @@ function DriveMain() {
                 cars
                   .sort((a, b) => a.car.localeCompare(b.car))
                   .map((car) => (
-                    <option key={car._id} value={car._id}>
+                    <option key={car._id} value={`${car._id},${car.car}`}>
                       {car.car}
                     </option>
                   ))}
             </select>
-            <div className="p-4 items-center flex w-[50%] justify-end print-hidden">
+            <div className="p-4 items-center flex w-[50%] justify-end">
               <div className="flex sm:flex-col items-center justify-center">
                 <button
                   className="sm:whitespace-nowrap bg-[#00ab39] rounded-lg text-white md:py-2 sm:py-1 sm:text-sm px-4 button-effect md:mr-4 sm:mb-2"
@@ -202,7 +210,7 @@ function DriveMain() {
                   >
                     <div className="flex flex-col ">
                       <span className="mb-1 font-bold">날짜</span>
-                      <span>{calCarDay(item.createdAt)}</span>
+                      <span>{calCarDay(item.driveDay)}</span>
                     </div>
 
                     <div className="flex flex-col">
@@ -236,7 +244,7 @@ function DriveMain() {
                       <span> {item.toll}</span>
                     </div>
                     <div className="flex flex-col">
-                      <span className="mb-1 font-bold">기타 비용</span>
+                      <span className="mb-1 font-bold">기타</span>
                       <span>
                         {item.etc.cost > 0 && (
                           <p>
@@ -257,7 +265,7 @@ function DriveMain() {
                   <span>{totalToll}</span>
                 </div>
                 <div className="flex flex-col">
-                  <span className="font-bold">기타 비용</span>
+                  <span className="font-bold">기타</span>
                   <span>{totalEtcCost}</span>
                 </div>
                 <div className="flex ">
@@ -270,14 +278,14 @@ function DriveMain() {
               </div>
             </div>
           ) : (
-            <table className="w-[100%] rounded-2xl shadow-lg text-left table-auto">
+            <table className="w-[100%] rounded-2xl text-left border border-black">
               <TabHeader headers={drivingHeaders} category="driving" />
-              <tbody className="rounded-b-xl md:text-xs">
+              <tbody className="rounded-b-xl text-xs">
                 {drivingInform
                   ?.sort((a, b) => {
                     if (
-                      new Date(a.createdAt).getTime() ===
-                      new Date(b.createdAt).getTime()
+                      new Date(a.driveDay).getTime() ===
+                      new Date(b.driveDay).getTime()
                     ) {
                       if (a.drivingDestination === b.drivingDestination) {
                         return a.username.localeCompare(b.username);
@@ -287,8 +295,8 @@ function DriveMain() {
                       );
                     }
                     return (
-                      new Date(a.createdAt).getTime() -
-                      new Date(b.createdAt).getTime()
+                      new Date(a.driveDay).getTime() -
+                      new Date(b.driveDay).getTime()
                     );
                   })
                   ?.slice(indexOfFirstItem, indexOfLastItem)
@@ -296,37 +304,37 @@ function DriveMain() {
                     <tr
                       key={index}
                       className={`hover:bg-gray-100 sm:text-sm ${
-                        index % 2 === 0 ? "bg-white" : "bg-gray-50"
+                        index % 2 === 0 ? "bg-white" : "bg-gray-50 w-full"
                       }`}
                     >
-                      <td className="p-2 border-b border-gray-200 whitespace-nowrap w-[3%]">
-                        {calCarDay(item.createdAt)}
+                      <td className="py-2 pl-1 border border-black whitespace-nowrap">
+                        {calCarDay(item.driveDay)}
                       </td>
-                      <td className="p-2 border-b border-gray-200 whitespace-nowrap w-[4%]">
+                      <td className="py-2 pl-1 border border-black whitespace-nowrap ">
                         {item.username}
                       </td>
-                      <td className="p-2 border-b border-gray-200 whitespace-nowrap w-[25%]">
+                      <td className="py-2 pl-1 border border-black whitespace-nowrap">
                         {item.drivingDestination}
                       </td>
 
-                      <td className="p-2 border-b border-gray-200 whitespace-nowrap w-[5%]">
-                        {item.startKM} km
+                      <td className="py-2 pl-1 border border-black whitespace-nowrap ">
+                        {item.startKM}km
                       </td>
-                      <td className="p-2 border-b border-gray-200 whitespace-nowrap w-[5%]">
-                        {item.endKM} km
+                      <td className="py-2 pl-1 border border-black whitespace-nowrap ">
+                        {item.endKM}km
                       </td>
-                      <td className="p-2 border-b border-gray-200 whitespace-nowrap w-[5%]">
-                        {item.totalKM} km
+                      <td className="py-2 pl-1 border border-black whitespace-nowrap ">
+                        {item.totalKM}km
                       </td>
-                      <td className="p-2 border-b border-gray-200 whitespace-nowrap w-[5%]">
+                      <td className="py-2 pl-1 border border-black whitespace-nowrap ">
                         {item.fuelCost}
                       </td>
-                      <td className="p-2 border-b border-gray-200 whitespace-nowrap w-[5%]">
+                      <td className="py-2 pl-1 border border-black whitespace-nowrap ">
                         {item.toll}
                       </td>
-                      <td className="p-2 border-b border-gray-200 whitespace-nowrap w-[5%]">
+                      <td className="py-2 pl-1 border border-black whitespace-nowrap ">
                         {item.etc.cost > 0 &&
-                          `${item.etc.cost} (${item.etc.name})`}
+                          `${item.etc.cost}(${item.etc.name})`}
                       </td>
                     </tr>
                   ))}
@@ -336,20 +344,20 @@ function DriveMain() {
                   <td />
                   <td />
                   <td />
-                  <td className="p-2 border-b border-gray-200 whitespace-nowrap font-bold md:text-xs w-[5%]">
-                    {totalDrivingKM} km
+                  <td className="py-2 pl-1 border border-black whitespace-nowrap md:text-xs">
+                    {totalDrivingKM}km
                   </td>
 
-                  <td className="p-2 border-b border-gray-200 whitespace-nowrap font-bold md:text-xs w-[5%]">
+                  <td className="py-2 pl-1 border border-black whitespace-nowrap md:text-xs">
                     {totalFuelCost}
                   </td>
-                  <td className="p-2 border-b border-gray-200 whitespace-nowrap font-bold md:text-xs w-[5%]">
+                  <td className="py-2 pl-1 border border-black whitespace-nowrap md:text-xs">
                     {totalToll}
                   </td>
-                  <td className="p-2 border-b border-gray-200 whitespace-nowrap font-bold md:text-xs w-[5%]">
+                  <td className="py-2 pl-1 border border-black whitespace-nowrap md:text-xs ">
                     {totalEtcCost}
                   </td>
-                  <td className="p-2 border-b border-gray-200 whitespace-nowrap font-bold md:text-xs w-[2%]">
+                  <td className="py-2 pl-1 border border-black whitespace-nowrap md:text-xs ">
                     {grandTotal}
                   </td>
                 </tr>

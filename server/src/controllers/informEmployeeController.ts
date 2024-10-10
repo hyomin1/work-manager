@@ -373,6 +373,11 @@ export const getCar = async (req: Request, res: Response) => {
 };
 
 export const addInform = async (req: Request, res: Response) => {
+  if (!req.session.isUser) {
+    return res
+      .status(403)
+      .json({ type: "not User", error: "다시 로그인 해주세요" });
+  }
   const {
     username,
     destination,

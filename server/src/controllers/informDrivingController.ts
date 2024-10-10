@@ -68,13 +68,27 @@ export const getEtcName = async (req: Request, res: Response) => {
 };
 
 export const addInform = async (req: Request, res: Response) => {
-  const { username, car, drivingDestination, startKM, endKM } = req.body;
+  if (!req.session.isUser) {
+    return res
+      .status(403)
+      .json({ type: "not User", error: "다시 로그인 해주세요" });
+  }
+  const { driveDay, username, car, drivingDestination, startKM, endKM } =
+    req.body;
   try {
-    if (!username || !car || !drivingDestination || !startKM || !endKM) {
+    if (
+      !driveDay ||
+      !username ||
+      !car ||
+      !drivingDestination ||
+      !startKM ||
+      !endKM
+    ) {
       return res.status(400).json({ error: "정보를 입력해야 합니다." });
     }
     const data = {
       ...req.body,
+      writerId: req.session.userId,
       totalKM: endKM - startKM,
     };
     await DrivingRecord.create(data);
@@ -101,13 +115,14 @@ export const getInform = async (req: Request, res: Response) => {
     const IMonth: number = Number(month);
     const startDate = new Date(IYear, IMonth - 1); // UTC 기준 해당 달의 시작일
     const endDate = new Date(IYear, IMonth, 0, 23, 59, 59, 999); // UTC 기준 해당 달의 마지막 일
-
-    const allDrivingInforms = await DrivingRecord.find(
+    console.log(startDate, endDate);
+    const informs = await DrivingRecord.find(
       {
-        createdAt: { $gte: startDate, $lt: endDate },
+        driveDay: { $gte: startDate, $lt: endDate },
         car,
       },
       {
+        driveDay: 1,
         username: 1,
         drivingDestination: 1,
         startKM: 1,
@@ -117,8 +132,15 @@ export const getInform = async (req: Request, res: Response) => {
         fuelCost: 1,
         toll: 1,
         etc: 1,
+        writerId: 1,
       }
     );
+    const allDrivingInforms = informs.map((inform) => {
+      return {
+        ...inform.toObject(),
+        isOwner: inform.writerId.toString() === req.session.userId,
+      };
+    });
 
     return res.status(200).json({ allDrivingInforms });
   } catch (error) {
