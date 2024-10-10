@@ -6,6 +6,7 @@ import {
   getBusinesses,
   getWorks,
   getCars,
+  getEtcNames,
 } from "../api";
 import {
   INames,
@@ -13,6 +14,7 @@ import {
   IBusinesses,
   IWorks,
   ICars,
+  IEtcNames,
 } from "../interfaces/interface"; // 타입 경로에 맞게 수정
 
 export const useCustomQueries = () => {
@@ -45,6 +47,11 @@ export const useCustomQueries = () => {
     queryFn: getCars,
   });
 
+  const { data: etcNames, isLoading: etcNamesLoading } = useQuery<IEtcNames[]>({
+    queryKey: ["etcNames"],
+    queryFn: getEtcNames,
+  });
+
   return {
     names,
     namesLoading,
@@ -56,5 +63,7 @@ export const useCustomQueries = () => {
     worksLoading,
     cars,
     carsLoading,
+    etcNames,
+    etcNamesLoading,
   };
 };

@@ -35,3 +35,17 @@ export interface IInform {
   createdAt: Date;
   isOwner: boolean;
 }
+export interface IDrivingInform {
+  _id: string;
+  isOwner: boolean;
+  driveDay: Date;
+  createdAt: Date;
+  username: string;
+  drivingDestination: string;
+  startKM: number;
+  endKM: number;
+  totalKM: number;
+  fuelCost: number;
+  toll: number;
+  etc: { name: string; cost: number };
+}

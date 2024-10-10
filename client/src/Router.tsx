@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "./App";
 import EmployeeMain from "./screens/employee/EmployeeMain";
-import InputInform from "./screens/employee/InputInform";
+import EmployeeInput from "./screens/employee/EmployeeInput";
 import Admin from "./screens/Admin";
 import Login from "./screens/auth/Login";
 import Register from "./screens/auth/Register";
@@ -36,7 +36,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/employee-input",
-        element: <InputInform />,
+        element: <EmployeeInput />,
       },
       {
         path: "/driving-input",

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { useCustomQueries } from "../hooks/useCustomQuery";
-import { IInform } from "../interfaces/interface";
+import { useCustomQueries } from "../../hooks/useCustomQuery";
+import { IInform } from "../../interfaces/interface";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { getBusiness } from "../api";
-import axiosApi from "../axios";
+import { getBusiness } from "../../api";
+import axiosApi from "../../axios";
 
 interface IEditInformProps {
   item: IInform;

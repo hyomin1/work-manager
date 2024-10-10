@@ -150,6 +150,11 @@ export const getInform = async (req: Request, res: Response) => {
 };
 
 export const removeInform = async (req: Request, res: Response) => {
+  if (!req.session.isUser) {
+    return res
+      .status(403)
+      .json({ type: "not User", error: "다시 로그인 해주세요" });
+  }
   const { id } = req.params;
   try {
     const deletedInform = await DrivingRecord.deleteOne({ _id: id });
@@ -159,6 +164,51 @@ export const removeInform = async (req: Request, res: Response) => {
         .json({ error: "삭제할 정보가 존재하지 않습니다." });
     }
     return res.status(200).json({ message: "삭제 완료" });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "서버 에러" });
+  }
+};
+
+export const editInform = async (req: Request, res: Response) => {
+  if (!req.session.isUser) {
+    return res
+      .status(403)
+      .json({ type: "not User", error: "다시 로그인 해주세요" });
+  }
+  const {
+    _id,
+    driveDay,
+    username,
+    drivingDestination,
+    startKM,
+    endKM,
+    fuelCost,
+    toll,
+    etc,
+  } = req.body;
+  try {
+    const editInform = await DrivingRecord.findByIdAndUpdate(
+      _id,
+      {
+        driveDay,
+        username,
+        drivingDestination,
+        startKM,
+        endKM,
+        totalKM: endKM - startKM,
+        fuelCost,
+        toll,
+        etc,
+      },
+      { new: true }
+    );
+    if (!editInform) {
+      return res
+        .status(404)
+        .json({ error: "수정할 정보가 존재하지 않습니다." });
+    }
+    return res.status(200).json({ message: "정보 수정 완료" });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: "서버 에러" });

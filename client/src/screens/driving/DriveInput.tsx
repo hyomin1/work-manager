@@ -2,11 +2,10 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import TabInputHeader from "../../components/TabInputHeader";
 import { drivingInputHeaders } from "../../constants/headers";
-import { formDate, getCars, getEtcNames, getNames } from "../../api";
-import { useQuery } from "@tanstack/react-query";
-import { ICars, IEtcNames, INames } from "../../interfaces/interface";
+import { formDate } from "../../api";
 import axiosApi from "../../axios";
 import ArrowBack from "../../components/ArrowBack";
+import { useCustomQueries } from "../../hooks/useCustomQuery";
 
 function DriveInput() {
   const navigate = useNavigate();
@@ -27,20 +26,8 @@ function DriveInput() {
     cost: 0,
   });
 
-  const { data: names, isLoading: namesLoading } = useQuery<INames[]>({
-    queryKey: ["names"],
-    queryFn: getNames,
-  });
-
-  const { data: cars, isLoading: carsLoading } = useQuery<ICars[]>({
-    queryKey: ["cars"],
-    queryFn: getCars,
-  });
-
-  const { data: etcNames, isLoading: etcNamesLoading } = useQuery<IEtcNames[]>({
-    queryKey: ["etcNames"],
-    queryFn: getEtcNames,
-  });
+  const { names, namesLoading, cars, carsLoading, etcNames, etcNamesLoading } =
+    useCustomQueries();
 
   const handleDriveDayChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setDriveDay(new Date(event.target.value));
@@ -139,7 +126,7 @@ function DriveInput() {
           <div className="w-full flex justify-between items-center">
             <ArrowBack type="not home" />
             <div className="sm:w-[80%] flex items-center justify-center">
-              <span className=" font-bold text-3xl sm:text-xl">{formDate}</span>
+              <span className=" font-bold text-3xl sm:text-lg">{formDate}</span>
             </div>
             <div className="w-[15%]" />
           </div>
@@ -154,9 +141,10 @@ function DriveInput() {
             <tbody>
               <tr className="sm:flex sm:flex-col table-auto">
                 <td className="sm:mb-4 sm:w-full md:border-x border-gray-300 md:border-b w-[5%]">
+                  <div className="sm:font-bold sm:mb-2 md:hidden">날짜</div>
                   <input
                     type="date"
-                    className="p-2 transition duration-200 ease-in-out border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full p-2 transition duration-200 ease-in-out border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     onChange={handleDriveDayChange}
                   />
                 </td>
@@ -242,9 +230,7 @@ function DriveInput() {
                   />
                 </td>
                 <td className="sm:mb-4 sm:w-full md:border-r border-gray-300 md:border-b md:w-[10%]">
-                  <div className="sm:font-bold sm:mb-2 md:hidden">
-                    기타 비용
-                  </div>
+                  <div className="sm:font-bold sm:mb-2 md:hidden">기타</div>
                   <div className="flex">
                     <select
                       defaultValue=""

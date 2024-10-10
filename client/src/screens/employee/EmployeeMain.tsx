@@ -12,7 +12,7 @@ import ArrowBack from "../../components/ArrowBack";
 import { Edit, X } from "lucide-react";
 import axiosApi from "../../axios";
 import Logout from "../../components/Logout";
-import EditInform from "../../components/EditInform";
+import EditInform from "./EditInform";
 import { IInform } from "../../interfaces/interface";
 
 function Main() {

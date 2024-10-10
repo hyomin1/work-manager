@@ -8,7 +8,7 @@ import {
   getDrivingInform,
 } from "../../api";
 import { useQuery } from "@tanstack/react-query";
-import { ICars } from "../../interfaces/interface";
+import { ICars, IDrivingInform } from "../../interfaces/interface";
 import TabHeader from "../../components/TabHeader";
 import Title from "../../components/Title";
 import { drivingHeaders } from "../../constants/headers";
@@ -20,23 +20,8 @@ import { useMediaQuery } from "react-responsive";
 import ArrowBack from "./../../components/ArrowBack";
 import Logout from "../../components/Logout";
 import { Edit, X } from "lucide-react";
-import EditInform from "../../components/EditInform";
 import axiosApi from "../../axios";
-
-interface IDrivingInform {
-  _id: string;
-  isOwner: boolean;
-  driveDay: Date;
-  createdAt: Date;
-  username: string;
-  drivingDestination: string;
-  startKM: string;
-  endKM: string;
-  totalKM: number;
-  fuelCost: number;
-  toll: number;
-  etc: { name: string; cost: number };
-}
+import EditDrivingInform from "./EditDrivingInform";
 
 function DriveMain() {
   const navigate = useNavigate();
@@ -47,6 +32,8 @@ function DriveMain() {
 
   const [carNum, setCarNum] = useState("");
   const [car, setCar] = useState("");
+
+  const [editingItemId, setEditingItemId] = useState("");
 
   const { data: drivingInform, refetch } = useQuery<IDrivingInform[]>({
     queryKey: ["drivingInform"],
@@ -354,14 +341,23 @@ function DriveMain() {
                         {item.etc.cost > 0 &&
                           `${item.etc.cost}(${item.etc.name})`}
                       </td>
-                      <td className="border border-black md:py-2 md:pl-1 sm:p-1 print-hidden">
+                      <td className="border border-black md:py-1 md:pl-1 sm:p-1 print-hidden">
                         {item.isOwner && (
                           <div className="flex justify-end">
-                            <Edit className="w-5 h-5  hover:opacity-60 mr-2" />
+                            <Edit
+                              onClick={() => setEditingItemId(item._id)}
+                              className="w-5 h-5  hover:opacity-60 mr-2"
+                            />
                             <X
                               onClick={() => deleteInform(item._id)}
                               className="w-5 sm:h-5 hover:opacity-60 mr-2"
                             />
+                            {editingItemId === item._id && (
+                              <EditDrivingInform
+                                item={item}
+                                setEditingItemId={setEditingItemId}
+                              />
+                            )}
                           </div>
                         )}
                       </td>

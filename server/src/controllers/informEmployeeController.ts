@@ -432,6 +432,11 @@ export const addInform = async (req: Request, res: Response) => {
 };
 
 export const removeInform = async (req: Request, res: Response) => {
+  if (!req.session.isUser) {
+    return res
+      .status(403)
+      .json({ type: "not User", error: "다시 로그인 해주세요" });
+  }
   const { id } = req.params;
   try {
     const deletedInform = await Inform.deleteOne({ _id: id });

@@ -8,7 +8,7 @@ import ArrowBack from "../../components/ArrowBack";
 import { useNavigate } from "react-router-dom";
 import { useCustomQueries } from "../../hooks/useCustomQuery";
 
-function Input() {
+function EmployeeInput() {
   const [username, setName] = useState("");
 
   const [destinations, setDestinations] = useState(["", "", ""]);
@@ -442,4 +442,4 @@ function Input() {
   );
 }
 
-export default Input;
+export default EmployeeInput;
