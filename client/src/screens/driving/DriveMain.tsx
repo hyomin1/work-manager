@@ -72,6 +72,7 @@ function DriveMain() {
   };
 
   const onChangeCarNum = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    console.log(e.target.value);
     setCarNum(e.target.value);
     setCurrentPage(1);
   };
@@ -142,7 +143,11 @@ function DriveMain() {
               {cars &&
                 cars
                   .sort((a, b) => a.car.localeCompare(b.car))
-                  .map((car) => <option key={car._id}>{car.car}</option>)}
+                  .map((car) => (
+                    <option key={car._id} value={car._id}>
+                      {car.car}
+                    </option>
+                  ))}
             </select>
             <div className="p-4 items-center flex w-[50%] justify-end print-hidden">
               <div className="flex sm:flex-col items-center justify-center">

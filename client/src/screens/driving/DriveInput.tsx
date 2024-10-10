@@ -120,6 +120,7 @@ function DriveInput() {
   if (namesLoading || carsLoading || etcNamesLoading) {
     return <div>Loading...</div>;
   }
+  console.log(cars);
 
   return (
     <div className="w-full h-screen flex flex-col justify-start items-center p-10 bg-gray-50 sm:p-4 sm:overflow-y-auto">
@@ -155,7 +156,7 @@ function DriveInput() {
                     {cars
                       ?.sort((a, b) => a.car.localeCompare(b.car))
                       .map((item, index) => (
-                        <option key={index} value={item.car}>
+                        <option key={index} value={item._id}>
                           {item.car}
                         </option>
                       ))}
