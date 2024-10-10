@@ -35,16 +35,19 @@ interface IDrivingInform {
 function DriveMain() {
   const navigate = useNavigate();
 
+  const isMobile = useMediaQuery({ query: "(max-width: 540px)" });
+
+  const [currentDate, setCurrentDate] = useState(new Date());
+
+  const [carNum, setCarNum] = useState("");
+
   const { data: drivingInform, refetch } = useQuery<IDrivingInform[]>({
     queryKey: ["drivingInform"],
     queryFn: () =>
       getDrivingInform(calYear(currentDate), calMonth(currentDate), carNum),
     refetchInterval: 300_000,
+    enabled: carNum.length > 0,
   });
-
-  const isMobile = useMediaQuery({ query: "(max-width: 540px)" });
-
-  const [currentDate, setCurrentDate] = useState(new Date());
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = isMobile ? 10 : 25;
@@ -53,8 +56,6 @@ function DriveMain() {
   const totalPages = drivingInform
     ? Math.ceil(drivingInform.length / itemsPerPage)
     : 0;
-
-  const [carNum, setCarNum] = useState("");
   useEffect(() => {
     refetch();
   }, [carNum, refetch, currentDate]);

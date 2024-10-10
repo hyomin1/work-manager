@@ -123,6 +123,6 @@ export const getInform = async (req: Request, res: Response) => {
     return res.status(200).json({ allDrivingInforms });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ error: "서버 에러" });
+    return res.status(500).json({ error: "서버 에러dd" });
   }
 };

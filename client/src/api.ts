@@ -56,10 +56,13 @@ export const getDrivingInform = async (
   month: number,
   car: string
 ) => {
-  const res = await axiosApi.get(
-    `/api/driving-inform/getInform?year=${year}&month=${month}&car=${car}&date=${new Date()}`
-  );
-  return res.data.allDrivingInforms || [];
+  if (car) {
+    const res = await axiosApi.get(
+      `/api/driving-inform/getInform?year=${year}&month=${month}&car=${car}&date=${new Date()}`
+    );
+    return res.data.allDrivingInforms || [];
+  }
+  return [];
 };
 
 const today = new Date();
