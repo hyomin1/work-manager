@@ -79,7 +79,6 @@ function DriveInput() {
   };
 
   const onClickComplete = async () => {
-    console.log(driveDay);
     if (!driveDay) {
       alert("날짜를 선택해주세요");
       return;

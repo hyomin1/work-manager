@@ -19,8 +19,13 @@ import Page from "../../components/Page";
 import { useMediaQuery } from "react-responsive";
 import ArrowBack from "./../../components/ArrowBack";
 import Logout from "../../components/Logout";
+import { Edit, X } from "lucide-react";
+import EditInform from "../../components/EditInform";
+import axiosApi from "../../axios";
 
 interface IDrivingInform {
+  _id: string;
+  isOwner: boolean;
   driveDay: Date;
   createdAt: Date;
   username: string;
@@ -88,6 +93,20 @@ function DriveMain() {
     setShowInput(false);
     setCurrentPage(1);
   };
+
+  const deleteInform = async (id: string) => {
+    const isConfirm = window.confirm("삭제하시겠습니까?");
+    if (isConfirm) {
+      const res = await axiosApi.delete(
+        `/api/driving-inform/removeInform/${id}`
+      );
+      if (res.status === 200) {
+        alert(res.data.message);
+        refetch();
+      }
+    }
+  };
+
   const onClickInputInform = () => {
     navigate("/driving-input");
   };
@@ -107,7 +126,6 @@ function DriveMain() {
   const totalDrivingKM =
     drivingInform?.reduce((acc, item) => acc + item.totalKM, 0) || 0;
   const grandTotal = totalFuelCost + totalToll + totalEtcCost;
-  console.log(drivingInform);
   return (
     <div className="flex flex-col items-center justify-between w-full h-screen p-4 sm:p-2 bg-gray-50">
       {isShow && <AdminLogin setIsShow={setIsShow} />}
@@ -335,6 +353,17 @@ function DriveMain() {
                       <td className="py-2 pl-1 border border-black whitespace-nowrap ">
                         {item.etc.cost > 0 &&
                           `${item.etc.cost}(${item.etc.name})`}
+                      </td>
+                      <td className="border border-black md:py-2 md:pl-1 sm:p-1 print-hidden">
+                        {item.isOwner && (
+                          <div className="flex justify-end">
+                            <Edit className="w-5 h-5  hover:opacity-60 mr-2" />
+                            <X
+                              onClick={() => deleteInform(item._id)}
+                              className="w-5 sm:h-5 hover:opacity-60 mr-2"
+                            />
+                          </div>
+                        )}
                       </td>
                     </tr>
                   ))}

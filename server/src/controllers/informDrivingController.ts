@@ -115,7 +115,7 @@ export const getInform = async (req: Request, res: Response) => {
     const IMonth: number = Number(month);
     const startDate = new Date(IYear, IMonth - 1); // UTC 기준 해당 달의 시작일
     const endDate = new Date(IYear, IMonth, 0, 23, 59, 59, 999); // UTC 기준 해당 달의 마지막 일
-    console.log(startDate, endDate);
+
     const informs = await DrivingRecord.find(
       {
         driveDay: { $gte: startDate, $lt: endDate },
@@ -146,5 +146,21 @@ export const getInform = async (req: Request, res: Response) => {
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: "서버 에러dd" });
+  }
+};
+
+export const removeInform = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  try {
+    const deletedInform = await DrivingRecord.deleteOne({ _id: id });
+    if (!deletedInform) {
+      return res
+        .status(404)
+        .json({ error: "삭제할 정보가 존재하지 않습니다." });
+    }
+    return res.status(200).json({ message: "삭제 완료" });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "서버 에러" });
   }
 };

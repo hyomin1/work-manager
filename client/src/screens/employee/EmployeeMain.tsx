@@ -65,7 +65,7 @@ function Main() {
         `/api/employee-inform/removeInform/${id}`
       );
       if (res.status === 200) {
-        alert("삭제완료되었습니다.");
+        alert(res.data.message);
         refetch();
       }
     }
