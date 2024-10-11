@@ -196,13 +196,9 @@ function DriveMain() {
                     new Date(a.driveDay).getTime() ===
                     new Date(b.driveDay).getTime()
                   ) {
-                    if (a.drivingDestination === b.drivingDestination) {
-                      return a.username.localeCompare(b.username);
-                    }
-                    return a.drivingDestination.localeCompare(
-                      b.drivingDestination
-                    );
+                    return a.startKM - b.startKM;
                   }
+
                   return (
                     new Date(a.driveDay).getTime() -
                     new Date(b.driveDay).getTime()
@@ -297,12 +293,7 @@ function DriveMain() {
                       new Date(a.driveDay).getTime() ===
                       new Date(b.driveDay).getTime()
                     ) {
-                      if (a.drivingDestination === b.drivingDestination) {
-                        return a.username.localeCompare(b.username);
-                      }
-                      return a.drivingDestination.localeCompare(
-                        b.drivingDestination
-                      );
+                      return a.startKM - b.startKM;
                     }
                     return (
                       new Date(a.driveDay).getTime() -
