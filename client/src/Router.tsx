@@ -2,7 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import App from "./App";
 import EmployeeMain from "./screens/employee/EmployeeMain";
 import EmployeeInput from "./screens/employee/EmployeeInput";
-import Admin from "./screens/Admin";
+import Admin from "./screens/admin/Admin";
 import Login from "./screens/auth/Login";
 import Register from "./screens/auth/Register";
 import SelectPages from "./screens/SelectPages";

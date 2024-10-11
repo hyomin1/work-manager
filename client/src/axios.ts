@@ -1,6 +1,6 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 
-const axiosApi = axios.create({
+const axiosIP = axios.create({
   baseURL: "http://localhost:8080",
   withCredentials: true,
   timeout: 5000,
@@ -49,7 +49,7 @@ const handleResponseInterceptor = async (
   }
   return new Promise(() => {});
 };
-axiosApi.interceptors.response.use(
+axiosIP.interceptors.response.use(
   (response) => response,
   (error: AxiosError) => handleResponseInterceptor(error)
 );
@@ -59,4 +59,4 @@ axiosDomain.interceptors.response.use(
   (error: AxiosError) => handleResponseInterceptor(error)
 );
 
-export { axiosApi, axiosDomain };
+export { axiosIP, axiosDomain };

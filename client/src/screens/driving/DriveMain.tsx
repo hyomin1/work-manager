@@ -4,8 +4,6 @@ import {
   calMonth,
   calYear,
   calYearMonth,
-  domainName,
-  getBaseUrl,
   getCars,
   getDrivingInform,
 } from "../../api";
@@ -15,12 +13,12 @@ import TabHeader from "../../components/TabHeader";
 import Title from "../../components/Title";
 import { drivingHeaders } from "../../constants/headers";
 import { useNavigate } from "react-router-dom";
-import AdminLogin from "../../components/AdminLogin";
+import AdminLogin from "../admin/AdminLogin";
 import { SlRefresh } from "react-icons/sl";
 import Page from "../../components/Page";
 import { useMediaQuery } from "react-responsive";
 import ArrowBack from "./../../components/ArrowBack";
-import Logout from "../../components/Logout";
+import Logout from "../auth/Logout";
 import { Edit, X } from "lucide-react";
 import { axiosReq } from "../../api";
 import EditDrivingInform from "./EditDrivingInform";
@@ -138,7 +136,7 @@ function DriveMain() {
               <input
                 type="month"
                 onChange={handleDateChange}
-                className="sm:w-full w-[33%] my-4 p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 ease-in-out"
+                className="sm:w-[70%] w-[33%] my-4 p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 ease-in-out"
               />
             </div>
           )}
@@ -360,11 +358,7 @@ function DriveMain() {
                     </tr>
                   ))}
                 <tr>
-                  <td />
-                  <td />
-                  <td />
-                  <td />
-                  <td />
+                  <td colSpan={5} />
                   <td className="py-2 pl-1 border border-black whitespace-nowrap md:text-xs">
                     {totalDrivingKM}km
                   </td>

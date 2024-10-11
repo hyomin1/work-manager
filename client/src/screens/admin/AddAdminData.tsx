@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { QueryClient } from "@tanstack/react-query";
-import { axiosReq } from "../api";
+import { axiosReq } from "../../api";
 
 interface IAddData {
   setIsAdding: React.Dispatch<React.SetStateAction<boolean>>;
@@ -9,7 +9,12 @@ interface IAddData {
   destination?: string;
 }
 
-function AddData({ setIsAdding, type, queryClient, destination }: IAddData) {
+function AddAdminData({
+  setIsAdding,
+  type,
+  queryClient,
+  destination,
+}: IAddData) {
   const [inputValue, setInputValue] = useState("");
 
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -133,4 +138,4 @@ function AddData({ setIsAdding, type, queryClient, destination }: IAddData) {
   );
 }
 
-export default AddData;
+export default AddAdminData;

@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { LogOut } from "lucide-react";
 
-import { axiosReq } from "../api";
+import { axiosReq } from "../../api";
 
 function Logout() {
   const navigate = useNavigate();

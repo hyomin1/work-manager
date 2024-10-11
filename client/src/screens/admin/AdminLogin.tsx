@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 import { useNavigate } from "react-router-dom";
-import { axiosReq } from "../api";
+import { axiosReq } from "../../api";
 
 interface IAdminLoginProps {
   setIsShow: React.Dispatch<React.SetStateAction<boolean>>;

@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { axiosReq, calDate, getEmployeeInform } from "../../api";
-import AdminLogin from "../../components/AdminLogin";
+import AdminLogin from "../admin/AdminLogin";
 import { SlRefresh } from "react-icons/sl";
 import TabHeader from "../../components/TabHeader";
 import Page from "../../components/Page";
@@ -10,7 +10,7 @@ import { employeeHeaders } from "../../constants/headers";
 import Title from "../../components/Title";
 import ArrowBack from "../../components/ArrowBack";
 import { Edit, X } from "lucide-react";
-import Logout from "../../components/Logout";
+import Logout from "../auth/Logout";
 import EditInform from "./EditInform";
 import { IInform } from "../../interfaces/interface";
 

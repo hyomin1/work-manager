@@ -1,7 +1,7 @@
 import { QueryClient } from "@tanstack/react-query";
 import React, { useState } from "react";
 
-import { axiosReq } from "../api";
+import { axiosReq } from "../../api";
 interface IEditData {
   setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
   type: string;
@@ -11,7 +11,7 @@ interface IEditData {
   item: { [key: string]: string } | null;
 }
 
-function EditData({
+function EditAdminData({
   setIsEditing,
   type,
   queryClient,
@@ -136,4 +136,4 @@ function EditData({
   );
 }
 
-export default EditData;
+export default EditAdminData;

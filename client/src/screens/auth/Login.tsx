@@ -53,6 +53,7 @@ function Login() {
       navigate("/home");
     }
   };
+
   useEffect(() => {
     checkSession();
     if (cookies.rememberUserId) {

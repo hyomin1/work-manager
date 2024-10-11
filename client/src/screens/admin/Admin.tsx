@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import { axiosReq, formDate } from "../api";
-import Page from "../components/Page";
-import TabHeaderAdmin from "../components/TabHeaderAdmin";
-import TabContentAdmin from "../components/TabContentAdmin";
-import { useAdminData } from "../hooks/useAdminData";
-import ArrowBack from "../components/ArrowBack";
+import { axiosReq, formDate } from "../../api";
+import Page from "../../components/Page";
+import TabHeaderAdmin from "./TabHeaderAdmin";
+import TabContentAdmin from "./TabContentAdmin";
+import { useAdminData } from "../../hooks/useAdminData";
+import ArrowBack from "../../components/ArrowBack";
 
 function Admin() {
   const queryClient = useQueryClient();

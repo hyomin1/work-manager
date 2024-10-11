@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import AddData from "./AddData";
+import AddAdminData from "./AddAdminData";
 import { FaPlus } from "react-icons/fa6";
-import { TABS } from "../constants/adminTabs";
+import { TABS } from "../../constants/adminTabs";
 import { QueryClient, useQuery } from "@tanstack/react-query";
-import { IDestinations } from "../interfaces/interface";
-import { getDestinations } from "../api";
+import { IDestinations } from "../../interfaces/interface";
+import { getDestinations } from "../../api";
 import { X, Edit } from "lucide-react";
-import EditData from "./EditData";
+import EditAdminData from "./EditAdminData";
 
 interface TabContentProps {
   activeTab: string;
@@ -65,7 +65,7 @@ const TabContentAdmin = ({
   return (
     <div>
       {isAdding && (
-        <AddData
+        <AddAdminData
           setIsAdding={setIsAdding}
           type={activeTab}
           queryClient={queryClient}
@@ -73,7 +73,7 @@ const TabContentAdmin = ({
         />
       )}
       {isEditing && (
-        <EditData
+        <EditAdminData
           setIsEditing={setIsEditing}
           type={activeTab}
           queryClient={queryClient}

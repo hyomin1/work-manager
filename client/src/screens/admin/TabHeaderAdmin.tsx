@@ -1,4 +1,4 @@
-import { TABS } from "../constants/adminTabs";
+import { TABS } from "../..//constants/adminTabs";
 
 interface TabHeaderProps {
   activeTab: string;

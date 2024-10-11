@@ -1,12 +1,13 @@
-import { axiosApi, axiosDomain } from "./axios";
+import { axiosIP, axiosDomain } from "./axios";
 
+// 현재 URL 정보 get ex) http://localhost:3000/login -> http://localhost:3000
 export const getBaseUrl = () => {
   return window.location.origin;
 };
 
 export const domainName = "http://tech.bonc.co.kr";
 
-export const axiosReq = getBaseUrl() === domainName ? axiosDomain : axiosApi;
+export const axiosReq = getBaseUrl() === domainName ? axiosDomain : axiosIP;
 
 // 이름 정보
 export const getNames = async () => {

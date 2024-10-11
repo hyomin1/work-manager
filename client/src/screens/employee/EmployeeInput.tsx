@@ -217,8 +217,6 @@ function EmployeeInput() {
             </div>
             <div className="w-[15%] " />
           </div>
-
-          <div className="md-hidden sm:w-[10%]" />
         </div>
 
         <div className="w-full sm:overflow-x-auto">
