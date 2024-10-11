@@ -43,7 +43,6 @@ const handleResponseInterceptor = async (
   }
   return new Promise(() => {});
 };
-
 axiosApi.interceptors.response.use(
   (response) => response,
   (error: AxiosError) => handleResponseInterceptor(error)

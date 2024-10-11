@@ -28,7 +28,11 @@ app.use(
 );
 app.use(
   cors({
-    origin: ["http://localhost:3000", process.env.BASE_URL || ""],
+    origin: [
+      "http://localhost:3000",
+      process.env.IP_ADDR || "",
+      process.env.DOMAIN_NAME || "",
+    ],
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     credentials: true,
   })

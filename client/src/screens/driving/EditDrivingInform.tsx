@@ -106,6 +106,10 @@ function EditDrivingInform({ item, setEditingItemId }: IEditInformProps) {
     }
   };
 
+  if (namesLoading || etcNamesLoading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div className="fixed inset-0 flex items-center justify-center z-10 bg-black bg-opacity-65 top-0 px-4">
       <form
@@ -216,7 +220,7 @@ function EditDrivingInform({ item, setEditingItemId }: IEditInformProps) {
               type="number"
               value={etc.cost}
               onChange={handleEtcCostChange}
-              className=" w-[50%] border rounded-md p-2 w-full focus:outline-none focus:ring-2 focus:ring-green-400  transition duration-150 ease-in-out hover:opacity-60"
+              className=" w-[50%] border rounded-md p-2  focus:outline-none focus:ring-2 focus:ring-green-400  transition duration-150 ease-in-out hover:opacity-60"
             />
           </div>
         </div>

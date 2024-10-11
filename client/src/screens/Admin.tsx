@@ -7,11 +7,9 @@ import TabContentAdmin from "../components/TabContentAdmin";
 import { useAdminData } from "../hooks/useAdminData";
 import ArrowBack from "../components/ArrowBack";
 import axiosApi from "../axios";
-import { useNavigate } from "react-router-dom";
 
 function Admin() {
   const queryClient = useQueryClient();
-  const navigate = useNavigate();
 
   const [activeTab, setActiveTab] = useState<string>("username");
 

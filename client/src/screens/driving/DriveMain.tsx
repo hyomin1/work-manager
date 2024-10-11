@@ -132,15 +132,14 @@ function DriveMain() {
 
         <div className="flex items-center justify-between w-full mb-2">
           {showInput && (
-            <div className="w-[17%] flex justify-center hover:opacity-60">
+            <div className="w-full flex justify-center hover:opacity-60">
               <input
                 type="month"
                 onChange={handleDateChange}
-                className="sm:w-full w-[60%] my-4 p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 ease-in-out"
+                className="sm:w-full w-[33%] my-4 p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 ease-in-out"
               />
             </div>
           )}
-          <div className="w-[20%]" />
         </div>
 
         <>
