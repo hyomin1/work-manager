@@ -95,6 +95,17 @@ function DriveInput() {
       alert("항목을 선택해주세요.");
       return;
     }
+    if (typeof fuelCost !== "number") {
+      console.log("c");
+      setFuelCost(0);
+    }
+    if (typeof toll !== "number") {
+      setToll(0);
+    }
+    if (typeof etc.cost !== "number") {
+      setEtc({ name: etc.name, cost: 0 });
+    }
+
     try {
       const res = await axiosApi.post("/api/driving-inform/addInform", {
         driveDay,
@@ -121,7 +132,7 @@ function DriveInput() {
 
   return (
     <div className="w-full h-screen flex flex-col justify-start items-center p-10 bg-gray-50 sm:p-4 sm:overflow-y-auto">
-      <div className="w-[90%] flex flex-col items-center rounded-lg sm:w-full bg-gray-50 overflow-x-auto">
+      <div className="w-[95%] flex flex-col items-center rounded-lg sm:w-full bg-gray-50 overflow-x-auto">
         <div className="mt-4 mb-20 flex items-center md:justify-center w-full sm:mb-10 sm:justify-between">
           <div className="w-full flex justify-between items-center">
             <ArrowBack type="not home" />
@@ -139,8 +150,8 @@ function DriveInput() {
             <TabInputHeader headers={drivingInputHeaders} />
 
             <tbody>
-              <tr className="sm:flex sm:flex-col table-auto">
-                <td className="sm:mb-4 sm:w-full md:border-x border-gray-300 md:border-b w-[5%]">
+              <tr className="sm:flex sm:flex-col w-full">
+                <td className="sm:mb-4 sm:w-full md:border-x border-gray-300 md:border-b w-[1%]">
                   <div className="sm:font-bold sm:mb-2 md:hidden">날짜</div>
                   <input
                     type="date"
@@ -148,7 +159,7 @@ function DriveInput() {
                     onChange={handleDriveDayChange}
                   />
                 </td>
-                <td className="sm:mb-4 sm:w-full md:border-r border-gray-300 md:border-b w-[10%]">
+                <td className="sm:mb-4 sm:w-full md:border-r border-gray-300 md:border-b w-[7%]">
                   <div className="sm:font-bold sm:mb-2 md:hidden">차량</div>
                   <select
                     defaultValue=""
@@ -167,7 +178,7 @@ function DriveInput() {
                       ))}
                   </select>
                 </td>
-                <td className="sm:mb-4 sm:w-full md:border-r border-gray-300 md:border-b md:w-[10%]">
+                <td className="sm:mb-4 sm:w-full md:border-r border-gray-300 md:border-b md:w-[3%]">
                   <div className="sm:font-bold sm:mb-2 md:hidden">운전자</div>
                   <select
                     defaultValue=""
@@ -186,7 +197,7 @@ function DriveInput() {
                       ))}
                   </select>
                 </td>
-                <td className="sm:mb-4 sm:w-full md:border-r border-gray-300 md:border-b w-[23%]">
+                <td className="sm:mb-4 sm:w-full md:border-r border-gray-300 md:border-b w-[15%]">
                   <div className="sm:font-bold sm:mb-2 md:hidden">행선지</div>
                   <input
                     type="text"
@@ -212,7 +223,7 @@ function DriveInput() {
                   />
                 </td>
                 <td className="sm:mb-4 sm:w-full md:border-r border-gray-300 md:border-b md:w-[5%]">
-                  <div className="sm:font-bold sm:mb-2 md:hidden">주유비</div>
+                  <div className="sm:font-bold sm:mb-2 md:hidden"></div>
                   <input
                     type="number"
                     onChange={handleFuelCostChange}
@@ -220,7 +231,7 @@ function DriveInput() {
                     className="border rounded-md p-2 w-full focus:outline-none focus:ring-2 focus:ring-green-400  transition duration-150 ease-in-out hover:opacity-60"
                   />
                 </td>
-                <td className="sm:mb-4 sm:w-full md:border-r border-gray-300 md:border-b md:w-[5%]">
+                <td className="sm:mb-4 sm:w-full md:border-r border-gray-300 md:border-b md:w-[5%] whitespace-nowrap">
                   <div className="sm:font-bold sm:mb-2 md:hidden">하이패스</div>
                   <input
                     type="number"
@@ -235,7 +246,7 @@ function DriveInput() {
                     <select
                       defaultValue=""
                       onChange={handleEtcNameChange}
-                      className="hover:opacity-60 border rounded-md p-2 ml-3 sm:w-full sm:ml-0 md:mr-2"
+                      className="hover:opacity-60 border rounded-md p-2 ml-3 sm:w-full sm:ml-0 md:mr-2 w-full"
                     >
                       <option disabled value="">
                         항목 선택

@@ -1,6 +1,7 @@
 import express from "express";
 import {
   adminLogin,
+  checkAdminSession,
   checkSession,
   joinUser,
   loginUser,
@@ -10,6 +11,8 @@ import {
 const router = express.Router();
 
 router.get("/checkSession", checkSession);
+router.get("/checkAdminSession", checkAdminSession);
+
 router.post("/login", loginUser);
 router.post("/logout", logoutUser);
 router.post("/adminLogin", adminLogin);

@@ -70,6 +70,16 @@ export const checkSession = async (req: Request, res: Response) => {
   }
 };
 
+export const checkAdminSession = async (req: Request, res: Response) => {
+  if (req.session.isAdmin) {
+    return res.status(200).json();
+  } else {
+    return res
+      .status(403)
+      .json({ error: "관리자 권한이 없습니다.", type: "not admin" });
+  }
+};
+
 export const adminLogin = async (req: Request, res: Response) => {
   const { userId, password } = req.body;
 
@@ -89,7 +99,7 @@ export const adminLogin = async (req: Request, res: Response) => {
     if (admin.role !== "admin") {
       return res
         .status(403)
-        .json({ error: "관리자 권한이 없습니다.", type: "not admin" });
+        .json({ error: "관리자 권한이 없습니다.", type: "not granted admin" });
     }
     req.session.isAdmin = true;
     return res.json({ message: "로그인 성공" });

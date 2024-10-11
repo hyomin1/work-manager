@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { formDate } from "../api";
 import Page from "../components/Page";
@@ -6,15 +6,25 @@ import TabHeaderAdmin from "../components/TabHeaderAdmin";
 import TabContentAdmin from "../components/TabContentAdmin";
 import { useAdminData } from "../hooks/useAdminData";
 import ArrowBack from "../components/ArrowBack";
+import axiosApi from "../axios";
+import { useNavigate } from "react-router-dom";
 
 function Admin() {
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   const [activeTab, setActiveTab] = useState<string>("username");
 
   const [page, setPage] = useState(1);
   const { data, removeItem } = useAdminData(activeTab, page, queryClient);
   const [destination, setDestination] = useState("");
+
+  const checkAdminSession = async () => {
+    await axiosApi.get("/auth/checkAdminSession");
+  };
+  useEffect(() => {
+    checkAdminSession();
+  }, []);
 
   const handleTabClick = (tab: string) => {
     setPage(1);

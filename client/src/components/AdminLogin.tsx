@@ -20,6 +20,9 @@ function AdminLogin({ setIsShow }: IAdminLoginProps) {
     });
     if (res.status === 200) {
       navigate("/admin");
+    } else if (res.status === 403) {
+      console.log("a");
+      setIsShow(false);
     }
   };
 

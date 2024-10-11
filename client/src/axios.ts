@@ -1,0 +1,52 @@
+import axios, { AxiosError, AxiosResponse } from "axios";
+
+const axiosApi = axios.create({
+  baseURL: "http://localhost:8080", //http://172.16.142.101
+  withCredentials: true,
+  timeout: 5000,
+});
+
+const handleResponseInterceptor = async (
+  error: AxiosError
+): Promise<AxiosResponse> => {
+  if (error.response?.status === 400) {
+    const errMsg = error.response.data as { error: string };
+    alert(errMsg.error);
+  } else if (error.response?.status === 401) {
+    const errMsg = error.response.data as { error: string };
+    alert(errMsg.error);
+    return new Promise(() => {});
+  } else if (error.response?.status === 403) {
+    const errMsg = error.response.data as { error: string };
+    const errType = error.response.data as { type: string };
+
+    alert(errMsg.error);
+
+    // 유저 아닌 경우
+    if (errType.type === "not User") {
+      window.location.href = "/";
+    } else if (errType.type === "not admin") {
+      // /admin직접 url redirect해서 들어온 경우
+      window.location.href = "/";
+    } else if (errType.type === "not granted admin") {
+    }
+
+    //window.location.href = "/";
+    return new Promise(() => {});
+  } else if (error.response?.status === 404) {
+    const errMsg = error.response.data as { error: string };
+    alert(errMsg.error);
+  } else if (error.response?.status === 500) {
+    const errMsg = error.response.data as { error: string };
+    alert(errMsg.error);
+    return new Promise(() => {});
+  }
+  return new Promise(() => {});
+};
+
+axiosApi.interceptors.response.use(
+  (response) => response,
+  (error: AxiosError) => handleResponseInterceptor(error)
+);
+
+export default axiosApi;

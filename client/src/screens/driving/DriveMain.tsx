@@ -192,8 +192,8 @@ function DriveMain() {
               {drivingInform
                 ?.sort((a, b) => {
                   if (
-                    new Date(a.createdAt).getTime() ===
-                    new Date(b.createdAt).getTime()
+                    new Date(a.driveDay).getTime() ===
+                    new Date(b.driveDay).getTime()
                   ) {
                     if (a.drivingDestination === b.drivingDestination) {
                       return a.username.localeCompare(b.username);
@@ -203,8 +203,8 @@ function DriveMain() {
                     );
                   }
                   return (
-                    new Date(a.createdAt).getTime() -
-                    new Date(b.createdAt).getTime()
+                    new Date(a.driveDay).getTime() -
+                    new Date(b.driveDay).getTime()
                   );
                 })
                 ?.slice(indexOfFirstItem, indexOfLastItem)
@@ -262,6 +262,11 @@ function DriveMain() {
                 ))}
               <div className="grid w-full grid-cols-3 gap-2 p-4 mb-1 space-x-0 text-sm bg-white border border-gray-300 rounded-lg shadow-md">
                 <div className="flex flex-col">
+                  <span className="font-bold">주행거리</span>
+                  <span>{totalDrivingKM} km</span>
+                </div>
+
+                <div className="flex flex-col">
                   <span className="font-bold">주유비</span>
                   <span>{totalFuelCost}</span>
                 </div>
@@ -273,13 +278,12 @@ function DriveMain() {
                   <span className="font-bold">기타</span>
                   <span>{totalEtcCost}</span>
                 </div>
-                <div className="flex ">
-                  <span className="font-bold">총계</span>
-                </div>
                 <div />
-                <div>
+                <div className="flex flex-col">
+                  <span className="font-bold">총계</span>
                   <span>{grandTotal}</span>
                 </div>
+                <div />
               </div>
             </div>
           ) : (

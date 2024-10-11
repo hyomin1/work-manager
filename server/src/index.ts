@@ -1,6 +1,5 @@
 import "dotenv/config";
-
-import express, { Express, Request, Response } from "express";
+import express, { Express } from "express";
 import cors from "cors";
 import http from "http";
 
@@ -27,10 +26,9 @@ app.use(
     },
   })
 );
-
 app.use(
   cors({
-    origin: ["http://localhost:3000", "http://172.16.142.101"],
+    origin: ["http://localhost:3000", process.env.BASE_URL || ""],
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     credentials: true,
   })
