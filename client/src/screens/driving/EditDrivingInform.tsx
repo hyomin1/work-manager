@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { IDrivingInform } from "../../interfaces/interface";
 import { useCustomQueries } from "../../hooks/useCustomQuery";
-import axiosApi from "../../axios";
+
 import { useQueryClient } from "@tanstack/react-query";
+import { axiosReq } from "../../api";
 
 interface IEditInformProps {
   item: IDrivingInform;
@@ -88,7 +89,7 @@ function EditDrivingInform({ item, setEditingItemId }: IEditInformProps) {
       return;
     }
 
-    const res = await axiosApi.put("/api/driving-inform/editInform", {
+    const res = await axiosReq.put("/api/driving-inform/editInform", {
       _id: item._id,
       username,
       driveDay,

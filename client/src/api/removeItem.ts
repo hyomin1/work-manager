@@ -1,5 +1,5 @@
 import { QueryClient } from "@tanstack/react-query";
-import axiosApi from "../axios";
+import { axiosReq } from "../api";
 
 export async function removeItem(
   type: string,
@@ -8,7 +8,7 @@ export async function removeItem(
 ) {
   const isConfirm = window.confirm("삭제하시겠습니까?");
   if (isConfirm) {
-    const res = await axiosApi.delete(
+    const res = await axiosReq.delete(
       `/api/employee-inform/remove${
         type.charAt(0).toUpperCase() + type.slice(1)
       }/${id}`

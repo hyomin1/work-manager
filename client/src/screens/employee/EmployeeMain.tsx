@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { calDate, getEmployeeInform } from "../../api";
+import { axiosReq, calDate, getEmployeeInform } from "../../api";
 import AdminLogin from "../../components/AdminLogin";
 import { SlRefresh } from "react-icons/sl";
 import TabHeader from "../../components/TabHeader";
@@ -10,7 +10,6 @@ import { employeeHeaders } from "../../constants/headers";
 import Title from "../../components/Title";
 import ArrowBack from "../../components/ArrowBack";
 import { Edit, X } from "lucide-react";
-import axiosApi from "../../axios";
 import Logout from "../../components/Logout";
 import EditInform from "./EditInform";
 import { IInform } from "../../interfaces/interface";
@@ -61,7 +60,7 @@ function Main() {
   const deleteInform = async (id: string) => {
     const isConfirm = window.confirm("삭제하시겠습니까?");
     if (isConfirm) {
-      const res = await axiosApi.delete(
+      const res = await axiosReq.delete(
         `/api/employee-inform/removeInform/${id}`
       );
       if (res.status === 200) {

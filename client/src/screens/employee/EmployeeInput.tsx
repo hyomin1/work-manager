@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import { formDate } from "../../api";
+import { formDate, axiosReq } from "../../api";
 
-import axiosApi from "../../axios";
 import TabInputHeader from "../../components/TabInputHeader";
 import { employeeInputHeaders } from "../../constants/headers";
 import ArrowBack from "../../components/ArrowBack";
@@ -188,7 +187,7 @@ function EmployeeInput() {
     }
 
     const requests = destArr.map((destination, index) =>
-      axiosApi.post("/api/employee-inform/addInform", {
+      axiosReq.post("/api/employee-inform/addInform", {
         username,
         destination: destArr[index],
         business: businessArr[index],

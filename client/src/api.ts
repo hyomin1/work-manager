@@ -1,26 +1,34 @@
-import axiosApi from "./axios";
+import { axiosApi, axiosDomain } from "./axios";
+
+export const getBaseUrl = () => {
+  return window.location.origin;
+};
+
+export const domainName = "http://tech.bonc.co.kr";
+
+export const axiosReq = getBaseUrl() === domainName ? axiosDomain : axiosApi;
 
 // 이름 정보
 export const getNames = async () => {
-  const res = await axiosApi.get("/api/employee-inform/getName");
+  const res = await axiosReq.get("/api/employee-inform/getName");
   return res.data.allNames || [];
 };
 
 // 방문지 정보
 export const getDestinations = async () => {
-  const res = await axiosApi.get("/api/employee-inform/getDestination");
+  const res = await axiosReq.get("/api/employee-inform/getDestination");
   return res.data.allDestinations || [];
 };
 
 // 사업명 정보
 export const getBusinesses = async () => {
-  const res = await axiosApi.get("/api/employee-inform/getBusinesses");
+  const res = await axiosReq.get("/api/employee-inform/getBusinesses");
 
   return res.data.allBusinesses || [];
 };
 
 export const getBusiness = async (business: string) => {
-  const res = await axiosApi.get(
+  const res = await axiosReq.get(
     `/api/employee-inform/getBusiness/${business}`
   );
 
@@ -29,24 +37,24 @@ export const getBusiness = async (business: string) => {
 
 // 업무 정보
 export const getWorks = async () => {
-  const res = await axiosApi.get("/api/employee-inform/getWork");
+  const res = await axiosReq.get("/api/employee-inform/getWork");
   return res.data.allWorks || [];
 };
 
 // 차량 정보
 export const getCars = async () => {
-  const res = await axiosApi.get("/api/employee-inform/getCar");
+  const res = await axiosReq.get("/api/employee-inform/getCar");
   return res.data.allCars || [];
 };
 
 export const getEtcNames = async () => {
-  const res = await axiosApi.get("/api/employee-inform/getEtcName");
+  const res = await axiosReq.get("/api/employee-inform/getEtcName");
   return res.data.allEtcNames || [];
 };
 
 // 입력된 인원 상태 정보
 export const getEmployeeInform = async (date: Date) => {
-  const res = await axiosApi.get(`/api/employee-inform/getInform?date=${date}`);
+  const res = await axiosReq.get(`/api/employee-inform/getInform?date=${date}`);
 
   return res.data.allInforms || [];
 };
@@ -57,7 +65,7 @@ export const getDrivingInform = async (
   car: string
 ) => {
   if (car) {
-    const res = await axiosApi.get(
+    const res = await axiosReq.get(
       `/api/driving-inform/getInform?year=${year}&month=${month}&car=${car}&date=${new Date()}`
     );
     return res.data.allDrivingInforms || [];

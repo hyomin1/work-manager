@@ -1,6 +1,7 @@
 import { QueryClient } from "@tanstack/react-query";
 import React, { useState } from "react";
-import axiosApi from "../axios";
+
+import { axiosReq } from "../api";
 interface IEditData {
   setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
   type: string;
@@ -87,7 +88,7 @@ function EditData({
         return;
     }
 
-    const res = await axiosApi.patch(url, body);
+    const res = await axiosReq.patch(url, body);
     if (res.status === 200) {
       alert("변경이 완료되었습니다");
       queryClient.invalidateQueries({ queryKey: [type] });

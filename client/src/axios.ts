@@ -1,7 +1,13 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 
 const axiosApi = axios.create({
-  baseURL: "http://localhost:8080", //http://172.16.142.101
+  baseURL: "http://localhost:8080",
+  withCredentials: true,
+  timeout: 5000,
+});
+
+const axiosDomain = axios.create({
+  baseURL: "http://tech.bonc.co.kr",
   withCredentials: true,
   timeout: 5000,
 });
@@ -48,4 +54,9 @@ axiosApi.interceptors.response.use(
   (error: AxiosError) => handleResponseInterceptor(error)
 );
 
-export default axiosApi;
+axiosDomain.interceptors.response.use(
+  (response) => response,
+  (error: AxiosError) => handleResponseInterceptor(error)
+);
+
+export { axiosApi, axiosDomain };

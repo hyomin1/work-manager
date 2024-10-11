@@ -4,6 +4,8 @@ import {
   calMonth,
   calYear,
   calYearMonth,
+  domainName,
+  getBaseUrl,
   getCars,
   getDrivingInform,
 } from "../../api";
@@ -20,7 +22,7 @@ import { useMediaQuery } from "react-responsive";
 import ArrowBack from "./../../components/ArrowBack";
 import Logout from "../../components/Logout";
 import { Edit, X } from "lucide-react";
-import axiosApi from "../../axios";
+import { axiosReq } from "../../api";
 import EditDrivingInform from "./EditDrivingInform";
 
 function DriveMain() {
@@ -84,7 +86,7 @@ function DriveMain() {
   const deleteInform = async (id: string) => {
     const isConfirm = window.confirm("삭제하시겠습니까?");
     if (isConfirm) {
-      const res = await axiosApi.delete(
+      const res = await axiosReq.delete(
         `/api/driving-inform/removeInform/${id}`
       );
       if (res.status === 200) {

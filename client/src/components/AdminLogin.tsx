@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import axiosApi from "../axios";
+
 import { useNavigate } from "react-router-dom";
+import { axiosReq } from "../api";
 
 interface IAdminLoginProps {
   setIsShow: React.Dispatch<React.SetStateAction<boolean>>;
@@ -14,14 +15,14 @@ function AdminLogin({ setIsShow }: IAdminLoginProps) {
 
   const onAdminLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const res = await axiosApi.post("/auth/adminLogin", {
+
+    const res = await axiosReq.post("/auth/adminLogin", {
       userId,
       password,
     });
     if (res.status === 200) {
       navigate("/admin");
     } else if (res.status === 403) {
-      console.log("a");
       setIsShow(false);
     }
   };

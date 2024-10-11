@@ -1,7 +1,8 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import axiosApi from "../../axios";
+
+import { axiosReq } from "../../api";
 
 interface IRegister {
   userId: string;
@@ -25,7 +26,7 @@ function Login() {
   const password = watch("password");
 
   const onRegister = async (data: IRegister) => {
-    const res = await axiosApi.post("/auth/register", data);
+    const res = await axiosReq.post("/auth/register", data);
     if (res.status !== 201) {
       return;
     }

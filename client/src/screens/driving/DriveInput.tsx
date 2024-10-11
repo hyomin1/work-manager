@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import TabInputHeader from "../../components/TabInputHeader";
 import { drivingInputHeaders } from "../../constants/headers";
-import { formDate } from "../../api";
-import axiosApi from "../../axios";
+import { formDate, axiosReq } from "../../api";
+
 import ArrowBack from "../../components/ArrowBack";
 import { useCustomQueries } from "../../hooks/useCustomQuery";
 
@@ -96,7 +96,6 @@ function DriveInput() {
       return;
     }
     if (typeof fuelCost !== "number") {
-      console.log("c");
       setFuelCost(0);
     }
     if (typeof toll !== "number") {
@@ -107,7 +106,7 @@ function DriveInput() {
     }
 
     try {
-      const res = await axiosApi.post("/api/driving-inform/addInform", {
+      const res = await axiosReq.post("/api/driving-inform/addInform", {
         driveDay,
         username,
         car,

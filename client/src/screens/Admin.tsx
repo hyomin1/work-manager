@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import { formDate } from "../api";
+import { axiosReq, formDate } from "../api";
 import Page from "../components/Page";
 import TabHeaderAdmin from "../components/TabHeaderAdmin";
 import TabContentAdmin from "../components/TabContentAdmin";
 import { useAdminData } from "../hooks/useAdminData";
 import ArrowBack from "../components/ArrowBack";
-import axiosApi from "../axios";
 
 function Admin() {
   const queryClient = useQueryClient();
@@ -18,7 +17,7 @@ function Admin() {
   const [destination, setDestination] = useState("");
 
   const checkAdminSession = async () => {
-    await axiosApi.get("/auth/checkAdminSession");
+    await axiosReq.get("/auth/checkAdminSession");
   };
   useEffect(() => {
     checkAdminSession();

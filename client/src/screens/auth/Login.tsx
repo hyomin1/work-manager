@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import axiosApi from "../../axios";
+
 import { useCookies } from "react-cookie";
+import { axiosReq } from "../../api";
 
 interface ILogin {
   userId: string;
@@ -28,7 +29,7 @@ function Login() {
   };
 
   const onLogin = async (data: ILogin) => {
-    const res = await axiosApi.post("/auth/login", data);
+    const res = await axiosReq.post("/auth/login", data);
     if (res.status === 201) {
       if (isRemember) {
         setCookie("rememberUserId", data.userId, { path: "/" }); // 쿠키에 사용자 ID 저장
@@ -46,7 +47,7 @@ function Login() {
   };
 
   const checkSession = async () => {
-    const res = await axiosApi.get("/auth/checkSession");
+    const res = await axiosReq.get("/auth/checkSession");
     // 세션 존재 시 바로 메인 화면
     if (res.status === 200) {
       navigate("/home");

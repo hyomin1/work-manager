@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
-import axiosApi from "../axios";
 import { QueryClient } from "@tanstack/react-query";
+import { axiosReq } from "../api";
 
 interface IAddData {
   setIsAdding: React.Dispatch<React.SetStateAction<boolean>>;
@@ -83,7 +83,7 @@ function AddData({ setIsAdding, type, queryClient, destination }: IAddData) {
         return;
     }
 
-    const res = await axiosApi.post(url, body);
+    const res = await axiosReq.post(url, body);
     if (res.status === 200) {
       alert("성공적으로 등록하였습니다.");
       queryClient.invalidateQueries({ queryKey: [type] });

@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useCustomQueries } from "../../hooks/useCustomQuery";
 import { IInform } from "../../interfaces/interface";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { getBusiness } from "../../api";
-import axiosApi from "../../axios";
+import { getBusiness, axiosReq } from "../../api";
 
 interface IEditInformProps {
   item: IInform;
@@ -75,7 +74,7 @@ function EditInform({ item, setEditingItemId }: IEditInformProps) {
       return;
     }
 
-    const res = await axiosApi.put("/api/employee-inform/editInform", {
+    const res = await axiosReq.put("/api/employee-inform/editInform", {
       _id: item._id,
       username,
       destination,
