@@ -48,12 +48,12 @@ function Title({
     <div>
       <div className=" flex items-center justify-center w-[100%]">
         <button onClick={previous} className="hover:opacity-60 print-hidden">
-          <IoIosArrowBack className="w-8 h-8 sm:w-6 sm:h-6" />
+          <IoIosArrowBack className="w-8 h-8 sm:w-4 sm:h-4" />
         </button>
         <button>
           <span
             onClick={selectDate}
-            className="font-bold  md:text-3xl md:mx-8 sm:mx-2  hover:opacity-70 whitespace-nowrap"
+            className="font-bold  sm:text-sm md:text-3xl md:mx-8 sm:mx-1  hover:opacity-70 whitespace-nowrap"
           >
             {category === "driving" &&
               calYearMonth &&
@@ -64,7 +64,7 @@ function Title({
         </button>
 
         <button onClick={next} className="hover:opacity-60 print-hidden">
-          <IoIosArrowForward className="w-8 h-8 sm:w-6 sm:h-6" />
+          <IoIosArrowForward className="w-8 h-8 sm:w-4 sm:h-4" />
         </button>
       </div>
     </div>

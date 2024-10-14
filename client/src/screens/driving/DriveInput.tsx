@@ -135,10 +135,10 @@ function DriveInput() {
         <div className="mt-4 mb-20 flex items-center md:justify-center w-full sm:mb-10 sm:justify-between">
           <div className="w-full flex justify-between items-center">
             <ArrowBack type="not home" />
-            <div className="sm:w-[80%] flex items-center justify-center">
-              <span className=" font-bold text-3xl sm:text-lg">{formDate}</span>
+            <div className="flex items-center justify-center">
+              <span className="font-bold text-3xl sm:text-lg">{formDate}</span>
             </div>
-            <div className="w-[10%]" />
+            <div className="w-[11%]" />
           </div>
         </div>
 

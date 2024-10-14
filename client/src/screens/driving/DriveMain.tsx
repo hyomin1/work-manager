@@ -168,24 +168,24 @@ function DriveMain() {
               <div className="flex sm:flex-col items-center justify-center">
                 <button
                   onClick={() => navigate("/employee-status")}
-                  className="sm:whitespace-nowrap bg-[#00ab39] rounded-lg text-white md:py-2 sm:py-1 sm:text-sm px-4 hover:opacity-60 mr-4 sm:mr-2 button-effect flex justify-center items-center"
+                  className="sm:whitespace-nowrap bg-[#00ab39] rounded-lg text-white md:py-2 sm:py-1 sm:text-sm px-4 hover:opacity-60 md:mr-4 sm:mb-2 button-effect flex justify-center items-center"
                 >
-                  <Users />
-                  <span className="ml-1">근무</span>
+                  <Users className="sm:w-4 sm:h-4" />
+                  <span className="ml-1 sm:text-xs">근무</span>
                 </button>
                 <button
                   className="sm:whitespace-nowrap bg-[#007BFF] rounded-lg text-white md:py-2 sm:py-1 sm:text-sm px-4 button-effect md:mr-4 sm:mb-2 flex justify-center items-center"
                   onClick={onClickInputInform}
                 >
-                  <Pencil />
-                  <span className="ml-1">입력</span>
+                  <Pencil className="sm:w-4 sm:h-4" />
+                  <span className="ml-1 sm:text-xs">입력</span>
                 </button>
                 <button
-                  className="sm:whitespace-nowrap bg-[#00ab39] rounded-lg text-white md:py-2 sm:py-1 sm:text-sm px-4 hover:opacity-60  button-effect flex justify-center items-center"
+                  className="sm:whitespace-nowrap bg-[#00ab39] rounded-lg text-white md:py-2 sm:py-1 sm:text-sm px-4 hover:opacity-60 button-effect flex justify-center items-center"
                   onClick={onClickAdmin}
                 >
-                  <Settings />
-                  <span className="ml-1">관리</span>
+                  <Settings className="sm:w-4 sm:h-4" />
+                  <span className="ml-1 sm:text-xs">관리</span>
                 </button>
               </div>
 

@@ -6,6 +6,9 @@ import TabHeaderAdmin from "./TabHeaderAdmin";
 import TabContentAdmin from "./TabContentAdmin";
 import { useAdminData } from "../../hooks/useAdminData";
 import ArrowBack from "../../components/ArrowBack";
+import { LogOut } from "lucide-react";
+import Logout from "../auth/Logout";
+import Blank from "../../components/Blank";
 
 function Admin() {
   const queryClient = useQueryClient();
@@ -51,12 +54,12 @@ function Admin() {
         <div className="mt-4 mb-20 flex items-center md:justify-center w-full sm:mb-10 ">
           <div className="w-full flex justify-between items-center">
             <ArrowBack type="not home" />
-            <div className="sm:w-[80%] flex items-center justify-center">
-              <span className="font-bold  md:text-3xl md:mx-8 sm:mx-2 whitespace-nowrap">
+            <div className="flex items-center justify-center">
+              <span className="font-bold md:text-3xl md:mx-8 sm:mx-2 whitespace-nowrap">
                 {formDate}
               </span>
             </div>
-            <div className="w-[10%]" />
+            <div className="w-[11%]" />
           </div>
         </div>
 
