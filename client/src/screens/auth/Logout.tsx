@@ -17,7 +17,7 @@ function Logout() {
   return (
     <button
       onClick={goLogin}
-      className="w-[8%] flex justify-center items-center border border-gray-300 hover:opacity-60 text-gray-600 py-2 rounded-3xl print-hidden"
+      className="w-[8%] flex justify-center items-center border border-gray-300 hover:opacity-60 text-gray-600 py-2 rounded-3xl print-hidden whitespace-nowrap"
     >
       <span className="mr-1">로그아웃</span>
       <LogOut className=" md:w-6 md:h-5" />

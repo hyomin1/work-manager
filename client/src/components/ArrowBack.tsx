@@ -18,7 +18,7 @@ function ArrowBack({ type }: IArrowProps) {
   return (
     <button
       onClick={goBack}
-      className="w-[8%] flex justify-center items-center border border-gray-300 hover:opacity-60 text-gray-600 py-2 rounded-3xl  print-hidden"
+      className="w-[8%] flex justify-center items-center border border-gray-300 hover:opacity-60 text-gray-600 py-2 rounded-3xl  print-hidden whitespace-nowrap"
     >
       <ArrowLeft className=" md:w-6 md:h-5" />
       <span className="ml-1">뒤로가기</span>

@@ -150,25 +150,25 @@ function Main() {
                 <tr
                   key={index}
                   className={`sm:text-sm w-[100%] ${
-                    index % 2 === 0 ? "bg-white" : "bg-gray-50"
+                    index % 2 === 0 ? "bg-white" : "bg-gray-200"
                   }`}
                 >
-                  <td className="border-b border-black md:p-4 sm:p-2 whitespace-nowrap">
+                  <td className="border-b border-gray-300 md:p-4 sm:p-2 whitespace-nowrap">
                     {item.username}
                   </td>
-                  <td className="border-b border-black md:p-4 sm:p-1 ">
+                  <td className="border-b border-gray-300 md:p-4 sm:p-1 ">
                     {item.destination}
                   </td>
-                  <td className="border-b border-black md:p-4 sm:p-1 ">
+                  <td className="border-b border-gray-300 md:p-4 sm:p-1 ">
                     {item.business}
                   </td>
-                  <td className="border-b border-black md:p-4 sm:p-1 ">
+                  <td className="border-b border-gray-300 md:p-4 sm:p-1 ">
                     {item.work}
                   </td>
-                  <td className="border-b border-black md:p-4 sm:p-1">
+                  <td className="border-b border-gray-300 md:p-4 sm:p-1">
                     {item.car}
                   </td>
-                  <td className="border-b border-black md:p-4 sm:p-1">
+                  <td className="border-b border-gray-300 md:p-4 sm:p-1">
                     {item.isOwner && (
                       <div className="flex justify-evenly">
                         <Edit
