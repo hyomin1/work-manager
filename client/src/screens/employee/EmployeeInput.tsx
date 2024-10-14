@@ -207,8 +207,8 @@ function EmployeeInput() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-start w-full h-screen p-10 bg-gray-50 sm:p-4 sm:overflow-y-auto">
-      <div className="w-[100%] flex flex-col items-center rounded-lg sm:w-full bg-gray-50 overflow-x-auto">
+    <div className="flex flex-col items-center justify-start w-full h-screen p-10 bg-gray-50 sm:p-4">
+      <div className="w-[100%] flex flex-col items-center rounded-lg sm:w-full bg-gray-50 ">
         <div className="flex items-center w-full mt-4 mb-20 md:justify-center sm:mb-10 sm:justify-between">
           <div className="flex items-center justify-between w-full">
             <ArrowBack type="not home" />
@@ -219,7 +219,7 @@ function EmployeeInput() {
           </div>
         </div>
 
-        <div className="w-full sm:overflow-x-auto">
+        <div className="w-full">
           <table className="w-full text-left sm:table-fixed ">
             <TabInputHeader headers={employeeInputHeaders} />
 

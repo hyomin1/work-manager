@@ -148,7 +148,7 @@ function DriveInput() {
 
             <tbody>
               <tr className="sm:flex sm:flex-col w-full">
-                <td className="sm:mb-4 sm:w-full md:border-r border-gray-300 md:border-b w-[1%]">
+                <td className="sm:mb-4 sm:w-full md:border-r border-gray-300 md:border-b md:w-[1%]">
                   <div className="sm:font-bold sm:mb-2 md:hidden">날짜</div>
                   <input
                     type="date"
