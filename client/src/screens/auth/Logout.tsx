@@ -15,12 +15,13 @@ function Logout() {
     }
   };
   return (
-    <div className="w-[15%] flex justify-end">
-      <LogOut
-        onClick={goLogin}
-        className=" md:w-12 md:h-8 hover:opacity-60 print-hidden"
-      />
-    </div>
+    <button
+      onClick={goLogin}
+      className="w-[8%] flex justify-center items-center border border-gray-300 hover:opacity-60 text-gray-600 py-2 rounded-3xl print-hidden"
+    >
+      <span className="mr-1">로그아웃</span>
+      <LogOut className=" md:w-6 md:h-5" />
+    </button>
   );
 }
 

@@ -16,12 +16,13 @@ function ArrowBack({ type }: IArrowProps) {
     navigate(-1);
   };
   return (
-    <div className="w-[15%]">
-      <ArrowLeft
-        onClick={goBack}
-        className=" md:w-12 md:h-8 hover:opacity-60 print-hidden"
-      />
-    </div>
+    <button
+      onClick={goBack}
+      className="w-[8%] flex justify-center items-center border border-gray-300 hover:opacity-60 text-gray-600 py-2 rounded-3xl  print-hidden"
+    >
+      <ArrowLeft className=" md:w-6 md:h-5" />
+      <span className="ml-1">뒤로가기</span>
+    </button>
   );
 }
 

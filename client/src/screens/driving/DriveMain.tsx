@@ -19,7 +19,7 @@ import Page from "../../components/Page";
 import { useMediaQuery } from "react-responsive";
 import ArrowBack from "./../../components/ArrowBack";
 import Logout from "../auth/Logout";
-import { Edit, X } from "lucide-react";
+import { Edit, Pencil, Settings, Users, X } from "lucide-react";
 import { axiosReq } from "../../api";
 import EditDrivingInform from "./EditDrivingInform";
 
@@ -167,16 +167,25 @@ function DriveMain() {
             <div className="p-4 items-center flex w-[50%] justify-end">
               <div className="flex sm:flex-col items-center justify-center">
                 <button
-                  className="sm:whitespace-nowrap bg-[#00ab39] rounded-lg text-white md:py-2 sm:py-1 sm:text-sm px-4 button-effect md:mr-4 sm:mb-2"
-                  onClick={onClickInputInform}
+                  onClick={() => navigate("/employee-status")}
+                  className="sm:whitespace-nowrap bg-[#00ab39] rounded-lg text-white md:py-2 sm:py-1 sm:text-sm px-4 hover:opacity-60 mr-4 sm:mr-2 button-effect flex justify-center items-center"
                 >
-                  <span>입력</span>
+                  <Users />
+                  <span className="ml-1">근무</span>
                 </button>
                 <button
-                  className="sm:whitespace-nowrap bg-[#007BFF] rounded-lg text-white md:py-2 sm:py-1 sm:text-sm px-4 hover:opacity-60 md:ml-4  button-effect"
+                  className="sm:whitespace-nowrap bg-[#007BFF] rounded-lg text-white md:py-2 sm:py-1 sm:text-sm px-4 button-effect md:mr-4 sm:mb-2 flex justify-center items-center"
+                  onClick={onClickInputInform}
+                >
+                  <Pencil />
+                  <span className="ml-1">입력</span>
+                </button>
+                <button
+                  className="sm:whitespace-nowrap bg-[#00ab39] rounded-lg text-white md:py-2 sm:py-1 sm:text-sm px-4 hover:opacity-60  button-effect flex justify-center items-center"
                   onClick={onClickAdmin}
                 >
-                  <span>관리</span>
+                  <Settings />
+                  <span className="ml-1">관리</span>
                 </button>
               </div>
 

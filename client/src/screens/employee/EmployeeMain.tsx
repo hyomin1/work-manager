@@ -9,7 +9,7 @@ import Page from "../../components/Page";
 import { employeeHeaders } from "../../constants/headers";
 import Title from "../../components/Title";
 import ArrowBack from "../../components/ArrowBack";
-import { Edit, X } from "lucide-react";
+import { Edit, X, Settings, Pencil, Truck } from "lucide-react";
 import Logout from "../auth/Logout";
 import EditInform from "./EditInform";
 import { IInform } from "../../interfaces/interface";
@@ -28,7 +28,7 @@ function Main() {
   const [editingItemId, setEditingItemId] = useState("");
 
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 11;
+  const itemsPerPage = 25;
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const totalPages = inform ? Math.ceil(inform.length / itemsPerPage) : 0;
@@ -106,16 +106,25 @@ function Main() {
           <span className="ml-4 font-bold md:text-xl">목록</span>
           <div className="p-4 items-center flex w-[50%] justify-end">
             <button
-              className="sm:whitespace-nowrap bg-[#00ab39] rounded-lg text-white md:py-2 sm:py-1 sm:text-sm px-4 button-effect mr-4 sm:mr-2"
-              onClick={onClickInputInform}
+              onClick={() => navigate("/driving-status")}
+              className="sm:whitespace-nowrap bg-[#007BFF] rounded-lg text-white md:py-2 sm:py-1 sm:text-sm px-4 hover:opacity-60 mr-4 sm:mr-2 button-effect flex justify-center items-center"
             >
-              입력
+              <Truck />
+              <span className="ml-1">차량</span>
             </button>
             <button
-              className="sm:whitespace-nowrap bg-[#007BFF] rounded-lg text-white md:py-2 sm:py-1 sm:text-sm px-4 hover:opacity-60 ml-4 sm:ml-2 button-effect"
+              className="sm:whitespace-nowrap bg-[#00ab39] rounded-lg text-white md:py-2 sm:py-1 sm:text-sm px-4 button-effect mr-4 sm:mr-2 flex justify-center items-center"
+              onClick={onClickInputInform}
+            >
+              <Pencil />
+              <span className="ml-1">입력</span>
+            </button>
+            <button
+              className="sm:whitespace-nowrap bg-[#007BFF] rounded-lg text-white md:py-2 sm:py-1 sm:text-sm px-4 hover:opacity-60  sm:ml-2 button-effect flex justify-center items-center"
               onClick={onClickAdmin}
             >
-              관리
+              <Settings />
+              <span className="ml-1">관리</span>
             </button>
             <div className="mx-4 border border-gray-300 md:h-10 sm:h-8" />
             <button onClick={() => refetch()}>
@@ -124,9 +133,10 @@ function Main() {
           </div>
         </div>
 
-        <table className="w-[100%] rounded-2xl shadow-lg text-left table-auto ">
+        <table className="w-[100%] rounded-2xl shadow-lg text-left">
           <TabHeader headers={employeeHeaders} category="employee" />
-          <tbody className="h-full overflow-y-auto rounded-b-xl">
+
+          <tbody className="h-full overflow-y-auto rounded-b-xl ">
             {inform
               ?.sort((a, b) => {
                 if (a.destination === b.destination) {
@@ -143,22 +153,22 @@ function Main() {
                     index % 2 === 0 ? "bg-white" : "bg-gray-50"
                   }`}
                 >
-                  <td className="border-b border-gray-200 md:p-4 sm:p-2 whitespace-nowrap">
+                  <td className="border-b border-black md:p-4 sm:p-2 whitespace-nowrap">
                     {item.username}
                   </td>
-                  <td className="border-b border-gray-200 md:p-4 sm:p-1 ">
+                  <td className="border-b border-black md:p-4 sm:p-1 ">
                     {item.destination}
                   </td>
-                  <td className="border-b border-gray-200 md:p-4 sm:p-1 ">
+                  <td className="border-b border-black md:p-4 sm:p-1 ">
                     {item.business}
                   </td>
-                  <td className="border-b border-gray-200 md:p-4 sm:p-1 ">
+                  <td className="border-b border-black md:p-4 sm:p-1 ">
                     {item.work}
                   </td>
-                  <td className="border-b border-gray-200 md:p-4 sm:p-1">
+                  <td className="border-b border-black md:p-4 sm:p-1">
                     {item.car}
                   </td>
-                  <td className="border-b border-gray-200 md:p-4 sm:p-1">
+                  <td className="border-b border-black md:p-4 sm:p-1">
                     {item.isOwner && (
                       <div className="flex justify-evenly">
                         <Edit
