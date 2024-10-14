@@ -48,7 +48,7 @@ function Title({
     <div>
       <div className=" flex items-center justify-center w-[100%]">
         <button onClick={previous} className="hover:opacity-60 print-hidden">
-          <IoIosArrowBack className="w-8 h-9 sm:w-6 sm:h-6" />
+          <IoIosArrowBack className="w-8 h-8 sm:w-6 sm:h-6" />
         </button>
         <button>
           <span
@@ -64,7 +64,7 @@ function Title({
         </button>
 
         <button onClick={next} className="hover:opacity-60 print-hidden">
-          <IoIosArrowForward className="w-8 h-9 sm:w-6 sm:h-6" />
+          <IoIosArrowForward className="w-8 h-8 sm:w-6 sm:h-6" />
         </button>
       </div>
     </div>

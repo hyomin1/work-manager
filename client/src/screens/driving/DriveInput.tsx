@@ -138,7 +138,7 @@ function DriveInput() {
             <div className="sm:w-[80%] flex items-center justify-center">
               <span className=" font-bold text-3xl sm:text-lg">{formDate}</span>
             </div>
-            <div className="w-[15%]" />
+            <div className="w-[10%]" />
           </div>
         </div>
 

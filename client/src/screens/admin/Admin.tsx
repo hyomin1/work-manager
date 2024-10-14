@@ -49,14 +49,14 @@ function Admin() {
     <div className="w-full h-screen flex flex-col justify-between items-center sm:p-2 p-10">
       <div className="sm:w-full w-[80%] flex flex-col items-center h-screen">
         <div className="mt-4 mb-20 flex items-center md:justify-center w-full sm:mb-10 ">
-          <div className="w-full flex justify-between items-center ">
+          <div className="w-full flex justify-between items-center">
             <ArrowBack type="not home" />
-            <div className="sm:w-[70%] flex items-center justify-center">
-              <span className="font-bold  md:text-3xl md:mx-8 sm:mx-2  hover:opacity-70 whitespace-nowrap">
+            <div className="sm:w-[80%] flex items-center justify-center">
+              <span className="font-bold  md:text-3xl md:mx-8 sm:mx-2 whitespace-nowrap">
                 {formDate}
               </span>
             </div>
-            <div className="w-[15%]" />
+            <div className="w-[10%]" />
           </div>
         </div>
 

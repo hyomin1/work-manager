@@ -212,10 +212,10 @@ function EmployeeInput() {
         <div className="flex items-center w-full mt-4 mb-20 md:justify-center sm:mb-10 sm:justify-between">
           <div className="flex items-center justify-between w-full">
             <ArrowBack type="not home" />
-            <div className="sm:w-[80%] flex items-center justify-center">
+            <div className="sm:w-[80%] flex items-center justify-center ">
               <span className="text-3xl font-bold sm:text-lg">{formDate}</span>
             </div>
-            <div className="w-[15%] " />
+            <div className="w-[10%] " />
           </div>
         </div>
 
