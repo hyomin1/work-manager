@@ -130,8 +130,8 @@ function DriveInput() {
   }
 
   return (
-    <div className="w-full h-screen flex flex-col justify-start items-center p-10 bg-gray-50 sm:p-4 sm:overflow-y-auto">
-      <div className="w-[95%] flex flex-col items-center rounded-lg sm:w-full bg-gray-50 overflow-x-auto">
+    <div className="w-full h-screen flex flex-col justify-start items-center p-10 bg-gray-50 sm:p-4">
+      <div className="w-[95%] flex flex-col items-center rounded-lg sm:w-full bg-gray-50">
         <div className="mt-4 mb-20 flex items-center md:justify-center w-full sm:mb-10 sm:justify-between">
           <div className="w-full flex justify-between items-center">
             <ArrowBack type="not home" />
@@ -142,13 +142,13 @@ function DriveInput() {
           </div>
         </div>
 
-        <div className="w-full sm:overflow-x-auto">
+        <div className="w-full">
           <table className="w-full text-left sm:table-fixed ">
             <TabInputHeader headers={drivingInputHeaders} />
 
             <tbody>
               <tr className="sm:flex sm:flex-col w-full">
-                <td className="sm:mb-4 sm:w-full md:border-x border-gray-300 md:border-b w-[1%]">
+                <td className="sm:mb-4 sm:w-full md:border-r border-gray-300 md:border-b w-[1%]">
                   <div className="sm:font-bold sm:mb-2 md:hidden">날짜</div>
                   <input
                     type="date"
