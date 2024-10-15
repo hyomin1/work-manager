@@ -168,20 +168,20 @@ function DriveMain() {
               <div className="flex sm:flex-col items-center justify-center">
                 <button
                   onClick={() => navigate("/employee-status")}
-                  className="sm:whitespace-nowrap bg-[#00ab39] rounded-lg text-white md:py-2 sm:py-1 sm:text-sm px-4 hover:opacity-60 md:mr-4 sm:mb-2 button-effect flex justify-center items-center"
+                  className="whitespace-nowrap bg-[#00ab39] rounded-lg text-white md:py-2 sm:py-1 sm:text-sm px-4 hover:opacity-60 md:mr-4 sm:mb-2 button-effect flex justify-center items-center"
                 >
                   <Users className="sm:w-4 sm:h-4" />
                   <span className="ml-1 sm:text-xs">근무</span>
                 </button>
                 <button
-                  className="sm:whitespace-nowrap bg-[#007BFF] rounded-lg text-white md:py-2 sm:py-1 sm:text-sm px-4 button-effect md:mr-4 sm:mb-2 flex justify-center items-center"
+                  className="whitespace-nowrap bg-[#007BFF] rounded-lg text-white md:py-2 sm:py-1 sm:text-sm px-4 button-effect md:mr-4 sm:mb-2 flex justify-center items-center"
                   onClick={onClickInputInform}
                 >
                   <Pencil className="sm:w-4 sm:h-4" />
                   <span className="ml-1 sm:text-xs">입력</span>
                 </button>
                 <button
-                  className="sm:whitespace-nowrap bg-[#00ab39] rounded-lg text-white md:py-2 sm:py-1 sm:text-sm px-4 hover:opacity-60 button-effect flex justify-center items-center"
+                  className="whitespace-nowrap bg-[#00ab39] rounded-lg text-white md:py-2 sm:py-1 sm:text-sm px-4 hover:opacity-60 button-effect flex justify-center items-center"
                   onClick={onClickAdmin}
                 >
                   <Settings className="sm:w-4 sm:h-4" />
@@ -264,7 +264,7 @@ function DriveMain() {
                     </div>
                   </div>
                 ))}
-              <div className="grid w-full grid-cols-3 gap-2 p-4 mb-1 space-x-0 text-sm bg-white border border-gray-300 rounded-lg shadow-md">
+              <div className="grid w-full grid-cols-3 gap-2 p-4 mb-1 space-x-0 text-sm print:text-[9px] bg-white border border-gray-300 rounded-lg shadow-md">
                 <div className="flex flex-col">
                   <span className="font-bold">주행거리</span>
                   <span>{totalDrivingKM} km</span>
@@ -293,7 +293,7 @@ function DriveMain() {
           ) : (
             <table className="w-[100%] rounded-2xl text-left border border-black">
               <TabHeader headers={drivingHeaders} category="driving" />
-              <tbody className="rounded-b-xl text-xs">
+              <tbody className="rounded-b-xl text-xs print:text-[9px] ">
                 {drivingInform
                   ?.sort((a, b) => {
                     if (
@@ -368,20 +368,20 @@ function DriveMain() {
                   ))}
                 <tr>
                   <td colSpan={5} />
-                  <td className="py-2 pl-1 border border-black whitespace-nowrap md:text-xs">
+                  <td className="py-2 pl-1 border border-black whitespace-nowrap md:text-xs print:text-[10px]">
                     {totalDrivingKM}km
                   </td>
 
-                  <td className="py-2 pl-1 border border-black whitespace-nowrap md:text-xs">
+                  <td className="py-2 pl-1 border border-black whitespace-nowrap md:text-xs print:text-[10px]">
                     {totalFuelCost}
                   </td>
-                  <td className="py-2 pl-1 border border-black whitespace-nowrap md:text-xs">
+                  <td className="py-2 pl-1 border border-black whitespace-nowrap md:text-xs print:text-[10px]">
                     {totalToll}
                   </td>
-                  <td className="py-2 pl-1 border border-black whitespace-nowrap md:text-xs ">
+                  <td className="py-2 pl-1 border border-black whitespace-nowrap md:text-xs print:text-[10px] ">
                     {totalEtcCost}
                   </td>
-                  <td className="py-2 pl-1 border border-black whitespace-nowrap md:text-xs ">
+                  <td className="py-2 pl-1 border border-black whitespace-nowrap md:text-xs print:text-[10px] ">
                     {grandTotal}
                   </td>
                 </tr>

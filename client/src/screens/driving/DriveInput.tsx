@@ -220,7 +220,7 @@ function DriveInput() {
                   />
                 </td>
                 <td className="sm:mb-4 sm:w-full md:border-r border-gray-300 md:border-b md:w-[5%]">
-                  <div className="sm:font-bold sm:mb-2 md:hidden"></div>
+                  <div className="sm:font-bold sm:mb-2 md:hidden">주유비</div>
                   <input
                     type="number"
                     onChange={handleFuelCostChange}
