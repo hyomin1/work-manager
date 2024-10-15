@@ -152,7 +152,7 @@ function DriveInput() {
                   <div className="sm:font-bold sm:mb-2 md:hidden">날짜</div>
                   <input
                     type="date"
-                    className="w-full p-2 transition duration-200 ease-in-out border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full p-2 ml-3 border rounded-md sm:ml-0"
                     onChange={handleDriveDayChange}
                   />
                 </td>
