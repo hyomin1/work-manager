@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import DrivingRecord from "../models/driving/DrivingRecord";
 import Etc from "../models/driving/Etc";
+import User from "../models/employee/User";
 
 export const addEtcName = async (req: Request, res: Response) => {
   const { etcName } = req.body;
@@ -135,10 +136,17 @@ export const getInform = async (req: Request, res: Response) => {
         writerId: 1,
       }
     );
+    const user = await User.findById(req.session.userId);
+    if (!user) {
+      return res.status(400).json({ error: "유저 정보가 올바르지 않습니다." });
+    }
+
     const allDrivingInforms = informs.map((inform) => {
       return {
         ...inform.toObject(),
-        isOwner: inform.writerId.toString() === req.session.userId,
+        isOwner:
+          inform.writerId.toString() === req.session.userId ||
+          user.role === "admin",
       };
     });
 
