@@ -68,6 +68,7 @@ export const getEtcName = async (req: Request, res: Response) => {
 };
 
 export const addInform = async (req: Request, res: Response) => {
+  const privateCarId = "66fde7d11c70777ade2403fb";
   if (!req.session.isUser) {
     return res
       .status(403)
@@ -81,15 +82,14 @@ export const addInform = async (req: Request, res: Response) => {
       !username ||
       !car ||
       !drivingDestination ||
-      (car !== "66fde7d11c70777ade2403fb" && !startKM) ||
-      (car !== "66fde7d11c70777ade2403fb" && !endKM)
+      (car !== privateCarId && !startKM) ||
+      (car !== privateCarId && !endKM)
     ) {
       return res.status(400).json({ error: "정보를 입력해야 합니다." });
     }
     const data = {
       ...req.body,
       writerId: req.session.userId,
-      totalKM: endKM - startKM,
     };
     await DrivingRecord.create(data);
     return res.status(200).json({ message: "정보 입력 완료" });

@@ -19,6 +19,8 @@ function DriveInput() {
   const [fuelCost, setFuelCost] = useState(0);
   const [toll, setToll] = useState(0);
 
+  const [totalKM, setTotalKM] = useState(0);
+
   const [driveDay, setDriveDay] = useState<Date>();
 
   const [etc, setEtc] = useState<{ name: string; cost: number }>({
@@ -51,6 +53,9 @@ function DriveInput() {
   const handleEndKMChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEndKM(parseInt(event.target.value));
   };
+  const handleTotalKMChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setTotalKM(parseInt(event.target.value));
+  };
   const handleFuelCostChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFuelCost(parseInt(event.target.value));
   };
@@ -64,7 +69,6 @@ function DriveInput() {
   const handleEtcCostChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEtc({ name: etc.name, cost: parseInt(event.target.value) }); // ���기값 설정
   };
-  console.log(car);
 
   const onClickComplete = async () => {
     if (!driveDay) {
@@ -84,7 +88,11 @@ function DriveInput() {
       return;
     }
 
-    if (car !== "66fde7d11c70777ade2403fb" && (!startKM || !endKM)) {
+    if (car !== privateCarId && (!startKM || !endKM)) {
+      alert("주행거리를 입력해주세요.");
+      return;
+    }
+    if (car === privateCarId && !totalKM) {
       alert("주행거리를 입력해주세요.");
       return;
     }
@@ -114,6 +122,7 @@ function DriveInput() {
         drivingDestination,
         startKM,
         endKM,
+        totalKM: car === privateCarId ? totalKM : endKM - startKM,
         fuelCost,
         toll,
         etc,
@@ -129,6 +138,7 @@ function DriveInput() {
   if (namesLoading || carsLoading || etcNamesLoading) {
     return <div>Loading...</div>;
   }
+  const privateCarId = "66fde7d11c70777ade2403fb";
 
   return (
     <div className="w-full h-screen flex flex-col justify-start items-center p-10 bg-gray-50 sm:p-4">
@@ -153,7 +163,7 @@ function DriveInput() {
                   <div className="sm:font-bold sm:mb-2 md:hidden">날짜</div>
                   <input
                     type="date"
-                    className="w-full p-2 ml-3 border rounded-md sm:ml-0"
+                    className="sm:w-full p-2 ml-3 border rounded-md sm:ml-0"
                     onChange={handleDriveDayChange}
                   />
                 </td>
@@ -207,7 +217,7 @@ function DriveInput() {
                 <td className="sm:mb-4 sm:w-full md:border-r border-gray-300 md:border-b md:w-[5%]">
                   <div className="sm:font-bold sm:mb-2 md:hidden">출발(Km)</div>
                   <input
-                    disabled={car === "66fde7d11c70777ade2403fb"}
+                    disabled={car === privateCarId}
                     type="number"
                     onChange={handleStartKMChange}
                     className="border rounded-md p-2 w-full focus:outline-none focus:ring-2 focus:ring-green-400 transition duration-150 ease-in-out hover:opacity-60"
@@ -216,12 +226,25 @@ function DriveInput() {
                 <td className="sm:mb-4 sm:w-full md:border-r border-gray-300 md:border-b md:w-[5%]">
                   <div className="sm:font-bold sm:mb-2 md:hidden">도착(Km)</div>
                   <input
-                    disabled={car === "66fde7d11c70777ade2403fb"}
+                    disabled={car === privateCarId}
                     type="number"
                     onChange={handleEndKMChange}
                     className="border rounded-md p-2 w-full focus:outline-none focus:ring-2 focus:ring-green-400 transition duration-150 ease-in-out hover:opacity-60"
                   />
                 </td>
+                <td className="sm:mb-4 sm:w-full md:border-r border-gray-300 md:border-b md:w-[5%]">
+                  <div className="sm:font-bold sm:mb-2 md:hidden">
+                    주행거리(Km)
+                  </div>
+                  <input
+                    disabled={car !== privateCarId}
+                    type="number"
+                    value={car === privateCarId ? totalKM : endKM - startKM}
+                    onChange={handleTotalKMChange}
+                    className="border rounded-md p-2 w-full focus:outline-none focus:ring-2 focus:ring-green-400 transition duration-150 ease-in-out hover:opacity-60"
+                  />
+                </td>
+
                 <td className="sm:mb-4 sm:w-full md:border-r border-gray-300 md:border-b md:w-[5%]">
                   <div className="sm:font-bold sm:mb-2 md:hidden">주유비</div>
                   <input

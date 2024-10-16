@@ -18,6 +18,7 @@ export const drivingInputHeaders = [
   "행선지",
   "출발(Km)",
   "도착(Km)",
+  "주행거리(Km)",
   "주유비",
   "하이패스",
   "기타",
