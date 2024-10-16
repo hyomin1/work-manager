@@ -64,6 +64,7 @@ function DriveInput() {
   const handleEtcCostChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEtc({ name: etc.name, cost: parseInt(event.target.value) }); // ���기값 설정
   };
+  console.log(car);
 
   const onClickComplete = async () => {
     if (!driveDay) {
@@ -83,7 +84,7 @@ function DriveInput() {
       return;
     }
 
-    if (!startKM || !endKM) {
+    if (car !== "66fde7d11c70777ade2403fb" && (!startKM || !endKM)) {
       alert("주행거리를 입력해주세요.");
       return;
     }
@@ -206,6 +207,7 @@ function DriveInput() {
                 <td className="sm:mb-4 sm:w-full md:border-r border-gray-300 md:border-b md:w-[5%]">
                   <div className="sm:font-bold sm:mb-2 md:hidden">출발(Km)</div>
                   <input
+                    disabled={car === "670f076012e4c97972604e34"}
                     type="number"
                     onChange={handleStartKMChange}
                     className="border rounded-md p-2 w-full focus:outline-none focus:ring-2 focus:ring-green-400 transition duration-150 ease-in-out hover:opacity-60"
@@ -214,6 +216,7 @@ function DriveInput() {
                 <td className="sm:mb-4 sm:w-full md:border-r border-gray-300 md:border-b md:w-[5%]">
                   <div className="sm:font-bold sm:mb-2 md:hidden">도착(Km)</div>
                   <input
+                    disabled={car === "670f076012e4c97972604e34"}
                     type="number"
                     onChange={handleEndKMChange}
                     className="border rounded-md p-2 w-full focus:outline-none focus:ring-2 focus:ring-green-400 transition duration-150 ease-in-out hover:opacity-60"

@@ -81,8 +81,8 @@ export const addInform = async (req: Request, res: Response) => {
       !username ||
       !car ||
       !drivingDestination ||
-      !startKM ||
-      !endKM
+      (car !== "66fde7d11c70777ade2403fb" && !startKM) ||
+      (car !== "66fde7d11c70777ade2403fb" && !endKM)
     ) {
       return res.status(400).json({ error: "정보를 입력해야 합니다." });
     }
