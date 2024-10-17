@@ -335,10 +335,10 @@ function DriveMain() {
                         {item.totalKM}km
                       </td>
                       <td className="py-2 pl-1 border border-black whitespace-nowrap ">
-                        {item.fuelCost}
+                        {item.fuelCost ? item.fuelCost : ""}
                       </td>
                       <td className="py-2 pl-1 border border-black whitespace-nowrap ">
-                        {item.toll}
+                        {item.toll ? item.toll : ""}
                       </td>
                       <td className="py-2 pl-1 border border-black whitespace-nowrap ">
                         {item.etc.cost > 0 &&
