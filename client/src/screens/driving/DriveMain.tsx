@@ -113,6 +113,7 @@ function DriveMain() {
   const totalDrivingKM =
     drivingInform?.reduce((acc, item) => acc + item.totalKM, 0) || 0;
   const grandTotal = totalFuelCost + totalToll + totalEtcCost;
+
   return (
     <div className="flex flex-col items-center justify-between w-full h-screen p-4 sm:p-2 bg-gray-50">
       {isShow && <AdminLogin setIsShow={setIsShow} />}

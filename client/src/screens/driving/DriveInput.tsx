@@ -28,6 +28,8 @@ function DriveInput() {
     cost: 0,
   });
 
+  const privateCarId = process.env.REACT_APP_PRIVATE_CAR;
+
   const { names, namesLoading, cars, carsLoading, etcNames, etcNamesLoading } =
     useCustomQueries();
 
@@ -138,7 +140,6 @@ function DriveInput() {
   if (namesLoading || carsLoading || etcNamesLoading) {
     return <div>Loading...</div>;
   }
-  const privateCarId = "66fde7d11c70777ade2403fb";
 
   return (
     <div className="w-full h-screen flex flex-col justify-start items-center p-10 bg-gray-50 sm:p-4">

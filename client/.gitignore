@@ -11,7 +11,7 @@
 # production
 /build
 
-client/src/axios.ts
+.env
 
 # misc
 .DS_Store

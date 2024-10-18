@@ -1,13 +1,13 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 
 const axiosIP = axios.create({
-  baseURL: "http://localhost:8080",
+  baseURL: process.env.REACT_APP_IP,
   withCredentials: true,
   timeout: 5000,
 });
 
 const axiosDomain = axios.create({
-  baseURL: "http://tech.bonc.co.kr",
+  baseURL: process.env.REACT_APP_DOMAIN,
   withCredentials: true,
   timeout: 5000,
 });
