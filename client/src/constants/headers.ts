@@ -18,10 +18,10 @@ export const drivingInputHeaders = [
   "행선지",
   "출발(Km)",
   "도착(Km)",
-  "주행거리(Km)",
+  "거리(Km)",
   "주유비",
   "하이패스",
-  "기타",
+  "기타비용",
 ];
 export const employeeHeaders = ["이름", "방문지", "사업명", "업무", "차량", ""];
 

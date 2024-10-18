@@ -251,7 +251,6 @@ function DriveInput() {
                   <input
                     type="number"
                     onChange={handleFuelCostChange}
-                    value={fuelCost}
                     className="border rounded-md p-2 w-full focus:outline-none focus:ring-2 focus:ring-green-400  transition duration-150 ease-in-out hover:opacity-60"
                   />
                 </td>
@@ -260,7 +259,6 @@ function DriveInput() {
                   <input
                     type="number"
                     onChange={handleTollChange}
-                    value={toll}
                     className="border rounded-md p-2 w-full focus:outline-none focus:ring-2 focus:ring-green-400 transition duration-150 ease-in-out  hover:opacity-60"
                   />
                 </td>
@@ -285,7 +283,6 @@ function DriveInput() {
                     </select>
                     <input
                       type="number"
-                      value={etc.cost}
                       onChange={handleEtcCostChange}
                       className="border rounded-md p-2 w-full focus:outline-none focus:ring-2 focus:ring-green-400  transition duration-150 ease-in-out hover:opacity-60"
                     />
