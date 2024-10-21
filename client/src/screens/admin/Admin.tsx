@@ -6,9 +6,6 @@ import TabHeaderAdmin from "./TabHeaderAdmin";
 import TabContentAdmin from "./TabContentAdmin";
 import { useAdminData } from "../../hooks/useAdminData";
 import ArrowBack from "../../components/ArrowBack";
-import { LogOut } from "lucide-react";
-import Logout from "../auth/Logout";
-import Blank from "../../components/Blank";
 
 function Admin() {
   const queryClient = useQueryClient();

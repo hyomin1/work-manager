@@ -11,7 +11,7 @@ import Title from "../../components/Title";
 import ArrowBack from "../../components/ArrowBack";
 import { Edit, X, Settings, Pencil, Truck } from "lucide-react";
 import Logout from "../auth/Logout";
-import EditInform from "./EditInform";
+import EditInform from "./EditEmployeeInform";
 import { IInform } from "../../interfaces/interface";
 
 function Main() {
