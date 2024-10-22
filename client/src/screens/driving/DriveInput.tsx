@@ -131,47 +131,24 @@ function DriveInput() {
     if (typeof etc.cost !== "number") {
       setEtc({ name: etc.name, cost: 0 });
     }
-    const requests = driverArr.map((item, index) =>
-      axiosReq.post("/api/driving-inform/addInform", {
-        driveDay,
-        username: driverArr[index],
-        car,
-        drivingDestination,
-        startKM,
-        endKM,
-        totalKM: car === privateCarId ? totalKM : endKM - startKM,
-        fuelCost,
-        toll,
-        etc,
-      })
-    );
-    const responses = await Promise.all(requests);
 
-    if (responses.every((res) => res.status === 200)) {
-      alert("정보 입력 완료");
+    const driverJoined = driverArr.join(", ");
+    const res = await axiosReq.post("/api/driving-inform/addInform", {
+      driveDay,
+      username: driverJoined,
+      car,
+      drivingDestination,
+      startKM,
+      endKM,
+      totalKM: car === privateCarId ? totalKM : endKM - startKM,
+      fuelCost,
+      toll,
+      etc,
+    });
+    if (res.status === 200) {
+      alert(res.data.message);
       navigate("/driving-status");
     }
-
-    // try {
-    //   const res = await axiosReq.post("/api/driving-inform/addInform", {
-    //     driveDay,
-    //     username,
-    //     car,
-    //     drivingDestination,
-    //     startKM,
-    //     endKM,
-    //     totalKM: car === privateCarId ? totalKM : endKM - startKM,
-    //     fuelCost,
-    //     toll,
-    //     etc,
-    //   });
-    //   if (res.status === 200) {
-    //     alert(res.data.message);
-    //     navigate("/driving-status");
-    //   }
-    // } catch (error) {
-    //   alert("정보 입력 중 오류가 발생하였습니다.");
-    // }
   };
   if (namesLoading || carsLoading || etcNamesLoading) {
     return <div>Loading...</div>;
