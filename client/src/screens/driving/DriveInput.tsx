@@ -13,6 +13,7 @@ function DriveInput() {
   const [car, setCar] = useState("");
   const [drivingDestination, setDrivingDestination] = useState("");
 
+  const [drivers, setDrivers] = useState(["", ""]);
   const [startKM, setStartKM] = useState(0);
   const [endKM, setEndKM] = useState(0);
 
@@ -27,6 +28,8 @@ function DriveInput() {
     name: "", // 초기값 설정
     cost: 0,
   });
+
+  const selectedDriver = drivers.filter(Boolean);
 
   const privateCarId = process.env.REACT_APP_PRIVATE_CAR;
 
@@ -72,12 +75,25 @@ function DriveInput() {
     setEtc({ name: etc.name, cost: parseInt(event.target.value) }); // ���기값 설정
   };
 
+  const handleDriverChange =
+    (index: number) => (event: React.ChangeEvent<HTMLSelectElement>) => {
+      const newDrivers = [...drivers];
+      newDrivers[index] = event.target.value;
+      setDrivers(newDrivers);
+    };
+
   const onClickComplete = async () => {
+    const driverArr = selectedDriver
+      .map((driver) => driver.trim())
+      .filter((driver) => driver !== null && driver !== "")
+
+      .filter(Boolean);
+
     if (!driveDay) {
       alert("날짜를 선택해주세요");
       return;
     }
-    if (!username) {
+    if (driverArr.length === 0) {
       alert("운전자를 선택해주세요");
       return;
     }
@@ -115,11 +131,10 @@ function DriveInput() {
     if (typeof etc.cost !== "number") {
       setEtc({ name: etc.name, cost: 0 });
     }
-
-    try {
-      const res = await axiosReq.post("/api/driving-inform/addInform", {
+    const requests = driverArr.map((item, index) =>
+      axiosReq.post("/api/driving-inform/addInform", {
         driveDay,
-        username,
+        username: driverArr[index],
         car,
         drivingDestination,
         startKM,
@@ -128,14 +143,35 @@ function DriveInput() {
         fuelCost,
         toll,
         etc,
-      });
-      if (res.status === 200) {
-        alert(res.data.message);
-        navigate("/driving-status");
-      }
-    } catch (error) {
-      alert("정보 입력 중 오류가 발생하였습니다.");
+      })
+    );
+    const responses = await Promise.all(requests);
+
+    if (responses.every((res) => res.status === 200)) {
+      alert("정보 입력 완료");
+      navigate("/driving-status");
     }
+
+    // try {
+    //   const res = await axiosReq.post("/api/driving-inform/addInform", {
+    //     driveDay,
+    //     username,
+    //     car,
+    //     drivingDestination,
+    //     startKM,
+    //     endKM,
+    //     totalKM: car === privateCarId ? totalKM : endKM - startKM,
+    //     fuelCost,
+    //     toll,
+    //     etc,
+    //   });
+    //   if (res.status === 200) {
+    //     alert(res.data.message);
+    //     navigate("/driving-status");
+    //   }
+    // } catch (error) {
+    //   alert("정보 입력 중 오류가 발생하였습니다.");
+    // }
   };
   if (namesLoading || carsLoading || etcNamesLoading) {
     return <div>Loading...</div>;
@@ -189,22 +225,25 @@ function DriveInput() {
                 </td>
                 <td className="sm:mb-4 sm:w-full md:border-r border-gray-300 md:border-b md:w-[3%]">
                   <div className="sm:font-bold sm:mb-2 md:hidden">운전자</div>
-                  <select
-                    defaultValue=""
-                    onChange={handleNameChange}
-                    className="hover:opacity-60 border rounded-md p-2 ml-3 sm:w-full sm:ml-0"
-                  >
-                    <option disabled value="">
-                      운전자 선택
-                    </option>
-                    {names
-                      ?.sort((a, b) => a.username.localeCompare(b.username))
-                      .map((item, index) => (
-                        <option key={index} value={item.username}>
-                          {item.username}
-                        </option>
-                      ))}
-                  </select>
+                  {[0, 1].map((index) => (
+                    <select
+                      key={index}
+                      value={drivers[index]}
+                      onChange={handleDriverChange(index)}
+                      className="hover:opacity-60 border rounded-md p-2 ml-3 sm:w-full sm:ml-0"
+                    >
+                      <option disabled value="">
+                        운전자 선택
+                      </option>
+                      {names
+                        ?.sort((a, b) => a.username.localeCompare(b.username))
+                        .map((item, index) => (
+                          <option key={index} value={item.username}>
+                            {item.username}
+                          </option>
+                        ))}
+                    </select>
+                  ))}
                 </td>
                 <td className="sm:mb-4 sm:w-full md:border-r border-gray-300 md:border-b w-[15%]">
                   <div className="sm:font-bold sm:mb-2 md:hidden">행선지</div>

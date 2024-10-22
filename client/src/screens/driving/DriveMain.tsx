@@ -11,7 +11,6 @@ import { useQuery } from "@tanstack/react-query";
 import { ICars, IDrivingInform } from "../../interfaces/interface";
 import Title from "../../components/Title";
 import { useNavigate } from "react-router-dom";
-import AdminLogin from "../admin/AdminLogin";
 import { SlRefresh } from "react-icons/sl";
 import Page from "../../components/Page";
 import { useMediaQuery } from "react-responsive";
@@ -53,7 +52,6 @@ function DriveMain() {
   }, [carId, refetch, currentDate]);
 
   const [showInput, setShowInput] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false);
 
   const { data: cars } = useQuery<ICars[]>({
     queryKey: ["car", 1],
@@ -116,7 +114,6 @@ function DriveMain() {
 
   return (
     <div className="flex flex-col items-center justify-between w-full h-screen p-4 sm:p-2 bg-gray-50">
-      {isAdmin && <AdminLogin setIsShow={setIsAdmin} />}
       <div className="sm:w-full w-[80%] flex flex-col items-center ">
         <div className="flex items-center justify-between print:justify-center w-full mt-4 mb-4 sm:mt-4">
           <ArrowBack type="home" />

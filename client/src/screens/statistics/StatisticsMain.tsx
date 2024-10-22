@@ -29,7 +29,7 @@ function StatisticsMain() {
   });
 
   return (
-    <div className="flex flex-col items-center  w-full h-screen p-10 sm:p-2 bg-gray-50 ">
+    <div className="flex flex-col items-center w-full h-screen p-10 sm:p-2 bg-gray-50 ">
       <div className="sm:w-full w-full flex flex-col items-center">
         <div className="flex items-center justify-between w-full mt-2 mb-8 sm:mt-4">
           <ArrowBack type="" />
@@ -57,25 +57,69 @@ function StatisticsMain() {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell sx={{ fontWeight: "800" }}>이름</TableCell>
-              <TableCell sx={{ fontWeight: "800" }}>방문지</TableCell>
-              <TableCell sx={{ fontWeight: "800" }}>사업명</TableCell>
-              <TableCell sx={{ fontWeight: "800" }}>업무</TableCell>
-              <TableCell sx={{ fontWeight: "800" }}>차량</TableCell>
+              <TableCell
+                sx={{
+                  fontWeight: "800",
+                  whiteSpace: "nowrap",
+                  fontSize: "large",
+                }}
+              >
+                이름
+              </TableCell>
+              <TableCell
+                sx={{
+                  fontWeight: "800",
+                  whiteSpace: "nowrap",
+                  fontSize: "large",
+                }}
+              >
+                방문지
+              </TableCell>
+              <TableCell
+                sx={{
+                  fontWeight: "800",
+                  whiteSpace: "nowrap",
+                  fontSize: "large",
+                }}
+              >
+                사업명
+              </TableCell>
+              <TableCell
+                sx={{
+                  fontWeight: "800",
+                  whiteSpace: "nowrap",
+                  fontSize: "large",
+                }}
+              >
+                업무
+              </TableCell>
+              <TableCell
+                sx={{
+                  fontWeight: "800",
+                  whiteSpace: "nowrap",
+                  fontSize: "large",
+                }}
+              >
+                차량
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {/* 이름 검색 */}
             {value === 0 &&
-              statisticsData?.map((item, index) => (
-                <TableRow key={index}>
-                  <TableCell>{item.username}</TableCell>
-                  <TableCell>{item.destination}</TableCell>
-                  <TableCell>{item.business}</TableCell>
-                  <TableCell>{item.work}</TableCell>
-                  <TableCell>{item.car}</TableCell>
-                </TableRow>
-              ))}
+              statisticsData
+                ?.sort((a, b) => a.destination.localeCompare(b.destination))
+                .map((item, index) => (
+                  <TableRow key={index}>
+                    <TableCell sx={{ whiteSpace: "nowrap" }}>
+                      {item.username}
+                    </TableCell>
+                    <TableCell>{item.destination}</TableCell>
+                    <TableCell>{item.business}</TableCell>
+                    <TableCell>{item.work}</TableCell>
+                    <TableCell>{item.car}</TableCell>
+                  </TableRow>
+                ))}
             {/* 방문지 검색 */}
             {value === 1 && <></>}
           </TableBody>

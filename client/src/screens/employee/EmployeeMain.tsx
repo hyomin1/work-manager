@@ -7,7 +7,6 @@ import {
   checkAdminSession,
   getEmployeeInform,
 } from "../../api";
-import AdminLogin from "../admin/AdminLogin";
 import { SlRefresh } from "react-icons/sl";
 import TabHeader from "../../components/TabHeader";
 import Page from "../../components/Page";
@@ -18,6 +17,15 @@ import { Edit, X, Settings, Pencil, Truck, LineChart } from "lucide-react";
 import Logout from "../auth/Logout";
 import EditInform from "./EditEmployeeInform";
 import { IInform } from "../../interfaces/interface";
+import {
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from "@mui/material";
 
 function Main() {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -28,15 +36,14 @@ function Main() {
     refetchInterval: 300_000, // 5분마다 refetch
   });
 
-  const [isShow, setIsShow] = useState(false);
   const [showInput, setShowInput] = useState(false);
   const [editingItemId, setEditingItemId] = useState("");
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 25;
   const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const totalPages = inform ? Math.ceil(inform.length / itemsPerPage) : 0;
+  //const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  //const totalPages = inform ? Math.ceil(inform.length / itemsPerPage) : 0;
 
   const navigate = useNavigate();
 
@@ -90,10 +97,9 @@ function Main() {
   }, [currentDate, refetch]);
 
   return (
-    <div className="flex flex-col items-center justify-between w-full h-screen p-10 sm:p-2 bg-gray-50 ">
-      {isShow && <AdminLogin setIsShow={setIsShow} />}
+    <div className="flex flex-col items-center w-full h-screen p-10 sm:p-2 bg-gray-50 ">
       <div className="sm:w-full w-[90%] flex flex-col items-center">
-        <div className="flex items-center justify-between w-full mt-2 mb-4 sm:mt-4">
+        <div className="flex items-center justify-between w-full mt-2 mb-8 sm:mt-4">
           <ArrowBack type="home" />
 
           <Title
@@ -155,73 +161,102 @@ function Main() {
           </div>
         </div>
 
-        <table className="w-[100%] rounded-2xl shadow-lg text-left">
-          <TabHeader headers={employeeHeaders} category="employee" />
-
-          <tbody className="h-full overflow-y-auto rounded-b-xl ">
-            {inform
-              ?.sort((a, b) => {
-                if (a.destination === b.destination) {
-                  return a.username.localeCompare(b.username); // username으로 정렬
-                }
-                return a.destination.localeCompare(b.destination); //destination으로 정렬
-              })
-              .slice(indexOfFirstItem, indexOfLastItem)
-
-              .map((item, index) => (
-                <tr
+        <TableContainer component={Paper}>
+          <Table>
+            <TableHead>
+              <TableRow className="bg-gray-200">
+                <TableCell
+                  sx={{
+                    fontWeight: "800",
+                    whiteSpace: "nowrap",
+                    fontSize: "large",
+                  }}
+                >
+                  이름
+                </TableCell>
+                <TableCell
+                  sx={{
+                    fontWeight: "800",
+                    whiteSpace: "nowrap",
+                    fontSize: "large",
+                  }}
+                >
+                  방문지
+                </TableCell>
+                <TableCell
+                  sx={{
+                    fontWeight: "800",
+                    whiteSpace: "nowrap",
+                    fontSize: "large",
+                  }}
+                >
+                  사업명
+                </TableCell>
+                <TableCell
+                  sx={{
+                    fontWeight: "800",
+                    whiteSpace: "nowrap",
+                    fontSize: "large",
+                  }}
+                >
+                  업무
+                </TableCell>
+                <TableCell
+                  sx={{
+                    fontWeight: "800",
+                    whiteSpace: "nowrap",
+                    fontSize: "large",
+                  }}
+                >
+                  차량
+                </TableCell>
+                <TableCell />
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {inform?.map((item, index) => (
+                <TableRow
                   key={index}
                   className={`sm:text-sm w-[100%] ${
                     index % 2 === 0 ? "bg-white" : "bg-gray-200"
                   }`}
                 >
-                  <td className="border-b border-gray-300 md:p-4 sm:p-2 whitespace-nowrap">
+                  <TableCell sx={{ fontSize: "medium" }}>
                     {item.username}
-                  </td>
-                  <td className="border-b border-gray-300 md:p-4 sm:p-1 ">
+                  </TableCell>
+                  <TableCell sx={{ fontSize: "medium" }}>
                     {item.destination}
-                  </td>
-                  <td className="border-b border-gray-300 md:p-4 sm:p-1 ">
+                  </TableCell>
+                  <TableCell sx={{ fontSize: "medium" }}>
                     {item.business}
-                  </td>
-                  <td className="border-b border-gray-300 md:p-4 sm:p-1 ">
-                    {item.work}
-                  </td>
-                  <td className="border-b border-gray-300 md:p-4 sm:p-1">
-                    {item.car}
-                  </td>
-                  <td className="border-b border-gray-300 md:p-4 sm:p-1">
-                    {item.isOwner && (
-                      <div className="flex justify-evenly">
-                        <Edit
-                          onClick={() => editInform(item._id)}
-                          className="w-6 h-6 sm:w-5 sm:h-5 hover:opacity-60"
-                        />
-                        <X
-                          onClick={() => deleteInform(item._id)}
-                          className="w-6 h-6 sm:w-5 sm:h-5 hover:opacity-60"
-                        />
-                        {editingItemId === item._id && (
-                          <EditInform
-                            item={item}
-                            setEditingItemId={setEditingItemId}
-                          />
-                        )}
-                      </div>
-                    )}
-                  </td>
-                </tr>
+                  </TableCell>
+                  <TableCell sx={{ fontSize: "medium" }}>{item.work}</TableCell>
+                  <TableCell sx={{ fontSize: "medium" }}>{item.car}</TableCell>
+                  <TableCell>
+                    <div className="flex items-center justify-center gap-2">
+                      <Edit onClick={() => editInform(item._id)} />
+                      <X onClick={() => deleteInform(item._id)} />
+                    </div>
+                  </TableCell>
+                </TableRow>
               ))}
-          </tbody>
-        </table>
+              {inform && inform.length === 0 && (
+                <TableRow>
+                  <TableCell colSpan={6} className="text-center text-gray-400">
+                    등록된 정보가 없습니다.
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </TableContainer>
       </div>
 
-      {/* 페이지네이션 */}
-      <Page
+      {/* <Page
         totalPage={totalPages}
         page={currentPage}
         onPageChange={handleClick}
-      />
+      /> */}
     </div>
   );
 }

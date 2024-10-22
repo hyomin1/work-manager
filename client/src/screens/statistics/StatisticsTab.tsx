@@ -84,14 +84,15 @@ function StatisticsTab({
         <Box
           sx={{
             display: "flex",
-            justifyContent: "space-between",
+            justifyContent: "start",
           }}
         >
           <MobileDatePicker
             onChange={handleChangeDate}
             defaultValue={dayjs(date)}
+            sx={{ width: "15%" }}
           />
-          <FormControl fullWidth>
+          <FormControl sx={{ width: "15%", marginRight: 12 }}>
             <InputLabel id="demo-simple-select-required-label">
               이름 *
             </InputLabel>
@@ -111,7 +112,11 @@ function StatisticsTab({
                 ))}
             </Select>
           </FormControl>
-          <Button onClick={onClickUserStatistics} variant="contained">
+          <Button
+            onClick={onClickUserStatistics}
+            variant="contained"
+            sx={{ width: "10%", fontWeight: "bold", fontSize: "large" }}
+          >
             검색
           </Button>
         </Box>
