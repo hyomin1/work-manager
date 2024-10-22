@@ -8,6 +8,7 @@ import Register from "./screens/auth/Register";
 import SelectPages from "./screens/SelectPages";
 import DriveMain from "./screens/driving/DriveMain";
 import DriveInput from "./screens/driving/DriveInput";
+import StatisticsMain from "./screens/statistics/StatisticsMain";
 
 const router = createBrowserRouter([
   {
@@ -33,6 +34,10 @@ const router = createBrowserRouter([
       {
         path: "/driving-status",
         element: <DriveMain />,
+      },
+      {
+        path: "/statistics",
+        element: <StatisticsMain />,
       },
       {
         path: "/employee-input",

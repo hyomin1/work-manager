@@ -9,7 +9,7 @@ import Page from "../../components/Page";
 import { employeeHeaders } from "../../constants/headers";
 import Title from "../../components/Title";
 import ArrowBack from "../../components/ArrowBack";
-import { Edit, X, Settings, Pencil, Truck } from "lucide-react";
+import { Edit, X, Settings, Pencil, Truck, LineChart } from "lucide-react";
 import Logout from "../auth/Logout";
 import EditInform from "./EditEmployeeInform";
 import { IInform } from "../../interfaces/interface";
@@ -45,6 +45,10 @@ function Main() {
 
   const onClickAdmin = () => {
     setIsShow(true);
+  };
+
+  const onClickStatistics = () => {
+    navigate("/statistics");
   };
 
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -120,11 +124,18 @@ function Main() {
               <span className="ml-1 sm:text-xs">입력</span>
             </button>
             <button
-              className="whitespace-nowrap bg-[#007BFF] rounded-lg text-white py-2 sm:text-sm px-4 hover:opacity-60 button-effect flex justify-center items-center"
+              className="whitespace-nowrap bg-[#007BFF] rounded-lg text-white py-2 sm:text-sm px-4 hover:opacity-60 mr-4 button-effect flex justify-center items-center"
               onClick={onClickAdmin}
             >
               <Settings className="sm:w-4 sm:h-4" />
               <span className="ml-1 sm:text-xs">관리</span>
+            </button>
+            <button
+              className="whitespace-nowrap bg-[#00ab39] rounded-lg text-white py-2 sm:text-sm px-4 button-effect  flex justify-center items-center"
+              onClick={onClickStatistics}
+            >
+              <LineChart className="sm:w-4 sm:h-4" />
+              <span className="ml-1 sm:text-xs">통계</span>
             </button>
             <div className="mx-4 border border-gray-300 md:h-10 sm:h-8" />
             <button onClick={() => refetch()}>

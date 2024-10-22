@@ -25,13 +25,16 @@ export interface IEtcNames {
   etcName: string;
 }
 
-export interface IInform {
-  _id: string;
+export interface IStat {
   username: string;
   destination: string;
-  business: string;
   work: string;
   car: string;
+}
+
+export interface IInform extends IStat {
+  _id: string;
+  business: string;
   createdAt: Date;
   isOwner: boolean;
 }
