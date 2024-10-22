@@ -61,6 +61,10 @@ function StatisticsTab({
   const { names, destinationsData } = useCustomQueries();
 
   const onClickUserStatistics = () => {
+    if (!username) {
+      alert("이름을 선택해주세요");
+      return;
+    }
     refetch();
   };
 
@@ -98,11 +102,13 @@ function StatisticsTab({
               label="이름 *"
               onChange={handleChangeName}
             >
-              {names?.map((item, index) => (
-                <MenuItem key={index} value={item.username}>
-                  {item.username}
-                </MenuItem>
-              ))}
+              {names
+                ?.sort((a, b) => a.username.localeCompare(b.username))
+                .map((item, index) => (
+                  <MenuItem key={index} value={item.username}>
+                    {item.username}
+                  </MenuItem>
+                ))}
             </Select>
           </FormControl>
           <Button onClick={onClickUserStatistics} variant="contained">

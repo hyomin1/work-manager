@@ -131,6 +131,7 @@ function Main() {
               <span className="ml-1 sm:text-xs">관리</span>
             </button>
             <button
+              disabled
               className="whitespace-nowrap bg-[#00ab39] rounded-lg text-white py-2 sm:text-sm px-4 button-effect  flex justify-center items-center"
               onClick={onClickStatistics}
             >
