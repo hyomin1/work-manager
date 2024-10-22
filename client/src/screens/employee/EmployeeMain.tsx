@@ -1,7 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { axiosReq, calDate, getEmployeeInform } from "../../api";
+import {
+  axiosReq,
+  calDate,
+  checkAdminSession,
+  getEmployeeInform,
+} from "../../api";
 import AdminLogin from "../admin/AdminLogin";
 import { SlRefresh } from "react-icons/sl";
 import TabHeader from "../../components/TabHeader";
@@ -43,12 +48,18 @@ function Main() {
     navigate("/employee-input");
   };
 
-  const onClickAdmin = () => {
-    setIsShow(true);
+  const onClickAdmin = async () => {
+    const status = await checkAdminSession();
+    if (status === 200) {
+      navigate("/admin");
+    }
   };
 
-  const onClickStatistics = () => {
-    navigate("/statistics");
+  const onClickStatistics = async () => {
+    const status = await checkAdminSession();
+    if (status === 200) {
+      navigate("/statistics");
+    }
   };
 
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -131,7 +142,6 @@ function Main() {
               <span className="ml-1 sm:text-xs">관리</span>
             </button>
             <button
-              disabled
               className="whitespace-nowrap bg-[#00ab39] rounded-lg text-white py-2 sm:text-sm px-4 button-effect  flex justify-center items-center"
               onClick={onClickStatistics}
             >

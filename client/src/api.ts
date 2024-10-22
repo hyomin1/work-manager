@@ -81,6 +81,11 @@ export const getUserStatistics = async (username: string, date: Date) => {
   return res.data.userStatistics || [];
 };
 
+export const checkAdminSession = async () => {
+  const res = await axiosReq.get("/auth/checkAdminSession");
+  return res.status;
+};
+
 const today = new Date();
 const year = today.getFullYear();
 const month = today.getMonth() + 1;

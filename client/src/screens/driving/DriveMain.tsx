@@ -3,6 +3,7 @@ import {
   calMonth,
   calYear,
   calYearMonth,
+  checkAdminSession,
   getCars,
   getDrivingInform,
 } from "../../api";
@@ -94,8 +95,11 @@ function DriveMain() {
     navigate("/driving-input");
   };
 
-  const onClickAdmin = () => {
-    setIsAdmin(true);
+  const onClickAdmin = async () => {
+    const status = await checkAdminSession();
+    if (status === 200) {
+      navigate("/admin");
+    }
   };
   const totalFuelCost =
     drivingInform?.reduce((acc, item) => acc + item.fuelCost, 0) || 0;
