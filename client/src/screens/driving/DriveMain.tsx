@@ -22,6 +22,8 @@ import Logout from "../auth/Logout";
 import { Edit, Pencil, Settings, Users, X } from "lucide-react";
 import { axiosReq } from "../../api";
 import EditDrivingInform from "./EditDrivingInform";
+import DriveMobile from "./DriveMobile";
+import DrivePC from "./DrivePC";
 
 function DriveMain() {
   const navigate = useNavigate();
@@ -30,17 +32,15 @@ function DriveMain() {
 
   const [currentDate, setCurrentDate] = useState(new Date());
 
-  const [carNum, setCarNum] = useState("");
+  const [carId, setCarId] = useState("");
   const [car, setCar] = useState("");
-
-  const [editingItemId, setEditingItemId] = useState("");
 
   const { data: drivingInform, refetch } = useQuery<IDrivingInform[]>({
     queryKey: ["drivingInform"],
     queryFn: () =>
-      getDrivingInform(calYear(currentDate), calMonth(currentDate), carNum),
+      getDrivingInform(calYear(currentDate), calMonth(currentDate), carId),
     refetchInterval: 300_000,
-    enabled: carNum.length > 0,
+    enabled: carId.length > 0,
   });
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -53,10 +53,10 @@ function DriveMain() {
 
   useEffect(() => {
     refetch();
-  }, [carNum, refetch, currentDate]);
+  }, [carId, refetch, currentDate]);
 
   const [showInput, setShowInput] = useState(false);
-  const [isShow, setIsShow] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   const { data: cars } = useQuery<ICars[]>({
     queryKey: ["car", 1],
@@ -71,7 +71,7 @@ function DriveMain() {
     const carId = e.target.value.split(",")[0];
     const carName = e.target.value.split(",")[1];
     setCar(carName);
-    setCarNum(carId);
+    setCarId(carId);
     setCurrentPage(1);
   };
 
@@ -99,7 +99,7 @@ function DriveMain() {
   };
 
   const onClickAdmin = () => {
-    setIsShow(true);
+    setIsAdmin(true);
   };
   const totalFuelCost =
     drivingInform?.reduce((acc, item) => acc + item.fuelCost, 0) || 0;
@@ -116,7 +116,7 @@ function DriveMain() {
 
   return (
     <div className="flex flex-col items-center justify-between w-full h-screen p-4 sm:p-2 bg-gray-50">
-      {isShow && <AdminLogin setIsShow={setIsShow} />}
+      {isAdmin && <AdminLogin setIsShow={setIsAdmin} />}
       <div className="sm:w-full w-[80%] flex flex-col items-center ">
         <div className="flex items-center justify-between print:justify-center w-full mt-4 mb-4 sm:mt-4">
           <ArrowBack type="home" />
@@ -127,7 +127,6 @@ function DriveMain() {
             calYearMonth={calYearMonth}
             category="driving"
           />
-
           <Logout />
         </div>
 
@@ -197,197 +196,28 @@ function DriveMain() {
             </div>
           </div>
           {isMobile ? (
-            <div className="sm:w-full">
-              {drivingInform
-                ?.sort((a, b) => {
-                  if (
-                    new Date(a.driveDay).getTime() ===
-                    new Date(b.driveDay).getTime()
-                  ) {
-                    return a.startKM - b.startKM;
-                  }
-
-                  return (
-                    new Date(a.driveDay).getTime() -
-                    new Date(b.driveDay).getTime()
-                  );
-                })
-                ?.slice(indexOfFirstItem, indexOfLastItem)
-                .map((item, index) => (
-                  <div
-                    key={index}
-                    className="grid grid-cols-3 gap-2 p-4 mb-1 space-x-0 text-sm bg-white border border-gray-300 rounded-lg shadow-md"
-                  >
-                    <div className="flex flex-col ">
-                      <span className="mb-1 font-bold">날짜</span>
-                      <span>{calCarDay(item.driveDay)}</span>
-                    </div>
-
-                    <div className="flex flex-col">
-                      <span className="mb-1 font-bold">운전자</span>
-                      <span>{item.username}</span>
-                    </div>
-                    <div className="flex flex-col">
-                      <span className="mb-1 font-bold whitespace-nowrap">
-                        행선지
-                      </span>
-                      <p>{item.drivingDestination}</p>
-                    </div>
-                    <div className="flex flex-col">
-                      <span className="mb-1 font-bold">출발(km)</span>
-                      <span>{item.startKM} km</span>
-                    </div>
-                    <div className="flex flex-col">
-                      <span className="mb-1 font-bold">도착(km)</span>
-                      <span>{item.endKM} km</span>
-                    </div>
-                    <div className="flex flex-col">
-                      <span className="mb-1 font-bold">주행거리</span>
-                      <p>{item.totalKM} km</p>
-                    </div>
-                    <div className="flex flex-col">
-                      <span className="mb-1 font-bold">주유비</span>
-                      <span>{item.fuelCost}</span>
-                    </div>
-                    <div className="flex flex-col">
-                      <span className="mb-1 font-bold">하이패스</span>
-                      <span> {item.toll}</span>
-                    </div>
-                    <div className="flex flex-col">
-                      <span className="mb-1 font-bold">기타</span>
-                      <span>
-                        {item.etc.cost > 0 && (
-                          <p>
-                            {item.etc.cost} ({item.etc.name})
-                          </p>
-                        )}
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              <div className="grid w-full grid-cols-3 gap-2 p-4 mb-1 space-x-0 text-sm print:text-[9px] bg-white border border-gray-300 rounded-lg shadow-md">
-                <div className="flex flex-col">
-                  <span className="font-bold">주행거리</span>
-                  <span>{totalDrivingKM} km</span>
-                </div>
-
-                <div className="flex flex-col">
-                  <span className="font-bold">주유비</span>
-                  <span>{totalFuelCost}</span>
-                </div>
-                <div className="flex flex-col">
-                  <span className="font-bold">하이패스</span>
-                  <span>{totalToll}</span>
-                </div>
-                <div className="flex flex-col">
-                  <span className="font-bold">기타</span>
-                  <span>{totalEtcCost}</span>
-                </div>
-                <div />
-                <div className="flex flex-col">
-                  <span className="font-bold">총계</span>
-                  <span>{grandTotal}</span>
-                </div>
-                <div />
-              </div>
-            </div>
+            <DriveMobile
+              drivingInform={drivingInform || []}
+              grandTotal={grandTotal}
+              totalDrivingKM={totalDrivingKM}
+              totalEtcCost={totalEtcCost}
+              totalFuelCost={totalFuelCost}
+              totalToll={totalToll}
+              indexOfFirstItem={indexOfFirstItem}
+              indexOfLastItem={indexOfLastItem}
+            />
           ) : (
-            <table className="w-[100%] rounded-2xl text-left border border-black">
-              <TabHeader headers={drivingHeaders} category="driving" />
-              <tbody className="rounded-b-xl text-xs print:text-[9px] ">
-                {drivingInform
-                  ?.sort((a, b) => {
-                    if (
-                      new Date(a.driveDay).getTime() ===
-                      new Date(b.driveDay).getTime()
-                    ) {
-                      return a.startKM - b.startKM;
-                    }
-                    return (
-                      new Date(a.driveDay).getTime() -
-                      new Date(b.driveDay).getTime()
-                    );
-                  })
-                  ?.slice(indexOfFirstItem, indexOfLastItem)
-                  .map((item, index) => (
-                    <tr
-                      key={index}
-                      className={`hover:bg-gray-100 sm:text-sm ${
-                        index % 2 === 0 ? "bg-white" : "bg-gray-50 w-full"
-                      }`}
-                    >
-                      <td className="py-2 pl-1 border border-black whitespace-nowrap">
-                        {calCarDay(item.driveDay)}
-                      </td>
-                      <td className="py-2 pl-1 border border-black whitespace-nowrap ">
-                        {item.username}
-                      </td>
-                      <td className="py-2 pl-1 border border-black whitespace-nowrap">
-                        {item.drivingDestination}
-                      </td>
-
-                      <td className="py-2 pl-1 border border-black whitespace-nowrap ">
-                        {item.startKM}km
-                      </td>
-                      <td className="py-2 pl-1 border border-black whitespace-nowrap ">
-                        {item.endKM}km
-                      </td>
-                      <td className="py-2 pl-1 border border-black whitespace-nowrap ">
-                        {item.totalKM}km
-                      </td>
-                      <td className="py-2 pl-1 border border-black whitespace-nowrap ">
-                        {item.fuelCost ? item.fuelCost : ""}
-                      </td>
-                      <td className="py-2 pl-1 border border-black whitespace-nowrap ">
-                        {item.toll ? item.toll : ""}
-                      </td>
-                      <td className="py-2 pl-1 border border-black whitespace-nowrap ">
-                        {item.etc.cost > 0 &&
-                          `${item.etc.cost}(${item.etc.name})`}
-                      </td>
-                      <td className="border border-black md:py-1 md:pl-1 sm:p-1 print-hidden">
-                        {item.isOwner && (
-                          <div className="flex justify-end">
-                            <Edit
-                              onClick={() => setEditingItemId(item._id)}
-                              className="w-5 h-5  hover:opacity-60 mr-2"
-                            />
-                            <X
-                              onClick={() => deleteInform(item._id)}
-                              className="w-5 sm:h-5 hover:opacity-60 mr-2"
-                            />
-                            {editingItemId === item._id && (
-                              <EditDrivingInform
-                                item={item}
-                                setEditingItemId={setEditingItemId}
-                              />
-                            )}
-                          </div>
-                        )}
-                      </td>
-                    </tr>
-                  ))}
-                <tr>
-                  <td colSpan={5} />
-                  <td className="py-2 pl-1 border border-black whitespace-nowrap md:text-xs print:text-[10px]">
-                    {totalDrivingKM}km
-                  </td>
-
-                  <td className="py-2 pl-1 border border-black whitespace-nowrap md:text-xs print:text-[10px]">
-                    {totalFuelCost}
-                  </td>
-                  <td className="py-2 pl-1 border border-black whitespace-nowrap md:text-xs print:text-[10px]">
-                    {totalToll}
-                  </td>
-                  <td className="py-2 pl-1 border border-black whitespace-nowrap md:text-xs print:text-[10px] ">
-                    {totalEtcCost}
-                  </td>
-                  <td className="py-2 pl-1 border border-black whitespace-nowrap md:text-xs print:text-[10px] ">
-                    {grandTotal}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+            <DrivePC
+              drivingInform={drivingInform || []}
+              totalDrivingKM={totalDrivingKM}
+              totalEtcCost={totalEtcCost}
+              totalFuelCost={totalFuelCost}
+              totalToll={totalToll}
+              grandTotal={grandTotal}
+              indexOfFirstItem={indexOfFirstItem}
+              indexOfLastItem={indexOfLastItem}
+              refetch={refetch}
+            />
           )}
         </>
       </div>
