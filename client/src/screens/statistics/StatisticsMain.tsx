@@ -9,6 +9,8 @@ import TableRow from "@mui/material/TableRow";
 import { useState } from "react";
 import StatisticsTab from "./StatisticsTab";
 import { IStat } from "../../interfaces/interface";
+import { useQuery } from "@tanstack/react-query";
+import { getUserStatistics } from "../../api";
 
 function StatisticsMain() {
   // 0: 이름 검색, 1: 방문지 검색
@@ -18,7 +20,13 @@ function StatisticsMain() {
   const [destination, setDestination] = useState("");
   const [date, setDate] = useState(new Date());
 
-  const [statisticsData, setStatisticsData] = useState<IStat[]>([]);
+  const { data: statisticsData, refetch } = useQuery<IStat[]>({
+    queryKey: ["statistics", username, date],
+    queryFn: () => getUserStatistics(username, date),
+    enabled: false,
+  });
+
+  console.log(statisticsData);
 
   return (
     <div className="flex flex-col items-center  w-full h-screen p-10 sm:p-2 bg-gray-50 ">
@@ -31,7 +39,7 @@ function StatisticsMain() {
         setDestination={setDestination}
         date={date}
         setDate={setDate}
-        setStatisticsData={setStatisticsData}
+        refetch={refetch}
       />
 
       <TableContainer component={Paper}>
@@ -45,10 +53,11 @@ function StatisticsMain() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {statisticsData.map((item, index) => (
+            {statisticsData?.map((item, index) => (
               <TableRow key={index}>
                 <TableCell>{item.username}</TableCell>
                 <TableCell>{item.destination}</TableCell>
+                <TableCell>{item.business}</TableCell>
                 <TableCell>{item.work}</TableCell>
                 <TableCell>{item.car}</TableCell>
               </TableRow>

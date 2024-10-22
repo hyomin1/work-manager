@@ -535,3 +535,45 @@ export const getInform = async (req: Request, res: Response) => {
     return res.status(500).json({ error: "서버 에러" });
   }
 };
+
+export const getUserStatistics = async (req: Request, res: Response) => {
+  // if (!req.session.isAdmin) {
+  //   return res.status(403).json({ error: "관리자 권한이 필요합니다." });
+  // }
+  // 첫 로그인시에 role 확인해서 session에 isAdmin 발급해야함
+  try {
+    const { username, date } = req.query;
+
+    const translateDate = new Date(date as string);
+    const utcDate = new Date(translateDate.getTime() - 9 * 60 * 60 * 1000);
+
+    const startOfDay = utcDate.setHours(0, 0, 0, 0);
+    const endOfDay = utcDate.setHours(23, 59, 59, 999);
+    const userStatistics = await Inform.find(
+      {
+        $and: [
+          {
+            $or: [
+              { startDate: { $gte: startOfDay, $lte: endOfDay } }, // 시작일이 범위 내에 있는 경우
+              { endDate: { $gte: startOfDay, $lte: endOfDay } }, // 종료일이 범위 내에 있는 경우
+              { startDate: { $lte: startOfDay }, endDate: { $gte: endOfDay } }, // 범위에 포함된 경우
+            ],
+          },
+          { username }, // 추가된 username 필터
+        ],
+      },
+      {
+        username: 1,
+        destination: 1,
+        business: 1,
+        work: 1,
+        car: 1,
+      }
+    );
+
+    return res.status(200).json({ userStatistics });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "서버 에러" });
+  }
+};

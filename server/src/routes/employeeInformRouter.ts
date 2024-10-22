@@ -18,6 +18,7 @@ import {
   getDestination,
   getInform,
   getName,
+  getUserStatistics,
   getWork,
   removeBusiness,
   removeCar,
@@ -77,5 +78,8 @@ router.get("/getInform", getInform);
 router.post("/addInform", addInform);
 router.delete("/removeInform/:id", removeInform);
 router.put("/editInform", editInform);
+
+// 통계 관련
+router.get("/userStatistics", getUserStatistics);
 
 export default router;

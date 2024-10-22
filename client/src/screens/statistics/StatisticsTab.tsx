@@ -2,8 +2,6 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
 
-import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
@@ -12,7 +10,6 @@ import { useCustomQueries } from "../../hooks/useCustomQuery";
 import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker";
 import dayjs, { Dayjs } from "dayjs";
 import Button from "@mui/material/Button";
-import { IStat } from "../../interfaces/interface";
 import { axiosReq } from "../../api";
 
 interface ITabs {
@@ -24,7 +21,7 @@ interface ITabs {
   setDestination: React.Dispatch<React.SetStateAction<string>>;
   date: Date;
   setDate: React.Dispatch<React.SetStateAction<Date>>;
-  setStatisticsData: React.Dispatch<React.SetStateAction<IStat[]>>;
+  refetch: () => void;
 }
 
 function a11yProps(index: number) {
@@ -43,7 +40,7 @@ function StatisticsTab({
   setDestination,
   date,
   setDate,
-  setStatisticsData,
+  refetch,
 }: ITabs) {
   const handleChangeValue = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -61,17 +58,11 @@ function StatisticsTab({
     }
   };
 
-  const fetchUserStatistics = async () => {
-    const res = await axiosReq.get("");
-    setStatisticsData(res.data);
-  };
-
-  const fetchDestinationStatistics = async () => {
-    const res = await axiosReq.get(`/api/`);
-    setStatisticsData(res.data);
-  };
-
   const { names, destinationsData } = useCustomQueries();
+
+  const onClickUserStatistics = () => {
+    refetch();
+  };
 
   return (
     <Box sx={{ width: "100%" }}>
@@ -92,6 +83,10 @@ function StatisticsTab({
             justifyContent: "space-between",
           }}
         >
+          <MobileDatePicker
+            onChange={handleChangeDate}
+            defaultValue={dayjs(date)}
+          />
           <FormControl fullWidth>
             <InputLabel id="demo-simple-select-required-label">
               이름 *
@@ -110,13 +105,7 @@ function StatisticsTab({
               ))}
             </Select>
           </FormControl>
-
-          <MobileDatePicker
-            onChange={handleChangeDate}
-            defaultValue={dayjs(date)}
-          />
-
-          <Button onClick={fetchUserStatistics} variant="contained">
+          <Button onClick={onClickUserStatistics} variant="contained">
             검색
           </Button>
         </Box>

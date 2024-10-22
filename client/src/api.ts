@@ -74,6 +74,13 @@ export const getDrivingInform = async (
   return [];
 };
 
+export const getUserStatistics = async (username: string, date: Date) => {
+  const res = await axiosReq.get(
+    `/api/employee-inform/userStatistics?username=${username}&date=${date}`
+  );
+  return res.data.userStatistics || [];
+};
+
 const today = new Date();
 const year = today.getFullYear();
 const month = today.getMonth() + 1;
