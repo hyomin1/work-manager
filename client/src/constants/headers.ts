@@ -11,11 +11,9 @@ export const drivingHeaders = [
   '총계',
 ];
 
-export const drivingInputHeaders = [
-  '날짜',
-  '차량',
-  '운전자',
-  '행선지',
+export const drivingInputHeadersTop = ['날짜', '차량', '운전자', '행선지'];
+
+export const drivingInputHeadersBottom = [
   '출발(Km)',
   '도착(Km)',
   '거리(Km)',

@@ -46,8 +46,6 @@ function StatisticsMain() {
       enabled: false,
     });
 
-  console.log(statisticsDestinationData);
-
   return (
     <div className="flex flex-col items-center w-full h-screen p-10 sm:p-2 bg-gray-50 ">
       <div className="flex flex-col items-center w-full sm:w-full">

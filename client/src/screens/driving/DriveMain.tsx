@@ -17,7 +17,6 @@ import { useMediaQuery } from 'react-responsive';
 import ArrowBack from './../../components/ArrowBack';
 import Logout from '../auth/Logout';
 import { Pencil, Settings, Users } from 'lucide-react';
-import { axiosReq } from '../../api';
 import DriveMobile from './DriveMobile';
 import DrivePC from './DrivePC';
 
@@ -74,19 +73,6 @@ function DriveMain() {
     setCurrentDate(new Date(e.target.value));
     setShowInput(false);
     setCurrentPage(1);
-  };
-
-  const deleteInform = async (id: string) => {
-    const isConfirm = window.confirm('삭제하시겠습니까?');
-    if (isConfirm) {
-      const res = await axiosReq.delete(
-        `/api/driving-inform/removeInform/${id}`
-      );
-      if (res.status === 200) {
-        alert(res.data.message);
-        refetch();
-      }
-    }
   };
 
   const onClickInputInform = () => {

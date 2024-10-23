@@ -43,8 +43,7 @@ function DrivePC({
       }
     }
   };
-  const a = 's';
-  parseInt(a);
+
   return (
     <table className="w-[100%] rounded-2xl text-left border border-black">
       <TabHeader headers={drivingHeaders} category="driving" />

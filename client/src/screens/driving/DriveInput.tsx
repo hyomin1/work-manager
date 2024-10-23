@@ -1,30 +1,59 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import TabInputHeader from '../../components/TabInputHeader';
-import { drivingInputHeaders } from '../../constants/headers';
-import { formDate, axiosReq } from '../../api';
-
+import { axiosReq, calDate } from '../../api';
 import ArrowBack from '../../components/ArrowBack';
 import { useCustomQueries } from '../../hooks/useCustomQuery';
+import {
+  Paper,
+  TextField,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  Button,
+  Typography,
+  Box,
+  Container,
+  Divider,
+  SelectChangeEvent,
+  Grid,
+} from '@mui/material';
+
+import { styled } from '@mui/material/styles';
+import Blank from '../../components/Blank';
+
+const StyledPaper = styled(Paper)(({ theme }) => ({
+  padding: theme.spacing(3),
+  borderRadius: '12px',
+  boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+  '& .MuiTextField-root, & .MuiFormControl-root': {
+    marginBottom: theme.spacing(2),
+  },
+}));
+
+const StyledFormSection = styled(Box)(({ theme }) => ({
+  padding: theme.spacing(2),
+  border: `1px dashed ${theme.palette.divider}`,
+  borderRadius: '8px',
+  marginBottom: theme.spacing(2),
+}));
 
 function DriveInput() {
   const navigate = useNavigate();
-  const [username, setName] = useState('');
-  const [car, setCar] = useState('');
-  const [drivingDestination, setDrivingDestination] = useState('');
+  const [driveDay, setDriveDay] = useState<Date>(); // 주행 날짜
+  const [car, setCar] = useState(''); // 차량
+  const [drivers, setDrivers] = useState(['', '']); // 운전자 배열
 
-  const [drivers, setDrivers] = useState(['', '']);
-  const [startKM, setStartKM] = useState(0);
-  const [endKM, setEndKM] = useState(0);
+  const [drivingDestination, setDrivingDestination] = useState(''); // 행선지
+  const [startKM, setStartKM] = useState(0); // 출발 km
+  const [endKM, setEndKM] = useState(0); // 도착 km
+  const [totalKM, setTotalKM] = useState(0); // 도착-출발 (주행거리)
 
-  const [fuelCost, setFuelCost] = useState(0);
-  const [toll, setToll] = useState(0);
-
-  const [totalKM, setTotalKM] = useState(0);
-
-  const [driveDay, setDriveDay] = useState<Date>();
+  const [fuelCost, setFuelCost] = useState(0); // 주유비
+  const [toll, setToll] = useState(0); // 하이패스
 
   const [etc, setEtc] = useState<{ name: string; cost: number }>({
+    // 기타 비용
     name: '', // 초기값 설정
     cost: 0,
   });
@@ -40,10 +69,7 @@ function DriveInput() {
     setDriveDay(new Date(event.target.value));
   };
 
-  const handleNameChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setName(event.target.value);
-  };
-  const handleCarChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleCarChange = (event: SelectChangeEvent) => {
     setCar(event.target.value);
   };
   const handleDrivingDestinationChange = (
@@ -67,7 +93,7 @@ function DriveInput() {
   const handleTollChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setToll(parseInt(event.target.value));
   };
-  const handleEtcNameChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleEtcNameChange = (event: SelectChangeEvent) => {
     setEtc({ name: event.target.value, cost: etc.cost }); // ���기값 설정
   };
 
@@ -75,12 +101,11 @@ function DriveInput() {
     setEtc({ name: etc.name, cost: parseInt(event.target.value) }); // ���기값 설정
   };
 
-  const handleDriverChange =
-    (index: number) => (event: React.ChangeEvent<HTMLSelectElement>) => {
-      const newDrivers = [...drivers];
-      newDrivers[index] = event.target.value;
-      setDrivers(newDrivers);
-    };
+  const handleDriverChange = (index: number) => (event: SelectChangeEvent) => {
+    const newDrivers = [...drivers];
+    newDrivers[index] = event.target.value;
+    setDrivers(newDrivers);
+  };
 
   const onClickComplete = async () => {
     const driverArr = selectedDriver
@@ -155,169 +180,196 @@ function DriveInput() {
   }
 
   return (
-    <div className="flex flex-col items-center justify-start w-full h-screen p-10 bg-gray-50 sm:p-4">
-      <div className="w-[95%] flex flex-col items-center rounded-lg sm:w-full bg-gray-50">
-        <div className="flex items-center w-full mt-4 mb-20 md:justify-center sm:mb-10 sm:justify-between">
-          <div className="flex items-center justify-between w-full">
-            <ArrowBack type="not home" />
-            <div className="flex items-center justify-center">
-              <span className="text-3xl font-bold sm:text-lg">{formDate}</span>
-            </div>
-            <div className="w-[11%]" />
-          </div>
-        </div>
+    <Container maxWidth="xl" sx={{ py: 4 }}>
+      <div className="flex items-center justify-between w-full mt-2 mb-8 sm:mt-4">
+        <ArrowBack type="not home" />
+        <span className="font-bold sm:text-sm md:text-3xl md:mx-8 sm:mx-1 whitespace-nowrap">
+          {calDate(new Date())}
+        </span>
+        <Blank />
+      </div>
 
-        <div className="w-full">
-          <table className="w-full text-left sm:table-fixed ">
-            <TabInputHeader headers={drivingInputHeaders} />
-
-            <tbody>
-              <tr className="w-full sm:flex sm:flex-col">
-                <td className="sm:mb-4 sm:w-full md:border-r border-gray-300 md:border-b md:w-[1%]">
-                  <div className="sm:font-bold sm:mb-2 md:hidden">날짜</div>
-                  <input
-                    type="date"
-                    className="p-2 ml-3 border rounded-md sm:w-full sm:ml-0"
-                    onChange={handleDriveDayChange}
-                  />
-                </td>
-                <td className="sm:mb-4 sm:w-full md:border-r border-gray-300 md:border-b w-[7%]">
-                  <div className="sm:font-bold sm:mb-2 md:hidden">차량</div>
-                  <select
-                    defaultValue=""
-                    onChange={handleCarChange}
-                    className="p-2 ml-3 border rounded-md hover:opacity-60 sm:w-full sm:ml-0"
-                  >
-                    <option disabled value="">
-                      차량 선택
-                    </option>
+      <StyledPaper elevation={3}>
+        <Grid container spacing={3}>
+          {/* 기본 정보 섹션 */}
+          <Grid item xs={12}>
+            <Typography variant="h6" sx={{ mb: 2 }}>
+              기본 정보
+            </Typography>
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={6} md={3}>
+                <TextField
+                  fullWidth
+                  type="date"
+                  label="날짜 *"
+                  InputLabelProps={{ shrink: true }}
+                  onChange={handleDriveDayChange}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6} md={3}>
+                <FormControl fullWidth>
+                  <InputLabel>차량 *</InputLabel>
+                  <Select value={car} label="차량 *" onChange={handleCarChange}>
                     {cars
                       ?.sort((a, b) => a.car.localeCompare(b.car))
-                      .map((item, index) => (
-                        <option key={index} value={item._id}>
+                      .map((item) => (
+                        <MenuItem key={item._id} value={item._id}>
                           {item.car}
-                        </option>
+                        </MenuItem>
                       ))}
-                  </select>
-                </td>
-                <td className="sm:mb-4 sm:w-full md:border-r border-gray-300 md:border-b md:w-[3%]">
-                  <div className="sm:font-bold sm:mb-2 md:hidden">운전자</div>
-                  {[0, 1].map((index) => (
-                    <select
-                      key={index}
+                  </Select>
+                </FormControl>
+              </Grid>
+              {[0, 1].map((index) => (
+                <Grid item xs={12} sm={6} md={3} key={index}>
+                  <FormControl fullWidth>
+                    <InputLabel>
+                      운전자 {index + 1} {index === 0 && '*'}
+                    </InputLabel>
+                    <Select
                       value={drivers[index]}
+                      label={`운전자 ${index + 1} ${index === 0 && '*'}`}
                       onChange={handleDriverChange(index)}
-                      className="p-2 ml-3 border rounded-md hover:opacity-60 sm:w-full sm:ml-0"
                     >
-                      <option disabled value="">
-                        운전자 선택
-                      </option>
                       {names
                         ?.sort((a, b) => a.username.localeCompare(b.username))
-                        .map((item, index) => (
-                          <option key={index} value={item.username}>
+                        .map((item) => (
+                          <MenuItem key={item.username} value={item.username}>
                             {item.username}
-                          </option>
+                          </MenuItem>
                         ))}
-                    </select>
-                  ))}
-                </td>
-                <td className="sm:mb-4 sm:w-full md:border-r border-gray-300 md:border-b w-[15%]">
-                  <div className="sm:font-bold sm:mb-2 md:hidden">행선지</div>
-                  <input
-                    type="text"
-                    onChange={handleDrivingDestinationChange}
-                    className="w-full p-2 transition duration-150 ease-in-out border rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
-                  />
-                </td>
+                    </Select>
+                  </FormControl>
+                </Grid>
+              ))}
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  label="행선지 *"
+                  placeholder="행선지를 입력해주세요"
+                  onChange={handleDrivingDestinationChange}
+                />
+              </Grid>
+            </Grid>
+          </Grid>
 
-                <td className="sm:mb-4 sm:w-full md:border-r border-gray-300 md:border-b md:w-[5%]">
-                  <div className="sm:font-bold sm:mb-2 md:hidden">출발(Km)</div>
-                  <input
-                    disabled={car === privateCarId}
+          <Grid item xs={12}>
+            <Divider sx={{ my: 3 }} />
+          </Grid>
+
+          {/* 주행 거리 섹션 */}
+          <Grid item xs={12} md={4}>
+            <StyledFormSection>
+              <Typography variant="subtitle1" sx={{ mb: 2 }}>
+                주행 거리
+              </Typography>
+              <Grid container spacing={2}>
+                <Grid item xs={6}>
+                  <TextField
+                    fullWidth
                     type="number"
+                    label="출발 (km) *"
+                    disabled={car === privateCarId}
                     onChange={handleStartKMChange}
-                    className="w-full p-2 transition duration-150 ease-in-out border rounded-md focus:outline-none focus:ring-2 focus:ring-green-400 hover:opacity-60"
                   />
-                </td>
-                <td className="sm:mb-4 sm:w-full md:border-r border-gray-300 md:border-b md:w-[5%]">
-                  <div className="sm:font-bold sm:mb-2 md:hidden">도착(Km)</div>
-                  <input
+                </Grid>
+                <Grid item xs={6}>
+                  <TextField
+                    fullWidth
+                    type="number"
+                    label="도착 (km) *"
                     disabled={car === privateCarId}
-                    type="number"
                     onChange={handleEndKMChange}
-                    className="w-full p-2 transition duration-150 ease-in-out border rounded-md focus:outline-none focus:ring-2 focus:ring-green-400 hover:opacity-60"
                   />
-                </td>
-                <td className="sm:mb-4 sm:w-full md:border-r border-gray-300 md:border-b md:w-[5%]">
-                  <div className="sm:font-bold sm:mb-2 md:hidden">
-                    주행거리(Km)
-                  </div>
-                  <input
-                    disabled={car !== privateCarId}
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    fullWidth
                     type="number"
+                    label="총 주행거리"
+                    disabled={car !== privateCarId}
                     value={car === privateCarId ? totalKM : endKM - startKM}
                     onChange={handleTotalKMChange}
-                    className="w-full p-2 transition duration-150 ease-in-out border rounded-md focus:outline-none focus:ring-2 focus:ring-green-400 hover:opacity-60"
                   />
-                </td>
+                </Grid>
+              </Grid>
+            </StyledFormSection>
+          </Grid>
 
-                <td className="sm:mb-4 sm:w-full md:border-r border-gray-300 md:border-b md:w-[5%]">
-                  <div className="sm:font-bold sm:mb-2 md:hidden">주유비</div>
-                  <input
-                    type="number"
-                    onChange={handleFuelCostChange}
-                    className="w-full p-2 transition duration-150 ease-in-out border rounded-md focus:outline-none focus:ring-2 focus:ring-green-400 hover:opacity-60"
-                  />
-                </td>
-                <td className="sm:mb-4 sm:w-full md:border-r border-gray-300 md:border-b md:w-[5%] whitespace-nowrap">
-                  <div className="sm:font-bold sm:mb-2 md:hidden">하이패스</div>
-                  <input
-                    type="number"
-                    onChange={handleTollChange}
-                    className="w-full p-2 transition duration-150 ease-in-out border rounded-md focus:outline-none focus:ring-2 focus:ring-green-400 hover:opacity-60"
-                  />
-                </td>
-                <td className="sm:mb-4 sm:w-full md:border-r border-gray-300 md:border-b md:w-[10%]">
-                  <div className="sm:font-bold sm:mb-2 md:hidden">기타</div>
-                  <div className="flex">
-                    <select
-                      defaultValue=""
-                      onChange={handleEtcNameChange}
-                      className="w-full p-2 ml-3 border rounded-md hover:opacity-60 sm:w-full sm:ml-0 md:mr-2"
-                    >
-                      <option disabled value="">
-                        항목 선택
-                      </option>
-                      {etcNames
-                        ?.sort((a, b) => a.etcName.localeCompare(b.etcName))
-                        .map((item, index) => (
-                          <option key={index} value={item.etcName}>
-                            {item.etcName}
-                          </option>
-                        ))}
-                    </select>
-                    <input
-                      type="number"
-                      onChange={handleEtcCostChange}
-                      className="w-full p-2 transition duration-150 ease-in-out border rounded-md focus:outline-none focus:ring-2 focus:ring-green-400 hover:opacity-60"
-                    />
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div className="flex justify-center w-full mt-8">
-          <button
+          {/* 비용 섹션 */}
+          <Grid item xs={12} md={4}>
+            <StyledFormSection>
+              <Typography variant="subtitle1" sx={{ mb: 2 }}>
+                비용
+              </Typography>
+              <TextField
+                fullWidth
+                type="number"
+                label="주유비"
+                onChange={handleFuelCostChange}
+              />
+              <TextField
+                fullWidth
+                type="number"
+                label="하이패스"
+                onChange={handleTollChange}
+              />
+            </StyledFormSection>
+          </Grid>
+
+          {/* 기타 비용 섹션 */}
+          <Grid item xs={12} md={4}>
+            <StyledFormSection>
+              <Typography variant="subtitle1" sx={{ mb: 2 }}>
+                기타 비용
+              </Typography>
+              <FormControl fullWidth sx={{ mb: 2 }}>
+                <InputLabel>항목 선택</InputLabel>
+                <Select
+                  value={etc.name}
+                  label="항목 선택"
+                  onChange={handleEtcNameChange}
+                >
+                  {etcNames
+                    ?.sort((a, b) => a.etcName.localeCompare(b.etcName))
+                    .map((item) => (
+                      <MenuItem key={item.etcName} value={item.etcName}>
+                        {item.etcName}
+                      </MenuItem>
+                    ))}
+                </Select>
+              </FormControl>
+              <TextField
+                fullWidth
+                type="number"
+                label="비용"
+                onChange={handleEtcCostChange}
+              />
+            </StyledFormSection>
+          </Grid>
+        </Grid>
+
+        {/* 제출 버튼 */}
+        <Box sx={{ mt: 4, textAlign: 'center' }}>
+          <Button
+            variant="contained"
+            color="primary"
+            size="large"
             onClick={onClickComplete}
-            className="bg-[#00ab39] rounded-lg text-white py-2 px-4 hover:opacity-60 w-[15%] h-12 font-bold text-xl sm:w-full my-2"
+            sx={{
+              height: '48px',
+              fontSize: '1.1rem',
+              bgcolor: '#00ab39',
+              '&:hover': {
+                bgcolor: '#009933',
+              },
+            }}
           >
-            완료
-          </button>
-        </div>
-      </div>
-    </div>
+            입력 완료
+          </Button>
+        </Box>
+      </StyledPaper>
+    </Container>
   );
 }
 

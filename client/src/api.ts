@@ -138,7 +138,6 @@ export const calCarDay = (date: Date) => {
 export const extractMonthAndDay = (date: Date) => {
   const month = new Date(date).getMonth() + 1;
   const day = new Date(date).getDate();
-  console.log(month, day);
   return { month, day };
 };
 
