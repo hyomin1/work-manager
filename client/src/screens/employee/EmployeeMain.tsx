@@ -98,7 +98,7 @@ function Main() {
 
   return (
     <div className="flex flex-col items-center w-full h-screen p-10 sm:p-2 bg-gray-50 ">
-      <div className="sm:w-full w-[90%] flex flex-col items-center">
+      <div className="sm:w-full w-[90%] flex flex-col items-center h-full">
         <div className="flex items-center justify-between w-full mt-2 mb-8 sm:mt-4">
           <ArrowBack type="home" />
 
@@ -162,7 +162,7 @@ function Main() {
         </div>
 
         <TableContainer component={Paper}>
-          <Table>
+          <Table stickyHeader>
             <TableHead>
               <TableRow className="bg-gray-200">
                 <TableCell
@@ -228,7 +228,9 @@ function Main() {
                       index % 2 === 0 ? 'bg-white' : 'bg-gray-200'
                     }`}
                   >
-                    <TableCell sx={{ fontSize: 'medium' }}>
+                    <TableCell
+                      sx={{ fontSize: 'medium', whiteSpace: 'nowrap' }}
+                    >
                       {item.username}
                     </TableCell>
                     <TableCell sx={{ fontSize: 'medium' }}>
@@ -274,12 +276,6 @@ function Main() {
           </Table>
         </TableContainer>
       </div>
-
-      {/* <Page
-        totalPage={totalPages}
-        page={currentPage}
-        onPageChange={handleClick}
-      /> */}
     </div>
   );
 }
