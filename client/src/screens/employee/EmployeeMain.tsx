@@ -8,8 +8,6 @@ import {
   getEmployeeInform,
 } from '../../api';
 import { SlRefresh } from 'react-icons/sl';
-import TabHeader from '../../components/TabHeader';
-import Page from '../../components/Page';
 import { employeeHeaders } from '../../constants/headers';
 import Title from '../../components/Title';
 import ArrowBack from '../../components/ArrowBack';
@@ -33,23 +31,13 @@ function Main() {
   const { data: inform, refetch } = useQuery<IInform[]>({
     queryKey: ['employeeInform'],
     queryFn: () => getEmployeeInform(currentDate),
-    refetchInterval: 300_000, // 5분마다 refetch
+    refetchInterval: 300_000, // 5분마다 데이터 갱신
   });
 
   const [showInput, setShowInput] = useState(false);
   const [editingItemId, setEditingItemId] = useState('');
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 25;
-  const indexOfLastItem = currentPage * itemsPerPage;
-  //const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  //const totalPages = inform ? Math.ceil(inform.length / itemsPerPage) : 0;
-
   const navigate = useNavigate();
-
-  const handleClick = (page: number) => {
-    setCurrentPage(page);
-  };
 
   const onClickInputInform = () => {
     navigate('/employee-input');
@@ -72,7 +60,6 @@ function Main() {
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCurrentDate(new Date(e.target.value));
     setShowInput(false);
-    setCurrentPage(1);
   };
 
   const editInform = async (id: string) => {
@@ -165,52 +152,18 @@ function Main() {
           <Table stickyHeader>
             <TableHead>
               <TableRow className="bg-gray-200">
-                <TableCell
-                  sx={{
-                    fontWeight: '800',
-                    whiteSpace: 'nowrap',
-                    fontSize: 'large',
-                  }}
-                >
-                  이름
-                </TableCell>
-                <TableCell
-                  sx={{
-                    fontWeight: '800',
-                    whiteSpace: 'nowrap',
-                    fontSize: 'large',
-                  }}
-                >
-                  방문지
-                </TableCell>
-                <TableCell
-                  sx={{
-                    fontWeight: '800',
-                    whiteSpace: 'nowrap',
-                    fontSize: 'large',
-                  }}
-                >
-                  사업명
-                </TableCell>
-                <TableCell
-                  sx={{
-                    fontWeight: '800',
-                    whiteSpace: 'nowrap',
-                    fontSize: 'large',
-                  }}
-                >
-                  업무
-                </TableCell>
-                <TableCell
-                  sx={{
-                    fontWeight: '800',
-                    whiteSpace: 'nowrap',
-                    fontSize: 'large',
-                  }}
-                >
-                  차량
-                </TableCell>
-                <TableCell />
+                {employeeHeaders.map((item, index) => (
+                  <TableCell
+                    sx={{
+                      fontWeight: '800',
+                      whiteSpace: 'nowrap',
+                      fontSize: 'large',
+                    }}
+                    key={index}
+                  >
+                    {item}
+                  </TableCell>
+                ))}
               </TableRow>
             </TableHead>
             <TableBody>

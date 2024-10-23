@@ -25,7 +25,7 @@ export interface IEtcNames {
   etcName: string;
 }
 
-export interface IStat {
+export interface INameStat {
   username: string;
   destination: string;
   business: string;
@@ -33,7 +33,13 @@ export interface IStat {
   car: string;
 }
 
-export interface IInform extends IStat {
+export interface IDestStat {
+  startDate: Date;
+  username: string;
+  destination: string;
+}
+
+export interface IInform extends INameStat {
   _id: string;
   createdAt: Date;
   isOwner: boolean;

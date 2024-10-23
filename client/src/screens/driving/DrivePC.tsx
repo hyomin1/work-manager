@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import TabHeader from "../../components/TabHeader";
-import { IDrivingInform } from "../../interfaces/interface";
-import { drivingHeaders } from "../../constants/headers";
-import { axiosReq, calCarDay } from "../../api";
-import { Edit, X } from "lucide-react";
-import EditDrivingInform from "./EditDrivingInform";
+import { useState } from 'react';
+import TabHeader from '../../components/TabHeader';
+import { IDrivingInform } from '../../interfaces/interface';
+import { drivingHeaders } from '../../constants/headers';
+import { axiosReq, calCarDay } from '../../api';
+import { Edit, X } from 'lucide-react';
+import EditDrivingInform from './EditDrivingInform';
 
 interface IDrivePCProps {
   drivingInform: IDrivingInform[];
@@ -29,10 +29,10 @@ function DrivePC({
   totalEtcCost,
   refetch,
 }: IDrivePCProps) {
-  const [editingItemId, setEditingItemId] = useState("");
+  const [editingItemId, setEditingItemId] = useState('');
 
   const deleteInform = async (id: string) => {
-    const isConfirm = window.confirm("삭제하시겠습니까?");
+    const isConfirm = window.confirm('삭제하시겠습니까?');
     if (isConfirm) {
       const res = await axiosReq.delete(
         `/api/driving-inform/removeInform/${id}`
@@ -43,7 +43,8 @@ function DrivePC({
       }
     }
   };
-
+  const a = 's';
+  parseInt(a);
   return (
     <table className="w-[100%] rounded-2xl text-left border border-black">
       <TabHeader headers={drivingHeaders} category="driving" />
@@ -64,7 +65,7 @@ function DrivePC({
             <tr
               key={index}
               className={`hover:bg-gray-100 sm:text-sm ${
-                index % 2 === 0 ? "bg-white" : "bg-gray-50 w-full"
+                index % 2 === 0 ? 'bg-white' : 'bg-gray-50 w-full'
               }`}
             >
               <td className="py-2 pl-1 border border-black whitespace-nowrap">
@@ -87,10 +88,10 @@ function DrivePC({
                 {item.totalKM.toLocaleString()}km
               </td>
               <td className="py-2 pl-1 border border-black whitespace-nowrap ">
-                {item.fuelCost ? item.fuelCost.toLocaleString() : ""}
+                {item.fuelCost ? item.fuelCost.toLocaleString() : ''}
               </td>
               <td className="py-2 pl-1 border border-black whitespace-nowrap ">
-                {item.toll ? item.toll.toLocaleString() : ""}
+                {item.toll ? item.toll.toLocaleString() : ''}
               </td>
               <td className="py-2 pl-1 border border-black whitespace-nowrap ">
                 {item.etc.cost > 0 &&
@@ -101,11 +102,11 @@ function DrivePC({
                   <div className="flex justify-end">
                     <Edit
                       onClick={() => setEditingItemId(item._id)}
-                      className="w-5 h-5  hover:opacity-60 mr-2"
+                      className="w-5 h-5 mr-2 hover:opacity-60"
                     />
                     <X
                       onClick={() => deleteInform(item._id)}
-                      className="w-5 sm:h-5 hover:opacity-60 mr-2"
+                      className="w-5 mr-2 sm:h-5 hover:opacity-60"
                     />
                     {editingItemId === item._id && (
                       <EditDrivingInform

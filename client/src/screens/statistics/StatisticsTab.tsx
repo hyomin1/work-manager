@@ -1,16 +1,18 @@
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
-import Box from "@mui/material/Box";
-
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
-import { useCustomQueries } from "../../hooks/useCustomQuery";
-import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker";
-import dayjs, { Dayjs } from "dayjs";
-import Button from "@mui/material/Button";
-import { axiosReq } from "../../api";
+import {
+  Tab,
+  Tabs,
+  Box,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  Button,
+} from '@mui/material';
+import { SelectChangeEvent } from '@mui/material/Select';
+import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
+import { Search, MapPin, User } from 'lucide-react';
+import dayjs, { Dayjs } from 'dayjs';
+import { useCustomQueries } from '../../hooks/useCustomQuery';
 
 interface ITabs {
   value: number;
@@ -21,13 +23,14 @@ interface ITabs {
   setDestination: React.Dispatch<React.SetStateAction<string>>;
   date: Date;
   setDate: React.Dispatch<React.SetStateAction<Date>>;
-  refetch: () => void;
+  nameRefetch: () => void;
+  destinationRefetch: () => void;
 }
 
 function a11yProps(index: number) {
   return {
-    id: `simple-tab-${index}`,
-    "aria-controls": `simple-tabpanel-${index}`,
+    id: `statistics-tab-${index}`,
+    'aria-controls': `statistics-tabpanel-${index}`,
   };
 }
 
@@ -40,11 +43,13 @@ function StatisticsTab({
   setDestination,
   date,
   setDate,
-  refetch,
+  nameRefetch,
+  destinationRefetch,
 }: ITabs) {
   const handleChangeValue = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
+
   const handleChangeName = (event: SelectChangeEvent) => {
     setUserName(event.target.value as string);
   };
@@ -52,6 +57,7 @@ function StatisticsTab({
   const handleChangeDestination = (event: SelectChangeEvent) => {
     setDestination(event.target.value as string);
   };
+
   const handleChangeDate = (newDate: Dayjs | null) => {
     if (newDate) {
       setDate(newDate.toDate());
@@ -62,46 +68,84 @@ function StatisticsTab({
 
   const onClickUserStatistics = () => {
     if (!username) {
-      alert("이름을 선택해주세요");
+      alert('이름을 선택해주세요');
       return;
     }
-    refetch();
+    nameRefetch();
+  };
+
+  const onClickDestinationStatistics = () => {
+    if (!destination) {
+      alert('방문지를 선택해주세요');
+      return;
+    }
+    destinationRefetch();
   };
 
   return (
-    <Box sx={{ width: "100%" }}>
-      <Box sx={{ borderBottom: 1, borderColor: "divider", marginBottom: 2 }}>
+    <div className="space-y-6  md:w-[50%]">
+      {/* Tabs */}
+      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs
           value={value}
           onChange={handleChangeValue}
-          aria-label="basic tabs example"
-        >
-          <Tab label="이름 검색" {...a11yProps(0)} />
-          <Tab label="방문지 검색" {...a11yProps(1)} />
-        </Tabs>
-      </Box>
-      {value === 0 ? (
-        <Box
+          variant="fullWidth"
           sx={{
-            display: "flex",
-            justifyContent: "start",
+            '& .MuiTab-root': {
+              fontSize: '0.95rem',
+              fontWeight: 600,
+              textTransform: 'none',
+              minHeight: 48,
+            },
+            '& .Mui-selected': {
+              color: '#2563eb',
+            },
+            '& .MuiTabs-indicator': {
+              backgroundColor: '#2563eb',
+            },
           }}
         >
+          <Tab
+            icon={<User className="w-4 h-4" />}
+            iconPosition="start"
+            label="이름 검색"
+            {...a11yProps(0)}
+          />
+          <Tab
+            icon={<MapPin className="w-4 h-4" />}
+            iconPosition="start"
+            label="방문지 검색"
+            {...a11yProps(1)}
+          />
+        </Tabs>
+      </Box>
+
+      {/* Search Forms */}
+      {value === 0 ? (
+        <div className="flex justify-between ">
           <MobileDatePicker
             onChange={handleChangeDate}
             defaultValue={dayjs(date)}
-            sx={{ width: "15%" }}
+            sx={{
+              width: '42%',
+              '& .MuiOutlinedInput-root': {
+                backgroundColor: 'white',
+              },
+            }}
           />
-          <FormControl sx={{ width: "15%", marginRight: 12 }}>
-            <InputLabel id="demo-simple-select-required-label">
-              이름 *
-            </InputLabel>
+          <FormControl sx={{ width: '42%' }}>
+            <InputLabel id="name-select-label">이름 *</InputLabel>
             <Select
-              labelId="demo-simple-select-required-label"
-              id="demo-simple-select-required"
+              labelId="name-select-label"
               value={username}
               label="이름 *"
               onChange={handleChangeName}
+              sx={{
+                backgroundColor: 'white',
+                '& .MuiSelect-select': {
+                  paddingY: '1rem',
+                },
+              }}
             >
               {names
                 ?.sort((a, b) => a.username.localeCompare(b.username))
@@ -115,21 +159,40 @@ function StatisticsTab({
           <Button
             onClick={onClickUserStatistics}
             variant="contained"
-            sx={{ width: "10%", fontWeight: "bold", fontSize: "large" }}
+            startIcon={<Search className="w-4 h-4" />}
+            sx={{
+              backgroundColor: '#2563eb',
+              textTransform: 'none',
+              fontWeight: 600,
+              fontSize: 'large',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              borderRadius: '0.5rem',
+              padding: '0.75rem 1.5rem',
+              '&:hover': {
+                backgroundColor: '#1d4ed8',
+              },
+            }}
           >
             검색
           </Button>
-        </Box>
+        </div>
       ) : (
-        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-          <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">방문지 *</InputLabel>
+        <div className="flex justify-between">
+          <FormControl sx={{ flexGrow: 1 }}>
+            <InputLabel id="destination-select-label">방문지 *</InputLabel>
             <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
+              labelId="destination-select-label"
               value={destination}
-              label="Age"
+              label="방문지 *"
               onChange={handleChangeDestination}
+              sx={{
+                backgroundColor: 'white',
+                '& .MuiSelect-select': {
+                  paddingY: '1rem',
+                },
+              }}
             >
               {destinationsData?.map((item, index) => (
                 <MenuItem key={index} value={item.destination}>
@@ -138,10 +201,31 @@ function StatisticsTab({
               ))}
             </Select>
           </FormControl>
-          <Button variant="contained">검색</Button>
-        </Box>
+          <Button
+            onClick={onClickDestinationStatistics}
+            variant="contained"
+            startIcon={<Search className="w-4 h-4" />}
+            sx={{
+              marginLeft: 2,
+              backgroundColor: '#2563eb',
+              textTransform: 'none',
+              fontWeight: 600,
+              fontSize: 'large',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              borderRadius: '0.5rem',
+              padding: '0.75rem 1.5rem',
+              '&:hover': {
+                backgroundColor: '#1d4ed8',
+              },
+            }}
+          >
+            검색
+          </Button>
+        </div>
       )}
-    </Box>
+    </div>
   );
 }
 

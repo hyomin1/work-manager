@@ -1,5 +1,5 @@
-import { ArrowLeft } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { ArrowLeft } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 interface IArrowProps {
   type: string;
@@ -9,8 +9,8 @@ function ArrowBack({ type }: IArrowProps) {
   const navigate = useNavigate();
 
   const goBack = () => {
-    if (type === "home") {
-      navigate("/home");
+    if (type === 'home') {
+      navigate('/home');
       return;
     }
     navigate(-1);
@@ -18,7 +18,7 @@ function ArrowBack({ type }: IArrowProps) {
   return (
     <button
       onClick={goBack}
-      className="px-2 flex justify-center items-center border border-gray-300 hover:opacity-60 text-gray-600 py-2 rounded-3xl  print-hidden whitespace-nowrap"
+      className="flex items-center justify-center px-2 py-2 text-gray-600 border border-gray-300 hover:opacity-60 rounded-3xl print-hidden whitespace-nowrap"
     >
       <ArrowLeft className=" md:w-6 md:h-5 sm:hidden" />
       <span className="md:ml-1 sm:text-xs">뒤로가기</span>
