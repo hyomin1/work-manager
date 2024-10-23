@@ -194,11 +194,13 @@ function StatisticsTab({
                 },
               }}
             >
-              {destinationsData?.map((item, index) => (
-                <MenuItem key={index} value={item.destination}>
-                  {item.destination}
-                </MenuItem>
-              ))}
+              {destinationsData
+                ?.sort((a, b) => a.destination.localeCompare(b.destination))
+                .map((item, index) => (
+                  <MenuItem key={index} value={item.destination}>
+                    {item.destination}
+                  </MenuItem>
+                ))}
             </Select>
           </FormControl>
           <Button
