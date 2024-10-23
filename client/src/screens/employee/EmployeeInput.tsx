@@ -1,25 +1,25 @@
-import React, { useState } from "react";
-import { formDate, axiosReq } from "../../api";
+import React, { useState } from 'react';
+import { formDate, axiosReq } from '../../api';
 
-import TabInputHeader from "../../components/TabInputHeader";
-import { employeeInputHeaders } from "../../constants/headers";
-import ArrowBack from "../../components/ArrowBack";
-import { useNavigate } from "react-router-dom";
-import { useCustomQueries } from "../../hooks/useCustomQuery";
+import TabInputHeader from '../../components/TabInputHeader';
+import { employeeInputHeaders } from '../../constants/headers';
+import ArrowBack from '../../components/ArrowBack';
+import { useNavigate } from 'react-router-dom';
+import { useCustomQueries } from '../../hooks/useCustomQuery';
 
 function EmployeeInput() {
-  const [username, setName] = useState("");
+  const [username, setName] = useState('');
 
-  const [destinations, setDestinations] = useState(["", "", ""]);
-  const [inputDestination, setInputDestination] = useState("");
+  const [destinations, setDestinations] = useState(['', '', '']);
+  const [inputDestination, setInputDestination] = useState('');
 
-  const [businesses, setBusinesses] = useState(["", "", ""]);
-  const [inputBusiness, setInputBusiness] = useState("");
+  const [businesses, setBusinesses] = useState(['', '', '']);
+  const [inputBusiness, setInputBusiness] = useState('');
 
-  const [works, setWorks] = useState(["", "", ""]);
-  const [inputWork, setInputWork] = useState(""); // 업무 직접 입력은 아니지만 직접 입력한 방문지와 사업명의 매핑하기 위한 변수
+  const [works, setWorks] = useState(['', '', '']);
+  const [inputWork, setInputWork] = useState(''); // 업무 직접 입력은 아니지만 직접 입력한 방문지와 사업명의 매핑하기 위한 변수
 
-  const [car, setCar] = useState("");
+  const [car, setCar] = useState('');
 
   const selectedDestinations = destinations.filter(Boolean);
   const selectedBusinesses = businesses.filter(Boolean);
@@ -56,7 +56,7 @@ function EmployeeInput() {
       setDestinations(newDestinations);
 
       const newBusinesses = [...businesses];
-      newBusinesses[index] = "";
+      newBusinesses[index] = '';
       setBusinesses(newBusinesses);
     };
 
@@ -120,74 +120,74 @@ function EmployeeInput() {
   const onClickComplete = async () => {
     const destArr = selectedDestinations
       .map((destination) => {
-        const parts = destination.split(",");
+        const parts = destination.split(',');
         return parts[1] ? parts[1].trim() : null;
       })
-      .filter((dest) => dest !== null && dest !== "")
+      .filter((dest) => dest !== null && dest !== '')
       .concat(inputDestination.trim())
       .filter(Boolean);
 
     const businessArr = selectedBusinesses
       .map((business) => business.trim())
-      .filter((business) => business !== null && business !== "")
+      .filter((business) => business !== null && business !== '')
       .concat(inputBusiness.trim())
       .filter(Boolean);
 
     const workArr = selectedWorks
       .map((work) => work.trim())
-      .filter((work) => work !== null && work !== "")
+      .filter((work) => work !== null && work !== '')
       .concat(inputWork.trim())
       .filter(Boolean);
 
     if (!username) {
-      alert("이름을 선택해주세요");
+      alert('이름을 선택해주세요');
       return;
     }
 
     if (destArr.length === 0) {
-      alert("방문지를 선택해주세요");
+      alert('방문지를 선택해주세요');
       return;
     }
 
     if (businessArr.length === 0) {
-      alert("사업명을 선택해주세요");
+      alert('사업명을 선택해주세요');
       return;
     }
     if (destArr.length !== businessArr.length) {
-      alert("방문지와 사업명의 수가 일치하지 않습니다");
+      alert('방문지와 사업명의 수가 일치하지 않습니다');
       return;
     }
 
     if (workArr.length === 0) {
-      alert("업무를 선택해주세요");
+      alert('업무를 선택해주세요');
       return;
     }
     if (
       destArr.length === businessArr.length &&
       destArr.length > workArr.length
     ) {
-      alert("업무를 선택해주세요");
+      alert('업무를 선택해주세요');
       return;
     }
     if (
       destArr.length === businessArr.length &&
       destArr.length < workArr.length
     ) {
-      alert("업무의 개수가 많습니다");
+      alert('업무의 개수가 많습니다');
       return;
     }
 
     if (!car) {
-      alert("차량을 선택해주세요");
+      alert('차량을 선택해주세요');
       return;
     }
     if (startDate && endDate && startDate > endDate) {
-      alert("시작일이 종료일보다 느립니다.");
+      alert('시작일이 종료일보다 느립니다.');
       return;
     }
 
     const requests = destArr.map((destination, index) =>
-      axiosReq.post("/api/employee-inform/addInform", {
+      axiosReq.post('/api/employee-inform/addInform', {
         username,
         destination: destArr[index],
         business: businessArr[index],
@@ -201,8 +201,8 @@ function EmployeeInput() {
     const responses = await Promise.all(requests);
 
     if (responses.every((res) => res.status === 200)) {
-      alert("정보 입력 완료");
-      navigate("/employee-status");
+      alert('정보 입력 완료');
+      navigate('/employee-status');
     }
   };
 
@@ -293,7 +293,7 @@ function EmployeeInput() {
                       <option disabled value="">
                         사업명 선택
                       </option>
-                      {destinations.includes(",선택 안함") && (
+                      {destinations.includes(',선택 안함') && (
                         <option value="선택 안함">선택 안함</option>
                       )}
 
@@ -301,7 +301,7 @@ function EmployeeInput() {
                         ?.filter(
                           (business) =>
                             business.destinationId ===
-                            destinations[index].split(",")[0]
+                            destinations[index].split(',')[0]
                         )
                         ?.sort((a, b) => a.business.localeCompare(b.business))
                         .map((item, idx) => (

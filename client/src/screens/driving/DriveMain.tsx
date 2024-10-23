@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import {
   calMonth,
   calYear,
@@ -6,33 +6,33 @@ import {
   checkAdminSession,
   getCars,
   getDrivingInform,
-} from "../../api";
-import { useQuery } from "@tanstack/react-query";
-import { ICars, IDrivingInform } from "../../interfaces/interface";
-import Title from "../../components/Title";
-import { useNavigate } from "react-router-dom";
-import { SlRefresh } from "react-icons/sl";
-import Page from "../../components/Page";
-import { useMediaQuery } from "react-responsive";
-import ArrowBack from "./../../components/ArrowBack";
-import Logout from "../auth/Logout";
-import { Pencil, Settings, Users } from "lucide-react";
-import { axiosReq } from "../../api";
-import DriveMobile from "./DriveMobile";
-import DrivePC from "./DrivePC";
+} from '../../api';
+import { useQuery } from '@tanstack/react-query';
+import { ICars, IDrivingInform } from '../../interfaces/interface';
+import Title from '../../components/Title';
+import { useNavigate } from 'react-router-dom';
+import { SlRefresh } from 'react-icons/sl';
+import Page from '../../components/Page';
+import { useMediaQuery } from 'react-responsive';
+import ArrowBack from './../../components/ArrowBack';
+import Logout from '../auth/Logout';
+import { Pencil, Settings, Users } from 'lucide-react';
+import { axiosReq } from '../../api';
+import DriveMobile from './DriveMobile';
+import DrivePC from './DrivePC';
 
 function DriveMain() {
   const navigate = useNavigate();
 
-  const isMobile = useMediaQuery({ query: "(max-width: 540px)" });
+  const isMobile = useMediaQuery({ query: '(max-width: 540px)' });
 
   const [currentDate, setCurrentDate] = useState(new Date());
 
-  const [carId, setCarId] = useState("");
-  const [car, setCar] = useState("");
+  const [carId, setCarId] = useState('');
+  const [car, setCar] = useState('');
 
   const { data: drivingInform, refetch } = useQuery<IDrivingInform[]>({
-    queryKey: ["drivingInform"],
+    queryKey: ['drivingInform'],
     queryFn: () =>
       getDrivingInform(calYear(currentDate), calMonth(currentDate), carId),
     refetchInterval: 300_000,
@@ -54,7 +54,7 @@ function DriveMain() {
   const [showInput, setShowInput] = useState(false);
 
   const { data: cars } = useQuery<ICars[]>({
-    queryKey: ["car", 1],
+    queryKey: ['car', 1],
     queryFn: getCars,
   });
 
@@ -63,8 +63,8 @@ function DriveMain() {
   };
 
   const onChangeCarNum = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const carId = e.target.value.split(",")[0];
-    const carName = e.target.value.split(",")[1];
+    const carId = e.target.value.split(',')[0];
+    const carName = e.target.value.split(',')[1];
     setCar(carName);
     setCarId(carId);
     setCurrentPage(1);
@@ -77,7 +77,7 @@ function DriveMain() {
   };
 
   const deleteInform = async (id: string) => {
-    const isConfirm = window.confirm("삭제하시겠습니까?");
+    const isConfirm = window.confirm('삭제하시겠습니까?');
     if (isConfirm) {
       const res = await axiosReq.delete(
         `/api/driving-inform/removeInform/${id}`
@@ -90,13 +90,13 @@ function DriveMain() {
   };
 
   const onClickInputInform = () => {
-    navigate("/driving-input");
+    navigate('/driving-input');
   };
 
   const onClickAdmin = async () => {
     const status = await checkAdminSession();
     if (status === 200) {
-      navigate("/admin");
+      navigate('/admin');
     }
   };
   const totalFuelCost =
@@ -115,7 +115,7 @@ function DriveMain() {
   return (
     <div className="flex flex-col items-center justify-between w-full h-screen p-4 sm:p-2 bg-gray-50">
       <div className="sm:w-full w-[80%] flex flex-col items-center ">
-        <div className="flex items-center justify-between print:justify-center w-full mt-4 mb-4 sm:mt-4">
+        <div className="flex items-center justify-between w-full mt-4 mb-4 print:justify-center sm:mt-4">
           <ArrowBack type="home" />
           <Title
             currentDate={currentDate}
@@ -129,7 +129,7 @@ function DriveMain() {
 
         <div className="flex items-center justify-between w-full mb-2">
           {showInput && (
-            <div className="w-full flex justify-center hover:opacity-60">
+            <div className="flex justify-center w-full hover:opacity-60">
               <input
                 type="month"
                 onChange={handleDateChange}
@@ -162,9 +162,9 @@ function DriveMain() {
                   ))}
             </select>
             <div className="p-4 items-center flex w-[50%] justify-end">
-              <div className="flex sm:flex-col items-center justify-center">
+              <div className="flex items-center justify-center sm:flex-col">
                 <button
-                  onClick={() => navigate("/employee-status")}
+                  onClick={() => navigate('/employee-status')}
                   className="whitespace-nowrap bg-[#00ab39] rounded-lg text-white md:py-2 sm:py-1 sm:text-sm px-4 hover:opacity-60 md:mr-4 sm:mb-2 button-effect flex justify-center items-center"
                 >
                   <Users className="sm:w-4 sm:h-4" />

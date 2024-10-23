@@ -1,19 +1,19 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import TabInputHeader from "../../components/TabInputHeader";
-import { drivingInputHeaders } from "../../constants/headers";
-import { formDate, axiosReq } from "../../api";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import TabInputHeader from '../../components/TabInputHeader';
+import { drivingInputHeaders } from '../../constants/headers';
+import { formDate, axiosReq } from '../../api';
 
-import ArrowBack from "../../components/ArrowBack";
-import { useCustomQueries } from "../../hooks/useCustomQuery";
+import ArrowBack from '../../components/ArrowBack';
+import { useCustomQueries } from '../../hooks/useCustomQuery';
 
 function DriveInput() {
   const navigate = useNavigate();
-  const [username, setName] = useState("");
-  const [car, setCar] = useState("");
-  const [drivingDestination, setDrivingDestination] = useState("");
+  const [username, setName] = useState('');
+  const [car, setCar] = useState('');
+  const [drivingDestination, setDrivingDestination] = useState('');
 
-  const [drivers, setDrivers] = useState(["", ""]);
+  const [drivers, setDrivers] = useState(['', '']);
   const [startKM, setStartKM] = useState(0);
   const [endKM, setEndKM] = useState(0);
 
@@ -25,7 +25,7 @@ function DriveInput() {
   const [driveDay, setDriveDay] = useState<Date>();
 
   const [etc, setEtc] = useState<{ name: string; cost: number }>({
-    name: "", // 초기값 설정
+    name: '', // 초기값 설정
     cost: 0,
   });
 
@@ -85,55 +85,55 @@ function DriveInput() {
   const onClickComplete = async () => {
     const driverArr = selectedDriver
       .map((driver) => driver.trim())
-      .filter((driver) => driver !== null && driver !== "")
+      .filter((driver) => driver !== null && driver !== '')
 
       .filter(Boolean);
 
     if (!driveDay) {
-      alert("날짜를 선택해주세요");
+      alert('날짜를 선택해주세요');
       return;
     }
     if (driverArr.length === 0) {
-      alert("운전자를 선택해주세요");
+      alert('운전자를 선택해주세요');
       return;
     }
     if (!car) {
-      alert("차량을 선택해주세요");
+      alert('차량을 선택해주세요');
       return;
     }
     if (!drivingDestination) {
-      alert("행선지를 입력해주세요");
+      alert('행선지를 입력해주세요');
       return;
     }
 
     if (car !== privateCarId && (!startKM || !endKM)) {
-      alert("주행거리를 입력해주세요.");
+      alert('주행거리를 입력해주세요.');
       return;
     }
     if (car === privateCarId && !totalKM) {
-      alert("주행거리를 입력해주세요.");
+      alert('주행거리를 입력해주세요.');
       return;
     }
     if (etc.name && !etc.cost) {
-      alert("비용을 입력해주세요.");
+      alert('비용을 입력해주세요.');
       return;
     }
     if (etc.cost && !etc.name) {
-      alert("항목을 선택해주세요.");
+      alert('항목을 선택해주세요.');
       return;
     }
-    if (typeof fuelCost !== "number") {
+    if (typeof fuelCost !== 'number') {
       setFuelCost(0);
     }
-    if (typeof toll !== "number") {
+    if (typeof toll !== 'number') {
       setToll(0);
     }
-    if (typeof etc.cost !== "number") {
+    if (typeof etc.cost !== 'number') {
       setEtc({ name: etc.name, cost: 0 });
     }
 
-    const driverJoined = driverArr.join(", ");
-    const res = await axiosReq.post("/api/driving-inform/addInform", {
+    const driverJoined = driverArr.join(', ');
+    const res = await axiosReq.post('/api/driving-inform/addInform', {
       driveDay,
       username: driverJoined,
       car,
@@ -147,7 +147,7 @@ function DriveInput() {
     });
     if (res.status === 200) {
       alert(res.data.message);
-      navigate("/driving-status");
+      navigate('/driving-status');
     }
   };
   if (namesLoading || carsLoading || etcNamesLoading) {
@@ -155,13 +155,13 @@ function DriveInput() {
   }
 
   return (
-    <div className="w-full h-screen flex flex-col justify-start items-center p-10 bg-gray-50 sm:p-4">
+    <div className="flex flex-col items-center justify-start w-full h-screen p-10 bg-gray-50 sm:p-4">
       <div className="w-[95%] flex flex-col items-center rounded-lg sm:w-full bg-gray-50">
-        <div className="mt-4 mb-20 flex items-center md:justify-center w-full sm:mb-10 sm:justify-between">
-          <div className="w-full flex justify-between items-center">
+        <div className="flex items-center w-full mt-4 mb-20 md:justify-center sm:mb-10 sm:justify-between">
+          <div className="flex items-center justify-between w-full">
             <ArrowBack type="not home" />
             <div className="flex items-center justify-center">
-              <span className="font-bold text-3xl sm:text-lg">{formDate}</span>
+              <span className="text-3xl font-bold sm:text-lg">{formDate}</span>
             </div>
             <div className="w-[11%]" />
           </div>
@@ -172,12 +172,12 @@ function DriveInput() {
             <TabInputHeader headers={drivingInputHeaders} />
 
             <tbody>
-              <tr className="sm:flex sm:flex-col w-full">
+              <tr className="w-full sm:flex sm:flex-col">
                 <td className="sm:mb-4 sm:w-full md:border-r border-gray-300 md:border-b md:w-[1%]">
                   <div className="sm:font-bold sm:mb-2 md:hidden">날짜</div>
                   <input
                     type="date"
-                    className="sm:w-full p-2 ml-3 border rounded-md sm:ml-0"
+                    className="p-2 ml-3 border rounded-md sm:w-full sm:ml-0"
                     onChange={handleDriveDayChange}
                   />
                 </td>
@@ -186,7 +186,7 @@ function DriveInput() {
                   <select
                     defaultValue=""
                     onChange={handleCarChange}
-                    className="hover:opacity-60 border rounded-md p-2 ml-3 sm:w-full sm:ml-0"
+                    className="p-2 ml-3 border rounded-md hover:opacity-60 sm:w-full sm:ml-0"
                   >
                     <option disabled value="">
                       차량 선택
@@ -207,7 +207,7 @@ function DriveInput() {
                       key={index}
                       value={drivers[index]}
                       onChange={handleDriverChange(index)}
-                      className="hover:opacity-60 border rounded-md p-2 ml-3 sm:w-full sm:ml-0"
+                      className="p-2 ml-3 border rounded-md hover:opacity-60 sm:w-full sm:ml-0"
                     >
                       <option disabled value="">
                         운전자 선택
@@ -227,7 +227,7 @@ function DriveInput() {
                   <input
                     type="text"
                     onChange={handleDrivingDestinationChange}
-                    className="border rounded-md p-2 w-full focus:outline-none focus:ring-2 focus:ring-green-400 transition duration-150 ease-in-out"
+                    className="w-full p-2 transition duration-150 ease-in-out border rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
                   />
                 </td>
 
@@ -237,7 +237,7 @@ function DriveInput() {
                     disabled={car === privateCarId}
                     type="number"
                     onChange={handleStartKMChange}
-                    className="border rounded-md p-2 w-full focus:outline-none focus:ring-2 focus:ring-green-400 transition duration-150 ease-in-out hover:opacity-60"
+                    className="w-full p-2 transition duration-150 ease-in-out border rounded-md focus:outline-none focus:ring-2 focus:ring-green-400 hover:opacity-60"
                   />
                 </td>
                 <td className="sm:mb-4 sm:w-full md:border-r border-gray-300 md:border-b md:w-[5%]">
@@ -246,7 +246,7 @@ function DriveInput() {
                     disabled={car === privateCarId}
                     type="number"
                     onChange={handleEndKMChange}
-                    className="border rounded-md p-2 w-full focus:outline-none focus:ring-2 focus:ring-green-400 transition duration-150 ease-in-out hover:opacity-60"
+                    className="w-full p-2 transition duration-150 ease-in-out border rounded-md focus:outline-none focus:ring-2 focus:ring-green-400 hover:opacity-60"
                   />
                 </td>
                 <td className="sm:mb-4 sm:w-full md:border-r border-gray-300 md:border-b md:w-[5%]">
@@ -258,7 +258,7 @@ function DriveInput() {
                     type="number"
                     value={car === privateCarId ? totalKM : endKM - startKM}
                     onChange={handleTotalKMChange}
-                    className="border rounded-md p-2 w-full focus:outline-none focus:ring-2 focus:ring-green-400 transition duration-150 ease-in-out hover:opacity-60"
+                    className="w-full p-2 transition duration-150 ease-in-out border rounded-md focus:outline-none focus:ring-2 focus:ring-green-400 hover:opacity-60"
                   />
                 </td>
 
@@ -267,7 +267,7 @@ function DriveInput() {
                   <input
                     type="number"
                     onChange={handleFuelCostChange}
-                    className="border rounded-md p-2 w-full focus:outline-none focus:ring-2 focus:ring-green-400  transition duration-150 ease-in-out hover:opacity-60"
+                    className="w-full p-2 transition duration-150 ease-in-out border rounded-md focus:outline-none focus:ring-2 focus:ring-green-400 hover:opacity-60"
                   />
                 </td>
                 <td className="sm:mb-4 sm:w-full md:border-r border-gray-300 md:border-b md:w-[5%] whitespace-nowrap">
@@ -275,7 +275,7 @@ function DriveInput() {
                   <input
                     type="number"
                     onChange={handleTollChange}
-                    className="border rounded-md p-2 w-full focus:outline-none focus:ring-2 focus:ring-green-400 transition duration-150 ease-in-out  hover:opacity-60"
+                    className="w-full p-2 transition duration-150 ease-in-out border rounded-md focus:outline-none focus:ring-2 focus:ring-green-400 hover:opacity-60"
                   />
                 </td>
                 <td className="sm:mb-4 sm:w-full md:border-r border-gray-300 md:border-b md:w-[10%]">
@@ -284,7 +284,7 @@ function DriveInput() {
                     <select
                       defaultValue=""
                       onChange={handleEtcNameChange}
-                      className="hover:opacity-60 border rounded-md p-2 ml-3 sm:w-full sm:ml-0 md:mr-2 w-full"
+                      className="w-full p-2 ml-3 border rounded-md hover:opacity-60 sm:w-full sm:ml-0 md:mr-2"
                     >
                       <option disabled value="">
                         항목 선택
@@ -300,7 +300,7 @@ function DriveInput() {
                     <input
                       type="number"
                       onChange={handleEtcCostChange}
-                      className="border rounded-md p-2 w-full focus:outline-none focus:ring-2 focus:ring-green-400  transition duration-150 ease-in-out hover:opacity-60"
+                      className="w-full p-2 transition duration-150 ease-in-out border rounded-md focus:outline-none focus:ring-2 focus:ring-green-400 hover:opacity-60"
                     />
                   </div>
                 </td>
@@ -308,7 +308,7 @@ function DriveInput() {
             </tbody>
           </table>
         </div>
-        <div className="w-full flex justify-center mt-8">
+        <div className="flex justify-center w-full mt-8">
           <button
             onClick={onClickComplete}
             className="bg-[#00ab39] rounded-lg text-white py-2 px-4 hover:opacity-60 w-[15%] h-12 font-bold text-xl sm:w-full my-2"
