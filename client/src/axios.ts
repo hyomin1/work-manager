@@ -25,7 +25,7 @@ const handleResponseInterceptor = async (
   } else if (error.response?.status === 403) {
     const errMsg = error.response.data as { error: string };
     const errType = error.response.data as { type: string };
-    const url = error.response.data as { url: string };
+    //const url = error.response.data as { url: string };
     alert(errMsg.error);
 
     // 유저 아닌 경우
