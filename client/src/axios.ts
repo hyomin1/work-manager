@@ -32,14 +32,10 @@ const handleResponseInterceptor = async (
     if (errType.type === 'not User') {
       window.location.href = '/';
     } else if (errType.type === 'not admin') {
-      console.log('not admin', url);
-
       // /admin직접 url redirect해서 들어온 경우
       //window.location.href = "/";
     } else if (errType.type === 'not granted admin') {
-      console.log('not grant admin', url);
     }
-    console.log('no type', url);
 
     //window.location.href = "/";
     return new Promise(() => {});
