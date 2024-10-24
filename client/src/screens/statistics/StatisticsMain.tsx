@@ -5,13 +5,14 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import StatisticsTab from './StatisticsTab';
 import { IDestStat, INameStat } from '../../interfaces/interface';
 import { useQuery } from '@tanstack/react-query';
 import {
   calDate,
   calStatDay,
+  checkAdminSession,
   extractMonthAndDay,
   getDestinationStatistics,
   getUserStatistics,
@@ -46,9 +47,13 @@ function StatisticsMain() {
       enabled: false,
     });
 
+  useEffect(() => {
+    checkAdminSession();
+  }, []);
+
   return (
     <div className="flex flex-col items-center w-full h-screen p-10 sm:p-2 bg-gray-50 ">
-      <div className="flex flex-col items-center w-full sm:w-full">
+      <div className="flex flex-col items-center w-[85%] sm:w-full">
         <div className="flex items-center justify-between w-full mt-2 mb-8 sm:mt-4">
           <ArrowBack type="not home" />
           <span className="font-bold sm:text-sm md:text-3xl md:mx-8 sm:mx-1 whitespace-nowrap">
@@ -71,7 +76,11 @@ function StatisticsMain() {
         destinationRefetch={destinationRefetch}
       />
 
-      <TableContainer component={Paper} className="shadow-lg rounded-xl">
+      <TableContainer
+        sx={{ width: '85%', marginTop: 4 }}
+        component={Paper}
+        className="shadow-lg rounded-xl"
+      >
         <Table stickyHeader>
           <TableHead>
             <TableRow className="bg-blue-50">
@@ -140,14 +149,14 @@ function StatisticsMain() {
                 ?.sort((a, b) => {
                   const dateA = extractMonthAndDay(a.startDate);
                   const dateB = extractMonthAndDay(b.startDate);
-                  // 1. month와 day를 먼저 비교
+
                   if (dateA.month !== dateB.month) {
-                    return dateA.month - dateB.month; // month가 다르면 month로 정렬
+                    return dateA.month - dateB.month;
                   }
                   if (dateA.day !== dateB.day) {
-                    return dateA.day - dateB.day; // day가 다르면 day로 정렬
+                    return dateA.day - dateB.day;
                   }
-                  // 2. month와 day가 같으면 이름으로 정렬
+
                   return a.username.localeCompare(b.username);
                 })
                 ?.map((item, index) => (
@@ -158,6 +167,8 @@ function StatisticsMain() {
                     <TableCell>{calStatDay(item.startDate)}</TableCell>
                     <TableCell>{item.username}</TableCell>
                     <TableCell>{item.destination}</TableCell>
+                    <TableCell>{item.business}</TableCell>
+                    <TableCell>{item.work}</TableCell>
                   </TableRow>
                 ))}
           </TableBody>

@@ -537,6 +537,9 @@ export const getInform = async (req: Request, res: Response) => {
 };
 
 export const getUserStatistics = async (req: Request, res: Response) => {
+  if (!req.session.isAdmin) {
+    return res.status(403).json({ error: '관리자 권한이 필요합니다.' });
+  }
   try {
     const { username, date } = req.query;
 
@@ -575,6 +578,11 @@ export const getUserStatistics = async (req: Request, res: Response) => {
 };
 
 export const getDestinationStatistics = async (req: Request, res: Response) => {
+  if (!req.session.isAdmin) {
+    return res
+      .status(403)
+      .json({ error: '관리자 권한이 필요합니다.', url: req.headers.referer });
+  }
   try {
     const { destination } = req.query;
     const destinationStatistics = await Inform.find(
@@ -583,6 +591,8 @@ export const getDestinationStatistics = async (req: Request, res: Response) => {
         username: 1,
         destination: 1,
         startDate: 1,
+        business: 1,
+        work: 1,
       }
     );
     return res.status(200).json({ destinationStatistics });

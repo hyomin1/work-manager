@@ -37,6 +37,8 @@ export interface IDestStat {
   startDate: Date;
   username: string;
   destination: string;
+  business: string;
+  work: string;
 }
 
 export interface IInform extends INameStat {

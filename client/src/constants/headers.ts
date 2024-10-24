@@ -40,4 +40,10 @@ export const statisticsNameHeader = [
   '차량',
 ];
 
-export const statisticsDestinationHeader = ['날짜', '이름', '방문지'];
+export const statisticsDestinationHeader = [
+  '날짜',
+  '이름',
+  '방문지',
+  '사업명',
+  '업무',
+];

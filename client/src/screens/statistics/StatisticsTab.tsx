@@ -83,7 +83,7 @@ function StatisticsTab({
   };
 
   return (
-    <div className="space-y-6  md:w-[50%]">
+    <div className="space-y-6  md:w-[85%]">
       {/* Tabs */}
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs

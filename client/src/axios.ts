@@ -1,4 +1,4 @@
-import axios, { AxiosError, AxiosResponse } from "axios";
+import axios, { AxiosError, AxiosResponse } from 'axios';
 
 const axiosIP = axios.create({
   baseURL: process.env.REACT_APP_IP,
@@ -25,17 +25,21 @@ const handleResponseInterceptor = async (
   } else if (error.response?.status === 403) {
     const errMsg = error.response.data as { error: string };
     const errType = error.response.data as { type: string };
-
+    const url = error.response.data as { url: string };
     alert(errMsg.error);
 
     // 유저 아닌 경우
-    if (errType.type === "not User") {
-      window.location.href = "/";
-    } else if (errType.type === "not admin") {
+    if (errType.type === 'not User') {
+      window.location.href = '/';
+    } else if (errType.type === 'not admin') {
+      console.log('not admin', url);
+
       // /admin직접 url redirect해서 들어온 경우
       //window.location.href = "/";
-    } else if (errType.type === "not granted admin") {
+    } else if (errType.type === 'not granted admin') {
+      console.log('not grant admin', url);
     }
+    console.log('no type', url);
 
     //window.location.href = "/";
     return new Promise(() => {});
