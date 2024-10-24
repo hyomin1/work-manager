@@ -74,37 +74,46 @@ export const getDrivingInform = async (
 
 const expandDataToDateRange = (
   data: (INameStat | IDestStat)[] | undefined,
-  start: Date,
-  end: Date
+  searchStart: Date, // 검색 시작일
+  searchEnd: Date // 검색 종료일
 ): INameStat[] => {
   if (!data) return [];
 
-  // 데이터의 시작일과 종료일 찾기
-  const dataStartDate = data.reduce((earliest, item) => {
-    const itemDate = new Date(item.startDate);
-    return itemDate < earliest ? itemDate : earliest;
-  }, new Date(end)); // 초기값을 end로 설정
+  // 검색 범위 내의 데이터만 필터링
+  return data
+    .filter((item) => {
+      if ('car' in item) {
+        const itemDate = new Date(item.startDate);
+        // 시간 정보를 제거하고 날짜만 비교
+        const itemDateOnly = new Date(
+          itemDate.getFullYear(),
+          itemDate.getMonth(),
+          itemDate.getDate()
+        );
+        const searchStartOnly = new Date(
+          searchStart.getFullYear(),
+          searchStart.getMonth(),
+          searchStart.getDate()
+        );
+        const searchEndOnly = new Date(
+          searchEnd.getFullYear(),
+          searchEnd.getMonth(),
+          searchEnd.getDate()
+        );
 
-  const expanded: INameStat[] = [];
-  const currentDate = new Date(start);
-
-  while (currentDate <= end) {
-    // 현재 날짜가 데이터의 시작일 이후인 경우에만 데이터를 추가
-    if (currentDate >= dataStartDate) {
-      data.forEach((item) => {
-        if ('car' in item) {
-          expanded.push({
-            ...item,
-            startDate: new Date(currentDate),
-          });
-        }
-      });
-    }
-
-    currentDate.setDate(currentDate.getDate() + 1);
-  }
-
-  return expanded;
+        return itemDateOnly >= searchStartOnly && itemDateOnly <= searchEndOnly;
+      }
+      return false;
+    })
+    .map((item) => {
+      if ('car' in item) {
+        return {
+          ...item,
+          startDate: new Date(item.startDate), // 원본 날짜 유지
+        };
+      }
+      throw new Error('Invalid item type');
+    });
 };
 export const getUserStatistics = async (
   username: string,
