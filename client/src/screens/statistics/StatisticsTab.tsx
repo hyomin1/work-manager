@@ -135,7 +135,7 @@ function StatisticsTab({
 
       {/* Search Forms */}
       {value === 0 ? (
-        <div className="flex justify-between">
+        <div className="flex">
           <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ko">
             <MobileDatePicker
               label="시작일"
@@ -143,6 +143,7 @@ function StatisticsTab({
               defaultValue={dayjs(startDate)}
               sx={{
                 width: '15%',
+
                 '& .MuiOutlinedInput-root': {
                   backgroundColor: 'white',
                 },
@@ -155,6 +156,7 @@ function StatisticsTab({
               defaultValue={dayjs(endDate)}
               sx={{
                 width: '15%',
+                marginLeft: 4,
                 '& .MuiOutlinedInput-root': {
                   backgroundColor: 'white',
                 },
@@ -162,7 +164,7 @@ function StatisticsTab({
             />
           </LocalizationProvider>
 
-          <FormControl sx={{ width: '42%' }}>
+          <FormControl sx={{ width: '15%', marginLeft: 4 }}>
             <InputLabel id="name-select-label">이름 *</InputLabel>
             <Select
               labelId="name-select-label"
@@ -190,6 +192,7 @@ function StatisticsTab({
             variant="contained"
             startIcon={<Search className="w-4 h-4" />}
             sx={{
+              marginLeft: 4,
               backgroundColor: '#2563eb',
               textTransform: 'none',
               fontWeight: 600,
@@ -208,8 +211,35 @@ function StatisticsTab({
           </Button>
         </div>
       ) : (
-        <div className="flex justify-between">
-          <FormControl sx={{ flexGrow: 1 }}>
+        <div className="flex">
+          <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ko">
+            <MobileDatePicker
+              label="시작일"
+              onChange={handleChangeStartDate}
+              defaultValue={dayjs(startDate)}
+              sx={{
+                width: '15%',
+
+                '& .MuiOutlinedInput-root': {
+                  backgroundColor: 'white',
+                },
+              }}
+            />
+
+            <MobileDatePicker
+              label="종료일"
+              onChange={handleChangeEndDate}
+              defaultValue={dayjs(endDate)}
+              sx={{
+                width: '15%',
+                marginLeft: 4,
+                '& .MuiOutlinedInput-root': {
+                  backgroundColor: 'white',
+                },
+              }}
+            />
+          </LocalizationProvider>
+          <FormControl sx={{ width: '30%', marginLeft: 4 }}>
             <InputLabel id="destination-select-label">방문지 *</InputLabel>
             <Select
               labelId="destination-select-label"
@@ -237,7 +267,7 @@ function StatisticsTab({
             variant="contained"
             startIcon={<Search className="w-4 h-4" />}
             sx={{
-              marginLeft: 2,
+              marginLeft: 4,
               backgroundColor: '#2563eb',
               textTransform: 'none',
               fontWeight: 600,

@@ -593,16 +593,40 @@ export const getDestinationStatistics = async (req: Request, res: Response) => {
       .json({ error: '관리자 권한이 필요합니다.', url: req.headers.referer });
   }
   try {
-    const { destination } = req.query;
+    const { destination, startDate, endDate } = req.query;
+    const translateStartDate = new Date(startDate as string);
+    const translateEndDate = new Date(endDate as string);
+
+    const utcStartDate = new Date(
+      translateStartDate.getTime() - 9 * 60 * 60 * 1000
+    );
+    const utcEndDate = new Date(
+      translateEndDate.getTime() - 9 * 60 * 60 * 1000
+    );
+
+    const startOfDay = utcStartDate.setHours(0, 0, 0, 0);
+    const endOfDay = utcEndDate.setHours(23, 59, 59, 999);
     const destinationStatistics = await Inform.find(
-      { destination },
       {
-        username: 1,
-        destination: 1,
+        $and: [
+          {
+            $or: [
+              { startDate: { $gte: startOfDay, $lte: endOfDay } }, // 시작일이 범위 내에 있는 경우
+              { endDate: { $gte: startOfDay, $lte: endOfDay } }, // 종료일이 범위 내에 있는 경우
+              { startDate: { $lte: startOfDay }, endDate: { $gte: endOfDay } }, // 범위에 포함된 경우
+            ],
+          },
+          { destination },
+        ],
+      },
+      {
         startDate: 1,
         endDate: 1,
+        username: 1,
+        destination: 1,
         business: 1,
         work: 1,
+        car: 1,
       }
     );
     return res.status(200).json({ destinationStatistics });

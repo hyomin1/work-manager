@@ -44,15 +44,13 @@ function StatisticsMain() {
   const { data: statisticsDestinationData, refetch: destinationRefetch } =
     useQuery<IDestStat[]>({
       queryKey: ['statistics', destination],
-      queryFn: () => getDestinationStatistics(destination),
+      queryFn: () => getDestinationStatistics(destination, startDate, endDate),
       enabled: false,
     });
 
   useEffect(() => {
     checkAdminSession();
   }, []);
-
-  console.log(statisticsNameData);
 
   return (
     <div className="flex flex-col items-center w-full h-screen p-10 sm:p-2 bg-gray-50 ">
@@ -98,9 +96,10 @@ function StatisticsMain() {
                     className="font-semibold text-gray-700 bg-blue-50"
                     sx={{
                       fontSize: '0.9rem',
-                      py: 3,
+                      fontWeight: 'bold',
+                      py: 2,
                       '&:first-of-type': {
-                        paddingLeft: 4,
+                        paddingLeft: 2,
                       },
                       whiteSpace: 'nowrap',
                     }}
@@ -130,7 +129,7 @@ function StatisticsMain() {
                     return dateA.day - dateB.day;
                   }
 
-                  return a.username.localeCompare(b.username);
+                  return a.destination.localeCompare(b.destination);
                 })
                 ?.map((item, index) => (
                   <TableRow key={index}>

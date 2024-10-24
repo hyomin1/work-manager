@@ -133,11 +133,21 @@ export const getUserStatistics = async (
   return data; // data는 INameStat[]임
 };
 
-export const getDestinationStatistics = async (destination: string) => {
+export const getDestinationStatistics = async (
+  destination: string,
+  startDate: Date,
+  endDate: Date
+) => {
   const res = await axiosReq.get(
-    `/api/employee-inform/destinationStatistics?destination=${destination}`
+    `/api/employee-inform/destinationStatistics?destination=${destination}&startDate=${startDate}&endDate=${endDate}`
   );
-  return res.data.destinationStatistics || [];
+
+  const data = expandDataToDateRange(
+    res.data.destinationStatistics,
+    startDate,
+    endDate
+  );
+  return data;
 };
 
 export const checkAdminSession = async () => {
