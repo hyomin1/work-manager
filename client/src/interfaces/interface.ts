@@ -26,6 +26,8 @@ export interface IEtcNames {
 }
 
 export interface INameStat {
+  startDate: Date;
+  endDate: Date;
   username: string;
   destination: string;
   business: string;
@@ -35,6 +37,7 @@ export interface INameStat {
 
 export interface IDestStat {
   startDate: Date;
+  endDate: Date;
   username: string;
   destination: string;
   business: string;

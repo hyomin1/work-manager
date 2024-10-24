@@ -33,6 +33,7 @@ export const employeeInputHeaders = [
 ];
 
 export const statisticsNameHeader = [
+  '날짜',
   '이름',
   '방문지',
   '사업명',

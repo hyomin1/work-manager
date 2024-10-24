@@ -419,8 +419,8 @@ export const addInform = async (req: Request, res: Response) => {
       data.startDate = startDate;
       data.endDate = endDate;
     } else if (isDaily === 1) {
-      data.startDate = new Date();
-      data.endDate = new Date();
+      data.startDate = new Date().setHours(0, 0, 0, 0) + 9 * 60 * 60 * 1000;
+      data.endDate = new Date().setHours(0, 0, 0, 0) + 9 * 60 * 60 * 1000;
     }
 
     await Inform.create(data);
@@ -541,13 +541,20 @@ export const getUserStatistics = async (req: Request, res: Response) => {
     return res.status(403).json({ error: '관리자 권한이 필요합니다.' });
   }
   try {
-    const { username, date } = req.query;
+    const { username, startDate, endDate } = req.query;
 
-    const translateDate = new Date(date as string);
-    const utcDate = new Date(translateDate.getTime() - 9 * 60 * 60 * 1000);
+    const translateStartDate = new Date(startDate as string);
+    const translateEndDate = new Date(endDate as string);
 
-    const startOfDay = utcDate.setHours(0, 0, 0, 0);
-    const endOfDay = utcDate.setHours(23, 59, 59, 999);
+    const utcStartDate = new Date(
+      translateStartDate.getTime() - 9 * 60 * 60 * 1000
+    );
+    const utcEndDate = new Date(
+      translateEndDate.getTime() - 9 * 60 * 60 * 1000
+    );
+
+    const startOfDay = utcStartDate.setHours(0, 0, 0, 0);
+    const endOfDay = utcEndDate.setHours(23, 59, 59, 999);
     const userStatistics = await Inform.find(
       {
         $and: [
@@ -562,6 +569,8 @@ export const getUserStatistics = async (req: Request, res: Response) => {
         ],
       },
       {
+        startDate: 1,
+        endDate: 1,
         username: 1,
         destination: 1,
         business: 1,
@@ -591,6 +600,7 @@ export const getDestinationStatistics = async (req: Request, res: Response) => {
         username: 1,
         destination: 1,
         startDate: 1,
+        endDate: 1,
         business: 1,
         work: 1,
       }

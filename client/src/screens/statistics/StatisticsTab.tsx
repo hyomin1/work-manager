@@ -13,6 +13,10 @@ import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { Search, MapPin, User } from 'lucide-react';
 import dayjs, { Dayjs } from 'dayjs';
 import { useCustomQueries } from '../../hooks/useCustomQuery';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import 'dayjs/locale/ko'; // 한국어 로케일 불러오기
+dayjs.locale('ko');
 
 interface ITabs {
   value: number;
@@ -21,8 +25,10 @@ interface ITabs {
   setUserName: React.Dispatch<React.SetStateAction<string>>;
   destination: string;
   setDestination: React.Dispatch<React.SetStateAction<string>>;
-  date: Date;
-  setDate: React.Dispatch<React.SetStateAction<Date>>;
+  startDate: Date;
+  setStartDate: React.Dispatch<React.SetStateAction<Date>>;
+  endDate: Date;
+  setEndDate: React.Dispatch<React.SetStateAction<Date>>;
   nameRefetch: () => void;
   destinationRefetch: () => void;
 }
@@ -41,8 +47,10 @@ function StatisticsTab({
   setUserName,
   destination,
   setDestination,
-  date,
-  setDate,
+  startDate,
+  setStartDate,
+  endDate,
+  setEndDate,
   nameRefetch,
   destinationRefetch,
 }: ITabs) {
@@ -58,9 +66,14 @@ function StatisticsTab({
     setDestination(event.target.value as string);
   };
 
-  const handleChangeDate = (newDate: Dayjs | null) => {
+  const handleChangeStartDate = (newDate: Dayjs | null) => {
     if (newDate) {
-      setDate(newDate.toDate());
+      setStartDate(newDate.toDate());
+    }
+  };
+  const handleChangeEndDate = (newDate: Dayjs | null) => {
+    if (newDate) {
+      setEndDate(newDate.toDate());
     }
   };
 
@@ -122,17 +135,33 @@ function StatisticsTab({
 
       {/* Search Forms */}
       {value === 0 ? (
-        <div className="flex justify-between ">
-          <MobileDatePicker
-            onChange={handleChangeDate}
-            defaultValue={dayjs(date)}
-            sx={{
-              width: '42%',
-              '& .MuiOutlinedInput-root': {
-                backgroundColor: 'white',
-              },
-            }}
-          />
+        <div className="flex justify-between">
+          <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ko">
+            <MobileDatePicker
+              label="시작일"
+              onChange={handleChangeStartDate}
+              defaultValue={dayjs(startDate)}
+              sx={{
+                width: '15%',
+                '& .MuiOutlinedInput-root': {
+                  backgroundColor: 'white',
+                },
+              }}
+            />
+
+            <MobileDatePicker
+              label="종료일"
+              onChange={handleChangeEndDate}
+              defaultValue={dayjs(endDate)}
+              sx={{
+                width: '15%',
+                '& .MuiOutlinedInput-root': {
+                  backgroundColor: 'white',
+                },
+              }}
+            />
+          </LocalizationProvider>
+
           <FormControl sx={{ width: '42%' }}>
             <InputLabel id="name-select-label">이름 *</InputLabel>
             <Select

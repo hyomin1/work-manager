@@ -1,4 +1,5 @@
 import { axiosIP, axiosDomain } from './axios';
+import { IDestStat, INameStat } from './interfaces/interface';
 
 // 현재 URL 정보 get ex) http://localhost:3000/login -> http://localhost:3000
 export const getBaseUrl = () => {
@@ -24,7 +25,6 @@ export const getDestinations = async () => {
 // 사업명 정보
 export const getBusinesses = async () => {
   const res = await axiosReq.get('/api/employee-inform/getBusinesses');
-
   return res.data.allBusinesses || [];
 };
 
@@ -32,7 +32,6 @@ export const getBusiness = async (business: string) => {
   const res = await axiosReq.get(
     `/api/employee-inform/getBusiness/${business}`
   );
-
   return res.data.business || '';
 };
 
@@ -56,7 +55,6 @@ export const getEtcNames = async () => {
 // 입력된 인원 상태 정보
 export const getEmployeeInform = async (date: Date) => {
   const res = await axiosReq.get(`/api/employee-inform/getInform?date=${date}`);
-
   return res.data.allInforms || [];
 };
 
@@ -74,11 +72,56 @@ export const getDrivingInform = async (
   return [];
 };
 
-export const getUserStatistics = async (username: string, date: Date) => {
+const expandDataToDateRange = (
+  data: (INameStat | IDestStat)[] | undefined,
+  start: Date,
+  end: Date
+): INameStat[] => {
+  if (!data) return [];
+
+  // 데이터의 시작일과 종료일 찾기
+  const dataStartDate = data.reduce((earliest, item) => {
+    const itemDate = new Date(item.startDate);
+    return itemDate < earliest ? itemDate : earliest;
+  }, new Date(end)); // 초기값을 end로 설정
+
+  const expanded: INameStat[] = [];
+  const currentDate = new Date(start);
+
+  while (currentDate <= end) {
+    // 현재 날짜가 데이터의 시작일 이후인 경우에만 데이터를 추가
+    if (currentDate >= dataStartDate) {
+      data.forEach((item) => {
+        if ('car' in item) {
+          expanded.push({
+            ...item,
+            startDate: new Date(currentDate),
+          });
+        }
+      });
+    }
+
+    currentDate.setDate(currentDate.getDate() + 1);
+  }
+
+  return expanded;
+};
+export const getUserStatistics = async (
+  username: string,
+  startDate: Date,
+  endDate: Date
+): Promise<INameStat[]> => {
   const res = await axiosReq.get(
-    `/api/employee-inform/userStatistics?username=${username}&date=${date}`
+    `/api/employee-inform/userStatistics?username=${username}&startDate=${startDate}&endDate=${endDate}`
   );
-  return res.data.userStatistics || [];
+
+  const data = expandDataToDateRange(
+    res.data.userStatistics,
+    startDate,
+    endDate
+  );
+
+  return data; // data는 INameStat[]임
 };
 
 export const getDestinationStatistics = async (destination: string) => {
@@ -129,7 +172,6 @@ export const calMonth = (date: Date) => {
 
 export const calCarDay = (date: Date) => {
   const carDate = new Date(date);
-
   const month = carDate.getMonth() + 1;
   const day = carDate.getDate();
   return `${month}/${day}`;

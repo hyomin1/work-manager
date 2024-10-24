@@ -30,13 +30,14 @@ function StatisticsMain() {
 
   const [username, setUserName] = useState('');
   const [destination, setDestination] = useState('');
-  const [date, setDate] = useState(new Date());
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
 
   const { data: statisticsNameData, refetch: nameRefetch } = useQuery<
     INameStat[]
   >({
-    queryKey: ['statistics', username, date],
-    queryFn: () => getUserStatistics(username, date),
+    queryKey: ['statistics', username, startDate],
+    queryFn: () => getUserStatistics(username, startDate, endDate), // startDate ~ endDate 범위의 데이터 get
     enabled: false,
   });
 
@@ -50,6 +51,8 @@ function StatisticsMain() {
   useEffect(() => {
     checkAdminSession();
   }, []);
+
+  console.log(statisticsNameData);
 
   return (
     <div className="flex flex-col items-center w-full h-screen p-10 sm:p-2 bg-gray-50 ">
@@ -70,8 +73,10 @@ function StatisticsMain() {
         setUserName={setUserName}
         destination={destination}
         setDestination={setDestination}
-        date={date}
-        setDate={setDate}
+        startDate={startDate}
+        setStartDate={setStartDate}
+        endDate={endDate}
+        setEndDate={setEndDate}
         nameRefetch={nameRefetch}
         destinationRefetch={destinationRefetch}
       />
@@ -114,34 +119,27 @@ function StatisticsMain() {
           <TableBody>
             {value === 0 &&
               statisticsNameData
-                ?.sort((a, b) => a.destination.localeCompare(b.destination))
-                .map((item, index) => (
-                  <TableRow
-                    key={index}
-                    className="transition-colors hover:bg-gray-50"
-                  >
-                    <TableCell
-                      className="whitespace-nowrap"
-                      sx={{
-                        paddingLeft: 4,
-                        color: 'text.primary',
-                        fontSize: '0.875rem',
-                      }}
-                    >
-                      {item.username}
-                    </TableCell>
-                    <TableCell sx={{ fontSize: '0.875rem' }}>
-                      {item.destination}
-                    </TableCell>
-                    <TableCell sx={{ fontSize: '0.875rem' }}>
-                      {item.business}
-                    </TableCell>
-                    <TableCell sx={{ fontSize: '0.875rem' }}>
-                      {item.work}
-                    </TableCell>
-                    <TableCell sx={{ fontSize: '0.875rem' }}>
-                      {item.car}
-                    </TableCell>
+                ?.sort((a, b) => {
+                  const dateA = extractMonthAndDay(a.startDate);
+                  const dateB = extractMonthAndDay(b.startDate);
+
+                  if (dateA.month !== dateB.month) {
+                    return dateA.month - dateB.month;
+                  }
+                  if (dateA.day !== dateB.day) {
+                    return dateA.day - dateB.day;
+                  }
+
+                  return a.username.localeCompare(b.username);
+                })
+                ?.map((item, index) => (
+                  <TableRow key={index}>
+                    <TableCell>{calStatDay(item.startDate)}</TableCell>
+                    <TableCell>{item.username}</TableCell>
+                    <TableCell>{item.destination}</TableCell>
+                    <TableCell>{item.business}</TableCell>
+                    <TableCell>{item.work}</TableCell>
+                    <TableCell>{item.car}</TableCell>
                   </TableRow>
                 ))}
             {value === 1 &&
