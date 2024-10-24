@@ -72,65 +72,16 @@ export const getDrivingInform = async (
   return [];
 };
 
-const expandDataToDateRange = (
-  data: (INameStat | IDestStat)[] | undefined,
-  searchStart: Date, // 검색 시작일
-  searchEnd: Date // 검색 종료일
-): INameStat[] => {
-  if (!data) return [];
-
-  // 검색 범위 내의 데이터만 필터링
-  return data
-    .filter((item) => {
-      if ('car' in item) {
-        const itemDate = new Date(item.startDate);
-        // 시간 정보를 제거하고 날짜만 비교
-        const itemDateOnly = new Date(
-          itemDate.getFullYear(),
-          itemDate.getMonth(),
-          itemDate.getDate()
-        );
-        const searchStartOnly = new Date(
-          searchStart.getFullYear(),
-          searchStart.getMonth(),
-          searchStart.getDate()
-        );
-        const searchEndOnly = new Date(
-          searchEnd.getFullYear(),
-          searchEnd.getMonth(),
-          searchEnd.getDate()
-        );
-
-        return itemDateOnly >= searchStartOnly && itemDateOnly <= searchEndOnly;
-      }
-      return false;
-    })
-    .map((item) => {
-      if ('car' in item) {
-        return {
-          ...item,
-          startDate: new Date(item.startDate), // 원본 날짜 유지
-        };
-      }
-      throw new Error('Invalid item type');
-    });
-};
 export const getUserStatistics = async (
   username: string,
   startDate: Date,
   endDate: Date
-): Promise<INameStat[]> => {
+) => {
   const res = await axiosReq.get(
     `/api/employee-inform/userStatistics?username=${username}&startDate=${startDate}&endDate=${endDate}`
   );
-
-  const data = expandDataToDateRange(
-    res.data.userStatistics,
-    startDate,
-    endDate
-  );
-
-  return data; // data는 INameStat[]임
+  console.log(res.data);
+  return res.data.userStatistics || [];
 };
 
 export const getDestinationStatistics = async (
@@ -142,12 +93,7 @@ export const getDestinationStatistics = async (
     `/api/employee-inform/destinationStatistics?destination=${destination}&startDate=${startDate}&endDate=${endDate}`
   );
 
-  const data = expandDataToDateRange(
-    res.data.destinationStatistics,
-    startDate,
-    endDate
-  );
-  return data;
+  return res.data.destinationStatistics || [];
 };
 
 export const checkAdminSession = async () => {

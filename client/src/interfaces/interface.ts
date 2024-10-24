@@ -33,6 +33,7 @@ export interface INameStat {
   business: string;
   work: string;
   car: string;
+  specificDate: Date;
 }
 
 export interface IDestStat {

@@ -30,8 +30,20 @@ function StatisticsMain() {
 
   const [username, setUserName] = useState('');
   const [destination, setDestination] = useState('');
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
+  // 시작일은 해당 날짜의 시작(00:00:00)으로, 종료일은 해당 날짜의 끝(23:59:59)으로 설정
+  const [startDate, setStartDate] = useState(() => {
+    const date = new Date();
+    date.setHours(0, 0, 0, 0);
+    return date;
+  });
+
+  const [endDate, setEndDate] = useState(() => {
+    const date = new Date();
+    date.setHours(23, 59, 59, 999);
+    return date;
+  });
+
+  // 날짜 변경 핸들러도 같은 방식으로 처리
 
   const { data: statisticsNameData, refetch: nameRefetch } = useQuery<
     INameStat[]
@@ -119,8 +131,8 @@ function StatisticsMain() {
             {value === 0 &&
               statisticsNameData
                 ?.sort((a, b) => {
-                  const dateA = extractMonthAndDay(a.startDate);
-                  const dateB = extractMonthAndDay(b.startDate);
+                  const dateA = extractMonthAndDay(a.specificDate);
+                  const dateB = extractMonthAndDay(b.specificDate);
 
                   if (dateA.month !== dateB.month) {
                     return dateA.month - dateB.month;
@@ -133,7 +145,7 @@ function StatisticsMain() {
                 })
                 ?.map((item, index) => (
                   <TableRow key={index}>
-                    <TableCell>{calStatDay(item.startDate)}</TableCell>
+                    <TableCell>{calStatDay(item.specificDate)}</TableCell>
                     <TableCell>{item.username}</TableCell>
                     <TableCell>{item.destination}</TableCell>
                     <TableCell>{item.business}</TableCell>

@@ -1,3 +1,4 @@
+import { IInform } from './../../../client/src/interfaces/interface';
 // 이름, 차량, 행선지, 상태 추가 삭제 제어
 import { Request, Response } from 'express';
 import Name from '../models/Name';
@@ -536,54 +537,98 @@ export const getInform = async (req: Request, res: Response) => {
   }
 };
 
+// 날짜 범위 생성 함수
+const splitDateRange = (start: Date, end: Date) => {
+  const dates = [];
+  let currentDate = new Date(start);
+
+  while (currentDate <= end) {
+    dates.push(new Date(currentDate));
+    currentDate.setDate(currentDate.getDate() + 1);
+  }
+  return dates;
+};
+
+const getFilteredDateRange = (
+  filterStartDate: Date,
+  filterEndDate: Date,
+  actualStartDate: Date,
+  actualEndDate: Date
+) => {
+  // 시작 날짜: 필터된 시작 날짜와 실제 시작 날짜 중 더 큰 값
+  const startDate = new Date(
+    Math.max(filterStartDate.getTime(), actualStartDate.getTime())
+  );
+
+  // 종료 날짜: 필터된 종료 날짜와 실제 종료 날짜 중 더 작은 값
+  const endDate = new Date(
+    Math.min(filterEndDate.getTime(), actualEndDate.getTime())
+  );
+
+  // 시작 날짜가 종료 날짜보다 작거나 같을 경우에만 날짜 범위 생성
+  return startDate <= endDate ? splitDateRange(startDate, endDate) : [];
+};
+
 export const getUserStatistics = async (req: Request, res: Response) => {
   if (!req.session.isAdmin) {
     return res.status(403).json({ error: '관리자 권한이 필요합니다.' });
   }
-  try {
-    const { username, startDate, endDate } = req.query;
+  const { username, startDate, endDate } = req.query;
 
-    const translateStartDate = new Date(startDate as string);
-    const translateEndDate = new Date(endDate as string);
+  const translateStartDate = new Date(startDate as string);
+  const translateEndDate = new Date(endDate as string);
 
-    const utcStartDate = new Date(
-      translateStartDate.getTime() - 9 * 60 * 60 * 1000
+  const userStatisticsArr = await Inform.find(
+    {
+      $and: [
+        {
+          $or: [
+            { startDate: { $gte: translateStartDate, $lte: translateEndDate } },
+            { endDate: { $gte: translateStartDate, $lte: translateEndDate } },
+            {
+              startDate: { $lte: translateStartDate },
+              endDate: { $gte: translateEndDate },
+            },
+          ],
+        },
+        { username },
+      ],
+    },
+    {
+      startDate: 1,
+      endDate: 1,
+      username: 1,
+      destination: 1,
+      business: 1,
+      work: 1,
+      car: 1,
+    }
+  );
+  const userStatistics = userStatisticsArr.flatMap((record) => {
+    const { startDate: actualStartDate, endDate: actualEndDate } = record;
+    if (!actualStartDate || !actualEndDate) {
+      return []; // undefined인 경우 빈 배열 반환
+    }
+
+    const dateRange = getFilteredDateRange(
+      translateStartDate,
+      translateEndDate,
+      actualStartDate,
+      actualEndDate
     );
-    const utcEndDate = new Date(
-      translateEndDate.getTime() - 9 * 60 * 60 * 1000
-    );
 
-    const startOfDay = utcStartDate.setHours(0, 0, 0, 0);
-    const endOfDay = utcEndDate.setHours(23, 59, 59, 999);
-    const userStatistics = await Inform.find(
-      {
-        $and: [
-          {
-            $or: [
-              { startDate: { $gte: startOfDay, $lte: endOfDay } }, // 시작일이 범위 내에 있는 경우
-              { endDate: { $gte: startOfDay, $lte: endOfDay } }, // 종료일이 범위 내에 있는 경우
-              { startDate: { $lte: startOfDay }, endDate: { $gte: endOfDay } }, // 범위에 포함된 경우
-            ],
-          },
-          { username }, // 추가된 username 필터
-        ],
-      },
-      {
-        startDate: 1,
-        endDate: 1,
-        username: 1,
-        destination: 1,
-        business: 1,
-        work: 1,
-        car: 1,
-      }
-    );
+    return dateRange.map((date) => ({
+      _id: record._id,
+      username: record.username,
+      destination: record.destination,
+      business: record.business,
+      work: record.work,
+      car: record.car,
+      specificDate: date,
+    }));
+  });
 
-    return res.status(200).json({ userStatistics });
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ error: '서버 에러' });
-  }
+  return res.status(200).json({ userStatistics });
 };
 
 export const getDestinationStatistics = async (req: Request, res: Response) => {
