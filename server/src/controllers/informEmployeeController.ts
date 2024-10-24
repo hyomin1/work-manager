@@ -633,32 +633,32 @@ export const getUserStatistics = async (req: Request, res: Response) => {
 
 export const getDestinationStatistics = async (req: Request, res: Response) => {
   if (!req.session.isAdmin) {
-    return res
-      .status(403)
-      .json({ error: '관리자 권한이 필요합니다.', url: req.headers.referer });
+    return res.status(403).json({
+      error: '관리자 권한이 필요합니다.',
+      url: req.headers.referer,
+    });
   }
+
   try {
     const { destination, startDate, endDate } = req.query;
     const translateStartDate = new Date(startDate as string);
     const translateEndDate = new Date(endDate as string);
 
-    const utcStartDate = new Date(
-      translateStartDate.getTime() - 9 * 60 * 60 * 1000
-    );
-    const utcEndDate = new Date(
-      translateEndDate.getTime() - 9 * 60 * 60 * 1000
-    );
-
-    const startOfDay = utcStartDate.setHours(0, 0, 0, 0);
-    const endOfDay = utcEndDate.setHours(23, 59, 59, 999);
-    const destinationStatistics = await Inform.find(
+    const destinationStatisticsArr = await Inform.find(
       {
         $and: [
           {
             $or: [
-              { startDate: { $gte: startOfDay, $lte: endOfDay } }, // 시작일이 범위 내에 있는 경우
-              { endDate: { $gte: startOfDay, $lte: endOfDay } }, // 종료일이 범위 내에 있는 경우
-              { startDate: { $lte: startOfDay }, endDate: { $gte: endOfDay } }, // 범위에 포함된 경우
+              {
+                startDate: { $gte: translateStartDate, $lte: translateEndDate },
+              }, // 시작일이 범위 내에 있는 경우
+              {
+                endDate: { $gte: translateStartDate, $lte: translateEndDate },
+              }, // 종료일이 범위 내에 있는 경우
+              {
+                startDate: { $lte: translateStartDate },
+                endDate: { $gte: translateEndDate },
+              }, // 범위에 포함된 경우
             ],
           },
           { destination },
@@ -674,6 +674,29 @@ export const getDestinationStatistics = async (req: Request, res: Response) => {
         car: 1,
       }
     );
+
+    const destinationStatistics = destinationStatisticsArr.flatMap((record) => {
+      const { startDate: actualStartDate, endDate: actualEndDate } = record;
+      if (!actualStartDate || !actualEndDate) {
+        return [];
+      }
+      const dateRange = getFilteredDateRange(
+        translateStartDate,
+        translateEndDate,
+        actualStartDate,
+        actualEndDate
+      );
+      return dateRange.map((date) => ({
+        _id: record._id,
+        username: record.username,
+        destination: record.destination,
+        business: record.business,
+        work: record.work,
+        //car: record.car,
+        specificDate: date,
+      }));
+    });
+
     return res.status(200).json({ destinationStatistics });
   } catch (error) {
     console.error(error);

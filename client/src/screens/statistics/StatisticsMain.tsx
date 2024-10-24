@@ -156,8 +156,8 @@ function StatisticsMain() {
             {value === 1 &&
               statisticsDestinationData
                 ?.sort((a, b) => {
-                  const dateA = extractMonthAndDay(a.startDate);
-                  const dateB = extractMonthAndDay(b.startDate);
+                  const dateA = extractMonthAndDay(a.specificDate);
+                  const dateB = extractMonthAndDay(b.specificDate);
 
                   if (dateA.month !== dateB.month) {
                     return dateA.month - dateB.month;
@@ -173,7 +173,7 @@ function StatisticsMain() {
                     key={index}
                     className="transition-colors hover:bg-gray-50"
                   >
-                    <TableCell>{calStatDay(item.startDate)}</TableCell>
+                    <TableCell>{calStatDay(item.specificDate)}</TableCell>
                     <TableCell>{item.username}</TableCell>
                     <TableCell>{item.destination}</TableCell>
                     <TableCell>{item.business}</TableCell>

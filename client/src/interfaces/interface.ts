@@ -43,6 +43,7 @@ export interface IDestStat {
   destination: string;
   business: string;
   work: string;
+  specificDate: Date;
 }
 
 export interface IInform extends INameStat {
