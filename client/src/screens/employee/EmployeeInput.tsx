@@ -87,7 +87,7 @@ function EmployeeInput() {
     };
 
   const handleInputWorkChange = (
-    event: React.ChangeEvent<HTMLSelectElement>
+    event: React.ChangeEvent<HTMLInputElement>
   ) => {
     setInputWork(event.target.value);
   };
@@ -277,7 +277,7 @@ function EmployeeInput() {
                     value={inputDestination}
                     onChange={handleInputDestinationChange}
                     className="p-2 my-4 ml-2 border rounded-md hover:opacity-60 sm:w-full sm:ml-0 sm:my-2"
-                    placeholder="방문지 직접 입력"
+                    placeholder="방문지를 입력해주세요"
                   />
                 </td>
 
@@ -315,7 +315,7 @@ function EmployeeInput() {
                     value={inputBusiness}
                     onChange={handleInputBusinessChange}
                     className="hover:opacity-60 border rounded-md p-2 my-4 ml-2 sm:w-full sm:ml-0 sm:my-2 md:w-[90%]"
-                    placeholder="사업명 직접 입력"
+                    placeholder="사업명을 입력해주세요"
                   />
                 </td>
 
@@ -340,22 +340,13 @@ function EmployeeInput() {
                         ))}
                     </select>
                   ))}
-                  <select
-                    defaultValue=""
-                    className="p-2 my-4 ml-2 border rounded-md hover:opacity-60 sm:w-full sm:ml-0 sm:my-2"
+
+                  <input
+                    value={inputWork}
+                    placeholder="업무를 입력해주세요"
                     onChange={handleInputWorkChange}
-                  >
-                    <option disabled value="">
-                      업무 선택
-                    </option>
-                    {workData
-                      ?.sort((a, b) => a.work.localeCompare(b.work))
-                      .map((item, index) => (
-                        <option key={index} value={item.work}>
-                          {item.work}
-                        </option>
-                      ))}
-                  </select>
+                    className="hover:opacity-60 border rounded-md p-2 my-4 ml-2 sm:w-full sm:ml-0 sm:my-2 md:w-[90%]"
+                  />
                 </td>
 
                 <td className="px-2 border-gray-300 sm:mb-4 sm:w-full md:border-r md:border-b">
