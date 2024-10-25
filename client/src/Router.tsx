@@ -1,55 +1,60 @@
-import { createBrowserRouter } from "react-router-dom";
-import App from "./App";
-import EmployeeMain from "./screens/employee/EmployeeMain";
-import EmployeeInput from "./screens/employee/EmployeeInput";
-import Admin from "./screens/admin/Admin";
-import Login from "./screens/auth/Login";
-import Register from "./screens/auth/Register";
-import SelectPages from "./screens/SelectPages";
-import DriveMain from "./screens/driving/DriveMain";
-import DriveInput from "./screens/driving/DriveInput";
-import StatisticsMain from "./screens/statistics/StatisticsMain";
+import { createBrowserRouter } from 'react-router-dom';
+import App from './App';
+import EmployeeMain from './screens/employee/EmployeeMain';
+import EmployeeInput from './screens/employee/EmployeeInput';
+import Admin from './screens/admin/Admin';
+import Login from './screens/auth/Login';
+import Register from './screens/auth/Register';
+import SelectPages from './screens/SelectPages';
+import DriveMain from './screens/driving/DriveMain';
+import DriveInput from './screens/driving/DriveInput';
+import StatisticsMain from './screens/statistics/StatisticsMain';
+import ScheduleMain from './screens/schedule/ScheduleMain';
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: '/',
     element: <App />,
     children: [
       {
-        path: "",
+        path: '',
         element: <Login />,
       },
       {
-        path: "/register",
+        path: '/register',
         element: <Register />,
       },
       {
-        path: "/home",
+        path: '/home',
         element: <SelectPages />,
       },
       {
-        path: "/employee-status",
+        path: '/employee-status',
         element: <EmployeeMain />,
       },
       {
-        path: "/driving-status",
+        path: '/driving-status',
         element: <DriveMain />,
       },
       {
-        path: "/statistics",
+        path: '/statistics',
         element: <StatisticsMain />,
       },
       {
-        path: "/employee-input",
+        path: '/employee-input',
         element: <EmployeeInput />,
       },
       {
-        path: "/driving-input",
+        path: '/driving-input',
         element: <DriveInput />,
       },
       {
-        path: "/admin",
+        path: '/admin',
         element: <Admin />,
+      },
+      {
+        path: '/schedule',
+        element: <ScheduleMain />,
       },
     ],
   },

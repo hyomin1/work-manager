@@ -1,5 +1,4 @@
 import { axiosIP, axiosDomain } from './axios';
-import { IDestStat, INameStat } from './interfaces/interface';
 
 // 현재 URL 정보 get ex) http://localhost:3000/login -> http://localhost:3000
 export const getBaseUrl = () => {
@@ -72,6 +71,7 @@ export const getDrivingInform = async (
   return [];
 };
 
+// 통계: 이름 검색
 export const getUserStatistics = async (
   username: string,
   startDate: Date,
@@ -80,10 +80,11 @@ export const getUserStatistics = async (
   const res = await axiosReq.get(
     `/api/employee-inform/userStatistics?username=${username}&startDate=${startDate}&endDate=${endDate}`
   );
-  console.log(res.data);
+
   return res.data.userStatistics || [];
 };
 
+// 통계: 방문지 검색
 export const getDestinationStatistics = async (
   destination: string,
   startDate: Date,
@@ -94,6 +95,13 @@ export const getDestinationStatistics = async (
   );
 
   return res.data.destinationStatistics || [];
+};
+
+// 일정 fetch
+export const getSchedule = async () => {
+  const res = await axiosReq.get('/api/schedule/getSchedule');
+  console.log(res.data);
+  return res.data || [];
 };
 
 export const checkAdminSession = async () => {

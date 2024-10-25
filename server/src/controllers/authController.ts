@@ -40,6 +40,7 @@ export const loginUser = async (req: Request, res: Response) => {
     }
     req.session.isUser = true;
     req.session.userId = user._id.toString();
+
     // 관리자 권한 유저 처음 로그인시 관리자 권한 부여
     if (user.role === 'admin') {
       req.session.isAdmin = true;

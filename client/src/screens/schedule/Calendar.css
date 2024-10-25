@@ -1,0 +1,53 @@
+.calendar-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* Full screen height */
+}
+
+.fc {
+  /* 캘린더 전체 스타일 */
+  --fc-border-color: lightgray;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* 헤더 버튼 스타일링 */
+.fc .fc-button-primary {
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+/* 이벤트 스타일링 */
+.fc-event {
+  border-radius: 4px;
+  font-size: 0.875rem;
+  padding: 2px 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.fc-event:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* 오늘 날짜 강조 */
+.fc-day-today {
+  background-color: #eef2ff !important;
+}
+
+/* 주말 색상 */
+.fc-day-sun {
+  color: #ef4444;
+}
+
+.fc-day-sat {
+  color: #3b82f6;
+}
+
+/* 제목 스타일링 */
+.fc-toolbar-title {
+  font-size: 2rem !important;
+  font-weight: 700 !important;
+}

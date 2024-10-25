@@ -40,6 +40,7 @@ const handleResponseInterceptor = async (
     //window.location.href = "/";
     return new Promise(() => {});
   } else if (error.response?.status === 404) {
+    console.error('c', error.response);
     const errMsg = error.response.data as { error: string };
     alert(errMsg.error);
   } else if (error.response?.status === 500) {

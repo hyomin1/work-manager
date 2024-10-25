@@ -11,7 +11,15 @@ import { SlRefresh } from 'react-icons/sl';
 import { employeeHeaders } from '../../constants/headers';
 import Title from '../../components/Title';
 import ArrowBack from '../../components/ArrowBack';
-import { Edit, X, Settings, Pencil, Truck, LineChart } from 'lucide-react';
+import {
+  Edit,
+  X,
+  Settings,
+  Pencil,
+  Truck,
+  LineChart,
+  Calendar,
+} from 'lucide-react';
 import Logout from '../auth/Logout';
 import EditInform from './EditEmployeeInform';
 import { IInform } from '../../interfaces/interface';
@@ -111,40 +119,52 @@ function Main() {
         )}
 
         <div className="w-[100%] flex justify-between items-center border border-t-gray-300 rounded-t-2xl">
-          <span className="ml-4 font-bold md:text-xl">목록</span>
-          <div className="p-4 items-center flex w-[50%] justify-end">
-            <button
-              onClick={() => navigate('/driving-status')}
-              className="whitespace-nowrap bg-[#007BFF] rounded-lg text-white py-2  sm:text-sm px-4 hover:opacity-60 mr-4 sm:mr-2 button-effect flex justify-center items-center"
-            >
-              <Truck className="sm:w-4 sm:h-4" />
-              <span className="ml-1 sm:text-xs">차량</span>
-            </button>
-            <button
-              className="whitespace-nowrap bg-[#00ab39] rounded-lg text-white py-2 sm:text-sm px-4 button-effect mr-4 sm:mr-2 flex justify-center items-center"
-              onClick={onClickInputInform}
-            >
-              <Pencil className="sm:w-4 sm:h-4" />
-              <span className="ml-1 sm:text-xs">입력</span>
-            </button>
-            <button
-              className="whitespace-nowrap bg-[#007BFF] rounded-lg text-white py-2 sm:text-sm px-4 hover:opacity-60 mr-4 button-effect flex justify-center items-center"
-              onClick={onClickAdmin}
-            >
-              <Settings className="sm:w-4 sm:h-4" />
-              <span className="ml-1 sm:text-xs">관리</span>
-            </button>
-            <button
-              className="whitespace-nowrap bg-[#00ab39] rounded-lg text-white py-2 sm:text-sm px-4 button-effect  flex justify-center items-center"
-              onClick={onClickStatistics}
-            >
-              <LineChart className="sm:w-4 sm:h-4" />
-              <span className="ml-1 sm:text-xs">통계</span>
-            </button>
-            <div className="mx-4 border border-gray-300 md:h-10 sm:h-8" />
-            <button onClick={() => refetch()}>
-              <SlRefresh className="md:w-7 md:h-7 sm:w-5 sm:h-5 hover:opacity-60" />
-            </button>
+          {/* <span className="ml-4 font-bold md:text-xl">목록</span> */}
+          <div className="flex items-center justify-between w-full p-4">
+            <div className="w-[50%] flex">
+              <button
+                onClick={() => navigate('/driving-status')}
+                className="whitespace-nowrap bg-[#0EA5E9] rounded-lg text-white py-2  sm:text-sm px-4 hover:opacity-60 mr-4 sm:mr-2 button-effect flex justify-center items-center"
+              >
+                <Truck className="sm:w-4 sm:h-4" />
+                <span className="ml-1 sm:text-xs">차량</span>
+              </button>
+              <button
+                className="whitespace-nowrap bg-[#10B981] rounded-lg text-white py-2 sm:text-sm px-4 button-effect mr-4 sm:mr-2 flex justify-center items-center"
+                onClick={onClickInputInform}
+              >
+                <Pencil className="sm:w-4 sm:h-4" />
+                <span className="ml-1 sm:text-xs">입력</span>
+              </button>
+              <button
+                className="whitespace-nowrap bg-[#0EA5E9] rounded-lg text-white py-2 sm:text-sm px-4 button-effect mr-4 sm:mr-2 flex justify-center items-center"
+                onClick={() => navigate('/schedule')}
+              >
+                <Calendar className="sm:w-4 sm:h-4" />
+                <span className="ml-1 sm:text-xs">일정</span>
+              </button>
+            </div>
+
+            <div className="flex">
+              <button
+                className="whitespace-nowrap bg-[#0EA5E9] rounded-lg text-white py-2 sm:text-sm px-4 hover:opacity-60 mr-4 button-effect flex justify-center items-center"
+                onClick={onClickAdmin}
+              >
+                <Settings className="sm:w-4 sm:h-4" />
+                <span className="ml-1 sm:text-xs">관리</span>
+              </button>
+              <button
+                className="whitespace-nowrap bg-[#10B981] rounded-lg text-white py-2 sm:text-sm px-4 button-effect  flex justify-center items-center"
+                onClick={onClickStatistics}
+              >
+                <LineChart className="sm:w-4 sm:h-4" />
+                <span className="ml-1 sm:text-xs">통계</span>
+              </button>
+              <div className="mx-4 border border-gray-300 md:h-10 sm:h-8" />
+              <button onClick={() => refetch()}>
+                <SlRefresh className="md:w-7 md:h-7 sm:w-5 sm:h-5 hover:opacity-60" />
+              </button>
+            </div>
           </div>
         </div>
 
