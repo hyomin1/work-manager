@@ -15,7 +15,7 @@ import dayjs, { Dayjs } from 'dayjs';
 import { useCustomQueries } from '../../hooks/useCustomQuery';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import 'dayjs/locale/ko'; // 한국어 로케일 불러오기
+import 'dayjs/locale/ko';
 dayjs.locale('ko');
 
 interface ITabs {

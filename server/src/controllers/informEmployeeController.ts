@@ -380,16 +380,8 @@ export const addInform = async (req: Request, res: Response) => {
       .status(403)
       .json({ type: 'not User', error: '다시 로그인 해주세요' });
   }
-  const {
-    username,
-    destination,
-    business,
-    work,
-    car,
-    isDaily,
-    startDate,
-    endDate,
-  } = req.body;
+  const { username, destination, business, work, car, startDate, endDate } =
+    req.body;
 
   try {
     if (
@@ -398,7 +390,8 @@ export const addInform = async (req: Request, res: Response) => {
       !business ||
       !work ||
       !car ||
-      isDaily === 0
+      !startDate ||
+      !endDate
     ) {
       return res.status(400).json({ error: '정보를 입력해야 합니다.' });
     }
@@ -411,18 +404,14 @@ export const addInform = async (req: Request, res: Response) => {
       business: business === '선택 안함' ? '' : business,
     };
 
-    if (isDaily === 2) {
-      if (!startDate || !endDate) {
-        return res
-          .status(400)
-          .json({ error: '시작일과 종료일을 입력해야 합니다.' });
-      }
-      data.startDate = startDate;
-      data.endDate = endDate;
-    } else if (isDaily === 1) {
-      data.startDate = new Date().setHours(0, 0, 0, 0) + 9 * 60 * 60 * 1000;
-      data.endDate = new Date().setHours(0, 0, 0, 0) + 9 * 60 * 60 * 1000;
+    if (!startDate || !endDate) {
+      return res
+        .status(400)
+        .json({ error: '시작일과 종료일을 입력해야 합니다.' });
     }
+    data.startDate =
+      new Date(startDate).setHours(0, 0, 0, 0) + 9 * 60 * 60 * 1000;
+    data.endDate = new Date(endDate).setHours(0, 0, 0, 0) + 9 * 60 * 60 * 1000;
 
     await Inform.create(data);
 
@@ -455,7 +444,16 @@ export const removeInform = async (req: Request, res: Response) => {
 };
 
 export const editInform = async (req: Request, res: Response) => {
-  const { _id, username, destination, business, work, car } = req.body;
+  const {
+    _id,
+    startDate,
+    endDate,
+    username,
+    destination,
+    business,
+    work,
+    car,
+  } = req.body;
   try {
     const editInform = await Inform.findByIdAndUpdate(
       _id,
@@ -464,6 +462,9 @@ export const editInform = async (req: Request, res: Response) => {
         destination,
         business,
         work,
+        startDate:
+          new Date(startDate).setHours(0, 0, 0, 0) + 9 * 60 * 60 * 1000,
+        endDate: new Date(endDate).setHours(0, 0, 0, 0) + 9 * 60 * 60 * 1000,
         car: car === '선택 안함' ? '' : car,
       },
       {
@@ -511,6 +512,7 @@ export const getInform = async (req: Request, res: Response) => {
         work: 1,
         car: 1,
         writerId: 1,
+        isDaily: 1,
         createdAt: 1,
         startDate: 1,
         endDate: 1,

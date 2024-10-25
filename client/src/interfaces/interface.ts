@@ -48,6 +48,7 @@ export interface IDestStat {
 
 export interface IInform extends INameStat {
   _id: string;
+  isDaily: number;
   createdAt: Date;
   isOwner: boolean;
 }

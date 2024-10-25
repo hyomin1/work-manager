@@ -230,6 +230,7 @@ function Main() {
                         />
                         {editingItemId === item._id && (
                           <EditInform
+                            currentDate={currentDate}
                             item={item}
                             setEditingItemId={setEditingItemId}
                           />

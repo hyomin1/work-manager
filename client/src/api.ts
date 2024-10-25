@@ -5,7 +5,7 @@ export const getBaseUrl = () => {
   return window.location.origin;
 };
 
-export const domainName = 'http://tech.bonc.co.kr';
+export const domainName = 'https://tech.bonc.co.kr';
 
 export const axiosReq = getBaseUrl() === domainName ? axiosDomain : axiosIP;
 

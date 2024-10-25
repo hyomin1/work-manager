@@ -6,6 +6,13 @@ import { employeeInputHeaders } from '../../constants/headers';
 import ArrowBack from '../../components/ArrowBack';
 import { useNavigate } from 'react-router-dom';
 import { useCustomQueries } from '../../hooks/useCustomQuery';
+import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
+import dayjs, { Dayjs } from 'dayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+
+import 'dayjs/locale/ko';
+dayjs.locale('ko');
 
 function EmployeeInput() {
   const [username, setName] = useState('');
@@ -25,7 +32,7 @@ function EmployeeInput() {
   const selectedBusinesses = businesses.filter(Boolean);
   const selectedWorks = works.filter(Boolean);
 
-  // 0 : 기본 1 : 일일 업무 2: 주간/월간/연간 업무
+  // 0 : 기본 1 : 일일 업무 2: 여러 날은 아니지만 다른 날 선택 3: 기간선택
   const [isDaily, setIsDaily] = useState(0);
 
   const [startDate, setStartDate] = useState<Date>();
@@ -94,6 +101,19 @@ function EmployeeInput() {
 
   const handleCarChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setCar(event.target.value);
+  };
+
+  const handleTodayDate = () => {
+    setIsDaily(1);
+    setStartDate(new Date());
+    setEndDate(new Date());
+  };
+
+  const handleDiffDateChange = (newDate: Dayjs | null) => {
+    if (newDate) {
+      setStartDate(newDate.toDate());
+      setEndDate(newDate.toDate());
+    }
   };
 
   /* 일일 업무 아닌 경우 시작 날짜와 종료 날짜 설정 */
@@ -193,8 +213,9 @@ function EmployeeInput() {
         business: businessArr[index],
         work: workArr[index],
         car,
+        startDate,
+        endDate,
         isDaily,
-        ...(isDaily === 1 ? {} : { startDate, endDate }),
       })
     );
 
@@ -376,12 +397,12 @@ function EmployeeInput() {
                         type="radio"
                         value={isDaily}
                         checked={isDaily === 1}
-                        onChange={() => setIsDaily(1)}
+                        onChange={handleTodayDate}
                         className="sm:mr-2"
                       />
                       <span className="md:text-lg">당일</span>
                     </label>
-                    <label className="sm:flex sm:items-center">
+                    <label className="sm:flex sm:items-center sm:mb-2 md:mr-4">
                       <input
                         type="radio"
                         value={isDaily}
@@ -389,10 +410,39 @@ function EmployeeInput() {
                         onChange={() => setIsDaily(2)}
                         className="sm:mr-2"
                       />
+                      <span className="md:text-lg">다른날</span>
+                    </label>
+                    <label className="sm:flex sm:items-center">
+                      <input
+                        type="radio"
+                        value={isDaily}
+                        checked={isDaily === 3}
+                        onChange={() => setIsDaily(3)}
+                        className="sm:mr-2"
+                      />
                       <span className="md:text-lg">기간 선택</span>
                     </label>
                   </div>
                   {isDaily === 2 && (
+                    <LocalizationProvider
+                      dateAdapter={AdapterDayjs}
+                      adapterLocale="ko"
+                    >
+                      <MobileDatePicker
+                        // label="날짜"
+                        onChange={handleDiffDateChange}
+                        // defaultValue={dayjs(startDate)}
+                        sx={{
+                          width: '100%',
+
+                          '& .MuiOutlinedInput-root': {
+                            backgroundColor: 'white',
+                          },
+                        }}
+                      />
+                    </LocalizationProvider>
+                  )}
+                  {isDaily === 3 && (
                     <div className="flex mt-4 sm:flex-col ">
                       <div className="flex flex-col md:mr-2">
                         <span className="mb-2 font-bold">시작일</span>

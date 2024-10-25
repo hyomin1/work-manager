@@ -1,4 +1,4 @@
-import mongoose, { ObjectId, Schema, model } from "mongoose";
+import mongoose, { ObjectId, Schema, model } from 'mongoose';
 
 interface IEmployeeInform {
   username: string;
@@ -21,7 +21,7 @@ const employeeInformSchema = new Schema<IEmployeeInform>(
     isDaily: { type: Number, default: 0 },
     writerId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: 'User',
       required: true,
     },
     startDate: { type: Date },
@@ -34,7 +34,7 @@ const employeeInformSchema = new Schema<IEmployeeInform>(
 );
 
 const EmployeeInform = model<IEmployeeInform>(
-  "EmployeeInform",
+  'EmployeeInform',
   employeeInformSchema
 );
 export default EmployeeInform;
