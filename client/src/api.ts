@@ -98,10 +98,12 @@ export const getDestinationStatistics = async (
 };
 
 // 일정 fetch
-export const getSchedule = async () => {
-  const res = await axiosReq.get('/api/schedule/getSchedule');
-  console.log(res.data);
-  return res.data || [];
+export const getSchedule = async (year: number, month: number) => {
+  const res = await axiosReq.get(
+    `/api/schedule/getSchedule?year=${year}&month=${month}`
+  );
+
+  return res.data.schedules || [];
 };
 
 export const checkAdminSession = async () => {
