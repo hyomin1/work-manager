@@ -118,7 +118,7 @@ function Main() {
           </div>
         )}
 
-        <div className="w-[100%] flex justify-between items-center border border-t-gray-300 rounded-t-2xl">
+        <div className="w-[100%] flex justify-between items-center border border-t-gray-300 rounded-t-2xl bg-[#f8fafd]">
           {/* <span className="ml-4 font-bold md:text-xl">목록</span> */}
           <div className="flex items-center justify-between w-full p-4">
             <div className="w-[50%] flex">

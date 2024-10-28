@@ -110,7 +110,6 @@ function ScheduleMain() {
           center: 'title',
           right: 'prev,next',
         }}
-        editable={true}
         selectable={true}
         selectMirror={true}
         dayMaxEvents={true}

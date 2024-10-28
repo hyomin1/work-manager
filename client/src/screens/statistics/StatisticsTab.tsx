@@ -7,6 +7,8 @@ import {
   MenuItem,
   Select,
   Button,
+  Autocomplete,
+  TextField,
 } from '@mui/material';
 import { SelectChangeEvent } from '@mui/material/Select';
 import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
@@ -16,6 +18,7 @@ import { useCustomQueries } from '../../hooks/useCustomQuery';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import 'dayjs/locale/ko';
+import React from 'react';
 dayjs.locale('ko');
 
 interface ITabs {
@@ -58,12 +61,22 @@ function StatisticsTab({
     setValue(newValue);
   };
 
-  const handleChangeName = (event: SelectChangeEvent) => {
-    setUserName(event.target.value as string);
+  const handleChangeName = (
+    event: React.SyntheticEvent,
+    name: string | null
+  ) => {
+    if (name) {
+      setUserName(name);
+    }
   };
 
-  const handleChangeDestination = (event: SelectChangeEvent) => {
-    setDestination(event.target.value as string);
+  const handleChangeDestination = (
+    event: React.SyntheticEvent,
+    dest: string | null
+  ) => {
+    if (dest) {
+      setDestination(dest);
+    }
   };
 
   const handleChangeStartDate = (newDate: Dayjs | null) => {
@@ -165,27 +178,15 @@ function StatisticsTab({
           </LocalizationProvider>
 
           <FormControl sx={{ width: '15%', marginLeft: 4 }}>
-            <InputLabel id="name-select-label">이름 *</InputLabel>
-            <Select
-              labelId="name-select-label"
-              value={username}
-              label="이름 *"
+            <Autocomplete
+              options={
+                names
+                  ?.sort((a, b) => a.username.localeCompare(b.username))
+                  .map((item, index) => item.username) || []
+              }
+              renderInput={(params) => <TextField {...params} label="이름 *" />}
               onChange={handleChangeName}
-              sx={{
-                backgroundColor: 'white',
-                '& .MuiSelect-select': {
-                  paddingY: '1rem',
-                },
-              }}
-            >
-              {names
-                ?.sort((a, b) => a.username.localeCompare(b.username))
-                .map((item, index) => (
-                  <MenuItem key={index} value={item.username}>
-                    {item.username}
-                  </MenuItem>
-                ))}
-            </Select>
+            />
           </FormControl>
           <Button
             onClick={onClickUserStatistics}
@@ -240,27 +241,17 @@ function StatisticsTab({
             />
           </LocalizationProvider>
           <FormControl sx={{ width: '30%', marginLeft: 4 }}>
-            <InputLabel id="destination-select-label">방문지 *</InputLabel>
-            <Select
-              labelId="destination-select-label"
-              value={destination}
-              label="방문지 *"
+            <Autocomplete
+              options={
+                destinationsData
+                  ?.sort((a, b) => a.destination.localeCompare(b.destination))
+                  .map((item, index) => item.destination) || []
+              }
+              renderInput={(params) => (
+                <TextField {...params} label="방문지 *" />
+              )}
               onChange={handleChangeDestination}
-              sx={{
-                backgroundColor: 'white',
-                '& .MuiSelect-select': {
-                  paddingY: '1rem',
-                },
-              }}
-            >
-              {destinationsData
-                ?.sort((a, b) => a.destination.localeCompare(b.destination))
-                .map((item, index) => (
-                  <MenuItem key={index} value={item.destination}>
-                    {item.destination}
-                  </MenuItem>
-                ))}
-            </Select>
+            />
           </FormControl>
           <Button
             onClick={onClickDestinationStatistics}

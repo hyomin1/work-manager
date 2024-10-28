@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { formDate, axiosReq } from '../../api';
 
-import TabInputHeader from '../../components/TabInputHeader';
-import { employeeInputHeaders } from '../../constants/headers';
 import ArrowBack from '../../components/ArrowBack';
 import { useNavigate } from 'react-router-dom';
 import { useCustomQueries } from '../../hooks/useCustomQuery';
@@ -13,21 +11,16 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import {
   Paper,
   TextField,
-  Select,
-  MenuItem,
   FormControl,
-  InputLabel,
   Button,
   Typography,
   Box,
   Container,
   Divider,
   Autocomplete,
-  SelectChangeEvent,
-  Grid,
-  FormLabel,
   RadioGroup,
   FormControlLabel,
+  Grid,
   Radio,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
@@ -391,7 +384,11 @@ function EmployeeInput() {
 
               <Grid item xs={12} sm={6} md={4}>
                 <Autocomplete
-                  options={names?.map((item) => item.username) || []}
+                  options={
+                    names
+                      ?.sort((a, b) => a.username.localeCompare(b.username))
+                      ?.map((item) => item.username) || []
+                  }
                   renderInput={(params) => (
                     <TextField {...params} label="이름 *" />
                   )}
@@ -400,7 +397,11 @@ function EmployeeInput() {
               </Grid>
               <Grid item xs={12} sm={6} md={4}>
                 <Autocomplete
-                  options={cars?.map((item) => item.car) || []}
+                  options={
+                    cars
+                      ?.sort((a, b) => a.car.localeCompare(b.car))
+                      ?.map((item) => item.car) || []
+                  }
                   renderInput={(params) => (
                     <TextField {...params} label="차량 *" />
                   )}
@@ -415,7 +416,7 @@ function EmployeeInput() {
           </Grid>
 
           {/* 상세 정보 섹션 */}
-          <Grid item xs={12}>
+          <Grid item xs={12} sx={{ width: '100%' }}>
             <Grid container spacing={3}>
               {/* 방문지 섹션 */}
               <Grid item xs={12} md={4}>
@@ -449,7 +450,7 @@ function EmployeeInput() {
               </Grid>
 
               {/* 사업명 섹션 */}
-              <Grid item xs={12} md={4}>
+              <Grid item xs={12} md={6}>
                 <StyledFormSection>
                   <Typography variant="subtitle1" sx={{ mb: 2 }}>
                     사업명
@@ -486,7 +487,7 @@ function EmployeeInput() {
               </Grid>
 
               {/* 업무 섹션 */}
-              <Grid item xs={12} md={4}>
+              <Grid item xs={12} md={2}>
                 <StyledFormSection>
                   <Typography variant="subtitle1" sx={{ mb: 2 }}>
                     업무

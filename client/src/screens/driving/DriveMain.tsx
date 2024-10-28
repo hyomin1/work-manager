@@ -151,20 +151,20 @@ function DriveMain() {
               <div className="flex items-center justify-center sm:flex-col">
                 <button
                   onClick={() => navigate('/employee-status')}
-                  className="whitespace-nowrap bg-[#00ab39] rounded-lg text-white md:py-2 sm:py-1 sm:text-sm px-4 hover:opacity-60 md:mr-4 sm:mb-2 button-effect flex justify-center items-center"
+                  className="whitespace-nowrap bg-[#0EA5E9] rounded-lg text-white md:py-2 sm:py-1 sm:text-sm px-4 hover:opacity-60 md:mr-4 sm:mb-2 button-effect flex justify-center items-center"
                 >
                   <Users className="sm:w-4 sm:h-4" />
                   <span className="ml-1 sm:text-xs">근무</span>
                 </button>
                 <button
-                  className="whitespace-nowrap bg-[#007BFF] rounded-lg text-white md:py-2 sm:py-1 sm:text-sm px-4 button-effect md:mr-4 sm:mb-2 flex justify-center items-center"
+                  className="whitespace-nowrap bg-[#10B981] rounded-lg text-white md:py-2 sm:py-1 sm:text-sm px-4 button-effect md:mr-4 sm:mb-2 flex justify-center items-center"
                   onClick={onClickInputInform}
                 >
                   <Pencil className="sm:w-4 sm:h-4" />
                   <span className="ml-1 sm:text-xs">입력</span>
                 </button>
                 <button
-                  className="whitespace-nowrap bg-[#00ab39] rounded-lg text-white md:py-2 sm:py-1 sm:text-sm px-4 hover:opacity-60 button-effect flex justify-center items-center"
+                  className="whitespace-nowrap bg-[#0EA5E9] rounded-lg text-white md:py-2 sm:py-1 sm:text-sm px-4 hover:opacity-60 button-effect flex justify-center items-center"
                   onClick={onClickAdmin}
                 >
                   <Settings className="sm:w-4 sm:h-4" />
