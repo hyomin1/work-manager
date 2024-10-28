@@ -206,20 +206,6 @@ function DriveInput() {
                   onChange={handleDriveDayChange}
                 />
               </Grid>
-              <Grid item xs={12} sm={6} md={3}>
-                <FormControl fullWidth>
-                  <InputLabel>차량 *</InputLabel>
-                  <Select value={car} label="차량 *" onChange={handleCarChange}>
-                    {cars
-                      ?.sort((a, b) => a.car.localeCompare(b.car))
-                      .map((item) => (
-                        <MenuItem key={item._id} value={item._id}>
-                          {item.car}
-                        </MenuItem>
-                      ))}
-                  </Select>
-                </FormControl>
-              </Grid>
               {[0, 1].map((index) => (
                 <Grid item xs={12} sm={6} md={3} key={index}>
                   <FormControl fullWidth>
@@ -242,6 +228,21 @@ function DriveInput() {
                   </FormControl>
                 </Grid>
               ))}
+              <Grid item xs={12} sm={6} md={3}>
+                <FormControl fullWidth>
+                  <InputLabel>차량 *</InputLabel>
+                  <Select value={car} label="차량 *" onChange={handleCarChange}>
+                    {cars
+                      ?.sort((a, b) => a.car.localeCompare(b.car))
+                      .map((item) => (
+                        <MenuItem key={item._id} value={item._id}>
+                          {item.car}
+                        </MenuItem>
+                      ))}
+                  </Select>
+                </FormControl>
+              </Grid>
+
               <Grid item xs={12}>
                 <TextField
                   fullWidth

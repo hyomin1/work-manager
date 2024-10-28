@@ -10,27 +10,69 @@ import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import dayjs, { Dayjs } from 'dayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import {
+  Paper,
+  TextField,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  Button,
+  Typography,
+  Box,
+  Container,
+  Divider,
+  Autocomplete,
+  SelectChangeEvent,
+  Grid,
+  FormLabel,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
+} from '@mui/material';
+import { styled } from '@mui/material/styles';
 
 import 'dayjs/locale/ko';
+
+import Blank from '../../components/Blank';
 dayjs.locale('ko');
 
-function EmployeeInput() {
-  const [username, setName] = useState('');
+const StyledPaper = styled(Paper)(({ theme }) => ({
+  padding: theme.spacing(3),
+  borderRadius: '12px',
+  boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+  '& .MuiTextField-root, & .MuiFormControl-root': {
+    marginBottom: theme.spacing(2),
+  },
+}));
 
-  const [destinations, setDestinations] = useState(['', '', '']);
+const StyledFormSection = styled(Box)(({ theme }) => ({
+  padding: theme.spacing(2),
+  border: `1px dashed ${theme.palette.divider}`,
+  borderRadius: '8px',
+  marginBottom: theme.spacing(2),
+}));
+
+function EmployeeInput() {
+  const [username, setName] = useState<string | null>(null);
+  const [selectedDestinations, setSelectedDestinations] = useState<
+    Array<{ id: string; destination: string } | null>
+  >([null, null, null]);
+  const [selectedBusinesses, setSelectedBusinesses] = useState<
+    Array<{ business: string } | null>
+  >([null, null, null]);
+
+  const [selectedWorks, setSelectedWorks] = useState<
+    Array<{ work: string } | null>
+  >([null, null, null]);
+
   const [inputDestination, setInputDestination] = useState('');
 
-  const [businesses, setBusinesses] = useState(['', '', '']);
   const [inputBusiness, setInputBusiness] = useState('');
 
-  const [works, setWorks] = useState(['', '', '']);
   const [inputWork, setInputWork] = useState(''); // 업무 직접 입력은 아니지만 직접 입력한 방문지와 사업명의 매핑하기 위한 변수
 
-  const [car, setCar] = useState('');
-
-  const selectedDestinations = destinations.filter(Boolean);
-  const selectedBusinesses = businesses.filter(Boolean);
-  const selectedWorks = works.filter(Boolean);
+  const [car, setCar] = useState<string | null>(null);
 
   // 0 : 기본 1 : 일일 업무 2: 여러 날은 아니지만 다른 날 선택 3: 기간선택
   const [isDaily, setIsDaily] = useState(0);
@@ -52,61 +94,87 @@ function EmployeeInput() {
     carsLoading,
   } = useCustomQueries();
 
-  const handleNameChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setName(event.target.value);
+  const destinationOptions = [
+    { id: 'none', destination: '선택 안함' },
+    ...(destinationsData
+      ?.sort((a, b) => a.destination.localeCompare(b.destination))
+      ?.map((item) => ({
+        id: item._id,
+        destination: item.destination,
+      })) || []),
+  ];
+  const workOptions = [
+    ...(workData
+      ?.sort((a, b) => a.work.localeCompare(b.work))
+      .map((item) => ({
+        work: item.work,
+      })) || []),
+  ];
+
+  const getBusinessOptions = (destinationId: string) => {
+    if (destinationId === 'none') {
+      return [{ business: '선택 안함' }];
+    }
+    return (
+      businessesData
+        ?.filter((business) => business.destinationId === destinationId)
+        .sort((a, b) => a.business.localeCompare(b.business))
+        .map((item) => ({
+          business: item.business,
+        })) || []
+    );
+  };
+
+  const handleNameChange = (
+    event: React.SyntheticEvent,
+    username: string | null
+  ) => {
+    setName(username);
   };
 
   const handleDestinationChange =
-    (index: number) => (event: React.ChangeEvent<HTMLSelectElement>) => {
-      const newDestinations = [...destinations];
-      newDestinations[index] = event.target.value;
-      setDestinations(newDestinations);
+    (index: number) =>
+    (
+      event: React.SyntheticEvent,
+      newValue: { id: string; destination: string } | null
+    ) => {
+      const newDestinations = [...selectedDestinations];
+      newDestinations[index] = newValue;
+      setSelectedDestinations(newDestinations);
 
-      const newBusinesses = [...businesses];
-      newBusinesses[index] = '';
-      setBusinesses(newBusinesses);
+      // Reset corresponding business when destination changes
+      const newBusinesses = [...selectedBusinesses];
+      newBusinesses[index] = null;
+      setSelectedBusinesses(newBusinesses);
     };
-
-  const handleInputDestinationChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setInputDestination(event.target.value);
-  };
 
   const handleBusinessChange =
-    (index: number) => (event: React.ChangeEvent<HTMLSelectElement>) => {
-      const newBusinesses = [...businesses];
-      newBusinesses[index] = event.target.value;
-      setBusinesses(newBusinesses);
+    (index: number) =>
+    (event: React.SyntheticEvent, newValue: { business: string } | null) => {
+      const newBusinesses = [...selectedBusinesses];
+      newBusinesses[index] = newValue;
+      setSelectedBusinesses(newBusinesses);
     };
-
-  const handleInputBusinessChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setInputBusiness(event.target.value);
-  };
 
   const handleWorkChange =
-    (index: number) => (event: React.ChangeEvent<HTMLSelectElement>) => {
-      const newWorks = [...works];
-      newWorks[index] = event.target.value;
-      setWorks(newWorks);
+    (index: number) =>
+    (event: React.SyntheticEvent, newValue: { work: string } | null) => {
+      const newWorks = [...selectedWorks];
+      newWorks[index] = newValue;
+      setSelectedWorks(newWorks);
     };
 
-  const handleInputWorkChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setInputWork(event.target.value);
+  const handleCarChange = (event: React.SyntheticEvent, car: string | null) => {
+    setCar(car);
   };
-
-  const handleCarChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setCar(event.target.value);
-  };
-
-  const handleTodayDate = () => {
-    setIsDaily(1);
-    setStartDate(new Date());
-    setEndDate(new Date());
+  const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = parseInt((event.target as HTMLInputElement).value);
+    setIsDaily(value);
+    if (value === 1) {
+      setStartDate(new Date());
+      setEndDate(new Date());
+    }
+    //const value = parseInt(event.target.value);
   };
 
   const handleDiffDateChange = (newDate: Dayjs | null) => {
@@ -118,13 +186,15 @@ function EmployeeInput() {
 
   /* 일일 업무 아닌 경우 시작 날짜와 종료 날짜 설정 */
 
-  const handleStartDateChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setStartDate(new Date(event.target.value));
+  const handleStartDateChange = (newDate: Dayjs | null) => {
+    if (newDate) {
+      setStartDate(new Date(newDate.toDate()));
+    }
   };
-  const handleEndDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setEndDate(new Date(event.target.value));
+  const handleEndDateChange = (newDate: Dayjs | null) => {
+    if (newDate) {
+      setEndDate(new Date(newDate.toDate()));
+    }
   };
 
   if (
@@ -139,23 +209,22 @@ function EmployeeInput() {
 
   const onClickComplete = async () => {
     const destArr = selectedDestinations
-      .map((destination) => {
-        const parts = destination.split(',');
-        return parts[1] ? parts[1].trim() : null;
-      })
-      .filter((dest) => dest !== null && dest !== '')
+      .filter(
+        (dest): dest is { id: string; destination: string } => dest !== null
+      )
+      .map((dest) => dest.destination)
       .concat(inputDestination.trim())
       .filter(Boolean);
 
     const businessArr = selectedBusinesses
-      .map((business) => business.trim())
-      .filter((business) => business !== null && business !== '')
+      .filter((bus): bus is { business: string } => bus !== null)
+      .map((bus) => bus.business)
       .concat(inputBusiness.trim())
       .filter(Boolean);
 
     const workArr = selectedWorks
-      .map((work) => work.trim())
-      .filter((work) => work !== null && work !== '')
+      .filter((item): item is { work: string } => item !== null)
+      .map((item) => item.work)
       .concat(inputWork.trim())
       .filter(Boolean);
 
@@ -213,8 +282,8 @@ function EmployeeInput() {
         business: businessArr[index],
         work: workArr[index],
         car,
-        startDate,
-        endDate,
+        startDate: isDaily === 1 ? new Date() : startDate,
+        endDate: isDaily === 1 ? new Date() : endDate,
         isDaily,
       })
     );
@@ -228,255 +297,250 @@ function EmployeeInput() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-start w-full h-screen p-10 bg-gray-50 sm:p-4">
-      <div className="w-[100%] flex flex-col items-center rounded-lg sm:w-full bg-gray-50 ">
-        <div className="flex items-center w-full mt-4 mb-20 md:justify-center sm:mb-10 sm:justify-between">
-          <div className="flex items-center justify-between w-full">
-            <ArrowBack type="not home" />
-            <div className="sm:w-[80%] flex items-center justify-center ">
-              <span className="text-3xl font-bold sm:text-lg">{formDate}</span>
-            </div>
-            <div className="w-[10%] " />
-          </div>
-        </div>
+    <Container maxWidth="xl" sx={{ py: 4 }}>
+      <div className="flex items-center justify-between w-full mt-2 mb-8 sm:mt-4">
+        <ArrowBack type="not home" />
+        <span className="font-bold sm:text-sm md:text-3xl md:mx-8 sm:mx-1 whitespace-nowrap">
+          {formDate}
+        </span>
+        <Blank />
+      </div>
 
-        <div className="w-full">
-          <table className="w-full text-left sm:table-fixed ">
-            <TabInputHeader headers={employeeInputHeaders} />
-
-            <tbody>
-              <tr className="table-auto sm:flex sm:flex-col">
-                <td className="border-gray-300 sm:mb-4 sm:w-full md:border-r md:border-b">
-                  <div className="sm:font-bold sm:mb-2 md:hidden">이름</div>
-                  <select
-                    defaultValue=""
-                    onChange={handleNameChange}
-                    className="p-2 ml-3 border rounded-md hover:opacity-60 sm:w-full sm:ml-0"
-                  >
-                    <option disabled value="">
-                      이름 선택
-                    </option>
-                    {names
-                      ?.sort((a, b) => a.username.localeCompare(b.username))
-                      .map((item, index) => (
-                        <option key={index} value={item.username}>
-                          {item.username}
-                        </option>
-                      ))}
-                  </select>
-                </td>
-
-                <td className="flex flex-col px-2 border-gray-300 sm:mb-4 sm:w-full md:border-r md:border-b">
-                  <div className="sm:font-bold sm:mb-2 md:hidden">방문지</div>
-                  {[0, 1, 2].map((index) => (
-                    <select
-                      key={index}
-                      value={destinations[index]}
-                      onChange={handleDestinationChange(index)}
-                      className="p-2 my-4 ml-2 border rounded-md hover:opacity-60 sm:w-full sm:ml-0 sm:my-2"
-                    >
-                      <option disabled value="">
-                        방문지 선택
-                      </option>
-
-                      <option value=",선택 안함">선택 안함</option>
-                      {destinationsData
-                        ?.sort((a, b) =>
-                          a.destination.localeCompare(b.destination)
-                        )
-                        .map((item, idx) => (
-                          <option
-                            key={idx}
-                            value={`${item._id},${item.destination}`}
-                          >
-                            {item.destination}
-                          </option>
-                        ))}
-                    </select>
-                  ))}
-                  <input
-                    value={inputDestination}
-                    onChange={handleInputDestinationChange}
-                    className="p-2 my-4 ml-2 border rounded-md hover:opacity-60 sm:w-full sm:ml-0 sm:my-2"
-                    placeholder="방문지를 입력해주세요"
-                  />
-                </td>
-
-                <td className="sm:mb-4 sm:w-full w-[42%] md:border-r border-gray-300 md:border-b">
-                  <div className="sm:font-bold sm:mb-2 md:hidden">사업명</div>
-                  {[0, 1, 2].map((index) => (
-                    <select
-                      key={index}
-                      value={businesses[index]}
-                      onChange={handleBusinessChange(index)}
-                      className="hover:opacity-60 border rounded-md p-2 my-4 ml-2 sm:w-full sm:ml-0 sm:my-2 w-[90%]"
-                    >
-                      <option disabled value="">
-                        사업명 선택
-                      </option>
-                      {destinations.includes(',선택 안함') && (
-                        <option value="선택 안함">선택 안함</option>
-                      )}
-
-                      {businessesData
-                        ?.filter(
-                          (business) =>
-                            business.destinationId ===
-                            destinations[index].split(',')[0]
-                        )
-                        ?.sort((a, b) => a.business.localeCompare(b.business))
-                        .map((item, idx) => (
-                          <option key={idx} value={item.business}>
-                            {item.business}
-                          </option>
-                        ))}
-                    </select>
-                  ))}
-                  <input
-                    value={inputBusiness}
-                    onChange={handleInputBusinessChange}
-                    className="hover:opacity-60 border rounded-md p-2 my-4 ml-2 sm:w-full sm:ml-0 sm:my-2 md:w-[90%]"
-                    placeholder="사업명을 입력해주세요"
-                  />
-                </td>
-
-                <td className="flex flex-col border-gray-300 sm:mb-4 sm:w-full md:border-r md:border-b">
-                  <div className="sm:font-bold sm:mb-2 md:hidden">업무</div>
-                  {[0, 1, 2].map((index) => (
-                    <select
-                      key={index}
-                      value={works[index]}
-                      onChange={handleWorkChange(index)}
-                      className="p-2 my-4 ml-2 border rounded-md hover:opacity-60 sm:w-full sm:ml-0 sm:my-2"
-                    >
-                      <option disabled value="">
-                        업무 선택
-                      </option>
-                      {workData
-                        ?.sort((a, b) => a.work.localeCompare(b.work))
-                        .map((item, index) => (
-                          <option key={index} value={item.work}>
-                            {item.work}
-                          </option>
-                        ))}
-                    </select>
-                  ))}
-
-                  <input
-                    value={inputWork}
-                    placeholder="업무를 입력해주세요"
-                    onChange={handleInputWorkChange}
-                    className="hover:opacity-60 border rounded-md p-2 my-4 ml-2 sm:w-full sm:ml-0 sm:my-2 md:w-[90%]"
-                  />
-                </td>
-
-                <td className="px-2 border-gray-300 sm:mb-4 sm:w-full md:border-r md:border-b">
-                  <div className="sm:font-bold sm:mb-2 md:hidden">차량</div>
-                  <select
-                    defaultValue=""
-                    onChange={handleCarChange}
-                    className="p-2 border rounded-md hover:opacity-60 sm:w-full"
-                  >
-                    <option disabled value="">
-                      차량 선택
-                    </option>
-                    <option>선택 안함</option>
-                    {cars?.map((item, index) => (
-                      <option key={index} value={item.car}>
-                        {item.car}
-                      </option>
-                    ))}
-                  </select>
-                </td>
-
-                <td className="px-2 border-gray-300 sm:mb-4 sm:w-full md:border-r md:border-b w-[10%]">
-                  <div className="sm:font-bold sm:mb-2 md:hidden">기간</div>
-                  <div className="flex flex-col">
-                    <label className="sm:flex sm:items-center sm:mb-2 md:mr-4">
-                      <input
-                        type="radio"
-                        value={isDaily}
-                        checked={isDaily === 1}
-                        onChange={handleTodayDate}
-                        className="sm:mr-2"
-                      />
-                      <span className="md:text-lg">당일</span>
-                    </label>
-                    <label className="sm:flex sm:items-center sm:mb-2 md:mr-4">
-                      <input
-                        type="radio"
-                        value={isDaily}
-                        checked={isDaily === 2}
-                        onChange={() => setIsDaily(2)}
-                        className="sm:mr-2"
-                      />
-                      <span className="md:text-lg">다른날</span>
-                    </label>
-                    <label className="sm:flex sm:items-center">
-                      <input
-                        type="radio"
-                        value={isDaily}
-                        checked={isDaily === 3}
-                        onChange={() => setIsDaily(3)}
-                        className="sm:mr-2"
-                      />
-                      <span className="md:text-lg">기간 선택</span>
-                    </label>
-                  </div>
-                  {isDaily === 2 && (
+      <StyledPaper elevation={3}>
+        <Grid container spacing={3}>
+          {/* 기본 정보 섹션 */}
+          <Grid item xs={12}>
+            <Typography variant="h6" sx={{ mb: 2 }}>
+              근무 현황
+            </Typography>
+            <Grid container spacing={2}>
+              {/* 날짜 선택 섹션 */}
+              <Grid item xs={12} sm={6} md={4}>
+                <FormControl component="fieldset" fullWidth>
+                  {isDaily === 2 ? (
                     <LocalizationProvider
                       dateAdapter={AdapterDayjs}
                       adapterLocale="ko"
                     >
                       <MobileDatePicker
-                        // label="날짜"
                         onChange={handleDiffDateChange}
-                        // defaultValue={dayjs(startDate)}
                         sx={{
                           width: '100%',
-
                           '& .MuiOutlinedInput-root': {
                             backgroundColor: 'white',
                           },
                         }}
+                        label="날짜 *"
                       />
                     </LocalizationProvider>
-                  )}
-                  {isDaily === 3 && (
-                    <div className="flex mt-4 sm:flex-col ">
-                      <div className="flex flex-col md:mr-2">
-                        <span className="mb-2 font-bold">시작일</span>
-                        <input
-                          type="date"
-                          onChange={handleStartDateChange}
-                          className="p-2 transition duration-200 ease-in-out border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        />
+                  ) : (
+                    isDaily === 3 && (
+                      <div className="flex space-x-2">
+                        <LocalizationProvider
+                          dateAdapter={AdapterDayjs}
+                          adapterLocale="ko"
+                        >
+                          <MobileDatePicker
+                            onChange={handleStartDateChange}
+                            sx={{
+                              width: '100%',
+                              '& .MuiOutlinedInput-root': {
+                                backgroundColor: 'white',
+                              },
+                            }}
+                            label="시작일 *"
+                          />
+                          <MobileDatePicker
+                            onChange={handleEndDateChange}
+                            sx={{
+                              width: '100%',
+                              '& .MuiOutlinedInput-root': {
+                                backgroundColor: 'white',
+                              },
+                            }}
+                            label="종료일 *"
+                          />
+                        </LocalizationProvider>
                       </div>
-                      <div className="flex flex-col sm:mt-2">
-                        <span className="mb-2 font-bold">종료일</span>
-                        <input
-                          type="date"
-                          onChange={handleEndDateChange}
-                          className="p-2 transition duration-200 ease-in-out border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        />
-                      </div>
-                    </div>
+                    )
                   )}
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div className="flex justify-center w-full mt-8">
-          <button
+                  <RadioGroup
+                    className="flex"
+                    row
+                    value={isDaily}
+                    onChange={handleDateChange}
+                  >
+                    <FormControlLabel
+                      value={1}
+                      control={<Radio />}
+                      label="오늘"
+                    />
+                    <FormControlLabel
+                      value={2}
+                      control={<Radio />}
+                      label="다른날"
+                    />
+                    <FormControlLabel
+                      value={3}
+                      control={<Radio />}
+                      label="기간 선택"
+                    />
+                  </RadioGroup>
+                </FormControl>
+              </Grid>
+
+              <Grid item xs={12} sm={6} md={4}>
+                <Autocomplete
+                  options={names?.map((item) => item.username) || []}
+                  renderInput={(params) => (
+                    <TextField {...params} label="이름 *" />
+                  )}
+                  onChange={handleNameChange}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6} md={4}>
+                <Autocomplete
+                  options={cars?.map((item) => item.car) || []}
+                  renderInput={(params) => (
+                    <TextField {...params} label="차량 *" />
+                  )}
+                  onChange={handleCarChange}
+                />
+              </Grid>
+            </Grid>
+          </Grid>
+
+          <Grid item xs={12}>
+            <Divider sx={{ my: 3 }} />
+          </Grid>
+
+          {/* 상세 정보 섹션 */}
+          <Grid item xs={12}>
+            <Grid container spacing={3}>
+              {/* 방문지 섹션 */}
+              <Grid item xs={12} md={4}>
+                <StyledFormSection>
+                  <Typography variant="subtitle1" sx={{ mb: 2 }}>
+                    방문지
+                  </Typography>
+                  {[0, 1, 2].map((index) => (
+                    <Autocomplete
+                      key={index}
+                      options={destinationOptions}
+                      getOptionLabel={(option) => option.destination}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          label={`방문지${index + 1} ${index === 0 ? '*' : ''}`}
+                          sx={{ mb: 2 }}
+                        />
+                      )}
+                      onChange={handleDestinationChange(index)}
+                      value={selectedDestinations[index]}
+                    />
+                  ))}
+                  <TextField
+                    fullWidth
+                    label="방문지 직접 입력"
+                    value={inputDestination}
+                    onChange={(e) => setInputDestination(e.target.value)}
+                  />
+                </StyledFormSection>
+              </Grid>
+
+              {/* 사업명 섹션 */}
+              <Grid item xs={12} md={4}>
+                <StyledFormSection>
+                  <Typography variant="subtitle1" sx={{ mb: 2 }}>
+                    사업명
+                  </Typography>
+                  {[0, 1, 2].map((index) => (
+                    <Autocomplete
+                      key={index}
+                      options={getBusinessOptions(
+                        selectedDestinations[index]?.id || 'none'
+                      )}
+                      getOptionLabel={(option) => option.business}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          label={`사업명${index + 1} ${index === 0 ? '*' : ''}`}
+                          sx={{ mb: 2 }}
+                        />
+                      )}
+                      onChange={handleBusinessChange(index)}
+                      value={selectedBusinesses[index]}
+                      disabled={!selectedDestinations[index]}
+                      isOptionEqualToValue={(option, value) =>
+                        option.business === value?.business
+                      }
+                    />
+                  ))}
+                  <TextField
+                    fullWidth
+                    label="사업명 직접 입력"
+                    value={inputBusiness}
+                    onChange={(e) => setInputBusiness(e.target.value)}
+                  />
+                </StyledFormSection>
+              </Grid>
+
+              {/* 업무 섹션 */}
+              <Grid item xs={12} md={4}>
+                <StyledFormSection>
+                  <Typography variant="subtitle1" sx={{ mb: 2 }}>
+                    업무
+                  </Typography>
+                  {[0, 1, 2].map((index) => (
+                    <Autocomplete
+                      key={index}
+                      options={workOptions}
+                      getOptionLabel={(option) => option.work}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          label={`업무${index + 1} ${index === 0 ? '*' : ''}`}
+                          sx={{ mb: 2 }}
+                        />
+                      )}
+                      onChange={handleWorkChange(index)}
+                      value={selectedWorks[index]}
+                      isOptionEqualToValue={(option, value) =>
+                        option?.work === value?.work
+                      }
+                    />
+                  ))}
+                  <TextField
+                    fullWidth
+                    label="업무 직접 입력"
+                    value={inputWork}
+                    onChange={(e) => setInputWork(e.target.value)}
+                  />
+                </StyledFormSection>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Grid>
+
+        {/* 완료 버튼 */}
+        <Box sx={{ mt: 4, textAlign: 'center' }}>
+          <Button
+            variant="contained"
             onClick={onClickComplete}
-            className="bg-[#00ab39] rounded-lg text-white py-2 px-4 hover:opacity-60 w-[15%] h-12 font-bold text-xl sm:w-full my-2"
+            sx={{
+              height: '48px',
+              fontSize: '1.1rem',
+              bgcolor: '#00ab39',
+              '&:hover': {
+                bgcolor: '#009933',
+              },
+            }}
           >
-            완료
-          </button>
-        </div>
-      </div>
-    </div>
+            입력 완료
+          </Button>
+        </Box>
+      </StyledPaper>
+    </Container>
   );
 }
 
