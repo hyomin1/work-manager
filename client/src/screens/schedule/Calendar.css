@@ -20,8 +20,9 @@
 
 /* 이벤트 스타일링 */
 .fc-event {
-  border-radius: 4px;
-  font-size: 0.875rem;
+  border-radius: 10px;
+  margin-bottom: 2px;
+  font-size: 0.7rem;
   padding: 2px 4px;
   cursor: pointer;
   transition: all 0.2s;
@@ -37,17 +38,26 @@
   background-color: #eef2ff !important;
 }
 
+.fc-day {
+}
+
 /* 주말 색상 */
 .fc-day-sun {
   color: #ef4444;
+  font-weight: bold;
 }
 
 .fc-day-sat {
   color: #3b82f6;
+  font-weight: bold;
 }
 
 /* 제목 스타일링 */
 .fc-toolbar-title {
   font-size: 2rem !important;
   font-weight: 700 !important;
+}
+
+.fc-event-title-container {
+  border: none;
 }

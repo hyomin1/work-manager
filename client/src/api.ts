@@ -145,6 +145,15 @@ export const calMonth = (date: Date) => {
   return date.getMonth() + 1;
 };
 
+export const calDay = (date: Date) => {
+  return date.getDate();
+};
+
+export const calDayOfWeek = (date: Date) => {
+  const daysOfWeek = ['일', '월', '화', '수', '목', '금', '토'];
+  return daysOfWeek[date.getDay()];
+};
+
 export const calCarDay = (date: Date) => {
   const carDate = new Date(date);
   const month = carDate.getMonth() + 1;
