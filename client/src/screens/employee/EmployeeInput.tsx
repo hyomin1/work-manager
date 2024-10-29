@@ -28,6 +28,7 @@ import { styled } from '@mui/material/styles';
 import 'dayjs/locale/ko';
 
 import Blank from '../../components/Blank';
+import { VideoLabelRounded } from '@mui/icons-material';
 dayjs.locale('ko');
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
@@ -96,6 +97,17 @@ function EmployeeInput() {
         destination: item.destination,
       })) || []),
   ];
+
+  const carOptions = [
+    { car: '선택 안함' },
+    ...(cars
+      ? cars
+          .sort((a, b) => a.car.localeCompare(b.car))
+          .map((item) => ({
+            car: item.car,
+          }))
+      : []),
+  ];
   const workOptions = [
     ...(workData
       ?.sort((a, b) => a.work.localeCompare(b.work))
@@ -117,6 +129,7 @@ function EmployeeInput() {
         })) || []
     );
   };
+  console.log(car);
 
   const handleNameChange = (
     event: React.SyntheticEvent,
@@ -157,8 +170,13 @@ function EmployeeInput() {
       setSelectedWorks(newWorks);
     };
 
-  const handleCarChange = (event: React.SyntheticEvent, car: string | null) => {
-    setCar(car);
+  const handleCarChange = (
+    event: React.SyntheticEvent,
+    value: { car: string } | null
+  ) => {
+    if (value) {
+      setCar(value.car);
+    }
   };
   const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt((event.target as HTMLInputElement).value);
@@ -397,11 +415,8 @@ function EmployeeInput() {
               </Grid>
               <Grid item xs={12} sm={6} md={4}>
                 <Autocomplete
-                  options={
-                    cars
-                      ?.sort((a, b) => a.car.localeCompare(b.car))
-                      ?.map((item) => item.car) || []
-                  }
+                  options={carOptions}
+                  getOptionLabel={(options) => options.car}
                   renderInput={(params) => (
                     <TextField {...params} label="차량 *" />
                   )}

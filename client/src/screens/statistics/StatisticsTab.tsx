@@ -3,14 +3,10 @@ import {
   Tabs,
   Box,
   FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
   Button,
   Autocomplete,
   TextField,
 } from '@mui/material';
-import { SelectChangeEvent } from '@mui/material/Select';
 import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { Search, MapPin, User } from 'lucide-react';
 import dayjs, { Dayjs } from 'dayjs';

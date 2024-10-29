@@ -9,6 +9,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 import 'dayjs/locale/ko';
+import { Autocomplete, TextField } from '@mui/material';
 dayjs.locale('ko');
 
 interface IEditInformProps {
@@ -124,8 +125,13 @@ function EditInform({ item, setEditingItemId, currentDate }: IEditInformProps) {
     }
   };
 
-  const handleNameChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setUserName(e.target.value);
+  const handleNameChange = (
+    e: React.SyntheticEvent,
+    username: string | null
+  ) => {
+    if (username) {
+      setUserName(username);
+    }
   };
 
   const handleDestinationChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -139,12 +145,16 @@ function EditInform({ item, setEditingItemId, currentDate }: IEditInformProps) {
     setBusiness(e.target.value);
   };
 
-  const handleWorkChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setWork(e.target.value);
+  const handleWorkChange = (e: React.SyntheticEvent, work: string | null) => {
+    if (work) {
+      setWork(work);
+    }
   };
 
   const handleCarChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setCar(e.target.value);
+    if (car) {
+      setCar(car);
+    }
   };
 
   if (
@@ -215,21 +225,16 @@ function EditInform({ item, setEditingItemId, currentDate }: IEditInformProps) {
           </div>
 
           <div className="mb-2">
-            <div className="mb-1 font-bold">이름</div>
-            <select
-              id="username"
-              value={username}
+            <Autocomplete
+              defaultValue={username}
+              options={
+                names
+                  ?.sort((a, b) => a.username.localeCompare(b.username))
+                  .map((item) => item.username) || []
+              }
+              renderInput={(names) => <TextField {...names} label="이름" />}
               onChange={handleNameChange}
-              className="w-full p-3 border rounded"
-            >
-              {names
-                ?.sort((a, b) => a.username.localeCompare(b.username))
-                .map((item, index) => (
-                  <option key={index} value={item.username}>
-                    {item.username}
-                  </option>
-                ))}
-            </select>
+            />
           </div>
           <div className="mb-2">
             <div className="mb-1 font-bold">방문지</div>
@@ -273,24 +278,20 @@ function EditInform({ item, setEditingItemId, currentDate }: IEditInformProps) {
             </select>
           </div>
           <div className="mb-2">
-            <div className="mb-1 font-bold">업무</div>
-            <select
-              id="work"
-              value={work}
+            <Autocomplete
+              defaultValue={work}
+              options={
+                workData
+                  ?.sort((a, b) => a.work.localeCompare(b.work))
+                  .map((item) => item.work) || []
+              }
+              renderInput={(works) => <TextField {...works} label="업무" />}
               onChange={handleWorkChange}
-              className="w-full p-3 border rounded"
-            >
-              {workData
-                ?.sort((a, b) => a.work.localeCompare(b.work))
-                .map((item, index) => (
-                  <option key={index} value={item.work}>
-                    {item.work}
-                  </option>
-                ))}
-            </select>
+            />
           </div>
           <div className="mb-2">
             <div className="mb-1 font-bold">차량</div>
+
             <select
               id="car"
               value={car}
