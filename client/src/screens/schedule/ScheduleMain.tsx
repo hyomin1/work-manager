@@ -5,7 +5,7 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { useQuery } from '@tanstack/react-query';
 import { IInform } from '../../interfaces/interface';
-import { Trash2 } from 'lucide-react';
+import { Edit, Trash2 } from 'lucide-react';
 import {
   axiosReq,
   calDay,
@@ -16,6 +16,7 @@ import {
 } from '../../api';
 import { useNavigate } from 'react-router-dom';
 import './Calendar.css';
+import EditInform from '../employee/EditEmployeeInform';
 
 function ScheduleMain() {
   const [date, setDate] = useState(new Date());
@@ -23,6 +24,7 @@ function ScheduleMain() {
     queryKey: ['schedule'],
     queryFn: () => getSchedule(calYear(date), calMonth(date)),
   });
+  const [editingItemId, setEditingItemId] = useState('');
 
   const navigate = useNavigate();
 
@@ -54,6 +56,10 @@ function ScheduleMain() {
     }
   };
 
+  const onEditSchedule = (id: string) => {
+    setEditingItemId(id);
+  };
+
   const onDeleteSchedule = async (id: string) => {
     const isConfirm = window.confirm('삭제하시겠습니까?');
     if (isConfirm) {
@@ -67,27 +73,31 @@ function ScheduleMain() {
       }
     }
   };
-
   const events = useMemo(() => {
     if (!scheduleData) return [];
 
-    return scheduleData.map((schedule) => ({
-      title: `${schedule.destination}`,
-      start: new Date(schedule.startDate).toISOString().split('T')[0],
-      end: new Date(schedule.endDate).toISOString().split('T')[0],
-      extendedProps: {
-        _id: schedule._id,
-        startDate: schedule.startDate,
-        endDate: schedule.endDate,
-        business: schedule.business,
-        isDaily: schedule.isDaily,
-        car: schedule.car,
-        work: schedule.work,
+    return scheduleData.map((schedule) => {
+      const endDate = new Date(schedule.endDate);
+      endDate.setDate(endDate.getDate() + 1);
 
-        username: schedule.username,
-      },
-      backgroundColor: '#5B8FF9',
-    }));
+      return {
+        title: `${schedule.destination}`,
+        start: new Date(schedule.startDate).toISOString().split('T')[0],
+        end: endDate.toISOString().split('T')[0],
+        extendedProps: {
+          _id: schedule._id,
+          startDate: schedule.startDate,
+          endDate: new Date(schedule.endDate).setHours(23, 59, 59, 999),
+          destination: schedule.destination,
+          business: schedule.business,
+          isDaily: schedule.isDaily,
+          car: schedule.car,
+          work: schedule.work,
+          username: schedule.username,
+        },
+        backgroundColor: '#5B8FF9',
+      };
+    });
   }, [scheduleData]);
 
   return (
@@ -128,14 +138,31 @@ function ScheduleMain() {
           }}
           onClick={(e) => e.stopPropagation()} // 툴팁 클릭시 이벤트 전파 중지
         >
-          <div className="flex items-center justify-between mb-2 ">
-            <h2 className="font-bold">{tooltip.event.title}</h2>
-            <button
-              className="hover:opacity-60"
-              onClick={() => onDeleteSchedule(tooltip.event.extendedProps._id)}
-            >
-              <Trash2 />
-            </button>
+          <div className="flex items-center justify-between w-full mb-2">
+            <h2 className="font-bold w-[50%] ">{tooltip.event.title}</h2>
+            <div className="flex w-[50%] justify-start">
+              <button
+                onClick={() => onEditSchedule(tooltip.event.extendedProps._id)}
+                className="hover:opacity-60 "
+              >
+                <Edit strokeWidth={2.2} className="mr-2" />
+              </button>
+              <button
+                onClick={() =>
+                  onDeleteSchedule(tooltip.event.extendedProps._id)
+                }
+                className="hover:opacity-60 "
+              >
+                <Trash2 strokeWidth={2.2} />
+              </button>
+              {editingItemId && (
+                <EditInform
+                  currentDate={tooltip.event.extendedProps.startDate}
+                  item={tooltip.event.extendedProps}
+                  setEditingItemId={setEditingItemId}
+                />
+              )}
+            </div>
           </div>
           <p className="mb-2 text-xs">
             {calMonth(new Date(tooltip.event.extendedProps.startDate))}월{' '}

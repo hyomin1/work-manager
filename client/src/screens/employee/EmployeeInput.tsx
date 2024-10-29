@@ -12,7 +12,6 @@ import {
   TextField,
   FormControl,
   Button,
-  Typography,
   Box,
   Container,
   Divider,
@@ -316,9 +315,7 @@ function EmployeeInput() {
         <Grid container spacing={3}>
           {/* 기본 정보 섹션 */}
           <Grid item xs={12}>
-            <Typography variant="h6" sx={{ mb: 2, fontWeight: 'bold' }}>
-              근무 현황
-            </Typography>
+            <span className="text-xl font-bold">근무 현황</span>
             <Grid container spacing={2}>
               {/* 날짜 선택 섹션 */}
               <Grid item xs={12} sm={6} md={4}>
@@ -431,9 +428,7 @@ function EmployeeInput() {
               {/* 방문지 섹션 */}
               <Grid item xs={12} md={4}>
                 <StyledFormSection>
-                  <Typography variant="subtitle1" sx={{ mb: 2 }}>
-                    방문지
-                  </Typography>
+                  <div className="mb-4">방문지</div>
                   {[0, 1, 2].map((index) => (
                     <Autocomplete
                       key={index}
@@ -462,9 +457,7 @@ function EmployeeInput() {
               {/* 사업명 섹션 */}
               <Grid item xs={12} md={6}>
                 <StyledFormSection>
-                  <Typography variant="subtitle1" sx={{ mb: 2 }}>
-                    사업명
-                  </Typography>
+                  <div className="mb-4">사업명</div>
                   {[0, 1, 2].map((index) => (
                     <Autocomplete
                       key={index}
@@ -499,9 +492,7 @@ function EmployeeInput() {
               {/* 업무 섹션 */}
               <Grid item xs={12} md={2}>
                 <StyledFormSection>
-                  <Typography variant="subtitle1" sx={{ mb: 2 }}>
-                    업무
-                  </Typography>
+                  <div className="mb-4">업무</div>
                   {[0, 1, 2].map((index) => (
                     <Autocomplete
                       key={index}

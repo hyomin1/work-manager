@@ -102,6 +102,7 @@ function EditInform({ item, setEditingItemId, currentDate }: IEditInformProps) {
     if (res.status === 200) {
       alert(res.data.message);
       queryClient.invalidateQueries({ queryKey: ['employeeInform'] });
+      queryClient.invalidateQueries({ queryKey: ['schedule'] });
       setEditingItemId('');
     }
   };
