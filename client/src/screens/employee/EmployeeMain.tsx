@@ -13,12 +13,12 @@ import Title from '../../components/Title';
 import ArrowBack from '../../components/ArrowBack';
 import {
   Edit,
-  X,
   Settings,
   Pencil,
   Truck,
   LineChart,
   Calendar,
+  Trash2,
 } from 'lucide-react';
 import Logout from '../auth/Logout';
 import EditInform from './EditEmployeeInform';
@@ -119,25 +119,26 @@ function Main() {
         )}
 
         <div className="w-[100%] flex justify-between items-center border border-t-gray-300 rounded-t-2xl bg-[#f8fafd]">
-          {/* <span className="ml-4 font-bold md:text-xl">목록</span> */}
-          <div className="flex items-center justify-between w-full p-4">
-            <div className="w-[50%] flex">
+          <div className="flex items-center justify-between w-full md:p-4 sm:p-2">
+            <div className="flex  sm:flex-col">
               <button
                 onClick={() => navigate('/driving-status')}
-                className="whitespace-nowrap bg-[#0EA5E9] rounded-lg text-white py-2  sm:text-sm px-4 hover:opacity-60 mr-4 sm:mr-2 button-effect flex justify-center items-center"
+                className="whitespace-nowrap bg-[#0EA5E9] rounded-lg
+                 text-white md:py-2 sm:py-1 sm:text-sm px-4 hover:opacity-60 md:mr-4
+                  sm:mr-2 button-effect flex justify-center items-center sm:mb-1"
               >
                 <Truck className="sm:w-4 sm:h-4" />
                 <span className="ml-1 sm:text-xs">차량</span>
               </button>
               <button
-                className="whitespace-nowrap bg-[#10B981] rounded-lg text-white py-2 sm:text-sm px-4 button-effect mr-4 sm:mr-2 flex justify-center items-center"
+                className="whitespace-nowrap bg-[#10B981] rounded-lg text-white md:py-2 sm:py-1 sm:text-sm sm:mb-1 px-4 button-effect mr-4 sm:mr-2 flex justify-center items-center"
                 onClick={onClickInputInform}
               >
                 <Pencil className="sm:w-4 sm:h-4" />
                 <span className="ml-1 sm:text-xs">입력</span>
               </button>
               <button
-                className="whitespace-nowrap bg-[#0EA5E9] rounded-lg text-white py-2 sm:text-sm px-4 button-effect mr-4 sm:mr-2 flex justify-center items-center"
+                className="whitespace-nowrap bg-[#0EA5E9] rounded-lg text-white md:py-2 sm:py-1 sm:text-sm px-4 button-effect mr-4 sm:mr-2 flex justify-center items-center"
                 onClick={() => navigate('/schedule')}
               >
                 <Calendar className="sm:w-4 sm:h-4" />
@@ -145,24 +146,27 @@ function Main() {
               </button>
             </div>
 
-            <div className="flex">
+            <div className="flex sm:flex-col">
               <button
-                className="whitespace-nowrap bg-[#0EA5E9] rounded-lg text-white py-2 sm:text-sm px-4 hover:opacity-60 mr-4 button-effect flex justify-center items-center"
+                className="whitespace-nowrap bg-[#0EA5E9] rounded-lg text-white md:py-2 sm:py-1 sm:mb-1 sm:text-sm px-4 hover:opacity-60 mr-4 sm:mr-2 button-effect flex justify-center items-center"
                 onClick={onClickAdmin}
               >
                 <Settings className="sm:w-4 sm:h-4" />
                 <span className="ml-1 sm:text-xs">관리</span>
               </button>
               <button
-                className="whitespace-nowrap bg-[#10B981] rounded-lg text-white py-2 sm:text-sm px-4 button-effect  flex justify-center items-center"
+                className="whitespace-nowrap bg-[#10B981] rounded-lg text-white md:py-2 sm:py-1 sm:text-sm px-4 sm:mb-1 mr-4 sm:mr-2 button-effect  flex justify-center items-center"
                 onClick={onClickStatistics}
               >
                 <LineChart className="sm:w-4 sm:h-4" />
                 <span className="ml-1 sm:text-xs">통계</span>
               </button>
-              <div className="mx-4 border border-gray-300 md:h-10 sm:h-8" />
-              <button onClick={() => refetch()}>
-                <SlRefresh className="md:w-7 md:h-7 sm:w-5 sm:h-5 hover:opacity-60" />
+              <div className="mx-4 border border-gray-300 md:h-10 sm:h-8 sm:hidden" />
+              <button
+                onClick={() => refetch()}
+                className="sm:flex sm:justify-center"
+              >
+                <SlRefresh className="md:w-7 md:h-7 sm:w-6 sm:h-6 hover:opacity-60" />
               </button>
             </div>
           </div>
@@ -219,15 +223,22 @@ function Main() {
                       {item.car}
                     </TableCell>
                     <TableCell>
-                      <div className="flex items-center justify-center gap-2">
-                        <Edit
-                          className="hover:opacity-60"
+                      <div className="flex items-center gap-2 justify-evenly">
+                        <button
+                          className="flex items-center hover:opacity-60"
                           onClick={() => editInform(item._id)}
-                        />
-                        <X
-                          className="hover:opacity-60"
+                        >
+                          <Edit strokeWidth={2.2} />
+                          <span className="ml-1 font-semibold">수정</span>
+                        </button>
+                        <button
+                          className="flex items-center hover:opacity-60 "
                           onClick={() => deleteInform(item._id)}
-                        />
+                        >
+                          <Trash2 strokeWidth={2.2} />
+                          <span className="ml-1 font-semibold">삭제</span>
+                        </button>
+
                         {editingItemId === item._id && (
                           <EditInform
                             currentDate={currentDate}

@@ -1,5 +1,5 @@
-import React from "react";
-import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import React from 'react';
+import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 
 interface ITitleProps {
   currentDate: Date;
@@ -20,9 +20,9 @@ function Title({
 }: ITitleProps) {
   const previous = () => {
     const prevDate = new Date(currentDate);
-    if (category === "employee") {
+    if (category === 'employee') {
       prevDate.setDate(prevDate.getDate() - 1);
-    } else if (category === "driving") {
+    } else if (category === 'driving') {
       prevDate.setMonth(prevDate.getMonth() - 1);
     }
     setCurrentDate(prevDate);
@@ -32,9 +32,9 @@ function Title({
 
   const next = () => {
     const prevDate = new Date(currentDate);
-    if (category === "employee") {
+    if (category === 'employee') {
       prevDate.setDate(prevDate.getDate() + 1);
-    } else if (category === "driving") {
+    } else if (category === 'driving') {
       prevDate.setMonth(prevDate.getMonth() + 1);
     }
     setCurrentDate(prevDate);
@@ -53,13 +53,13 @@ function Title({
         <button>
           <span
             onClick={selectDate}
-            className="font-bold  sm:text-sm md:text-3xl md:mx-8 sm:mx-1  hover:opacity-70 whitespace-nowrap"
+            className="font-bold md:text-3xl md:mx-8 sm:mx-1 hover:opacity-70 whitespace-nowrap"
           >
-            {category === "driving" &&
+            {category === 'driving' &&
               calYearMonth &&
               calYearMonth(currentDate)}
-            {category === "driving" && " 차량운행일지"}
-            {category === "employee" && calDate && calDate(currentDate)}
+            {category === 'driving' && ' 차량운행일지'}
+            {category === 'employee' && calDate && calDate(currentDate)}
           </span>
         </button>
 

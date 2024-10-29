@@ -306,7 +306,7 @@ function EmployeeInput() {
     <Container maxWidth="xl" sx={{ py: 4 }}>
       <div className="flex items-center justify-between w-full mt-2 mb-8 sm:mt-4">
         <ArrowBack type="not home" />
-        <span className="font-bold sm:text-sm md:text-3xl md:mx-8 sm:mx-1 whitespace-nowrap">
+        <span className="font-bold sm:text-lg md:text-3xl md:mx-8 sm:mx-1 whitespace-nowrap">
           {formDate}
         </span>
         <Blank />
