@@ -86,13 +86,13 @@ function ScheduleMain() {
 
         username: schedule.username,
       },
-      backgroundColor: '#7986cb',
+      backgroundColor: '#5B8FF9',
     }));
   }, [scheduleData]);
 
   return (
     <div
-      className="flex flex-col w-full h-screen p-10 bg-gray-50"
+      className="flex flex-col w-full h-screen p-5 bg-gray-50"
       onClick={handleBackgroundClick}
     >
       <FullCalendar
@@ -116,6 +116,8 @@ function ScheduleMain() {
         locale="ko"
         height="100vh"
         eventClick={handleEventClick}
+        dayHeaderFormat={{ weekday: 'short' }} // 요일 표시 형식
+        dayHeaders={true}
       />
       {tooltip && (
         <div

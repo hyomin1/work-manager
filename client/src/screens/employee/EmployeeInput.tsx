@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { formDate, axiosReq } from '../../api';
-
 import ArrowBack from '../../components/ArrowBack';
 import { useNavigate } from 'react-router-dom';
 import { useCustomQueries } from '../../hooks/useCustomQuery';
@@ -24,11 +23,8 @@ import {
   Radio,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
-
 import 'dayjs/locale/ko';
-
 import Blank from '../../components/Blank';
-import { VideoLabelRounded } from '@mui/icons-material';
 dayjs.locale('ko');
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
@@ -129,7 +125,6 @@ function EmployeeInput() {
         })) || []
     );
   };
-  console.log(car);
 
   const handleNameChange = (
     event: React.SyntheticEvent,
@@ -321,7 +316,7 @@ function EmployeeInput() {
         <Grid container spacing={3}>
           {/* 기본 정보 섹션 */}
           <Grid item xs={12}>
-            <Typography variant="h6" sx={{ mb: 2 }}>
+            <Typography variant="h6" sx={{ mb: 2, fontWeight: 'bold' }}>
               근무 현황
             </Typography>
             <Grid container spacing={2}>

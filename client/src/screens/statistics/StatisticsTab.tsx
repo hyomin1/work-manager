@@ -178,10 +178,11 @@ function StatisticsTab({
               options={
                 names
                   ?.sort((a, b) => a.username.localeCompare(b.username))
-                  .map((item, index) => item.username) || []
+                  .map((item) => item.username) || []
               }
               renderInput={(params) => <TextField {...params} label="이름 *" />}
               onChange={handleChangeName}
+              value={username}
             />
           </FormControl>
           <Button
@@ -241,12 +242,13 @@ function StatisticsTab({
               options={
                 destinationsData
                   ?.sort((a, b) => a.destination.localeCompare(b.destination))
-                  .map((item, index) => item.destination) || []
+                  .map((item) => item.destination) || []
               }
               renderInput={(params) => (
                 <TextField {...params} label="방문지 *" />
               )}
               onChange={handleChangeDestination}
+              value={destination}
             />
           </FormControl>
           <Button

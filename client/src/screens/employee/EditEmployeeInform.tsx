@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useCustomQueries } from '../../hooks/useCustomQuery';
 import { IInform } from '../../interfaces/interface';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { getBusiness, axiosReq } from '../../api';
+import { useQueryClient } from '@tanstack/react-query';
+import { axiosReq } from '../../api';
 import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import dayjs, { Dayjs } from 'dayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers';
@@ -16,11 +16,6 @@ interface IEditInformProps {
   item: IInform;
   currentDate: Date;
   setEditingItemId: React.Dispatch<React.SetStateAction<string>>;
-}
-
-interface Business {
-  destinationId: string;
-  business: string;
 }
 
 function EditInform({ item, setEditingItemId, currentDate }: IEditInformProps) {
@@ -48,24 +43,31 @@ function EditInform({ item, setEditingItemId, currentDate }: IEditInformProps) {
 
   const queryClient = useQueryClient();
 
-  const { data: businessData, isLoading: businessLoading } = useQuery<Business>(
-    {
-      queryKey: ['business', business],
-      queryFn: () => getBusiness(business),
-      enabled: !!business,
-    }
-  );
+  const carOptions = [
+    '선택 안함',
+    ...(cars
+      ? cars.sort((a, b) => a.car.localeCompare(b.car)).map((item) => item.car)
+      : []),
+  ];
 
   useEffect(() => {
-    if (businessData) {
-      const matchingDestination = destinationsData?.find(
-        (dest) => dest._id === businessData.destinationId
+    if (business && businessesData && destinationsData) {
+      const selectedBusiness = businessesData.find(
+        (b) => b.business === business
       );
-      if (matchingDestination) {
-        setDestination(matchingDestination.destination);
+      if (selectedBusiness) {
+        const matchingDestination = destinationsData.find(
+          (dest) => dest._id === selectedBusiness.destinationId
+        );
+        if (
+          matchingDestination &&
+          matchingDestination.destination !== destination
+        ) {
+          setDestination(matchingDestination.destination);
+        }
       }
     }
-  }, [businessData, destinationsData]);
+  }, [business, businessesData, destinationsData, destination]);
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -134,15 +136,23 @@ function EditInform({ item, setEditingItemId, currentDate }: IEditInformProps) {
     }
   };
 
-  const handleDestinationChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const newDestination = e.target.value;
-    setDestination(newDestination);
-
-    setBusiness('');
+  const handleDestinationChange = (
+    e: React.SyntheticEvent,
+    destination: string | null
+  ) => {
+    if (destination) {
+      setDestination(destination);
+      setBusiness('');
+    }
   };
 
-  const handleBusinessChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setBusiness(e.target.value);
+  const handleBusinessChange = (
+    e: React.SyntheticEvent,
+    business: string | null
+  ) => {
+    if (business) {
+      setBusiness(business);
+    }
   };
 
   const handleWorkChange = (e: React.SyntheticEvent, work: string | null) => {
@@ -151,7 +161,7 @@ function EditInform({ item, setEditingItemId, currentDate }: IEditInformProps) {
     }
   };
 
-  const handleCarChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleCarChange = (e: React.SyntheticEvent, car: string | null) => {
     if (car) {
       setCar(car);
     }
@@ -163,7 +173,7 @@ function EditInform({ item, setEditingItemId, currentDate }: IEditInformProps) {
     businessesLoading ||
     worksLoading ||
     carsLoading ||
-    businessLoading
+    businessesLoading
   ) {
     return <div>Loading...</div>;
   }
@@ -176,16 +186,14 @@ function EditInform({ item, setEditingItemId, currentDate }: IEditInformProps) {
       >
         <h2 className="mb-4 text-xl font-bold text-center">정보 수정</h2>
         <div className="flex flex-col">
-          <div className="mb-2">
-            <div className="mb-1 font-bold">날짜</div>
-
+          <div className="my-2">
             <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ko">
               {item.isDaily === 3 ? (
                 <div className="flex mt-4">
                   <MobileDatePicker
                     label="시작일"
                     onChange={handleStartDateChange}
-                    defaultValue={dayjs(startDate)}
+                    value={dayjs(startDate)}
                     sx={{
                       width: '100%',
 
@@ -197,7 +205,7 @@ function EditInform({ item, setEditingItemId, currentDate }: IEditInformProps) {
                   <MobileDatePicker
                     label="종료일"
                     onChange={handleEndDateChange}
-                    defaultValue={dayjs(endDate)}
+                    value={dayjs(endDate)}
                     sx={{
                       width: '100%',
 
@@ -209,9 +217,9 @@ function EditInform({ item, setEditingItemId, currentDate }: IEditInformProps) {
                 </div>
               ) : (
                 <MobileDatePicker
-                  // label="날짜"
+                  label="시작일"
                   onChange={handleDateChange}
-                  defaultValue={dayjs(date)}
+                  value={dayjs(date)}
                   sx={{
                     width: '100%',
 
@@ -224,9 +232,9 @@ function EditInform({ item, setEditingItemId, currentDate }: IEditInformProps) {
             </LocalizationProvider>
           </div>
 
-          <div className="mb-2">
+          <div className="my-2">
             <Autocomplete
-              defaultValue={username}
+              value={username}
               options={
                 names
                   ?.sort((a, b) => a.username.localeCompare(b.username))
@@ -236,25 +244,40 @@ function EditInform({ item, setEditingItemId, currentDate }: IEditInformProps) {
               onChange={handleNameChange}
             />
           </div>
-          <div className="mb-2">
-            <div className="mb-1 font-bold">방문지</div>
-            <select
-              onChange={handleDestinationChange}
-              className="w-full p-3 border rounded"
+          <div className="my-2">
+            <Autocomplete
               value={destination}
-            >
-              {destinationsData
-                ?.sort((a, b) => a.destination.localeCompare(b.destination))
-                .map((item, index) => (
-                  <option key={index} value={item.destination}>
-                    {item.destination}
-                  </option>
-                ))}
-            </select>
+              options={
+                destinationsData
+                  ?.sort((a, b) => a.destination.localeCompare(b.destination))
+                  .map((item) => item.destination) || []
+              }
+              renderInput={(destinations) => (
+                <TextField {...destinations} label="방문지" />
+              )}
+              onChange={handleDestinationChange}
+            />
           </div>
-          <div className="mb-2">
-            <div className="mb-1 font-bold">사업명</div>
-            <select
+          <div className="my-2">
+            <Autocomplete
+              value={business}
+              options={
+                businessesData
+                  ?.filter((business) => {
+                    const matchingDestination = destinationsData?.find(
+                      (dest) => dest.destination === destination
+                    );
+                    return business.destinationId === matchingDestination?._id;
+                  })
+                  ?.sort((a, b) => a.business.localeCompare(b.business))
+                  .map((item) => item.business) || []
+              }
+              renderInput={(businesses) => (
+                <TextField {...businesses} label="사업명" />
+              )}
+              onChange={handleBusinessChange}
+            />
+            {/* <select
               value={business}
               onChange={handleBusinessChange}
               className="w-full p-3 border rounded"
@@ -275,11 +298,11 @@ function EditInform({ item, setEditingItemId, currentDate }: IEditInformProps) {
                     {item.business}
                   </option>
                 ))}
-            </select>
+            </select> */}
           </div>
-          <div className="mb-2">
+          <div className="my-2">
             <Autocomplete
-              defaultValue={work}
+              value={work}
               options={
                 workData
                   ?.sort((a, b) => a.work.localeCompare(b.work))
@@ -289,24 +312,13 @@ function EditInform({ item, setEditingItemId, currentDate }: IEditInformProps) {
               onChange={handleWorkChange}
             />
           </div>
-          <div className="mb-2">
-            <div className="mb-1 font-bold">차량</div>
-
-            <select
-              id="car"
-              value={car}
+          <div className="my-2">
+            <Autocomplete
+              options={carOptions}
+              renderInput={(cars) => <TextField {...cars} label="차량" />}
               onChange={handleCarChange}
-              className="w-full p-3 border rounded"
-            >
-              <option>선택 안함</option>
-              {cars
-                ?.sort((a, b) => a.car.localeCompare(b.car))
-                .map((item, index) => (
-                  <option key={index} value={item.car}>
-                    {item.car}
-                  </option>
-                ))}
-            </select>
+              value={car}
+            />
           </div>
         </div>
 
