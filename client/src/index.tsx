@@ -7,6 +7,27 @@ import router from './Router';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+
+const theme = createTheme({
+  typography: {
+    fontFamily: 'Pretendard',
+    allVariants: {
+      fontFamily: 'Pretendard',
+    },
+  },
+  components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        '*': {
+          fontFamily: 'Pretendard !important',
+          WebkitFontSmoothing: 'antialiased',
+          MozOsxFontSmoothing: 'grayscale',
+        },
+      },
+    },
+  },
+});
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -16,7 +37,9 @@ root.render(
   // <React.StrictMode>
   <LocalizationProvider dateAdapter={AdapterDayjs}>
     <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
+      <ThemeProvider theme={theme}>
+        <RouterProvider router={router} />
+      </ThemeProvider>
     </QueryClientProvider>
   </LocalizationProvider>
 

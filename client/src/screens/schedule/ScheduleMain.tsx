@@ -139,8 +139,10 @@ function ScheduleMain() {
           onClick={(e) => e.stopPropagation()} // 툴팁 클릭시 이벤트 전파 중지
         >
           <div className="flex items-center justify-between w-full mb-2">
-            <h2 className="font-bold w-[50%] ">{tooltip.event.title}</h2>
-            <div className="flex w-[50%] justify-start">
+            <h2 className="mr-2 font-bold whitespace-nowrap">
+              {tooltip.event.title}
+            </h2>
+            <div className="flex justify-start">
               <button
                 onClick={() => onEditSchedule(tooltip.event.extendedProps._id)}
                 className="hover:opacity-60 "

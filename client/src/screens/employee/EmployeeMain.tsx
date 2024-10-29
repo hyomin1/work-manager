@@ -120,7 +120,7 @@ function Main() {
 
         <div className="w-[100%] flex justify-between items-center border border-t-gray-300 rounded-t-2xl bg-[#f8fafd]">
           <div className="flex items-center justify-between w-full md:p-4 sm:p-2">
-            <div className="flex  sm:flex-col">
+            <div className="flex sm:flex-col">
               <button
                 onClick={() => navigate('/driving-status')}
                 className="whitespace-nowrap bg-[#0EA5E9] rounded-lg
