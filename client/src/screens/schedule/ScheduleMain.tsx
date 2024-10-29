@@ -19,7 +19,8 @@ import './Calendar.css';
 import EditInform from '../employee/EditEmployeeInform';
 
 function ScheduleMain() {
-  const [date, setDate] = useState(new Date());
+  const date = new Date();
+
   const { data: scheduleData, refetch } = useQuery<IInform[]>({
     queryKey: ['schedule'],
     queryFn: () => getSchedule(calYear(date), calMonth(date)),

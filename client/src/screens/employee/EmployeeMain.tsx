@@ -222,31 +222,34 @@ function Main() {
                     <TableCell sx={{ fontSize: 'medium' }}>
                       {item.car}
                     </TableCell>
-                    <TableCell>
-                      <div className="flex items-center gap-2 justify-evenly">
-                        <button
-                          className="flex items-center hover:opacity-60"
-                          onClick={() => editInform(item._id)}
-                        >
-                          <Edit strokeWidth={2.2} />
-                          <span className="ml-1 font-semibold">수정</span>
-                        </button>
-                        <button
-                          className="flex items-center hover:opacity-60 "
-                          onClick={() => deleteInform(item._id)}
-                        >
-                          <Trash2 strokeWidth={2.2} />
-                          <span className="ml-1 font-semibold">삭제</span>
-                        </button>
 
-                        {editingItemId === item._id && (
-                          <EditInform
-                            currentDate={currentDate}
-                            item={item}
-                            setEditingItemId={setEditingItemId}
-                          />
-                        )}
-                      </div>
+                    <TableCell>
+                      {item.isOwner && (
+                        <div className="flex items-center gap-2 justify-evenly">
+                          <button
+                            className="flex items-center hover:opacity-60"
+                            onClick={() => editInform(item._id)}
+                          >
+                            <Edit strokeWidth={2.2} />
+                            <span className="ml-1 font-semibold">수정</span>
+                          </button>
+                          <button
+                            className="flex items-center hover:opacity-60 "
+                            onClick={() => deleteInform(item._id)}
+                          >
+                            <Trash2 strokeWidth={2.2} />
+                            <span className="ml-1 font-semibold">삭제</span>
+                          </button>
+
+                          {editingItemId === item._id && (
+                            <EditInform
+                              currentDate={currentDate}
+                              item={item}
+                              setEditingItemId={setEditingItemId}
+                            />
+                          )}
+                        </div>
+                      )}
                     </TableCell>
                   </TableRow>
                 ))}
