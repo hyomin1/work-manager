@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import { IDrivingInform } from "../../interfaces/interface";
-import { useCustomQueries } from "../../hooks/useCustomQuery";
+import React, { useState } from 'react';
+import { IDrivingInform } from '../../interfaces/interface';
+import { useCustomQueries } from '../../hooks/useCustomQuery';
 
-import { useQueryClient } from "@tanstack/react-query";
-import { axiosReq } from "../../api";
+import { useQueryClient } from '@tanstack/react-query';
+import { axiosReq } from '../../api';
 
 interface IEditInformProps {
   item: IDrivingInform;
@@ -14,7 +14,6 @@ function EditDrivingInform({ item, setEditingItemId }: IEditInformProps) {
   const { names, namesLoading, etcNames, etcNamesLoading } = useCustomQueries();
 
   const [driveDay, setDriveDay] = useState(item.driveDay);
-  const [username, setUserName] = useState(item.username);
   const [drivingDestination, setDrivingDestination] = useState(
     item.drivingDestination
   );
@@ -25,14 +24,18 @@ function EditDrivingInform({ item, setEditingItemId }: IEditInformProps) {
   const [etc, setEtc] = useState(item.etc);
 
   const queryClient = useQueryClient();
+  const [drivers, setDrivers] = useState(item.username.split(', '));
 
   const handleDriveDayChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDriveDay(new Date(e.target.value));
   };
 
-  const handleNameChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setUserName(e.target.value);
-  };
+  const handleNameChange =
+    (index: number) => (e: React.ChangeEvent<HTMLSelectElement>) => {
+      const newDrivers = [...drivers];
+      newDrivers[index] = e.target.value;
+      setDrivers(newDrivers);
+    };
 
   const handleDrivingDestinationChange = (
     e: React.ChangeEvent<HTMLInputElement>
@@ -63,35 +66,35 @@ function EditDrivingInform({ item, setEditingItemId }: IEditInformProps) {
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!driveDay) {
-      alert("날짜를 선택해주세요");
+      alert('날짜를 선택해주세요');
       return;
     }
-    if (!username) {
-      alert("운전자를 선택해주세요");
+    if (!drivers) {
+      alert('운전자를 선택해주세요');
       return;
     }
 
     if (!drivingDestination) {
-      alert("행선지를 입력해주세요");
+      alert('행선지를 입력해주세요');
       return;
     }
 
     if (!startKM || !endKM) {
-      alert("주행거리를 입력해주세요.");
+      alert('주행거리를 입력해주세요.');
       return;
     }
     if (etc.name && !etc.cost) {
-      alert("비용을 입력해주세요.");
+      alert('비용을 입력해주세요.');
       return;
     }
     if (etc.cost && !etc.name) {
-      alert("항목을 선택해주세요.");
+      alert('항목을 선택해주세요.');
       return;
     }
-
-    const res = await axiosReq.put("/api/driving-inform/editInform", {
+    const driverJoined = drivers.join(', ');
+    const res = await axiosReq.put('/api/driving-inform/editInform', {
       _id: item._id,
-      username,
+      username: driverJoined,
       driveDay,
       drivingDestination,
       startKM,
@@ -102,8 +105,8 @@ function EditDrivingInform({ item, setEditingItemId }: IEditInformProps) {
     });
     if (res.status === 200) {
       alert(res.data.message);
-      queryClient.invalidateQueries({ queryKey: ["drivingInform"] });
-      setEditingItemId("");
+      queryClient.invalidateQueries({ queryKey: ['drivingInform'] });
+      setEditingItemId('');
     }
   };
 
@@ -112,131 +115,151 @@ function EditDrivingInform({ item, setEditingItemId }: IEditInformProps) {
   }
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center z-10 bg-black bg-opacity-65 top-0 px-4">
+    <div className="fixed inset-0 top-0 z-10 flex items-center justify-center px-4 bg-black bg-opacity-65">
       <form
         onSubmit={onSubmit}
-        className="flex flex-col p-6 bg-white rounded-lg shadow-lg w-[40%]"
+        className="flex flex-col w-full max-w-2xl p-6 bg-white rounded-lg shadow-lg"
       >
-        <h2 className="text-center text-xl font-bold mb-4">정보 수정</h2>
+        <h2 className="mb-6 text-xl font-bold text-center">정보 수정</h2>
 
-        <div className="flex flex-col">
-          <div className="mb-2">
-            <div className="font-bold mb-1">날짜</div>
-            <input
-              value={new Date(driveDay).toISOString().split("T")[0]}
-              onChange={handleDriveDayChange}
-              className="w-full p-3 border rounded"
-              type="date"
-            />
-          </div>
+        <div className="space-y-4">
+          <div className="grid grid-cols-1 gap-4">
+            <div className="form-group">
+              <label className="block mb-2 font-bold text-left text-gray-700 ">
+                날짜
+              </label>
+              <input
+                value={new Date(driveDay).toISOString().split('T')[0]}
+                onChange={handleDriveDayChange}
+                className="w-full p-3 border rounded focus:ring-2 focus:ring-blue-400 focus:outline-none"
+                type="date"
+              />
+            </div>
 
-          <div className="mb-2">
-            <div className="font-bold mb-1">이름</div>
-            <select
-              id="username"
-              value={username}
-              onChange={handleNameChange}
-              className="w-full p-3 border rounded"
-            >
-              {names
-                ?.sort((a, b) => a.username.localeCompare(b.username))
-                .map((item, index) => (
-                  <option key={index} value={item.username}>
-                    {item.username}
-                  </option>
+            <div className="form-group">
+              <label className="block mb-2 font-bold text-left text-gray-700">
+                이름
+              </label>
+              <div className="flex gap-2">
+                {Array.from({ length: drivers.length }).map((_, index) => (
+                  <select
+                    key={index}
+                    value={drivers[index]}
+                    onChange={handleNameChange(index)}
+                    className="w-full p-3 border rounded focus:ring-2 focus:ring-blue-400 focus:outline-none"
+                  >
+                    {names
+                      ?.sort((a, b) => a.username.localeCompare(b.username))
+                      .map((item, index) => (
+                        <option key={index} value={item.username}>
+                          {item.username}
+                        </option>
+                      ))}
+                  </select>
                 ))}
-            </select>
+              </div>
+            </div>
+
+            <div className="form-group">
+              <label className="block mb-2 font-bold text-left text-gray-700">
+                방문지
+              </label>
+              <input
+                onChange={handleDrivingDestinationChange}
+                className="w-full p-3 border rounded focus:ring-2 focus:ring-blue-400 focus:outline-none"
+                value={drivingDestination}
+              />
+            </div>
+
+            <div className="form-group">
+              <label className="block mb-2 font-bold text-left text-gray-700">
+                출발(Km)
+              </label>
+              <input
+                type="number"
+                onChange={handleStartKMChange}
+                className="w-full p-3 border rounded focus:ring-2 focus:ring-blue-400 focus:outline-none"
+                value={startKM}
+              />
+            </div>
+
+            <div className="form-group">
+              <label className="block mb-2 font-bold text-left text-gray-700">
+                도착(Km)
+              </label>
+              <input
+                type="number"
+                onChange={handleEndKMChange}
+                className="w-full p-3 border rounded focus:ring-2 focus:ring-blue-400 focus:outline-none"
+                value={endKM}
+              />
+            </div>
+
+            <div className="form-group">
+              <label className="block mb-2 font-bold text-left text-gray-700">
+                주유비(Km)
+              </label>
+              <input
+                type="number"
+                onChange={handleFuelCostChange}
+                className="w-full p-3 border rounded focus:ring-2 focus:ring-blue-400 focus:outline-none"
+                value={fuelCost}
+              />
+            </div>
+
+            <div className="form-group">
+              <label className="block mb-2 font-bold text-left text-gray-700">
+                하이패스
+              </label>
+              <input
+                type="number"
+                onChange={handleTollChange}
+                className="w-full p-3 border rounded focus:ring-2 focus:ring-blue-400 focus:outline-none"
+                value={toll}
+              />
+            </div>
+
+            <div className="form-group">
+              <label className="block mb-2 font-bold text-left text-gray-700">
+                기타
+              </label>
+              <div className="flex gap-2">
+                <select
+                  value={etc.name}
+                  onChange={handleEtcNameChange}
+                  className="w-1/2 p-3 border rounded focus:ring-2 focus:ring-blue-400 focus:outline-none"
+                >
+                  <option value="">항목 선택</option>
+                  {etcNames
+                    ?.sort((a, b) => a.etcName.localeCompare(b.etcName))
+                    .map((item, index) => (
+                      <option key={index} value={item.etcName}>
+                        {item.etcName}
+                      </option>
+                    ))}
+                </select>
+                <input
+                  type="number"
+                  value={etc.cost}
+                  onChange={handleEtcCostChange}
+                  className="w-1/2 p-3 border rounded focus:ring-2 focus:ring-blue-400 focus:outline-none"
+                />
+              </div>
+            </div>
           </div>
         </div>
 
-        <div className="mb-2">
-          <div className="font-bold mb-1">방문지</div>
-          <input
-            onChange={handleDrivingDestinationChange}
-            className="w-full p-3 border rounded"
-            value={drivingDestination}
-          />
-        </div>
-
-        <div className="mb-2">
-          <div className="font-bold mb-1">출발(Km)</div>
-          <input
-            type="number"
-            onChange={handleStartKMChange}
-            className="w-full p-3 border rounded"
-            value={startKM}
-          />
-        </div>
-
-        <div className="mb-2">
-          <div className="font-bold mb-1">도착(Km)</div>
-          <input
-            type="number"
-            onChange={handleEndKMChange}
-            className="w-full p-3 border rounded"
-            value={endKM}
-          />
-        </div>
-
-        <div className="mb-2">
-          <div className="font-bold mb-1">주유비(Km)</div>
-          <input
-            type="number"
-            onChange={handleFuelCostChange}
-            className="w-full p-3 border rounded"
-            value={fuelCost}
-          />
-        </div>
-
-        <div className="mb-2">
-          <div className="font-bold mb-1">하이패스</div>
-          <input
-            type="number"
-            onChange={handleTollChange}
-            className="w-full p-3 border rounded"
-            value={toll}
-          />
-        </div>
-
-        <div className="mb-2">
-          <div className="font-bold mb-1">기타</div>
-          <div className="flex w-full">
-            <select
-              defaultValue={etc.name}
-              onChange={handleEtcNameChange}
-              className="hover:opacity-60 border rounded-md p-2 sm:w-full sm:ml-0 md:mr-2 w-[50%]"
-            >
-              <option disabled value="">
-                항목 선택
-              </option>
-              {etcNames
-                ?.sort((a, b) => a.etcName.localeCompare(b.etcName))
-                .map((item, index) => (
-                  <option key={index} value={item.etcName}>
-                    {item.etcName}
-                  </option>
-                ))}
-            </select>
-            <input
-              type="number"
-              value={etc.cost}
-              onChange={handleEtcCostChange}
-              className=" w-[50%] border rounded-md p-2  focus:outline-none focus:ring-2 focus:ring-green-400  transition duration-150 ease-in-out hover:opacity-60"
-            />
-          </div>
-        </div>
-
-        <div className="flex justify-between mt-2">
+        <div className="flex justify-end gap-4 mt-6">
           <button
             type="submit"
-            className="bg-blue-500 text-white py-2 px-4 rounded hover:opacity-80"
+            className="px-6 py-2 text-white bg-blue-500 rounded hover:bg-blue-600 focus:ring-2 focus:ring-blue-400 focus:outline-none"
           >
             변경
           </button>
           <button
             type="button"
-            onClick={() => setEditingItemId("")}
-            className="bg-gray-300 py-2 px-4 rounded hover:opacity-80"
+            onClick={() => setEditingItemId('')}
+            className="px-6 py-2 text-gray-700 bg-gray-200 rounded hover:bg-gray-300 focus:ring-2 focus:ring-gray-400 focus:outline-none"
           >
             취소
           </button>

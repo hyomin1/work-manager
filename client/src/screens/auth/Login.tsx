@@ -19,16 +19,19 @@ function Login() {
   } = useForm<ILogin>();
 
   const [cookies, setCookie, removeCookie] = useCookies(['rememberUserId']);
-
   const [isRemember, setIsRemember] = useState(false);
-
   const navigate = useNavigate();
 
   const onRememberId = (e: React.ChangeEvent<HTMLInputElement>) => {
     setIsRemember(e.target.checked);
   };
 
-  const onLogin = async (data: ILogin) => {
+  const clearInput = () => {
+    setValue('userId', '');
+    setValue('password', '');
+  };
+
+  const handleLogin = async (data: ILogin) => {
     const res = await axiosReq.post('/auth/login', data);
     if (res.status === 201) {
       if (isRemember) {
@@ -38,8 +41,7 @@ function Login() {
       }
 
       navigate('/home');
-      setValue('userId', '');
-      setValue('password', '');
+      clearInput();
     }
   };
   const onRegister = () => {
@@ -65,7 +67,7 @@ function Login() {
   return (
     <div className="flex items-center justify-center w-full h-screen bg-custom-gradient ">
       <form
-        onSubmit={handleSubmit(onLogin)}
+        onSubmit={handleSubmit(handleLogin)}
         className="flex flex-col sm:w-[90%] md:w-[30%] p-6 bg-white rounded-lg shadow-custom-shadow"
       >
         <span className="mb-4 text-2xl font-bold">로그인</span>
