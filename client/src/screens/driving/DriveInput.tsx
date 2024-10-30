@@ -3,6 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { axiosReq, calDate } from '../../api';
 import ArrowBack from '../../components/ArrowBack';
 import { useCustomQueries } from '../../hooks/useCustomQuery';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+
 import {
   Paper,
   TextField,
@@ -18,9 +21,11 @@ import {
   SelectChangeEvent,
   Grid,
 } from '@mui/material';
-
+import dayjs, { Dayjs } from 'dayjs';
 import { styled } from '@mui/material/styles';
 import Blank from '../../components/Blank';
+import { DatePicker } from '@mui/x-date-pickers';
+dayjs.locale('ko');
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(3),
@@ -41,6 +46,7 @@ const StyledFormSection = styled(Box)(({ theme }) => ({
 function DriveInput() {
   const navigate = useNavigate();
   const [driveDay, setDriveDay] = useState<Date>(); // 주행 날짜
+
   const [car, setCar] = useState(''); // 차량
   const [drivers, setDrivers] = useState(['', '']); // 운전자 배열
 
@@ -65,8 +71,10 @@ function DriveInput() {
   const { names, namesLoading, cars, carsLoading, etcNames, etcNamesLoading } =
     useCustomQueries();
 
-  const handleDriveDayChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setDriveDay(new Date(event.target.value));
+  const handleDriveDayChange = (newDate: Dayjs | null) => {
+    if (newDate) {
+      setDriveDay(newDate.toDate());
+    }
   };
 
   const handleCarChange = (event: SelectChangeEvent) => {
@@ -198,13 +206,20 @@ function DriveInput() {
             </Typography>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6} md={3}>
-                <TextField
-                  fullWidth
-                  type="date"
-                  label="날짜 *"
-                  InputLabelProps={{ shrink: true }}
-                  onChange={handleDriveDayChange}
-                />
+                <LocalizationProvider
+                  dateAdapter={AdapterDayjs}
+                  adapterLocale="ko"
+                >
+                  <DatePicker
+                    label="날짜 *"
+                    onChange={handleDriveDayChange}
+                    slotProps={{
+                      textField: {
+                        fullWidth: true,
+                      },
+                    }}
+                  />
+                </LocalizationProvider>
               </Grid>
               {[0, 1].map((index) => (
                 <Grid item xs={12} sm={6} md={3} key={index}>
