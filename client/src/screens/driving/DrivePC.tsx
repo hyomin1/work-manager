@@ -59,7 +59,7 @@ function DrivePC({
       <TableContainer
         component={Paper}
         className="block print:hidden"
-        sx={{ maxHeight: '77vh', overflowY: 'auto' }} // 높이 제한과 스크롤 추가
+        sx={{ maxHeight: '75vh', overflowY: 'auto' }} // 높이 제한과 스크롤 추가
       >
         <Table stickyHeader aria-label="a dense table" size="small">
           <TableHead>
@@ -158,7 +158,17 @@ function DrivePC({
           </TableBody>
           <TableFooter>
             <TableRow
-              style={{ position: 'sticky', bottom: 0, background: 'white' }}
+              sx={{
+                position: 'sticky',
+                bottom: 0,
+                background: '#f5f5f5',
+                '& .MuiTableCell-root': {
+                  fontWeight: 600,
+                  backgroundColor: '#f5f5f5',
+                  borderBottom: 'none',
+                  fontSize: '0.85rem',
+                },
+              }}
             >
               <TableCell className="border border-gray-300" colSpan={5} />
               <TableCell className="border border-gray-300">
