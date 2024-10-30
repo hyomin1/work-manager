@@ -1,24 +1,15 @@
 interface TabHeaderProps {
   headers: string[];
-  category: string;
 }
 
-function TabHeader({ headers, category }: TabHeaderProps) {
+function TabHeader({ headers }: TabHeaderProps) {
   return (
     <thead className="w-[100%]">
-      <tr
-        className={`bg-gray-200 ${
-          category === "driving" && "md:text-xs"
-        } sm:text-xs  whitespace-nowrap`}
-      >
+      <tr>
         {headers.map((header, index) => (
           <th
             key={index}
-            className={`${
-              category === "driving"
-                ? "p-1 border border-black"
-                : "md:p-4 sm:p-2 border-b border-gray-300"
-            }  sm:whitespace-nowrap`}
+            className={'p-1 border border-black text-xs whitespace-nowrap'}
           >
             {header}
           </th>

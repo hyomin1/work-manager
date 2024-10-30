@@ -99,7 +99,7 @@ function DriveMain() {
   const grandTotal = totalFuelCost + totalToll + totalEtcCost;
 
   return (
-    <div className="flex flex-col items-center justify-between w-full h-screen p-4 sm:p-2 bg-gray-50">
+    <div className="flex flex-col items-center justify-between w-full min-h-screen p-4 sm:p-2 bg-gray-50">
       <div className="sm:w-full w-[80%] flex flex-col items-center ">
         <div className="flex items-center justify-between w-full mt-4 mb-4 print:justify-center sm:mt-4">
           <ArrowBack type="home" />
@@ -125,7 +125,7 @@ function DriveMain() {
           )}
         </div>
 
-        <>
+        <div className="w-full">
           <div className="hidden w-full mb-4 font-bold print:flex">
             <span>{car}</span>
           </div>
@@ -147,7 +147,7 @@ function DriveMain() {
                     </option>
                   ))}
             </select>
-            <div className="p-4 items-center flex w-[50%] justify-end">
+            <div className="p-4 items-center flex flex-1 overflow-hidden w-[50%] justify-end">
               <div className="flex items-center justify-center sm:flex-col">
                 <button
                   onClick={() => navigate('/employee-status')}
@@ -206,7 +206,7 @@ function DriveMain() {
               refetch={refetch}
             />
           )}
-        </>
+        </div>
       </div>
       <Page
         totalPage={totalPages}

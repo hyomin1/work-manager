@@ -8,7 +8,7 @@ export const drivingHeaders = [
   '주유비',
   '하이패스',
   '기타',
-  '총계',
+  '',
 ];
 
 export const drivingInputHeadersTop = ['날짜', '차량', '운전자', '행선지'];

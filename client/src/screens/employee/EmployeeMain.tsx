@@ -81,7 +81,6 @@ function Main() {
         `/api/employee-inform/removeInform/${id}`
       );
       if (res.status === 200) {
-        alert(res.data.message);
         refetch();
       }
     }
@@ -179,7 +178,7 @@ function Main() {
                 {employeeHeaders.map((item, index) => (
                   <TableCell
                     sx={{
-                      fontWeight: '800',
+                      fontWeight: '600',
                       whiteSpace: 'nowrap',
                       fontSize: 'large',
                     }}
