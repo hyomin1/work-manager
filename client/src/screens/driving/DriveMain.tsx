@@ -180,7 +180,7 @@ function DriveMain() {
                   },
                 }}
               >
-                {notification?.notification || '공지사항 등록'}
+                {notification?.notification || '공지사항을 등록해주세요'}
               </Alert>
             )}
 
