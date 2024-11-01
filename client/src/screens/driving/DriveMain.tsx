@@ -6,8 +6,9 @@ import {
   checkAdminSession,
   getCars,
   getDrivingInform,
+  getNotification,
 } from '../../api';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { ICars, IDrivingInform } from '../../interfaces/interface';
 import Title from '../../components/Title';
 import { useNavigate } from 'react-router-dom';
@@ -20,6 +21,8 @@ import { Pencil, Settings, Users } from 'lucide-react';
 import DriveMobile from './DriveMobile';
 import DrivePC from './DrivePC';
 import { ROUTES } from '../../constants/constant';
+import { Alert } from '@mui/material';
+import AddDriveNotification from './AddDriveNotification';
 
 function DriveMain() {
   const navigate = useNavigate();
@@ -30,6 +33,9 @@ function DriveMain() {
 
   const [carId, setCarId] = useState('');
   const [car, setCar] = useState('');
+  // carId, car, notifcation 합쳐서 obejct로
+
+  const [isAdding, setIsAdding] = useState(false);
 
   const { data: drivingInform, refetch } = useQuery<IDrivingInform[]>({
     queryKey: ['drivingInform'],
@@ -38,6 +44,14 @@ function DriveMain() {
     refetchInterval: 300_000,
     enabled: carId.length > 0,
   });
+
+  const { data: notification, refetch: refetchNotification } = useQuery<ICars>({
+    queryKey: ['notification', carId],
+    queryFn: () => getNotification(carId),
+    enabled: carId.length > 0,
+  });
+
+  const queryClient = useQueryClient();
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = isMobile ? 10 : 25;
@@ -148,6 +162,25 @@ function DriveMain() {
                     </option>
                   ))}
             </select>
+
+            <Alert
+              onClick={() => setIsAdding(true)}
+              severity="info"
+              variant="filled"
+              className="md:w-[50%] ml-8 p-2 hover:opacity-60 flex items-center cursor-pointer"
+              sx={{ fontSize: 'large' }}
+            >
+              {notification?.notification}
+            </Alert>
+            {isAdding && (
+              <AddDriveNotification
+                setIsAdding={setIsAdding}
+                id={carId}
+                queryClient={queryClient}
+                notice={typeof notification === 'string' ? notification : ''}
+              />
+            )}
+
             <div className="p-4 items-center flex flex-1 overflow-hidden w-[50%] justify-end">
               <div className="flex items-center justify-center sm:flex-col">
                 <button

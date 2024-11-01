@@ -14,6 +14,7 @@ export interface IBusinesses {
 export interface ICars {
   _id: string;
   car: string;
+  notification: string;
 }
 export interface IWorks {
   _id: string;

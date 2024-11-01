@@ -106,6 +106,14 @@ export const getSchedule = async (year: number, month: number) => {
   return res.data.schedules || [];
 };
 
+// 차량 공지 사항
+export const getNotification = async (carId: string) => {
+  const response = await axiosReq.get(
+    `/api/driving-inform/getNotification?id=${carId}`
+  );
+  return response.data || '';
+};
+
 export const checkAdminSession = async () => {
   const res = await axiosReq.get('/auth/checkAdminSession');
   return res.status;
