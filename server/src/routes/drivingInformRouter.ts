@@ -6,6 +6,7 @@ import {
   getInform,
   getNotification,
   removeInform,
+  removeNotification,
 } from '../controllers/informDrivingController';
 
 const router = express.Router();
@@ -17,5 +18,6 @@ router.put('/editInform', editInform);
 
 router.get('/getNotification', getNotification);
 router.post('/addNotification', addNotification);
+router.delete('/removeNotification/:id', removeNotification);
 
 export default router;

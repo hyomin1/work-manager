@@ -1,6 +1,18 @@
 import React, { useState } from 'react';
 import { axiosReq } from '../../api';
 import { QueryClient } from '@tanstack/react-query';
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  TextField,
+  Button,
+  IconButton,
+  Typography,
+  Box,
+} from '@mui/material';
+import { X as CloseIcon, Trash2 as DeleteIcon } from 'lucide-react';
 
 interface IAddData {
   setIsAdding: React.Dispatch<React.SetStateAction<boolean>>;
@@ -16,6 +28,7 @@ function AddDriveNotification({
   notice,
 }: IAddData) {
   const [notification, setNotification] = useState(notice);
+
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const response = await axiosReq.post(
@@ -36,40 +49,110 @@ function AddDriveNotification({
     setIsAdding(false);
   };
 
+  const handleDelete = async () => {
+    if (window.confirm('공지사항을 삭제하시겠습니까?')) {
+      try {
+        const response = await axiosReq.delete(
+          `/api/driving-inform/removeNotification/${id}`
+        );
+        if (response.status === 200) {
+          setIsAdding(false);
+          queryClient.invalidateQueries({ queryKey: ['notification', id] });
+        }
+      } catch (error) {
+        alert('삭제 중 오류가 발생했습니다.');
+      }
+    }
+  };
+
   return (
-    <div className="fixed inset-0 top-0 z-10 flex items-center justify-center px-4 bg-black bg-opacity-65">
-      <form
-        className="flex flex-col p-6 bg-white rounded-lg shadow-lg w-[40%] h-80"
-        onSubmit={onSubmit}
-      >
-        <h2 className="mb-4 text-xl font-bold text-center">공지 등록</h2>
-        <div className="flex flex-col">
-          <input
+    <Dialog
+      open={true}
+      onClose={handleCancel}
+      maxWidth="sm"
+      fullWidth
+      PaperProps={{
+        sx: {
+          borderRadius: 2,
+          p: 1,
+        },
+      }}
+    >
+      <DialogTitle>
+        <Box display="flex" justifyContent="space-between" alignItems="center">
+          <Typography variant="h6" component="div" fontWeight="bold">
+            공지사항 관리
+          </Typography>
+          <IconButton onClick={handleCancel} size="small">
+            <CloseIcon size={20} />
+          </IconButton>
+        </Box>
+      </DialogTitle>
+
+      <form onSubmit={onSubmit}>
+        <DialogContent sx={{ pt: 1 }}>
+          <TextField
             autoFocus
-            placeholder="입력"
+            fullWidth
+            multiline
+            rows={4}
+            variant="outlined"
+            placeholder="공지사항을 입력하세요"
             value={notification}
             onChange={(e) => setNotification(e.target.value)}
-            className="p-2 mb-4 border rounded"
+            sx={{
+              '& .MuiOutlinedInput-root': {
+                '&:hover fieldset': {
+                  borderColor: '#60A5FA',
+                },
+                '&.Mui-focused fieldset': {
+                  borderColor: '#3B82F6',
+                },
+              },
+            }}
           />
-        </div>
+        </DialogContent>
 
-        <div className="flex justify-between">
-          <button
+        <DialogActions sx={{ px: 3, pb: 2 }}>
+          <Button
+            onClick={handleDelete}
+            variant="outlined"
+            color="error"
+            startIcon={<DeleteIcon size={18} />}
+            sx={{ mr: 'auto' }}
+          >
+            삭제
+          </Button>
+          <Button
             type="submit"
-            className="px-4 py-2 text-white bg-blue-500 rounded hover:opacity-80"
+            variant="contained"
+            sx={{
+              bgcolor: '#3B82F6',
+              '&:hover': {
+                bgcolor: '#2563EB',
+              },
+            }}
           >
             등록
-          </button>
-          <button
-            type="button"
+          </Button>
+          <Button
             onClick={handleCancel}
-            className="px-4 py-2 bg-gray-300 rounded hover:opacity-80"
+            variant="outlined"
+            sx={{
+              mr: 1,
+              borderColor: 'grey.400',
+              color: 'grey.700',
+              '&:hover': {
+                borderColor: 'grey.500',
+                backgroundColor: 'grey.50',
+              },
+            }}
           >
             취소
-          </button>
-        </div>
+          </Button>
+        </DialogActions>
       </form>
-    </div>
+    </Dialog>
   );
 }
 

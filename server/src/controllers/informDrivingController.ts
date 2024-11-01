@@ -264,3 +264,25 @@ export const getNotification = async (req: Request, res: Response) => {
     return res.status(500).json({ error: '서버 에러' });
   }
 };
+
+export const removeNotification = async (req: Request, res: Response) => {
+  if (!req.session.isUser) {
+    return res
+      .status(403)
+      .json({ type: 'not User', error: '다시 로그인 해주세요' });
+  }
+  const { id } = req.params;
+
+  try {
+    const car = await Car.findById(id);
+    if (!car) {
+      return res.status(404).json({ error: '차량이 존재하지 않습니다.' });
+    }
+    car.notification = '';
+    await car?.save();
+    return res.status(200).json({ message: '공지사항 삭제 완료' });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: '서버 에러' });
+  }
+};

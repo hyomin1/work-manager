@@ -167,17 +167,17 @@ function DriveMain() {
               onClick={() => setIsAdding(true)}
               severity="info"
               variant="filled"
-              className="md:w-[50%] ml-8 p-2 hover:opacity-60 flex items-center cursor-pointer"
-              sx={{ fontSize: 'large' }}
+              className="md:w-[50%] ml-8 p-2 hover:opacity-60 flex items-center cursor-pointer h-10"
+              sx={{ fontSize: 'medium', height: '14', bgColor: '#93C5FD' }}
             >
-              {notification?.notification}
+              {notification?.notification || '공지사항 등록'}
             </Alert>
             {isAdding && (
               <AddDriveNotification
                 setIsAdding={setIsAdding}
                 id={carId}
                 queryClient={queryClient}
-                notice={typeof notification === 'string' ? notification : ''}
+                notice={notification?.notification || ''}
               />
             )}
 
