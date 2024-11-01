@@ -162,16 +162,28 @@ function DriveMain() {
                     </option>
                   ))}
             </select>
+            {carId.length > 0 && (
+              <Alert
+                onClick={() => setIsAdding(true)}
+                severity="info"
+                variant="filled"
+                className="md:w-[50%] ml-8 p-2 hover:opacity-60 flex items-center cursor-pointer h-10"
+                sx={{
+                  fontSize: 'medium',
+                  height: '14',
+                  bgColor: '#93C5FD',
+                  borderRadius: '8px',
+                  border: '1px solid #BFDBFE', // 테두리 추가
 
-            <Alert
-              onClick={() => setIsAdding(true)}
-              severity="info"
-              variant="filled"
-              className="md:w-[50%] ml-8 p-2 hover:opacity-60 flex items-center cursor-pointer h-10"
-              sx={{ fontSize: 'medium', height: '14', bgColor: '#93C5FD' }}
-            >
-              {notification?.notification || '공지사항 등록'}
-            </Alert>
+                  '&:hover': {
+                    transform: 'translateY(-1px)',
+                  },
+                }}
+              >
+                {notification?.notification || '공지사항 등록'}
+              </Alert>
+            )}
+
             {isAdding && (
               <AddDriveNotification
                 setIsAdding={setIsAdding}
