@@ -162,7 +162,7 @@ function DriveMain() {
                     </option>
                   ))}
             </select>
-            {carId.length > 0 && (
+            {carId.length > 0 && !isMobile && (
               <Alert
                 onClick={() => setIsAdding(true)}
                 severity="info"
