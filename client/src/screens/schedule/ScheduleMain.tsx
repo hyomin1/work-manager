@@ -43,7 +43,7 @@ function ScheduleMain() {
     setTooltip({
       event: clickInfo.event,
       position: {
-        x: clickInfo.jsEvent.pageX,
+        x: clickInfo.jsEvent.pageX - 200,
         y: clickInfo.jsEvent.pageY,
       },
     });
@@ -82,7 +82,7 @@ function ScheduleMain() {
       endDate.setDate(endDate.getDate() + 1);
 
       return {
-        title: `${schedule.destination}`,
+        title: `${schedule.destination || schedule.work}`,
         start: new Date(schedule.startDate).toISOString().split('T')[0],
         end: endDate.toISOString().split('T')[0],
         extendedProps: {
@@ -95,6 +95,7 @@ function ScheduleMain() {
           car: schedule.car,
           work: schedule.work,
           username: schedule.username,
+          remarks: schedule.remarks,
         },
         backgroundColor: '#5B8FF9',
       };
@@ -103,7 +104,7 @@ function ScheduleMain() {
 
   return (
     <div
-      className="flex flex-col w-full h-screen p-5 bg-gray-50"
+      className="flex flex-col w-full h-screen p-5 bg-gradient-to-br from-blue-50 to-gray-100"
       onClick={handleBackgroundClick}
     >
       <FullCalendar
@@ -132,7 +133,7 @@ function ScheduleMain() {
       />
       {tooltip && (
         <div
-          className="absolute z-50 p-4 bg-[#f0f4f9] border border-gray-200 rounded-3xl shadow-lg tooltip"
+          className="absolute z-[9999] p-4 bg-[#f0f4f9] border border-gray-200 rounded-3xl shadow-lg tooltip"
           style={{
             top: `${tooltip.position.y + 10}px`,
             left: `${tooltip.position.x + 10}px`,
@@ -191,6 +192,7 @@ function ScheduleMain() {
               차량: {tooltip.event.extendedProps.car}
             </p>
           )}
+          <p className="mb-1 text-sm">{tooltip.event.extendedProps.remarks}</p>
         </div>
       )}
     </div>

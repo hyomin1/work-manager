@@ -25,17 +25,7 @@ export interface IEtcNames {
   etcName: string;
 }
 
-export interface INameStat {
-  startDate: Date;
-  endDate: Date;
-  username: string;
-  destination: string;
-  business: string;
-  work: string;
-  car: string;
-  specificDate: Date;
-}
-
+// 통계 방문지 검색 인터페이스스
 export interface IDestStat {
   startDate: Date;
   endDate: Date;
@@ -44,6 +34,12 @@ export interface IDestStat {
   business: string;
   work: string;
   specificDate: Date;
+  remarks: string;
+}
+
+// 통계 이름 검색 인터페이스
+export interface INameStat extends IDestStat {
+  car: string;
 }
 
 export interface IInform extends INameStat {

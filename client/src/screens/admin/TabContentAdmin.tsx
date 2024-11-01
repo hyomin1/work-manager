@@ -80,7 +80,7 @@ const TabContentAdmin = ({
           item={item}
         />
       )}
-      <div className="flex items-center justify-between w-full border-b border-gray-200">
+      <div className="flex items-center justify-between w-full bg-white border-b border-gray-200">
         <div className="md:w-[35%] p-4 font-bold bg-white sm:text-sm md:text-lg whitespace-nowrap">
           {activeTab === 'business' ? (
             <Autocomplete
@@ -103,13 +103,15 @@ const TabContentAdmin = ({
           )}
         </div>
 
-        <div className="mr-1">
+        <div className="mr-1 ">
           <button
             onClick={handleAddData}
             className="flex items-center gap-2 px-6 py-3 text-blue-600 transition-all rounded-lg bg-blue-50 hover:bg-blue-100"
           >
             <ListPlus className="w-6 h-6" />
-            <span className="text-lg font-semibold">등록</span>
+            <div className="bg-white">
+              <span className="text-lg font-semibold">등록</span>
+            </div>
           </button>
         </div>
       </div>

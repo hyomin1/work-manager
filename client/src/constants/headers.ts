@@ -21,7 +21,15 @@ export const drivingInputHeadersBottom = [
   '하이패스',
   '기타비용',
 ];
-export const employeeHeaders = ['이름', '방문지', '사업명', '업무', '차량', ''];
+export const employeeHeaders = [
+  '이름',
+  '방문지',
+  '사업명',
+  '업무',
+  '차량',
+  '비고',
+  '',
+];
 
 export const employeeInputHeaders = [
   '이름',
@@ -39,6 +47,7 @@ export const statisticsNameHeader = [
   '사업명',
   '업무',
   '차량',
+  '비고',
 ];
 
 export const statisticsDestinationHeader = [
@@ -47,4 +56,5 @@ export const statisticsDestinationHeader = [
   '방문지',
   '사업명',
   '업무',
+  '비고',
 ];

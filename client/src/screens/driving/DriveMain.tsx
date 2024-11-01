@@ -19,6 +19,7 @@ import Logout from '../auth/Logout';
 import { Pencil, Settings, Users } from 'lucide-react';
 import DriveMobile from './DriveMobile';
 import DrivePC from './DrivePC';
+import { ROUTES } from '../../constants/constant';
 
 function DriveMain() {
   const navigate = useNavigate();
@@ -76,13 +77,13 @@ function DriveMain() {
   };
 
   const onClickInputInform = () => {
-    navigate('/driving-input');
+    navigate(ROUTES.DRIVING_INPUT);
   };
 
   const onClickAdmin = async () => {
     const status = await checkAdminSession();
     if (status === 200) {
-      navigate('/admin');
+      navigate(ROUTES.ADMIN);
     }
   };
   const totalFuelCost =
@@ -99,7 +100,7 @@ function DriveMain() {
   const grandTotal = totalFuelCost + totalToll + totalEtcCost;
 
   return (
-    <div className="flex flex-col items-center justify-between w-full min-h-screen p-4 sm:p-2 bg-gray-50">
+    <div className="flex flex-col items-center justify-between w-full min-h-screen p-4 sm:p-2 bg-gradient-to-br from-zinc-50 to-slate-100">
       <div className="sm:w-full w-[80%] flex flex-col items-center ">
         <div className="flex items-center justify-between w-full mt-4 mb-4 print:justify-center sm:mt-4">
           <ArrowBack type="home" />
@@ -150,7 +151,7 @@ function DriveMain() {
             <div className="p-4 items-center flex flex-1 overflow-hidden w-[50%] justify-end">
               <div className="flex items-center justify-center sm:flex-col">
                 <button
-                  onClick={() => navigate('/employee-status')}
+                  onClick={() => navigate(ROUTES.EMPLOYEE_STATUS)}
                   className="whitespace-nowrap bg-[#0EA5E9] rounded-lg
                    text-white md:py-2 sm:py-1 sm:text-sm px-4 hover:opacity-60
                     md:mr-4 sm:mb-2 button-effect flex justify-center items-center"

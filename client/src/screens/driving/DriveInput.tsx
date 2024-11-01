@@ -25,6 +25,7 @@ import dayjs, { Dayjs } from 'dayjs';
 import { styled } from '@mui/material/styles';
 import Blank from '../../components/Blank';
 import { DatePicker } from '@mui/x-date-pickers';
+import { ROUTES } from '../../constants/constant';
 dayjs.locale('ko');
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
@@ -180,7 +181,7 @@ function DriveInput() {
     });
     if (res.status === 200) {
       alert(res.data.message);
-      navigate('/driving-status');
+      navigate(ROUTES.DRIVING_STATUS);
     }
   };
   if (namesLoading || carsLoading || etcNamesLoading) {
@@ -188,8 +189,12 @@ function DriveInput() {
   }
 
   return (
-    <Container maxWidth="xl" sx={{ py: 4 }}>
-      <div className="flex items-center justify-between w-full mt-2 mb-8 sm:mt-4">
+    <Container
+      sx={{ py: 4 }}
+      maxWidth={false}
+      className="flex flex-col items-center w-full h-screen bg-gradient-to-br from-zinc-50 to-slate-100"
+    >
+      <div className="flex items-center justify-between sm:w-full mt-2 mb-8 sm:mt-4 md:w-[80%]">
         <ArrowBack type="not home" />
         <span className="font-bold sm:text-sm md:text-3xl md:mx-8 sm:mx-1 whitespace-nowrap">
           {calDate(new Date())}
@@ -197,7 +202,7 @@ function DriveInput() {
         <Blank />
       </div>
 
-      <StyledPaper elevation={3}>
+      <StyledPaper elevation={3} className="sm:w-full md:w-[80%]">
         <Grid container spacing={3}>
           {/* 기본 정보 섹션 */}
           <Grid item xs={12}>

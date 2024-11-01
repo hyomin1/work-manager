@@ -11,6 +11,7 @@ interface IEmployeeInform {
   startDate?: Date;
   endDate?: Date;
   createdAt?: Date;
+  remarks?: string;
 }
 const employeeInformSchema = new Schema<IEmployeeInform>(
   {
@@ -27,6 +28,7 @@ const employeeInformSchema = new Schema<IEmployeeInform>(
     startDate: { type: Date },
     endDate: { type: Date },
     car: { type: String, trim: true },
+    remarks: { type: String, trim: true },
   },
   {
     timestamps: true, // 이 옵션을 추가하면 createdAt과 updatedAt이 자동으로 추가됨

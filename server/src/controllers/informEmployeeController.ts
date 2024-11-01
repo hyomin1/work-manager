@@ -453,6 +453,7 @@ export const editInform = async (req: Request, res: Response) => {
     business,
     work,
     car,
+    remarks,
   } = req.body;
   try {
     const editInform = await Inform.findByIdAndUpdate(
@@ -466,6 +467,7 @@ export const editInform = async (req: Request, res: Response) => {
           new Date(startDate).setHours(0, 0, 0, 0) + 9 * 60 * 60 * 1000,
         endDate: new Date(endDate).setHours(0, 0, 0, 0) + 9 * 60 * 60 * 1000,
         car: car === '선택 안함' ? '' : car,
+        remarks,
       },
       {
         new: true,
@@ -516,6 +518,7 @@ export const getInform = async (req: Request, res: Response) => {
         createdAt: 1,
         startDate: 1,
         endDate: 1,
+        remarks: 1,
       }
     );
     const user = await User.findById(req.session.userId);
@@ -604,6 +607,7 @@ export const getUserStatistics = async (req: Request, res: Response) => {
       business: 1,
       work: 1,
       car: 1,
+      remarks: 1,
     }
   );
   const userStatistics = userStatisticsArr.flatMap((record) => {
@@ -627,6 +631,7 @@ export const getUserStatistics = async (req: Request, res: Response) => {
       work: record.work,
       car: record.car,
       specificDate: date,
+      remarks: record.remarks,
     }));
   });
 
@@ -674,6 +679,7 @@ export const getDestinationStatistics = async (req: Request, res: Response) => {
         business: 1,
         work: 1,
         car: 1,
+        remarks: 1,
       }
     );
 
@@ -694,8 +700,8 @@ export const getDestinationStatistics = async (req: Request, res: Response) => {
         destination: record.destination,
         business: record.business,
         work: record.work,
-        //car: record.car,
         specificDate: date,
+        remarks: record.remarks,
       }));
     });
 

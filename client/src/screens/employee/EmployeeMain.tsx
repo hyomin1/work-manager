@@ -24,6 +24,7 @@ import Logout from '../auth/Logout';
 import EditInform from './EditEmployeeInform';
 import { IInform } from '../../interfaces/interface';
 import {
+  Button,
   Paper,
   Table,
   TableBody,
@@ -31,7 +32,10 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Tooltip,
 } from '@mui/material';
+import { REFETCH_INTERVAL, ROUTES } from '../../constants/constant';
+import { fontSize } from '@mui/system';
 
 function Main() {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -39,7 +43,7 @@ function Main() {
   const { data: inform, refetch } = useQuery<IInform[]>({
     queryKey: ['employeeInform'],
     queryFn: () => getEmployeeInform(currentDate),
-    refetchInterval: 300_000, // 5분마다 데이터 갱신
+    refetchInterval: REFETCH_INTERVAL,
   });
 
   const [showInput, setShowInput] = useState(false);
@@ -48,20 +52,20 @@ function Main() {
   const navigate = useNavigate();
 
   const onClickInputInform = () => {
-    navigate('/employee-input');
+    navigate(ROUTES.EMPLOYEE_INPUT);
   };
 
   const onClickAdmin = async () => {
     const status = await checkAdminSession();
     if (status === 200) {
-      navigate('/admin');
+      navigate(ROUTES.ADMIN);
     }
   };
 
   const onClickStatistics = async () => {
     const status = await checkAdminSession();
     if (status === 200) {
-      navigate('/statistics');
+      navigate(ROUTES.STATISTICS);
     }
   };
 
@@ -91,7 +95,7 @@ function Main() {
   }, [currentDate, refetch]);
 
   return (
-    <div className="flex flex-col items-center w-full h-screen p-10 sm:p-2 bg-gray-50 ">
+    <div className="flex flex-col items-center w-full h-screen p-10 sm:p-2 bg-gradient-to-br from-zinc-50 to-slate-100">
       <div className="sm:w-full w-[90%] flex flex-col items-center h-full">
         <div className="flex items-center justify-between w-full mt-2 mb-8 sm:mt-4">
           <ArrowBack type="home" />
@@ -121,7 +125,7 @@ function Main() {
           <div className="flex items-center justify-between w-full md:p-4 sm:p-2">
             <div className="flex sm:flex-col">
               <button
-                onClick={() => navigate('/driving-status')}
+                onClick={() => navigate(ROUTES.DRIVING_STATUS)}
                 className="whitespace-nowrap bg-[#0EA5E9] rounded-lg
                  text-white md:py-2 sm:py-1 sm:text-sm px-4 hover:opacity-60 md:mr-4
                   sm:mr-2 button-effect flex justify-center items-center sm:mb-1"
@@ -138,7 +142,7 @@ function Main() {
               </button>
               <button
                 className="whitespace-nowrap bg-[#0EA5E9] rounded-lg text-white md:py-2 sm:py-1 sm:text-sm px-4 button-effect mr-4 sm:mr-2 flex justify-center items-center"
-                onClick={() => navigate('/schedule')}
+                onClick={() => navigate(ROUTES.SCHEDULE)}
               >
                 <Calendar className="sm:w-4 sm:h-4" />
                 <span className="ml-1 sm:text-xs">일정</span>
@@ -171,7 +175,14 @@ function Main() {
           </div>
         </div>
 
-        <TableContainer component={Paper}>
+        <TableContainer
+          component={Paper}
+          sx={{
+            boxShadow:
+              '0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)',
+          }}
+          className="shadow-custom-shadow"
+        >
           <Table stickyHeader>
             <TableHead>
               <TableRow className="bg-gray-200">
@@ -200,7 +211,7 @@ function Main() {
                 .map((item, index) => (
                   <TableRow
                     key={index}
-                    className={`sm:text-sm w-[100%] ${
+                    className={`sm:text-sm w-[100%]  ${
                       index % 2 === 0 ? 'bg-white' : 'bg-gray-200'
                     }`}
                   >
@@ -209,17 +220,47 @@ function Main() {
                     >
                       {item.username}
                     </TableCell>
-                    <TableCell sx={{ fontSize: 'medium' }}>
+                    <TableCell sx={{ fontSize: 'large' }}>
                       {item.destination}
                     </TableCell>
-                    <TableCell sx={{ fontSize: 'medium' }}>
+                    <TableCell sx={{ fontSize: 'large' }}>
                       {item.business}
                     </TableCell>
-                    <TableCell sx={{ fontSize: 'medium' }}>
+                    <TableCell sx={{ fontSize: 'large' }}>
                       {item.work}
                     </TableCell>
-                    <TableCell sx={{ fontSize: 'medium' }}>
-                      {item.car}
+                    <TableCell sx={{ fontSize: 'large' }}>{item.car}</TableCell>
+                    <TableCell
+                      sx={{
+                        fontSize: 'large',
+                      }}
+                    >
+                      {item.remarks && (
+                        <Tooltip
+                          title={item.remarks}
+                          arrow
+                          placement="left"
+                          componentsProps={{
+                            tooltip: {
+                              sx: {
+                                maxWidth: '500px',
+                                fontSize: '16px',
+                                padding: '8px 16px',
+                              },
+                            },
+                          }}
+                        >
+                          <Button
+                            sx={{
+                              minWidth: 'auto',
+                              justifyContent: 'flex-start',
+                              padding: '0px',
+                            }}
+                          >
+                            확인
+                          </Button>
+                        </Tooltip>
+                      )}
                     </TableCell>
 
                     <TableCell>

@@ -1,112 +1,132 @@
-import React from "react";
-import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import React from 'react';
+import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
+import { axiosReq } from '../../api';
+import { VALIDATION_MESSAGES } from '../../constants/message';
+import { ROUTES } from '../../constants/constant';
 
-import { axiosReq } from "../../api";
-
-interface IRegister {
+interface RegisterFormData {
   userId: string;
   password: string;
   passwordConfirm: string;
 }
 
-function Login() {
+function Register() {
   const navigate = useNavigate();
-  const onCancel = () => {
-    navigate("/");
-  };
+
   const {
     register,
     handleSubmit,
-    setValue,
+    reset,
     watch,
-    formState: { errors },
-  } = useForm<IRegister>();
+    formState: { errors, isSubmitting },
+  } = useForm<RegisterFormData>();
 
-  const password = watch("password");
+  const password = watch('password');
 
-  const onRegister = async (data: IRegister) => {
-    const res = await axiosReq.post("/auth/register", data);
+  const handleRegister = async (data: RegisterFormData) => {
+    const res = await axiosReq.post('/auth/register', data);
     if (res.status !== 201) {
       return;
     }
     alert(res.data.message);
-    setValue("userId", "");
-    setValue("password", "");
-    setValue("passwordConfirm", "");
-    navigate("/");
+    reset();
+    navigate(ROUTES.LOGIN);
   };
 
   return (
-    <div className="w-full h-screen flex items-center justify-center bg-custom-gradient">
+    <div className="flex items-center justify-center w-full h-screen bg-gradient-to-br from-indigo-50 to-slate-100">
       <form
-        onSubmit={handleSubmit(onRegister)}
-        className="flex flex-col sm:w-[80%] w-[30%]  p-6 bg-white rounded-lg shadow-custom-shadow"
+        onSubmit={handleSubmit(handleRegister)}
+        className="flex flex-col w-full max-w-md p-6 mx-4 bg-white rounded-lg shadow-custom-shadow"
+        noValidate
       >
-        <span className="font-bold text-2xl mb-4">회원가입</span>
-        <label className="mb-2 text-sm" htmlFor="userId">
-          아이디
-        </label>
-        <input
-          className="p-3 border rounded mb-4"
-          placeholder="아이디"
-          id="userId"
-          {...register("userId", { required: true })}
-          autoFocus
-        />
-        {errors.userId && (
-          <span className="text-center text-[red] font-bold text-md">
-            아이디를 입력해주세요
-          </span>
-        )}
-        <label className="mb-2 text-sm" htmlFor="password">
-          패스워드
-        </label>
-        <input
-          id="password"
-          type="password"
-          placeholder="패스워드"
-          className="p-3 border rounded mb-4"
-          {...register("password", { required: true })}
-        />
-        {errors.password && (
-          <span className="text-center text-[red] font-bold text-md">
-            패스워드를 입력해주세요
-          </span>
-        )}
-        <label className="mb-2 text-sm" htmlFor="passwordConfirm">
-          패스워드 확인
-        </label>
-        <input
-          id="passwordConfirm"
-          type="password"
-          placeholder="패스워드 확인"
-          className=" p-3 border rounded mb-4"
-          {...register("passwordConfirm", {
-            required: true,
-            validate: (value) => value === password,
-          })}
-        />
-        {errors.passwordConfirm && (
-          <span className="text-center text-[red] font-bold text-md">
-            {errors.passwordConfirm.type === "required" &&
-              "패스워드를 한번 더 입력해주세요"}
-            {errors.passwordConfirm.type === "validate" &&
-              "패스워드가 일치 하지 않습니다."}
-          </span>
-        )}
+        <h1 className="mb-6 text-2xl font-bold">회원가입</h1>
 
-        <div className="flex justify-between mt-8 mb-4">
+        <div className="space-y-4">
+          <div>
+            <label className="block mb-2 text-sm font-medium" htmlFor="userId">
+              아이디
+            </label>
+            <input
+              className="w-full p-3 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="아이디"
+              id="userId"
+              {...register('userId', {
+                required: VALIDATION_MESSAGES.required.userId,
+              })}
+              autoFocus
+            />
+            {errors.userId && (
+              <p className="mt-1 text-sm font-bold text-red-500" role="alert">
+                {errors.userId.message}
+              </p>
+            )}
+          </div>
+
+          <div>
+            <label
+              className="block mb-2 text-sm font-medium"
+              htmlFor="password"
+            >
+              패스워드
+            </label>
+            <input
+              id="password"
+              type="password"
+              placeholder="패스워드"
+              className="w-full p-3 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              {...register('password', {
+                required: VALIDATION_MESSAGES.required.password,
+              })}
+            />
+            {errors.password && (
+              <span
+                className="mb-1 text-sm font-bold text-red-500"
+                role="alert"
+              >
+                {errors.password.message}
+              </span>
+            )}
+          </div>
+          <div>
+            <label
+              className="block mb-2 text-sm font-medium"
+              htmlFor="passwordConfirm"
+            >
+              패스워드 확인
+            </label>
+            <input
+              id="passwordConfirm"
+              type="password"
+              placeholder="패스워드 확인"
+              className="w-full p-3 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              {...register('passwordConfirm', {
+                required: VALIDATION_MESSAGES.required.passwordConfirm,
+                validate: (value) =>
+                  value === password ||
+                  VALIDATION_MESSAGES.validate.passwordMismatch,
+              })}
+            />
+            {errors.passwordConfirm && (
+              <p className="mt-1 text-sm font-bold text-red-500" role="alert">
+                {errors.passwordConfirm.message}
+              </p>
+            )}
+          </div>
+        </div>
+
+        <div className="flex gap-4 mt-8">
           <button
             type="submit"
-            className="bg-blue-500 text-white px-8 py-3 rounded hover:opacity-80"
+            className="flex-1 px-8 py-3 text-white transition-colors bg-blue-500 rounded hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            회원가입
+            {isSubmitting ? '처리중...' : '회원가입'}
           </button>
           <button
-            onClick={onCancel}
+            onClick={() => navigate(ROUTES.LOGIN)}
             type="button"
-            className="bg-gray-300 px-8 py-3 rounded hover:opacity-80"
+            className="flex-1 px-8 py-3 transition-colors bg-gray-300 rounded hover:bg-gray-400 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             취소
           </button>
@@ -116,4 +136,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default Register;

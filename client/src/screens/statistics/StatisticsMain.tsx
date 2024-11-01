@@ -1,4 +1,4 @@
-import { Paper } from '@mui/material';
+import { Button, Paper, Tooltip } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -65,7 +65,7 @@ function StatisticsMain() {
   }, []);
 
   return (
-    <div className="flex flex-col items-center w-full h-screen p-10 sm:p-2 bg-gray-50 ">
+    <div className="flex flex-col items-center w-full h-screen p-10 sm:p-2 bg-gradient-to-br from-gray-50 to-zinc-100">
       <div className="flex flex-col items-center w-[85%] sm:w-full">
         <div className="flex items-center justify-between w-full mt-2 mb-8 sm:mt-4">
           <ArrowBack type="not home" />
@@ -145,12 +145,52 @@ function StatisticsMain() {
                 })
                 ?.map((item, index) => (
                   <TableRow key={index}>
-                    <TableCell>{calStatDay(item.specificDate)}</TableCell>
-                    <TableCell>{item.username}</TableCell>
-                    <TableCell>{item.destination}</TableCell>
-                    <TableCell>{item.business}</TableCell>
-                    <TableCell>{item.work}</TableCell>
-                    <TableCell>{item.car}</TableCell>
+                    <TableCell sx={{ fontSize: 'medium' }}>
+                      {calStatDay(item.specificDate)}
+                    </TableCell>
+                    <TableCell sx={{ fontSize: 'medium' }}>
+                      {item.username}
+                    </TableCell>
+                    <TableCell sx={{ fontSize: 'medium' }}>
+                      {item.destination}
+                    </TableCell>
+                    <TableCell sx={{ fontSize: 'medium' }}>
+                      {item.business}
+                    </TableCell>
+                    <TableCell sx={{ fontSize: 'medium' }}>
+                      {item.work}
+                    </TableCell>
+                    <TableCell sx={{ fontSize: 'medium' }}>
+                      {item.car}
+                    </TableCell>
+                    <TableCell sx={{ fontSize: 'medium' }}>
+                      {item.remarks && (
+                        <Tooltip
+                          title={item.remarks}
+                          arrow
+                          placement="left"
+                          componentsProps={{
+                            tooltip: {
+                              sx: {
+                                maxWidth: '500px',
+                                fontSize: '16px',
+                                padding: '8px 16px',
+                              },
+                            },
+                          }}
+                        >
+                          <Button
+                            sx={{
+                              minWidth: 'auto',
+                              justifyContent: 'flex-start',
+                              padding: '0px',
+                            }}
+                          >
+                            확인
+                          </Button>
+                        </Tooltip>
+                      )}
+                    </TableCell>
                   </TableRow>
                 ))}
             {value === 1 &&
@@ -173,11 +213,49 @@ function StatisticsMain() {
                     key={index}
                     className="transition-colors hover:bg-gray-50"
                   >
-                    <TableCell>{calStatDay(item.specificDate)}</TableCell>
-                    <TableCell>{item.username}</TableCell>
-                    <TableCell>{item.destination}</TableCell>
-                    <TableCell>{item.business}</TableCell>
-                    <TableCell>{item.work}</TableCell>
+                    <TableCell sx={{ fontSize: 'medium' }}>
+                      {calStatDay(item.specificDate)}
+                    </TableCell>
+                    <TableCell sx={{ fontSize: 'medium' }}>
+                      {item.username}
+                    </TableCell>
+                    <TableCell sx={{ fontSize: 'medium' }}>
+                      {item.destination}
+                    </TableCell>
+                    <TableCell sx={{ fontSize: 'medium' }}>
+                      {item.business}
+                    </TableCell>
+                    <TableCell sx={{ fontSize: 'medium' }}>
+                      {item.work}
+                    </TableCell>
+                    <TableCell sx={{ fontSize: 'medium' }}>
+                      {item.remarks && (
+                        <Tooltip
+                          title={item.remarks}
+                          arrow
+                          placement="left"
+                          componentsProps={{
+                            tooltip: {
+                              sx: {
+                                maxWidth: '500px',
+                                fontSize: '16px',
+                                padding: '8px 16px',
+                              },
+                            },
+                          }}
+                        >
+                          <Button
+                            sx={{
+                              minWidth: 'auto',
+                              justifyContent: 'flex-start',
+                              padding: '0px',
+                            }}
+                          >
+                            확인
+                          </Button>
+                        </Tooltip>
+                      )}
+                    </TableCell>
                   </TableRow>
                 ))}
           </TableBody>

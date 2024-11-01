@@ -24,6 +24,7 @@ import {
 import { styled } from '@mui/material/styles';
 import 'dayjs/locale/ko';
 import Blank from '../../components/Blank';
+import { ROUTES } from '../../constants/constant';
 dayjs.locale('ko');
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
@@ -68,6 +69,9 @@ function EmployeeInput() {
 
   const [startDate, setStartDate] = useState<Date>();
   const [endDate, setEndDate] = useState<Date>();
+
+  // 비고
+  const [remarks, setRemarks] = useState('');
 
   const navigate = useNavigate();
   const {
@@ -290,6 +294,7 @@ function EmployeeInput() {
         startDate: isDaily === 1 ? new Date() : startDate,
         endDate: isDaily === 1 ? new Date() : endDate,
         isDaily,
+        remarks,
       })
     );
 
@@ -297,13 +302,17 @@ function EmployeeInput() {
 
     if (responses.every((res) => res.status === 200)) {
       alert('정보 입력 완료');
-      navigate('/employee-status');
+      navigate(ROUTES.EMPLOYEE_STATUS);
     }
   };
 
   return (
-    <Container maxWidth="xl" sx={{ py: 4 }}>
-      <div className="flex items-center justify-between w-full mt-2 mb-8 sm:mt-4">
+    <Container
+      maxWidth={false}
+      sx={{ py: 4 }}
+      className="flex flex-col items-center w-full h-screen bg-gradient-to-br from-zinc-50 to-slate-100"
+    >
+      <div className="flex items-center justify-between  mt-2 mb-8 sm:mt-4 sm:w-full md:w-[80%]">
         <ArrowBack type="not home" />
         <span className="font-bold sm:text-lg md:text-3xl md:mx-8 sm:mx-1 whitespace-nowrap">
           {formDate}
@@ -311,7 +320,14 @@ function EmployeeInput() {
         <Blank />
       </div>
 
-      <StyledPaper elevation={3}>
+      <StyledPaper
+        elevation={3}
+        sx={{
+          boxShadow:
+            '0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)',
+        }}
+        className="sm:w-full md:w-[80%]"
+      >
         <Grid container spacing={3}>
           {/* 기본 정보 섹션 */}
           <Grid item xs={12}>
@@ -419,7 +435,7 @@ function EmployeeInput() {
           </Grid>
 
           <Grid item xs={12}>
-            <Divider sx={{ my: 3 }} />
+            <Divider sx={{ my: 1 }} />
           </Grid>
 
           {/* 상세 정보 섹션 */}
@@ -519,6 +535,26 @@ function EmployeeInput() {
                     onChange={(e) => setInputWork(e.target.value)}
                   />
                 </StyledFormSection>
+              </Grid>
+            </Grid>
+          </Grid>
+
+          <Grid item xs={12}>
+            <Divider sx={{ my: 1 }} />
+          </Grid>
+
+          <Grid item xs={12}>
+            <Grid container spacing={1}>
+              <Grid item xs={12} md={4}>
+                <div className="mb-4">비고</div>
+                <TextField
+                  fullWidth
+                  multiline
+                  rows={2}
+                  label="비고"
+                  value={remarks}
+                  onChange={(e) => setRemarks(e.target.value)}
+                />
               </Grid>
             </Grid>
           </Grid>

@@ -43,7 +43,7 @@ function Admin() {
     : 0;
 
   return (
-    <div className="flex flex-col items-center justify-between w-full h-screen p-10 sm:p-2">
+    <div className="flex flex-col items-center justify-between w-full h-screen p-10 sm:p-2 bg-gradient-to-br from-zinc-50 to-slate-100">
       <div className="sm:w-full w-[90%] flex flex-col items-center h-screen">
         <div className="flex items-center w-full mt-4 mb-20 md:justify-center sm:mb-10 ">
           <div className="flex items-center justify-between w-full">
@@ -57,7 +57,7 @@ function Admin() {
           </div>
         </div>
 
-        <div className="w-[100%] ">
+        <div className="w-[100%] shadow-xl">
           <TabHeaderAdmin activeTab={activeTab} onTabClick={handleTabClick} />
 
           <TabContentAdmin

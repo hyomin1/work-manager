@@ -40,6 +40,7 @@ function EditInform({ item, setEditingItemId, currentDate }: IEditInformProps) {
   const [car, setCar] = useState(item.car);
   const [startDate, setStartDate] = useState(item.startDate);
   const [endDate, setEndDate] = useState(item.endDate);
+  const [remarks, setRemarks] = useState(item.remarks);
 
   const queryClient = useQueryClient();
 
@@ -98,6 +99,7 @@ function EditInform({ item, setEditingItemId, currentDate }: IEditInformProps) {
       car,
       startDate: item.isDaily === 3 ? startDate : date,
       endDate: item.isDaily === 3 ? endDate : date,
+      remarks,
     });
     if (res.status === 200) {
       alert(res.data.message);
@@ -278,28 +280,6 @@ function EditInform({ item, setEditingItemId, currentDate }: IEditInformProps) {
               )}
               onChange={handleBusinessChange}
             />
-            {/* <select
-              value={business}
-              onChange={handleBusinessChange}
-              className="w-full p-3 border rounded"
-            >
-              <option value="" disabled>
-                사업명 선택
-              </option>
-              {businessesData
-                ?.filter((business) => {
-                  const matchingDestination = destinationsData?.find(
-                    (dest) => dest.destination === destination
-                  );
-                  return business.destinationId === matchingDestination?._id;
-                })
-                ?.sort((a, b) => a.business.localeCompare(b.business))
-                .map((item, idx) => (
-                  <option key={idx} value={item.business}>
-                    {item.business}
-                  </option>
-                ))}
-            </select> */}
           </div>
           <div className="my-2">
             <Autocomplete
@@ -319,6 +299,16 @@ function EditInform({ item, setEditingItemId, currentDate }: IEditInformProps) {
               renderInput={(cars) => <TextField {...cars} label="차량" />}
               onChange={handleCarChange}
               value={car}
+            />
+          </div>
+          <div className="my-2">
+            <TextField
+              fullWidth
+              multiline
+              rows={2}
+              label="비고"
+              value={remarks}
+              onChange={(e) => setRemarks(e.target.value)}
             />
           </div>
         </div>
