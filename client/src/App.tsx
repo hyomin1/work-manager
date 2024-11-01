@@ -1,10 +1,13 @@
-import React from "react";
-import { Outlet } from "react-router-dom";
+import React, { Suspense } from 'react';
+import { Outlet } from 'react-router-dom';
+import LoadingSpinner from './components/LoadingSpinner';
 
 function App() {
   return (
     <div>
-      <Outlet />
+      <Suspense fallback={<LoadingSpinner />}>
+        <Outlet />
+      </Suspense>
     </div>
   );
 }
