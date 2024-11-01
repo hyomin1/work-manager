@@ -1,44 +1,22 @@
-import { useQuery } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react';
+import { REFETCH_INTERVAL } from '../../constants/constant';
+import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
-import {
-  axiosReq,
-  calDate,
-  checkAdminSession,
-  getEmployeeInform,
-} from '../../api';
+import { calDate, checkAdminSession, getEmployeeInform } from '../../api';
 import { SlRefresh } from 'react-icons/sl';
-import { employeeHeaders } from '../../constants/headers';
 import Title from '../../components/Title';
 import ArrowBack from '../../components/ArrowBack';
-import {
-  Edit,
-  Settings,
-  Pencil,
-  Truck,
-  LineChart,
-  Calendar,
-  Trash2,
-} from 'lucide-react';
+import { Settings, Pencil, Truck, LineChart, Calendar } from 'lucide-react';
 import Logout from '../auth/Logout';
-import EditInform from './EditEmployeeInform';
+import { Paper, Table, TableContainer } from '@mui/material';
+import { ROUTES } from '../../constants/constant';
 import { IInform } from '../../interfaces/interface';
-import {
-  Button,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Tooltip,
-} from '@mui/material';
-import { REFETCH_INTERVAL, ROUTES } from '../../constants/constant';
-import { fontSize } from '@mui/system';
+import EmployeeTableBody from './EmployeeTableBody';
+import EmployeeTableHead from './EmployeeTableHead';
 
 function Main() {
   const [currentDate, setCurrentDate] = useState(new Date());
+  const [showInput, setShowInput] = useState(false);
 
   const { data: inform, refetch } = useQuery<IInform[]>({
     queryKey: ['employeeInform'],
@@ -46,14 +24,11 @@ function Main() {
     refetchInterval: REFETCH_INTERVAL,
   });
 
-  const [showInput, setShowInput] = useState(false);
-  const [editingItemId, setEditingItemId] = useState('');
+  useEffect(() => {
+    refetch();
+  }, [currentDate, refetch]);
 
   const navigate = useNavigate();
-
-  const onClickInputInform = () => {
-    navigate(ROUTES.EMPLOYEE_INPUT);
-  };
 
   const onClickAdmin = async () => {
     const status = await checkAdminSession();
@@ -73,26 +48,6 @@ function Main() {
     setCurrentDate(new Date(e.target.value));
     setShowInput(false);
   };
-
-  const editInform = async (id: string) => {
-    setEditingItemId(id);
-  };
-
-  const deleteInform = async (id: string) => {
-    const isConfirm = window.confirm('삭제하시겠습니까?');
-    if (isConfirm) {
-      const res = await axiosReq.delete(
-        `/api/employee-inform/removeInform/${id}`
-      );
-      if (res.status === 200) {
-        refetch();
-      }
-    }
-  };
-
-  useEffect(() => {
-    refetch();
-  }, [currentDate, refetch]);
 
   return (
     <div className="flex flex-col items-center w-full h-screen p-10 sm:p-2 bg-gradient-to-br from-zinc-50 to-slate-100">
@@ -135,7 +90,7 @@ function Main() {
               </button>
               <button
                 className="whitespace-nowrap bg-[#10B981] rounded-lg text-white md:py-2 sm:py-1 sm:text-sm sm:mb-1 px-4 button-effect mr-4 sm:mr-2 flex justify-center items-center"
-                onClick={onClickInputInform}
+                onClick={() => navigate(ROUTES.EMPLOYEE_INPUT)}
               >
                 <Pencil className="sm:w-4 sm:h-4" />
                 <span className="ml-1 sm:text-xs">입력</span>
@@ -184,123 +139,12 @@ function Main() {
           className="shadow-custom-shadow"
         >
           <Table stickyHeader>
-            <TableHead>
-              <TableRow className="bg-gray-200">
-                {employeeHeaders.map((item, index) => (
-                  <TableCell
-                    sx={{
-                      fontWeight: '600',
-                      whiteSpace: 'nowrap',
-                      fontSize: 'large',
-                    }}
-                    key={index}
-                  >
-                    {item}
-                  </TableCell>
-                ))}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {inform
-                ?.sort((a, b) => {
-                  if (a.destination === b.destination) {
-                    return a.username.localeCompare(b.username);
-                  }
-                  return a.destination.localeCompare(b.destination);
-                })
-                .map((item, index) => (
-                  <TableRow
-                    key={index}
-                    className={`sm:text-sm w-[100%]  ${
-                      index % 2 === 0 ? 'bg-white' : 'bg-gray-200'
-                    }`}
-                  >
-                    <TableCell
-                      sx={{ fontSize: 'medium', whiteSpace: 'nowrap' }}
-                    >
-                      {item.username}
-                    </TableCell>
-                    <TableCell sx={{ fontSize: 'large' }}>
-                      {item.destination}
-                    </TableCell>
-                    <TableCell sx={{ fontSize: 'large' }}>
-                      {item.business}
-                    </TableCell>
-                    <TableCell sx={{ fontSize: 'large' }}>
-                      {item.work}
-                    </TableCell>
-                    <TableCell sx={{ fontSize: 'large' }}>{item.car}</TableCell>
-                    <TableCell
-                      sx={{
-                        fontSize: 'large',
-                      }}
-                    >
-                      {item.remarks && (
-                        <Tooltip
-                          title={item.remarks}
-                          arrow
-                          placement="left"
-                          componentsProps={{
-                            tooltip: {
-                              sx: {
-                                maxWidth: '500px',
-                                fontSize: '16px',
-                                padding: '8px 16px',
-                              },
-                            },
-                          }}
-                        >
-                          <Button
-                            sx={{
-                              minWidth: 'auto',
-                              justifyContent: 'flex-start',
-                              padding: '0px',
-                            }}
-                          >
-                            확인
-                          </Button>
-                        </Tooltip>
-                      )}
-                    </TableCell>
-
-                    <TableCell>
-                      {item.isOwner && (
-                        <div className="flex items-center gap-2 justify-evenly">
-                          <button
-                            className="flex items-center hover:opacity-60"
-                            onClick={() => editInform(item._id)}
-                          >
-                            <Edit strokeWidth={2.2} />
-                            <span className="ml-1 font-semibold">수정</span>
-                          </button>
-                          <button
-                            className="flex items-center hover:opacity-60 "
-                            onClick={() => deleteInform(item._id)}
-                          >
-                            <Trash2 strokeWidth={2.2} />
-                            <span className="ml-1 font-semibold">삭제</span>
-                          </button>
-
-                          {editingItemId === item._id && (
-                            <EditInform
-                              currentDate={currentDate}
-                              item={item}
-                              setEditingItemId={setEditingItemId}
-                            />
-                          )}
-                        </div>
-                      )}
-                    </TableCell>
-                  </TableRow>
-                ))}
-              {inform && inform.length === 0 && (
-                <TableRow>
-                  <TableCell colSpan={6} className="text-center text-gray-400">
-                    등록된 정보가 없습니다.
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
+            <EmployeeTableHead />
+            <EmployeeTableBody
+              inform={inform || []}
+              currentDate={currentDate}
+              refetch={refetch}
+            />
           </Table>
         </TableContainer>
       </div>
