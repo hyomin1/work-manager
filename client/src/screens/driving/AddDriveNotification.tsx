@@ -39,7 +39,7 @@ function AddDriveNotification({
       }
     );
     if (response.status === 200) {
-      alert(response.data.message);
+      //alert(response.data.message);
       setIsAdding(false);
       queryClient.invalidateQueries({ queryKey: ['notification', id] });
     }
