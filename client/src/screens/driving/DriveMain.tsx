@@ -26,21 +26,21 @@ import AddDriveNotification from './AddDriveNotification';
 
 function DriveMain() {
   const navigate = useNavigate();
-
   const isMobile = useMediaQuery({ query: '(max-width: 540px)' });
 
-  const [currentDate, setCurrentDate] = useState(new Date());
-
+  const [currentDate, setCurrentDate] = useState<Date | null>(null);
   const [carId, setCarId] = useState('');
   const [car, setCar] = useState('');
-  // carId, car, notifcation 합쳐서 obejct로
-
   const [isAdding, setIsAdding] = useState(false);
 
   const { data: drivingInform, refetch } = useQuery<IDrivingInform[]>({
     queryKey: ['drivingInform'],
     queryFn: () =>
-      getDrivingInform(calYear(currentDate), calMonth(currentDate), carId),
+      getDrivingInform(
+        calYear(currentDate || new Date()),
+        calMonth(currentDate || new Date()),
+        carId
+      ),
     refetchInterval: 300_000,
     enabled: carId.length > 0,
   });
@@ -52,7 +52,6 @@ function DriveMain() {
   });
 
   const queryClient = useQueryClient();
-
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = isMobile ? 10 : 25;
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -85,8 +84,15 @@ function DriveMain() {
   };
 
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCurrentDate(new Date(e.target.value));
-    setShowInput(false);
+    const inputValue = e.target.value;
+    // 'YYYY-MM' 형식으로 입력이 들어오므로, 이를 기반으로 currentDate를 설정
+    const [year, month] = inputValue.split('-');
+    if (month && year) {
+      // 한자리 수 월을 두 자리로 변환
+      const formattedMonth = month.padStart(2, '0');
+      setCurrentDate(new Date(`${year}-${formattedMonth}-01`));
+    }
+
     setCurrentPage(1);
   };
 
@@ -100,15 +106,13 @@ function DriveMain() {
       navigate(ROUTES.ADMIN);
     }
   };
+
   const totalFuelCost =
     drivingInform?.reduce((acc, item) => acc + item.fuelCost, 0) || 0;
-
   const totalToll =
     drivingInform?.reduce((acc, item) => acc + item.toll, 0) || 0;
-
   const totalEtcCost =
     drivingInform?.reduce((acc, item) => acc + item.etc.cost, 0) || 0;
-
   const totalDrivingKM =
     drivingInform?.reduce((acc, item) => acc + item.totalKM, 0) || 0;
   const grandTotal = totalFuelCost + totalToll + totalEtcCost;
@@ -119,8 +123,8 @@ function DriveMain() {
         <div className="flex items-center justify-between w-full mt-4 mb-4 print:justify-center sm:mt-4">
           <ArrowBack type="home" />
           <Title
-            currentDate={currentDate}
-            setCurrentDate={setCurrentDate}
+            currentDate={currentDate || new Date()} // currentDate가 null일 경우 새 Date 객체 사용
+            setCurrentDate={setCurrentDate} // 여기는 null을 허용하므로 변경 없음
             setShowInput={setShowInput}
             calYearMonth={calYearMonth}
             category="driving"
@@ -134,6 +138,7 @@ function DriveMain() {
               <input
                 type="month"
                 onChange={handleDateChange}
+                onBlur={() => setShowInput(false)}
                 className="sm:w-[70%] w-[33%] my-4 p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 ease-in-out"
               />
             </div>
@@ -176,7 +181,6 @@ function DriveMain() {
                     borderRadius: '8px',
                     border: '1px solid lightgray',
                     fontWeight: 'bold',
-
                     '&:hover': {
                       transform: 'translateY(-1px)',
                     },

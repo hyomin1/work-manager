@@ -15,17 +15,19 @@ import EmployeeTableBody from './EmployeeTableBody';
 import EmployeeTableHead from './EmployeeTableHead';
 
 function Main() {
-  const [currentDate, setCurrentDate] = useState(new Date());
+  const [currentDate, setCurrentDate] = useState<Date | null>(new Date());
   const [showInput, setShowInput] = useState(false);
 
   const { data: inform, refetch } = useQuery<IInform[]>({
     queryKey: ['employeeInform'],
-    queryFn: () => getEmployeeInform(currentDate),
+    queryFn: () => getEmployeeInform(currentDate || new Date()), // 기본값 처리
     refetchInterval: REFETCH_INTERVAL,
   });
 
   useEffect(() => {
-    refetch();
+    if (currentDate) {
+      refetch();
+    }
   }, [currentDate, refetch]);
 
   const navigate = useNavigate();
@@ -45,7 +47,11 @@ function Main() {
   };
 
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCurrentDate(new Date(e.target.value));
+    const newDate = e.target.value ? new Date(e.target.value) : null;
+    setCurrentDate(newDate);
+  };
+
+  const handleDateBlur = () => {
     setShowInput(false);
   };
 
@@ -56,7 +62,7 @@ function Main() {
           <ArrowBack type="home" />
 
           <Title
-            currentDate={currentDate}
+            currentDate={currentDate || new Date()}
             setCurrentDate={setCurrentDate}
             setShowInput={setShowInput}
             calDate={calDate}
@@ -69,9 +75,10 @@ function Main() {
           <div className="w-[21%] sm:w-[40%] flex justify-center">
             <input
               type="date"
-              value={currentDate.toISOString().split('T')[0] || ''}
+              value={currentDate ? currentDate.toISOString().split('T')[0] : ''}
               className="sm:w-full w-[60%] my-4 p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 ease-in-out"
               onChange={handleDateChange}
+              onBlur={handleDateBlur}
             />
           </div>
         )}
@@ -81,9 +88,7 @@ function Main() {
             <div className="flex sm:flex-col">
               <button
                 onClick={() => navigate(ROUTES.DRIVING_STATUS)}
-                className="whitespace-nowrap bg-[#0EA5E9] rounded-lg
-                 text-white md:py-2 sm:py-1 sm:text-sm px-4 hover:opacity-60 md:mr-4
-                  sm:mr-2 button-effect flex justify-center items-center sm:mb-1"
+                className="whitespace-nowrap bg-[#0EA5E9] rounded-lg text-white md:py-2 sm:py-1 sm:text-sm px-4 hover:opacity-60 md:mr-4 sm:mr-2 button-effect flex justify-center items-center sm:mb-1"
               >
                 <Truck className="sm:w-4 sm:h-4" />
                 <span className="ml-1 sm:text-xs">차량</span>
@@ -113,7 +118,7 @@ function Main() {
                 <span className="ml-1 sm:text-xs">관리</span>
               </button>
               <button
-                className="whitespace-nowrap bg-[#10B981] rounded-lg text-white md:py-2 sm:py-1 sm:text-sm px-4 sm:mb-1 mr-4 sm:mr-2 button-effect  flex justify-center items-center"
+                className="whitespace-nowrap bg-[#10B981] rounded-lg text-white md:py-2 sm:py-1 sm:text-sm px-4 sm:mb-1 mr-4 sm:mr-2 button-effect flex justify-center items-center"
                 onClick={onClickStatistics}
               >
                 <LineChart className="sm:w-4 sm:h-4" />
@@ -142,7 +147,7 @@ function Main() {
             <EmployeeTableHead />
             <EmployeeTableBody
               inform={inform || []}
-              currentDate={currentDate}
+              currentDate={currentDate || new Date()} // 기본값 처리
               refetch={refetch}
             />
           </Table>

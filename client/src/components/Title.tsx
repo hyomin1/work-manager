@@ -3,7 +3,7 @@ import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 
 interface ITitleProps {
   currentDate: Date;
-  setCurrentDate: React.Dispatch<React.SetStateAction<Date>>;
+  setCurrentDate: React.Dispatch<React.SetStateAction<Date | null>>;
   setShowInput: React.Dispatch<React.SetStateAction<boolean>>;
   category: string;
   calDate?: (arg0: Date) => string;
