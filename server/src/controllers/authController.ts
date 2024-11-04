@@ -81,8 +81,18 @@ export const checkAdminSession = async (req: Request, res: Response) => {
   } else {
     return res.status(403).json({
       error: '관리자 권한이 없습니다.',
+      type: 'not granted admin',
+    });
+  }
+};
+
+export const directAdminSession = async (req: Request, res: Response) => {
+  if (req.session.isAdmin) {
+    return res.status(200).json();
+  } else {
+    return res.status(403).json({
+      error: '관리자 권한이 없습니다.',
       type: 'not admin',
-      url: req.headers.referer,
     });
   }
 };

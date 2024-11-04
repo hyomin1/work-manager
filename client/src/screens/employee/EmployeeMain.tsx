@@ -20,7 +20,7 @@ function Main() {
 
   const { data: inform, refetch } = useQuery<IInform[]>({
     queryKey: ['employeeInform'],
-    queryFn: () => getEmployeeInform(currentDate || new Date()), // 기본값 처리
+    queryFn: () => getEmployeeInform(currentDate || new Date()),
     refetchInterval: REFETCH_INTERVAL,
   });
 
@@ -60,7 +60,6 @@ function Main() {
       <div className="sm:w-full w-[90%] flex flex-col items-center h-full">
         <div className="flex items-center justify-between w-full mt-2 mb-8 sm:mt-4">
           <ArrowBack type="home" />
-
           <Title
             currentDate={currentDate || new Date()}
             setCurrentDate={setCurrentDate}
@@ -84,53 +83,53 @@ function Main() {
         )}
 
         <div className="w-[100%] flex justify-between items-center border border-t-gray-300 rounded-t-2xl bg-[#f8fafd]">
-          <div className="flex items-center justify-between w-full md:p-4 sm:p-2">
-            <div className="flex sm:flex-col">
-              <button
-                onClick={() => navigate(ROUTES.DRIVING_STATUS)}
-                className="whitespace-nowrap bg-[#0EA5E9] rounded-lg text-white md:py-2 sm:py-1 sm:text-sm px-4 hover:opacity-60 md:mr-4 sm:mr-2 button-effect flex justify-center items-center sm:mb-1"
-              >
-                <Truck className="sm:w-4 sm:h-4" />
-                <span className="ml-1 sm:text-xs">차량</span>
-              </button>
-              <button
-                className="whitespace-nowrap bg-[#10B981] rounded-lg text-white md:py-2 sm:py-1 sm:text-sm sm:mb-1 px-4 button-effect mr-4 sm:mr-2 flex justify-center items-center"
-                onClick={() => navigate(ROUTES.EMPLOYEE_INPUT)}
-              >
-                <Pencil className="sm:w-4 sm:h-4" />
-                <span className="ml-1 sm:text-xs">입력</span>
-              </button>
-              <button
-                className="whitespace-nowrap bg-[#0EA5E9] rounded-lg text-white md:py-2 sm:py-1 sm:text-sm px-4 button-effect mr-4 sm:mr-2 flex justify-center items-center"
-                onClick={() => navigate(ROUTES.SCHEDULE)}
-              >
-                <Calendar className="sm:w-4 sm:h-4" />
-                <span className="ml-1 sm:text-xs">일정</span>
-              </button>
-            </div>
+          <div className="w-full p-4 sm:p-3">
+            <div className="flex items-center justify-between sm:flex-col">
+              <div className="flex sm:w-full sm:gap-2 sm:mb-2">
+                <button
+                  onClick={() => navigate(ROUTES.DRIVING_STATUS)}
+                  className="whitespace-nowrap bg-[#0EA5E9] rounded-lg text-white py-2 px-4 hover:opacity-60 md:mr-4 sm:mr-0 button-effect flex justify-center items-center sm:flex-1"
+                >
+                  <Truck className="sm:w-4 sm:h-4" />
+                  <span className="ml-1 sm:text-xs">차량</span>
+                </button>
+                <button
+                  className="whitespace-nowrap bg-[#10B981] rounded-lg text-white py-2 px-4 button-effect md:mr-4 sm:mr-0 flex justify-center items-center sm:flex-1"
+                  onClick={() => navigate(ROUTES.EMPLOYEE_INPUT)}
+                >
+                  <Pencil className="sm:w-4 sm:h-4" />
+                  <span className="ml-1 sm:text-xs">입력</span>
+                </button>
+                <button
+                  className="whitespace-nowrap bg-[#0EA5E9] rounded-lg text-white py-2 px-4 button-effect md:mr-4 sm:mr-0 flex justify-center items-center sm:flex-1"
+                  onClick={() => navigate(ROUTES.SCHEDULE)}
+                >
+                  <Calendar className="sm:w-4 sm:h-4" />
+                  <span className="ml-1 sm:text-xs">일정</span>
+                </button>
+              </div>
 
-            <div className="flex sm:flex-col">
-              <button
-                className="whitespace-nowrap bg-[#0EA5E9] rounded-lg text-white md:py-2 sm:py-1 sm:mb-1 sm:text-sm px-4 hover:opacity-60 mr-4 sm:mr-2 button-effect flex justify-center items-center"
-                onClick={onClickAdmin}
-              >
-                <Settings className="sm:w-4 sm:h-4" />
-                <span className="ml-1 sm:text-xs">관리</span>
-              </button>
-              <button
-                className="whitespace-nowrap bg-[#10B981] rounded-lg text-white md:py-2 sm:py-1 sm:text-sm px-4 sm:mb-1 mr-4 sm:mr-2 button-effect flex justify-center items-center"
-                onClick={onClickStatistics}
-              >
-                <LineChart className="sm:w-4 sm:h-4" />
-                <span className="ml-1 sm:text-xs">통계</span>
-              </button>
-              <div className="mx-4 border border-gray-300 md:h-10 sm:h-8 sm:hidden" />
-              <button
-                onClick={() => refetch()}
-                className="sm:flex sm:justify-center"
-              >
-                <SlRefresh className="md:w-7 md:h-7 sm:w-6 sm:h-6 hover:opacity-60" />
-              </button>
+              <div className="flex sm:w-full sm:gap-2">
+                <button
+                  className="whitespace-nowrap bg-[#0EA5E9] rounded-lg text-white py-2 px-4 hover:opacity-60 md:mr-4 sm:mr-0 button-effect flex justify-center items-center sm:flex-1"
+                  onClick={onClickAdmin}
+                >
+                  <Settings className="sm:w-4 sm:h-4" />
+                  <span className="ml-1 sm:text-xs">관리</span>
+                </button>
+                <button
+                  className="whitespace-nowrap bg-[#10B981] rounded-lg text-white py-2 px-4 md:mr-4 sm:mr-0 button-effect flex justify-center items-center sm:flex-1"
+                  onClick={onClickStatistics}
+                >
+                  <LineChart className="sm:w-4 sm:h-4" />
+                  <span className="ml-1 sm:text-xs">통계</span>
+                </button>
+                <div className="flex items-center sm:w-full sm:justify-center sm:flex-1">
+                  <button onClick={() => refetch()}>
+                    <SlRefresh className="md:w-7 md:h-7 sm:w-6 sm:h-6 hover:opacity-60" />
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -147,7 +146,7 @@ function Main() {
             <EmployeeTableHead />
             <EmployeeTableBody
               inform={inform || []}
-              currentDate={currentDate || new Date()} // 기본값 처리
+              currentDate={currentDate || new Date()}
               refetch={refetch}
             />
           </Table>

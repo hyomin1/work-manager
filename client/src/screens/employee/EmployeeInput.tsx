@@ -540,7 +540,7 @@ function EmployeeInput() {
           </Grid>
 
           <Grid item xs={12}>
-            <Divider sx={{ my: 1 }} />
+            <Divider />
           </Grid>
 
           <Grid item xs={12}>
@@ -561,7 +561,7 @@ function EmployeeInput() {
         </Grid>
 
         {/* 완료 버튼 */}
-        <Box sx={{ mt: 4, textAlign: 'center' }}>
+        <Box sx={{ textAlign: 'center', width: '100%' }}>
           <Button
             variant="contained"
             onClick={onClickComplete}
@@ -572,6 +572,7 @@ function EmployeeInput() {
               '&:hover': {
                 bgcolor: '#009933',
               },
+              width: '20%',
             }}
           >
             입력 완료

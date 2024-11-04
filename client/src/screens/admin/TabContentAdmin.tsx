@@ -4,7 +4,7 @@ import { TABS } from '../../constants/adminTabs';
 import { QueryClient, useQuery } from '@tanstack/react-query';
 import { IDestinations } from '../../interfaces/interface';
 import { getDestinations } from '../../api';
-import { X, Edit } from 'lucide-react';
+import { X, Edit, Trash2 } from 'lucide-react';
 import EditAdminData from './EditAdminData';
 import { Autocomplete, TextField } from '@mui/material';
 import { ListPlus } from 'lucide-react';
@@ -118,29 +118,30 @@ const TabContentAdmin = ({
       {data.map((item, index) => (
         <div
           key={item._id}
-          className={`flex justify-between items-center border-b border-gray-200 ${
+          className={`flex p-4 justify-between items-center border-b border-gray-200 ${
             index % 2 === 0 ? 'bg-white' : 'bg-gray-50'
           }`}
         >
-          <div className="p-4 overflow-hidden border-b border-gray-200 whitespace-nowrap sm:text-lg overflow-ellipsis">
+          <div className="overflow-hidden border-b border-gray-200  whitespace-nowrap sm:text-lg overflow-ellipsis">
             {activeTab === 'business' && <span>{item.business}</span>}
             {activeTab !== 'business' && (
               <span>{item[activeTabConfig?.dataKey || '']}</span>
             )}
           </div>
-
-          <div className="flex items-center">
+          <div className="flex items-center gap-2 justify-evenly">
             <button
+              className="flex items-center hover:opacity-60"
               onClick={() => editItem(item._id, item)}
-              className="p-2 hover:opacity-60 "
             >
-              <Edit className="w-7 h-7 sm:w-5 sm:h-5" />
+              <Edit strokeWidth={2.2} />
+              <span className="ml-1 font-semibold">수정</span>
             </button>
             <button
-              className="p-2 hover:opacity-60 "
+              className="flex items-center hover:opacity-60 "
               onClick={() => removeItem(item._id)}
             >
-              <X className="w-7 h-7 sm:w-5 sm:h-5" />
+              <Trash2 strokeWidth={2.2} />
+              <span className="ml-1 font-semibold">삭제</span>
             </button>
           </div>
         </div>

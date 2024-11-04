@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
-import { checkAdminSession, formDate } from '../../api';
+import { directAdminSession, formDate } from '../../api';
 import Page from '../../components/Page';
 import TabHeaderAdmin from './TabHeaderAdmin';
 import TabContentAdmin from './TabContentAdmin';
@@ -17,7 +17,7 @@ function Admin() {
   const [destination, setDestination] = useState('');
 
   useEffect(() => {
-    checkAdminSession();
+    directAdminSession();
   }, []);
 
   const handleTabClick = (tab: string) => {
