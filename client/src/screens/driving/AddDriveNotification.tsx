@@ -81,7 +81,7 @@ function AddDriveNotification({
       <DialogTitle>
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <Typography variant="h6" component="div" fontWeight="bold">
-            공지사항 관리
+            공지사항
           </Typography>
           <IconButton onClick={handleCancel} size="small">
             <CloseIcon size={20} />

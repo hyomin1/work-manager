@@ -145,44 +145,47 @@ function DriveMain() {
             <span>{car}</span>
           </div>
           <div className="w-[100%] flex justify-between items-center border border-t-gray-300 rounded-t-2xl md:h-16 print-hidden">
-            <select
-              className="md:w-[20%] sm:w-[40%] hover:opacity-60 font-bold h-10 border border-gray-300 rounded-lg p-2 text-sm mx-4"
-              onChange={onChangeCarNum}
-              defaultValue=""
-            >
-              <option value="" disabled>
-                차량 선택
-              </option>
-              {cars &&
-                cars
-                  .sort((a, b) => a.car.localeCompare(b.car))
-                  .map((car) => (
-                    <option key={car._id} value={`${car._id},${car.car}`}>
-                      {car.car}
-                    </option>
-                  ))}
-            </select>
-            {carId.length > 0 && !isMobile && (
-              <Alert
-                onClick={() => setIsAdding(true)}
-                severity="info"
-                variant="filled"
-                className="md:w-[50%] ml-8 p-2 hover:opacity-60 flex items-center cursor-pointer h-10"
-                sx={{
-                  fontSize: 'medium',
-                  height: '14',
-                  bgColor: '#93C5FD',
-                  borderRadius: '8px',
-                  border: '1px solid #BFDBFE', // 테두리 추가
-
-                  '&:hover': {
-                    transform: 'translateY(-1px)',
-                  },
-                }}
+            <div className="flex w-[50%] items-center justify-between">
+              <select
+                className="md:w-[20%] sm:w-[40%] hover:opacity-60 font-bold h-10 border border-gray-300 rounded-lg p-2 text-sm mx-4"
+                onChange={onChangeCarNum}
+                defaultValue=""
               >
-                {notification?.notification || '공지사항을 등록해주세요'}
-              </Alert>
-            )}
+                <option value="" disabled>
+                  차량 선택
+                </option>
+                {cars &&
+                  cars
+                    .sort((a, b) => a.car.localeCompare(b.car))
+                    .map((car) => (
+                      <option key={car._id} value={`${car._id},${car.car}`}>
+                        {car.car}
+                      </option>
+                    ))}
+              </select>
+              {carId.length > 0 && !isMobile && (
+                <Alert
+                  onClick={() => setIsAdding(true)}
+                  severity="info"
+                  variant="outlined"
+                  className="md:w-[80%] flex items-center h-10 p-2 ml-8 cursor-pointer hover:opacity-60"
+                  sx={{
+                    fontSize: 'medium',
+                    height: '14',
+                    bgColor: '#93C5FD',
+                    borderRadius: '8px',
+                    border: '1px solid lightgray',
+                    fontWeight: 'bold',
+
+                    '&:hover': {
+                      transform: 'translateY(-1px)',
+                    },
+                  }}
+                >
+                  {notification?.notification || '공지사항을 등록해주세요'}
+                </Alert>
+              )}
+            </div>
 
             {isAdding && (
               <AddDriveNotification
