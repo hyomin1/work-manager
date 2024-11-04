@@ -119,12 +119,12 @@ function DriveMain() {
 
   return (
     <div className="flex flex-col items-center justify-between w-full min-h-screen p-4 sm:p-2 bg-gradient-to-br from-zinc-50 to-slate-100">
-      <div className="sm:w-full w-[80%] flex flex-col items-center ">
+      <div className="sm:w-full w-[80%] flex flex-col items-center">
         <div className="flex items-center justify-between w-full mt-4 mb-4 print:justify-center sm:mt-4">
           <ArrowBack type="home" />
           <Title
-            currentDate={currentDate || new Date()} // currentDate가 null일 경우 새 Date 객체 사용
-            setCurrentDate={setCurrentDate} // 여기는 null을 허용하므로 변경 없음
+            currentDate={currentDate || new Date()}
+            setCurrentDate={setCurrentDate}
             setShowInput={setShowInput}
             calYearMonth={calYearMonth}
             category="driving"
@@ -149,10 +149,11 @@ function DriveMain() {
           <div className="hidden w-full mb-4 font-bold print:flex">
             <span>{car}</span>
           </div>
-          <div className="w-[100%] flex justify-between items-center border border-t-gray-300 rounded-t-2xl md:h-16 print-hidden">
-            <div className="flex w-[50%] items-center justify-between">
+
+          <div className="w-[100%] flex sm:flex-col md:justify-between items-center border border-t-gray-300 rounded-t-2xl md:h-20 sm:h-auto print-hidden">
+            <div className="flex sm:flex-col md:w-[50%] items-center md:justify-between sm:w-full sm:p-3 md:ml-2">
               <select
-                className="md:w-[20%] sm:w-[40%] hover:opacity-60 font-bold h-10 border border-gray-300 rounded-lg p-2 text-sm mx-4"
+                className="md:w-[20%] sm:w-full hover:opacity-60 font-bold h-10 border border-gray-300 rounded-lg p-2 text-sm sm:mb-3 md:mr-16"
                 onChange={onChangeCarNum}
                 defaultValue=""
               >
@@ -168,19 +169,28 @@ function DriveMain() {
                       </option>
                     ))}
               </select>
-              {carId.length > 0 && !isMobile && (
+
+              {carId.length > 0 && (
                 <Alert
                   onClick={() => setIsAdding(true)}
                   severity="info"
                   variant="outlined"
-                  className="md:w-[80%] flex items-center h-10 p-2 ml-8 cursor-pointer hover:opacity-60"
+                  className="md:w-[80%] sm:w-full flex items-center h-16 p-2 cursor-pointer hover:opacity-60"
                   sx={{
                     fontSize: 'medium',
-                    height: '14',
                     bgColor: '#93C5FD',
                     borderRadius: '8px',
                     border: '1px solid lightgray',
                     fontWeight: 'bold',
+                    '@media (max-width: 640px)': {
+                      whiteSpace: 'normal',
+                      height: 'auto',
+                      minHeight: '40px',
+                      '& .MuiAlert-message': {
+                        overflow: 'visible',
+                        whiteSpace: 'normal',
+                      },
+                    },
                     '&:hover': {
                       transform: 'translateY(-1px)',
                     },
@@ -200,28 +210,24 @@ function DriveMain() {
               />
             )}
 
-            <div className="p-4 items-center flex flex-1 overflow-hidden w-[50%] justify-end">
-              <div className="flex items-center justify-center sm:flex-col">
+            <div className="p-4 items-center flex flex-1 md:w-[50%] justify-end sm:w-full sm:flex-col sm:gap-2">
+              <div className="flex items-center justify-center sm:w-full sm:gap-2 sm:mb-2">
                 <button
                   onClick={() => navigate(ROUTES.EMPLOYEE_STATUS)}
-                  className="whitespace-nowrap bg-[#0EA5E9] rounded-lg
-                   text-white md:py-2 sm:py-1 sm:text-sm px-4 hover:opacity-60
-                    md:mr-4 sm:mb-2 button-effect flex justify-center items-center"
+                  className="whitespace-nowrap bg-[#0EA5E9] rounded-lg text-white py-2 px-4 hover:opacity-60 md:mr-4 button-effect flex justify-center items-center sm:flex-1"
                 >
                   <Users className="sm:w-4 sm:h-4" />
                   <span className="ml-1 sm:text-xs">근무</span>
                 </button>
                 <button
-                  className="whitespace-nowrap bg-[#10B981] rounded-lg 
-                  text-white md:py-2 sm:py-1 sm:text-sm px-4 button-effect 
-                  md:mr-4 sm:mb-2 flex justify-center items-center"
+                  className="whitespace-nowrap bg-[#10B981] rounded-lg text-white py-2 sm:text-lg px-4 button-effect md:mr-4 flex justify-center items-center sm:flex-1"
                   onClick={onClickInputInform}
                 >
                   <Pencil className="sm:w-4 sm:h-4" />
                   <span className="ml-1 sm:text-xs">입력</span>
                 </button>
                 <button
-                  className="whitespace-nowrap bg-[#0EA5E9] rounded-lg text-white md:py-2 sm:py-1 sm:text-sm px-4 hover:opacity-60 button-effect flex justify-center items-center"
+                  className="whitespace-nowrap bg-[#0EA5E9] rounded-lg text-white py-2 px-4 hover:opacity-60 button-effect flex justify-center items-center sm:flex-1"
                   onClick={onClickAdmin}
                 >
                   <Settings className="sm:w-4 sm:h-4" />
@@ -229,12 +235,15 @@ function DriveMain() {
                 </button>
               </div>
 
-              <div className="mx-4 border border-gray-300 md:h-10 sm:h-12" />
-              <button className="" onClick={() => refetch()}>
-                <SlRefresh className="md:w-7 md:h-7 sm:w-6 sm:h-6 hover:opacity-60" />
-              </button>
+              <div className="flex items-center sm:w-full sm:justify-center sm:hidden">
+                <div className="mx-4 border border-gray-300 md:h-10 " />
+                <button onClick={() => refetch()}>
+                  <SlRefresh className="md:w-7 md:h-7 sm:w-6 sm:h-6 hover:opacity-60" />
+                </button>
+              </div>
             </div>
           </div>
+
           {isMobile ? (
             <DriveMobile
               drivingInform={drivingInform || []}
