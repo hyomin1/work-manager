@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import { useCustomQueries } from '../../hooks/useCustomQuery';
-import { IInform } from '../../interfaces/interface';
-import { useQueryClient } from '@tanstack/react-query';
-import { axiosReq } from '../../api';
-import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
-import dayjs, { Dayjs } from 'dayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import React, { useEffect, useState } from "react";
+import { useCustomQueries } from "../../hooks/useCustomQuery";
+import { IInform } from "../../interfaces/interface";
+import { useQueryClient } from "@tanstack/react-query";
+import { axiosReq } from "../../api";
+import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker";
+import dayjs, { Dayjs } from "dayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
-import 'dayjs/locale/ko';
-import { Autocomplete, TextField } from '@mui/material';
-dayjs.locale('ko');
+import "dayjs/locale/ko";
+import { Autocomplete, TextField } from "@mui/material";
+dayjs.locale("ko");
 
 interface IEditInformProps {
   item: IInform;
@@ -49,7 +49,7 @@ function EmployeeEdit({
   const queryClient = useQueryClient();
 
   const carOptions = [
-    '선택 안함',
+    "선택 안함",
     ...(cars
       ? cars.sort((a, b) => a.car.localeCompare(b.car)).map((item) => item.car)
       : []),
@@ -58,11 +58,11 @@ function EmployeeEdit({
   useEffect(() => {
     if (business && businessesData && destinationsData) {
       const selectedBusiness = businessesData.find(
-        (b) => b.business === business
+        (b) => b.business === business,
       );
       if (selectedBusiness) {
         const matchingDestination = destinationsData.find(
-          (dest) => dest._id === selectedBusiness.destinationId
+          (dest) => dest._id === selectedBusiness.destinationId,
         );
         if (
           matchingDestination &&
@@ -77,23 +77,23 @@ function EmployeeEdit({
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!username) {
-      alert('이름을 선택해주세요');
+      alert("이름을 선택해주세요");
       return;
     }
     if (!destination) {
-      alert('방문지를 선택해주세요');
+      alert("방문지를 선택해주세요");
       return;
     }
     if (!business) {
-      alert('사업명을 선택해주세요');
+      alert("사업명을 선택해주세요");
       return;
     }
     if (!work) {
-      alert('업무를 선택해주세요');
+      alert("업무를 선택해주세요");
       return;
     }
 
-    const res = await axiosReq.put('/api/employee-inform/editInform', {
+    const res = await axiosReq.put("/api/employee-inform/editInform", {
       _id: item._id,
       date,
       username,
@@ -107,14 +107,14 @@ function EmployeeEdit({
     });
     if (res.status === 200) {
       alert(res.data.message);
-      queryClient.invalidateQueries({ queryKey: ['employeeInform'] });
-      queryClient.invalidateQueries({ queryKey: ['schedule'] });
-      setEditingItemId('');
+      queryClient.invalidateQueries({ queryKey: ["employeeInform"] });
+      queryClient.invalidateQueries({ queryKey: ["schedule"] });
+      setEditingItemId("");
     }
   };
 
   const handleCancel = () => {
-    setEditingItemId('');
+    setEditingItemId("");
   };
 
   const handleDateChange = (newDate: Dayjs | null) => {
@@ -136,7 +136,7 @@ function EmployeeEdit({
 
   const handleNameChange = (
     e: React.SyntheticEvent,
-    username: string | null
+    username: string | null,
   ) => {
     if (username) {
       setUserName(username);
@@ -145,17 +145,17 @@ function EmployeeEdit({
 
   const handleDestinationChange = (
     e: React.SyntheticEvent,
-    destination: string | null
+    destination: string | null,
   ) => {
     if (destination) {
       setDestination(destination);
-      setBusiness('');
+      setBusiness("");
     }
   };
 
   const handleBusinessChange = (
     e: React.SyntheticEvent,
-    business: string | null
+    business: string | null,
   ) => {
     if (business) {
       setBusiness(business);
@@ -186,26 +186,26 @@ function EmployeeEdit({
   }
 
   return (
-    <div className="fixed inset-0 top-0 z-10 flex items-center justify-center w-full px-4 bg-black bg-opacity-65">
+    <div className="fixed inset-0 top-0 z-10 flex w-full items-center justify-center bg-black bg-opacity-65 px-4">
       <form
         onSubmit={onSubmit}
-        className="flex flex-col p-6 bg-white rounded-lg shadow-lg w-[40%]"
+        className="flex w-[40%] flex-col rounded-lg bg-white p-6 shadow-lg"
       >
-        <h2 className="mb-4 text-xl font-bold text-center">정보 수정</h2>
+        <h2 className="mb-4 text-center text-xl font-bold">정보 수정</h2>
         <div className="flex flex-col">
           <div className="my-2">
             <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ko">
               {item.isDaily === 3 ? (
-                <div className="flex mt-4">
+                <div className="mt-4 flex">
                   <MobileDatePicker
                     label="시작일"
                     onChange={handleStartDateChange}
                     value={dayjs(startDate)}
                     sx={{
-                      width: '100%',
+                      width: "100%",
 
-                      '& .MuiOutlinedInput-root': {
-                        backgroundColor: 'white',
+                      "& .MuiOutlinedInput-root": {
+                        backgroundColor: "white",
                       },
                     }}
                   />
@@ -214,10 +214,10 @@ function EmployeeEdit({
                     onChange={handleEndDateChange}
                     value={dayjs(endDate)}
                     sx={{
-                      width: '100%',
+                      width: "100%",
 
-                      '& .MuiOutlinedInput-root': {
-                        backgroundColor: 'white',
+                      "& .MuiOutlinedInput-root": {
+                        backgroundColor: "white",
                       },
                     }}
                   />
@@ -228,10 +228,10 @@ function EmployeeEdit({
                   onChange={handleDateChange}
                   value={dayjs(date)}
                   sx={{
-                    width: '100%',
+                    width: "100%",
 
-                    '& .MuiOutlinedInput-root': {
-                      backgroundColor: 'white',
+                    "& .MuiOutlinedInput-root": {
+                      backgroundColor: "white",
                     },
                   }}
                 />
@@ -272,7 +272,7 @@ function EmployeeEdit({
                 businessesData
                   ?.filter((business) => {
                     const matchingDestination = destinationsData?.find(
-                      (dest) => dest.destination === destination
+                      (dest) => dest.destination === destination,
                     );
                     return business.destinationId === matchingDestination?._id;
                   })
@@ -317,17 +317,17 @@ function EmployeeEdit({
           </div>
         </div>
 
-        <div className="flex justify-between mt-2">
+        <div className="mt-2 flex justify-between">
           <button
             type="submit"
-            className="px-4 py-2 text-white bg-blue-500 rounded hover:opacity-80"
+            className="rounded bg-blue-500 px-4 py-2 text-white hover:opacity-80"
           >
             변경
           </button>
           <button
             type="button"
             onClick={handleCancel}
-            className="px-4 py-2 bg-gray-300 rounded hover:opacity-80"
+            className="rounded bg-gray-300 px-4 py-2 hover:opacity-80"
           >
             취소
           </button>

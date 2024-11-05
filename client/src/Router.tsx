@@ -39,7 +39,7 @@ const router = createBrowserRouter([
         element: <DrivePage />,
       },
       {
-        path: '/statistics',
+        path: '/admin/statistics',
         element: <StatisticsPage />,
       },
       {
@@ -51,7 +51,7 @@ const router = createBrowserRouter([
         element: <DriveForm />,
       },
       {
-        path: '/admin',
+        path: '/admin/settings',
         element: <Admin />,
       },
       {

@@ -1,5 +1,5 @@
-import { TableCell, TableHead, TableRow } from '@mui/material';
-import { employeeHeaders } from '../../../constants/headers';
+import { TableCell, TableHead, TableRow } from "@mui/material";
+import { employeeHeaders } from "../../../constants/headers";
 
 function EmployeeTableHead() {
   return (
@@ -8,9 +8,9 @@ function EmployeeTableHead() {
         {employeeHeaders.map((item, index) => (
           <TableCell
             sx={{
-              fontWeight: '600',
-              whiteSpace: 'nowrap',
-              fontSize: 'large',
+              fontWeight: "600",
+              whiteSpace: "nowrap",
+              fontSize: "large",
             }}
             key={index}
           >
