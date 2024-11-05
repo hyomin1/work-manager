@@ -4,7 +4,7 @@ import { TABS } from '../../constants/adminTabs';
 import { QueryClient, useQuery } from '@tanstack/react-query';
 import { IDestinations } from '../../interfaces/interface';
 import { getDestinations } from '../../api';
-import { X, Edit, Trash2 } from 'lucide-react';
+import { Edit, Trash2 } from 'lucide-react';
 import EditAdminData from './EditAdminData';
 import { Autocomplete, TextField } from '@mui/material';
 import { ListPlus } from 'lucide-react';
@@ -122,7 +122,7 @@ const TabContentAdmin = ({
             index % 2 === 0 ? 'bg-white' : 'bg-gray-50'
           }`}
         >
-          <div className="overflow-hidden border-b border-gray-200  whitespace-nowrap sm:text-lg overflow-ellipsis">
+          <div className="overflow-hidden whitespace-nowrap sm:text-lg overflow-ellipsis">
             {activeTab === 'business' && <span>{item.business}</span>}
             {activeTab !== 'business' && (
               <span>{item[activeTabConfig?.dataKey || '']}</span>

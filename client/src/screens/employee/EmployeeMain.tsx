@@ -13,16 +13,23 @@ import { ROUTES } from '../../constants/constant';
 import { IInform } from '../../interfaces/interface';
 import EmployeeTableBody from './EmployeeTableBody';
 import EmployeeTableHead from './EmployeeTableHead';
+import useEmployeeStore from '../../stores/employeeStore';
 
 function Main() {
-  const [currentDate, setCurrentDate] = useState<Date | null>(new Date());
+  const { inform, setInform, currentDate, setCurrentDate } = useEmployeeStore();
   const [showInput, setShowInput] = useState(false);
 
-  const { data: inform, refetch } = useQuery<IInform[]>({
+  const { data, refetch } = useQuery<IInform[]>({
     queryKey: ['employeeInform'],
-    queryFn: () => getEmployeeInform(currentDate || new Date()),
+    queryFn: () => getEmployeeInform(currentDate),
     refetchInterval: REFETCH_INTERVAL,
   });
+
+  useEffect(() => {
+    if (data) {
+      setInform(data);
+    }
+  }, [data, setInform]);
 
   useEffect(() => {
     if (currentDate) {
@@ -47,8 +54,13 @@ function Main() {
   };
 
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newDate = e.target.value ? new Date(e.target.value) : null;
-    setCurrentDate(newDate);
+    const newDate = e.target.value;
+    if (newDate) {
+      const date = new Date(newDate);
+      if (!isNaN(date.getTime())) {
+        setCurrentDate(date);
+      }
+    }
   };
 
   const handleDateBlur = () => {
@@ -61,8 +73,6 @@ function Main() {
         <div className="flex items-center justify-between w-full mt-2 mb-8 sm:mt-4">
           <ArrowBack type="home" />
           <Title
-            currentDate={currentDate || new Date()}
-            setCurrentDate={setCurrentDate}
             setShowInput={setShowInput}
             calDate={calDate}
             category="employee"
@@ -144,11 +154,7 @@ function Main() {
         >
           <Table stickyHeader>
             <EmployeeTableHead />
-            <EmployeeTableBody
-              inform={inform || []}
-              currentDate={currentDate || new Date()}
-              refetch={refetch}
-            />
+            <EmployeeTableBody refetch={refetch} />
           </Table>
         </TableContainer>
       </div>

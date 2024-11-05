@@ -45,7 +45,7 @@ function DriveMain() {
     enabled: carId.length > 0,
   });
 
-  const { data: notification, refetch: refetchNotification } = useQuery<ICars>({
+  const { data: notification } = useQuery<ICars>({
     queryKey: ['notification', carId],
     queryFn: () => getNotification(carId),
     enabled: carId.length > 0,
@@ -85,10 +85,9 @@ function DriveMain() {
 
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value;
-    // 'YYYY-MM' 형식으로 입력이 들어오므로, 이를 기반으로 currentDate를 설정
+
     const [year, month] = inputValue.split('-');
     if (month && year) {
-      // 한자리 수 월을 두 자리로 변환
       const formattedMonth = month.padStart(2, '0');
       setCurrentDate(new Date(`${year}-${formattedMonth}-01`));
     }

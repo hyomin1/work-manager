@@ -47,35 +47,35 @@ function AddAdminData({
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    let url = '';
+    let url = '/api/employee-inform/';
     let body = {};
 
     switch (type) {
       case 'username':
-        url = '/api/employee-inform/addName';
+        url += 'addName';
         body = { username: inputValue };
         break;
       case 'destination':
-        url = '/api/employee-inform/addDestination';
+        url += 'addDestination';
         body = { destination: inputValue };
         break;
       case 'business':
-        url = '/api/employee-inform/addBusiness';
+        url += 'addBusiness';
         body = {
           business: inputValue,
           destinationId: destination?.split(',')[0],
         };
         break;
       case 'work':
-        url = '/api/employee-inform/addWork';
+        url += 'addWork';
         body = { work: inputValue };
         break;
       case 'car':
-        url = '/api/employee-inform/addCar';
+        url += 'addCar';
         body = { car: inputValue };
         break;
       case 'etcName':
-        url = '/api/employee-inform/addEtcName';
+        url += 'addEtcName';
         body = { etcName: inputValue };
         break;
       default:

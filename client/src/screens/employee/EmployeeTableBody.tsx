@@ -1,21 +1,16 @@
-import React, { useState } from 'react';
-import { IInform } from '../../interfaces/interface';
+import { useState } from 'react';
 import { Button, TableBody, TableCell, TableRow, Tooltip } from '@mui/material';
 import EditInform from './EditEmployeeInform';
 import { Edit, Trash2 } from 'lucide-react';
 import { axiosReq } from '../../api';
+import useEmployeeStore from '../../stores/employeeStore';
 
 interface EmployeeTableBodyProps {
-  inform: IInform[];
-  currentDate: Date;
   refetch: () => void;
 }
 
-function EmployeeTableBody({
-  currentDate,
-  inform,
-  refetch,
-}: EmployeeTableBodyProps) {
+function EmployeeTableBody({ refetch }: EmployeeTableBodyProps) {
+  const { inform, currentDate } = useEmployeeStore();
   const [editingItemId, setEditingItemId] = useState('');
 
   const editInform = async (id: string) => {

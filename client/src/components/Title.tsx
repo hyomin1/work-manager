@@ -1,9 +1,10 @@
 import React from 'react';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
+import useEmployeeStore from '../stores/employeeStore';
 
 interface ITitleProps {
-  currentDate: Date;
-  setCurrentDate: React.Dispatch<React.SetStateAction<Date | null>>;
+  currentDate?: Date;
+  setCurrentDate?: React.Dispatch<React.SetStateAction<Date | null>>;
   setShowInput: React.Dispatch<React.SetStateAction<boolean>>;
   category: string;
   calDate?: (arg0: Date) => string;
@@ -14,10 +15,10 @@ function Title({
   calDate,
   calYearMonth,
   category,
-  currentDate,
-  setCurrentDate,
+
   setShowInput,
 }: ITitleProps) {
+  const { currentDate, setCurrentDate } = useEmployeeStore();
   const previous = () => {
     const prevDate = new Date(currentDate);
     if (category === 'employee') {
