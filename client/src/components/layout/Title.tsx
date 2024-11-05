@@ -1,6 +1,6 @@
 import React from 'react';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
-import useEmployeeStore from '../stores/employeeStore';
+import useEmployeeStore from '../../stores/employeeStore';
 
 interface ITitleProps {
   currentDate?: Date;

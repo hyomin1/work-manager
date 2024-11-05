@@ -4,19 +4,19 @@ import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { calDate, checkAdminSession, getEmployeeInform } from '../../api';
 import { SlRefresh } from 'react-icons/sl';
-import Title from '../../components/Title';
-import ArrowBack from '../../components/ArrowBack';
+import Title from '../../components/layout/Title';
+import ArrowBack from '../../components/common/ArrowBack';
 import { Settings, Pencil, Truck, LineChart, Calendar } from 'lucide-react';
 import Logout from '../auth/Logout';
 import { Paper, Table, TableContainer } from '@mui/material';
 import { ROUTES } from '../../constants/constant';
 import { IInform } from '../../interfaces/interface';
-import EmployeeTableBody from './EmployeeTableBody';
-import EmployeeTableHead from './EmployeeTableHead';
+import EmployeeTableBody from './components/TableBody';
+import EmployeeTableHead from './components/TableHead';
 import useEmployeeStore from '../../stores/employeeStore';
 
-function Main() {
-  const { inform, setInform, currentDate, setCurrentDate } = useEmployeeStore();
+function EmployeePage() {
+  const { setInform, currentDate, setCurrentDate } = useEmployeeStore();
   const [showInput, setShowInput] = useState(false);
 
   const { data, refetch } = useQuery<IInform[]>({
@@ -162,4 +162,4 @@ function Main() {
   );
 }
 
-export default Main;
+export default EmployeePage;

@@ -10,21 +10,21 @@ import {
 } from '../../api';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { ICars, IDrivingInform } from '../../interfaces/interface';
-import Title from '../../components/Title';
+import Title from '../../components/layout/Title';
 import { useNavigate } from 'react-router-dom';
 import { SlRefresh } from 'react-icons/sl';
-import Page from '../../components/Page';
+import Page from '../../components/common/Page';
 import { useMediaQuery } from 'react-responsive';
-import ArrowBack from './../../components/ArrowBack';
+import ArrowBack from './../../components/common/ArrowBack';
 import Logout from '../auth/Logout';
 import { Pencil, Settings, Users } from 'lucide-react';
 import DriveMobile from './DriveMobile';
-import DrivePC from './DrivePC';
+import DrivePC from './DriveDesktop';
 import { ROUTES } from '../../constants/constant';
 import { Alert } from '@mui/material';
 import AddDriveNotification from './AddDriveNotification';
 
-function DriveMain() {
+function DrivePage() {
   const navigate = useNavigate();
   const isMobile = useMediaQuery({ query: '(max-width: 540px)' });
 
@@ -278,4 +278,4 @@ function DriveMain() {
   );
 }
 
-export default DriveMain;
+export default DrivePage;

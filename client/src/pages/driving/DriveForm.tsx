@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { axiosReq, calDate } from '../../api';
-import ArrowBack from '../../components/ArrowBack';
+import ArrowBack from '../../components/common/ArrowBack';
 import { useCustomQueries } from '../../hooks/useCustomQuery';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -23,7 +23,7 @@ import {
 } from '@mui/material';
 import dayjs, { Dayjs } from 'dayjs';
 import { styled } from '@mui/material/styles';
-import Blank from '../../components/Blank';
+import Blank from '../../components/common/Blank';
 import { DatePicker } from '@mui/x-date-pickers';
 import { ROUTES } from '../../constants/constant';
 dayjs.locale('ko');

@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { directAdminSession, formDate } from '../../api';
-import Page from '../../components/Page';
+import Page from '../../components/common/Page';
 import TabHeaderAdmin from './TabHeaderAdmin';
 import TabContentAdmin from './TabContentAdmin';
 import { useAdminData } from '../../hooks/useAdminData';
-import ArrowBack from '../../components/ArrowBack';
+import ArrowBack from '../../components/common/ArrowBack';
 
 function Admin() {
   const queryClient = useQueryClient();

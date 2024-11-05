@@ -18,7 +18,11 @@ interface IEditInformProps {
   setEditingItemId: React.Dispatch<React.SetStateAction<string>>;
 }
 
-function EditInform({ item, setEditingItemId, currentDate }: IEditInformProps) {
+function EmployeeEdit({
+  item,
+  setEditingItemId,
+  currentDate,
+}: IEditInformProps) {
   const {
     names,
     namesLoading,
@@ -333,4 +337,4 @@ function EditInform({ item, setEditingItemId, currentDate }: IEditInformProps) {
   );
 }
 
-export default EditInform;
+export default EmployeeEdit;

@@ -1,5 +1,5 @@
 import React from 'react';
-import TabHeader from '../../components/TabHeader';
+import TabHeader from '../../components/layout/TabHeader';
 import { drivingHeaders } from '../../constants/headers';
 import { IDrivingInform } from '../../interfaces/interface';
 import { calCarDay } from '../../api';

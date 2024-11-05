@@ -17,14 +17,14 @@ import {
   getDestinationStatistics,
   getUserStatistics,
 } from '../../api';
-import ArrowBack from '../../components/ArrowBack';
-import Blank from '../../components/Blank';
+import ArrowBack from '../../components/common/ArrowBack';
+import Blank from '../../components/common/Blank';
 import {
   statisticsDestinationHeader,
   statisticsNameHeader,
 } from '../../constants/headers';
 
-function StatisticsMain() {
+function StatisticsPage() {
   // 0: 이름 검색, 1: 방문지 검색
   const [value, setValue] = useState(0);
 
@@ -265,4 +265,4 @@ function StatisticsMain() {
   );
 }
 
-export default StatisticsMain;
+export default StatisticsPage;

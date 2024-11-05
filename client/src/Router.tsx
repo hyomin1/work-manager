@@ -1,19 +1,17 @@
 import { createBrowserRouter } from 'react-router-dom';
 import App from './App';
-import Login from './screens/auth/Login';
+import Login from './pages/auth/Login';
 import { lazy } from 'react';
 
-const Register = lazy(() => import('./screens/auth/Register'));
-const SelectPages = lazy(() => import('./screens/SelectPages'));
-const EmployeeMain = lazy(() => import('./screens/employee/EmployeeMain'));
-const EmployeeInput = lazy(() => import('./screens/employee/EmployeeInput'));
-const DriveMain = lazy(() => import('./screens/driving/DriveMain'));
-const DriveInput = lazy(() => import('./screens/driving/DriveInput'));
-const StatisticsMain = lazy(
-  () => import('./screens/statistics/StatisticsMain')
-);
-const ScheduleMain = lazy(() => import('./screens/schedule/ScheduleMain'));
-const Admin = lazy(() => import('./screens/admin/Admin'));
+const Register = lazy(() => import('./pages/auth/Register'));
+const SelectPages = lazy(() => import('./pages/SelectPages'));
+const EmployeePage = lazy(() => import('./pages/employee/EmployeePage'));
+const EmployeeForm = lazy(() => import('./pages/employee/EmployeeForm'));
+const DrivePage = lazy(() => import('./pages/driving/DrivePage'));
+const DriveForm = lazy(() => import('./pages/driving/DriveForm'));
+const StatisticsPage = lazy(() => import('./pages/statistics/StatisticsPage'));
+const SchedulePage = lazy(() => import('./pages/schedule/SchedulePage'));
+const Admin = lazy(() => import('./pages/admin/Admin'));
 
 const router = createBrowserRouter([
   {
@@ -34,23 +32,23 @@ const router = createBrowserRouter([
       },
       {
         path: '/employee-status',
-        element: <EmployeeMain />,
+        element: <EmployeePage />,
       },
       {
         path: '/driving-status',
-        element: <DriveMain />,
+        element: <DrivePage />,
       },
       {
         path: '/statistics',
-        element: <StatisticsMain />,
+        element: <StatisticsPage />,
       },
       {
         path: '/employee-input',
-        element: <EmployeeInput />,
+        element: <EmployeeForm />,
       },
       {
         path: '/driving-input',
-        element: <DriveInput />,
+        element: <DriveForm />,
       },
       {
         path: '/admin',
@@ -58,7 +56,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/schedule',
-        element: <ScheduleMain />,
+        element: <SchedulePage />,
       },
     ],
   },

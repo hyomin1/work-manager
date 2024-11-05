@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { Button, TableBody, TableCell, TableRow, Tooltip } from '@mui/material';
-import EditInform from './EditEmployeeInform';
+import EditInform from '../EmployeeEdit';
 import { Edit, Trash2 } from 'lucide-react';
-import { axiosReq } from '../../api';
-import useEmployeeStore from '../../stores/employeeStore';
+import { axiosReq } from '../../../api';
+import useEmployeeStore from '../../../stores/employeeStore';
 
 interface EmployeeTableBodyProps {
   refetch: () => void;

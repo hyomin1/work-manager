@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { formDate, axiosReq } from '../../api';
-import ArrowBack from '../../components/ArrowBack';
+import ArrowBack from '../../components/common/ArrowBack';
 import { useNavigate } from 'react-router-dom';
 import { useCustomQueries } from '../../hooks/useCustomQuery';
 import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
@@ -23,7 +23,7 @@ import {
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import 'dayjs/locale/ko';
-import Blank from '../../components/Blank';
+import Blank from '../../components/common/Blank';
 import { ROUTES } from '../../constants/constant';
 dayjs.locale('ko');
 
@@ -43,7 +43,7 @@ const StyledFormSection = styled(Box)(({ theme }) => ({
   marginBottom: theme.spacing(2),
 }));
 
-function EmployeeInput() {
+function EmployeeForm() {
   const [username, setName] = useState<string | null>(null);
   const [selectedDestinations, setSelectedDestinations] = useState<
     Array<{ id: string; destination: string } | null>
@@ -583,4 +583,4 @@ function EmployeeInput() {
   );
 }
 
-export default EmployeeInput;
+export default EmployeeForm;

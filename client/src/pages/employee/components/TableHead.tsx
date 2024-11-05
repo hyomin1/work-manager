@@ -1,5 +1,5 @@
 import { TableCell, TableHead, TableRow } from '@mui/material';
-import { employeeHeaders } from '../../constants/headers';
+import { employeeHeaders } from '../../../constants/headers';
 
 function EmployeeTableHead() {
   return (

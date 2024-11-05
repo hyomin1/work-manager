@@ -3,7 +3,7 @@ import { IDrivingInform } from '../../interfaces/interface';
 import { drivingHeaders } from '../../constants/headers';
 import { axiosReq, calCarDay } from '../../api';
 import { Edit, Trash2 } from 'lucide-react';
-import EditDrivingInform from './EditDrivingInform';
+import EditDrivingInform from './DriveEdit';
 import {
   Paper,
   Table,

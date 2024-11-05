@@ -16,9 +16,9 @@ import {
 } from '../../api';
 import { useNavigate } from 'react-router-dom';
 import './Calendar.css';
-import EditInform from '../employee/EditEmployeeInform';
+import EmployeeEdit from '../employee/EmployeeEdit';
 
-function ScheduleMain() {
+function SchedulePage() {
   const date = new Date();
 
   const { data: scheduleData, refetch } = useQuery<IInform[]>({
@@ -160,7 +160,7 @@ function ScheduleMain() {
                 <Trash2 strokeWidth={2.2} />
               </button>
               {editingItemId && (
-                <EditInform
+                <EmployeeEdit
                   currentDate={tooltip.event.extendedProps.startDate}
                   item={tooltip.event.extendedProps}
                   setEditingItemId={setEditingItemId}
@@ -199,4 +199,4 @@ function ScheduleMain() {
   );
 }
 
-export default ScheduleMain;
+export default SchedulePage;
