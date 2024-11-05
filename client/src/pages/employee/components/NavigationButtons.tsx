@@ -24,7 +24,7 @@ function NavigationButtons({ refetch }: NavProps) {
         <div className="flex items-center justify-between sm:flex-col">
           <div className="flex sm:mb-2 sm:w-full sm:gap-2">
             <button
-              onClick={() => navigate(ROUTES.DRIVING_STATUS)}
+              onClick={() => navigate(ROUTES.VEHICLES.LIST)}
               className="button-effect flex items-center justify-center whitespace-nowrap rounded-lg bg-[#0EA5E9] px-4 py-2 text-white hover:opacity-60 sm:mr-0 sm:flex-1 md:mr-4"
             >
               <Truck className="sm:h-4 sm:w-4" />
@@ -32,7 +32,7 @@ function NavigationButtons({ refetch }: NavProps) {
             </button>
             <button
               className="button-effect flex items-center justify-center whitespace-nowrap rounded-lg bg-[#10B981] px-4 py-2 text-white sm:mr-0 sm:flex-1 md:mr-4"
-              onClick={() => navigate(ROUTES.EMPLOYEE_INPUT)}
+              onClick={() => navigate(ROUTES.EMPLOYEES.CREATE)}
             >
               <Pencil className="sm:h-4 sm:w-4" />
               <span className="ml-1 sm:text-xs">입력</span>

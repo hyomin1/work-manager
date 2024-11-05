@@ -1,61 +1,62 @@
-import { createBrowserRouter } from 'react-router-dom';
-import App from './App';
-import Login from './pages/auth/Login';
-import { lazy } from 'react';
+import { createBrowserRouter } from "react-router-dom";
+import App from "./App";
+import Login from "./pages/auth/Login";
+import { lazy } from "react";
+import { ROUTES } from "./constants/constant";
 
-const Register = lazy(() => import('./pages/auth/Register'));
-const SelectPages = lazy(() => import('./pages/SelectPages'));
-const EmployeePage = lazy(() => import('./pages/employee/EmployeePage'));
-const EmployeeForm = lazy(() => import('./pages/employee/EmployeeForm'));
-const DrivePage = lazy(() => import('./pages/driving/DrivePage'));
-const DriveForm = lazy(() => import('./pages/driving/DriveForm'));
-const StatisticsPage = lazy(() => import('./pages/statistics/StatisticsPage'));
-const SchedulePage = lazy(() => import('./pages/schedule/SchedulePage'));
-const Admin = lazy(() => import('./pages/admin/Admin'));
+const Register = lazy(() => import("./pages/auth/Register"));
+const SelectPages = lazy(() => import("./pages/SelectPages"));
+const EmployeePage = lazy(() => import("./pages/employee/EmployeePage"));
+const EmployeeForm = lazy(() => import("./pages/employee/EmployeeForm"));
+const DrivePage = lazy(() => import("./pages/driving/DrivePage"));
+const DriveForm = lazy(() => import("./pages/driving/DriveForm"));
+const StatisticsPage = lazy(() => import("./pages/statistics/StatisticsPage"));
+const SchedulePage = lazy(() => import("./pages/schedule/SchedulePage"));
+const Admin = lazy(() => import("./pages/admin/Admin"));
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: ROUTES.AUTH.LOGIN,
     element: <App />,
     children: [
       {
-        path: '',
+        path: "",
         element: <Login />,
       },
       {
-        path: '/register',
+        path: ROUTES.AUTH.REGISTER,
         element: <Register />,
       },
       {
-        path: '/home',
+        path: ROUTES.DASHBOARD,
         element: <SelectPages />,
       },
       {
-        path: '/employee-status',
+        path: ROUTES.EMPLOYEES.LIST,
         element: <EmployeePage />,
       },
       {
-        path: '/driving-status',
+        path: ROUTES.VEHICLES.LIST,
         element: <DrivePage />,
       },
       {
-        path: '/admin/statistics',
+        path: ROUTES.ADMIN.STATISTICS,
         element: <StatisticsPage />,
       },
       {
-        path: '/employee-input',
+        path: ROUTES.EMPLOYEES.CREATE,
         element: <EmployeeForm />,
       },
       {
-        path: '/driving-input',
+        path: ROUTES.VEHICLES.CREATE,
         element: <DriveForm />,
       },
       {
-        path: '/admin/settings',
+        path: ROUTES.ADMIN.SETTINGS,
         element: <Admin />,
       },
       {
-        path: '/schedule',
+        path: ROUTES.SCHEDULE,
         element: <SchedulePage />,
       },
     ],

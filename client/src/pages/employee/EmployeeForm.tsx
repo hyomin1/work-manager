@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import { formDate, axiosReq } from '../../api';
-import ArrowBack from '../../components/common/ArrowBack';
-import { useNavigate } from 'react-router-dom';
-import { useCustomQueries } from '../../hooks/useCustomQuery';
-import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
-import dayjs, { Dayjs } from 'dayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import React, { useState } from "react";
+import { formDate, axiosReq } from "../../api";
+import ArrowBack from "../../components/common/ArrowBack";
+import { useNavigate } from "react-router-dom";
+import { useCustomQueries } from "../../hooks/useCustomQuery";
+import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker";
+import dayjs, { Dayjs } from "dayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import {
   Paper,
   TextField,
@@ -20,18 +20,18 @@ import {
   FormControlLabel,
   Grid,
   Radio,
-} from '@mui/material';
-import { styled } from '@mui/material/styles';
-import 'dayjs/locale/ko';
-import Blank from '../../components/common/Blank';
-import { ROUTES } from '../../constants/constant';
-dayjs.locale('ko');
+} from "@mui/material";
+import { styled } from "@mui/material/styles";
+import "dayjs/locale/ko";
+import Blank from "../../components/common/Blank";
+import { ROUTES } from "../../constants/constant";
+dayjs.locale("ko");
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(3),
-  borderRadius: '12px',
-  boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-  '& .MuiTextField-root, & .MuiFormControl-root': {
+  borderRadius: "12px",
+  boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+  "& .MuiTextField-root, & .MuiFormControl-root": {
     marginBottom: theme.spacing(2),
   },
 }));
@@ -39,7 +39,7 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
 const StyledFormSection = styled(Box)(({ theme }) => ({
   padding: theme.spacing(2),
   border: `1px dashed ${theme.palette.divider}`,
-  borderRadius: '8px',
+  borderRadius: "8px",
   marginBottom: theme.spacing(2),
 }));
 
@@ -56,11 +56,11 @@ function EmployeeForm() {
     Array<{ work: string } | null>
   >([null, null, null]);
 
-  const [inputDestination, setInputDestination] = useState('');
+  const [inputDestination, setInputDestination] = useState("");
 
-  const [inputBusiness, setInputBusiness] = useState('');
+  const [inputBusiness, setInputBusiness] = useState("");
 
-  const [inputWork, setInputWork] = useState(''); // 업무 직접 입력은 아니지만 직접 입력한 방문지와 사업명의 매핑하기 위한 변수
+  const [inputWork, setInputWork] = useState(""); // 업무 직접 입력은 아니지만 직접 입력한 방문지와 사업명의 매핑하기 위한 변수
 
   const [car, setCar] = useState<string | null>(null);
 
@@ -71,7 +71,7 @@ function EmployeeForm() {
   const [endDate, setEndDate] = useState<Date>();
 
   // 비고
-  const [remarks, setRemarks] = useState('');
+  const [remarks, setRemarks] = useState("");
 
   const navigate = useNavigate();
   const {
@@ -88,7 +88,7 @@ function EmployeeForm() {
   } = useCustomQueries();
 
   const destinationOptions = [
-    { id: 'none', destination: '선택 안함' },
+    { id: "none", destination: "선택 안함" },
     ...(destinationsData
       ?.sort((a, b) => a.destination.localeCompare(b.destination))
       ?.map((item) => ({
@@ -98,7 +98,7 @@ function EmployeeForm() {
   ];
 
   const carOptions = [
-    { car: '선택 안함' },
+    { car: "선택 안함" },
     ...(cars
       ? cars
           .sort((a, b) => a.car.localeCompare(b.car))
@@ -116,8 +116,8 @@ function EmployeeForm() {
   ];
 
   const getBusinessOptions = (destinationId: string) => {
-    if (destinationId === 'none') {
-      return [{ business: '선택 안함' }];
+    if (destinationId === "none") {
+      return [{ business: "선택 안함" }];
     }
     return (
       businessesData
@@ -131,7 +131,7 @@ function EmployeeForm() {
 
   const handleNameChange = (
     event: React.SyntheticEvent,
-    username: string | null
+    username: string | null,
   ) => {
     setName(username);
   };
@@ -140,7 +140,7 @@ function EmployeeForm() {
     (index: number) =>
     (
       event: React.SyntheticEvent,
-      newValue: { id: string; destination: string } | null
+      newValue: { id: string; destination: string } | null,
     ) => {
       const newDestinations = [...selectedDestinations];
       newDestinations[index] = newValue;
@@ -170,7 +170,7 @@ function EmployeeForm() {
 
   const handleCarChange = (
     event: React.SyntheticEvent,
-    value: { car: string } | null
+    value: { car: string } | null,
   ) => {
     if (value) {
       setCar(value.car);
@@ -183,7 +183,6 @@ function EmployeeForm() {
       setStartDate(new Date());
       setEndDate(new Date());
     }
-    //const value = parseInt(event.target.value);
   };
 
   const handleDiffDateChange = (newDate: Dayjs | null) => {
@@ -219,7 +218,7 @@ function EmployeeForm() {
   const onClickComplete = async () => {
     const destArr = selectedDestinations
       .filter(
-        (dest): dest is { id: string; destination: string } => dest !== null
+        (dest): dest is { id: string; destination: string } => dest !== null,
       )
       .map((dest) => dest.destination)
       .concat(inputDestination.trim())
@@ -238,54 +237,54 @@ function EmployeeForm() {
       .filter(Boolean);
 
     if (!username) {
-      alert('이름을 선택해주세요');
+      alert("이름을 선택해주세요");
       return;
     }
 
     if (destArr.length === 0) {
-      alert('방문지를 선택해주세요');
+      alert("방문지를 선택해주세요");
       return;
     }
 
     if (businessArr.length === 0) {
-      alert('사업명을 선택해주세요');
+      alert("사업명을 선택해주세요");
       return;
     }
     if (destArr.length !== businessArr.length) {
-      alert('방문지와 사업명의 수가 일치하지 않습니다');
+      alert("방문지와 사업명의 수가 일치하지 않습니다");
       return;
     }
 
     if (workArr.length === 0) {
-      alert('업무를 선택해주세요');
+      alert("업무를 선택해주세요");
       return;
     }
     if (
       destArr.length === businessArr.length &&
       destArr.length > workArr.length
     ) {
-      alert('업무를 선택해주세요');
+      alert("업무를 선택해주세요");
       return;
     }
     if (
       destArr.length === businessArr.length &&
       destArr.length < workArr.length
     ) {
-      alert('업무의 개수가 많습니다');
+      alert("업무의 개수가 많습니다");
       return;
     }
 
     if (!car) {
-      alert('차량을 선택해주세요');
+      alert("차량을 선택해주세요");
       return;
     }
     if (startDate && endDate && startDate > endDate) {
-      alert('시작일이 종료일보다 느립니다.');
+      alert("시작일이 종료일보다 느립니다.");
       return;
     }
 
     const requests = destArr.map((destination, index) =>
-      axiosReq.post('/api/employee-inform/addInform', {
+      axiosReq.post("/api/employee-inform/addInform", {
         username,
         destination: destArr[index],
         business: businessArr[index],
@@ -295,14 +294,14 @@ function EmployeeForm() {
         endDate: isDaily === 1 ? new Date() : endDate,
         isDaily,
         remarks,
-      })
+      }),
     );
 
     const responses = await Promise.all(requests);
 
     if (responses.every((res) => res.status === 200)) {
-      alert('정보 입력 완료');
-      navigate(ROUTES.EMPLOYEE_STATUS);
+      alert("정보 입력 완료");
+      navigate(ROUTES.EMPLOYEES.LIST);
     }
   };
 
@@ -310,11 +309,11 @@ function EmployeeForm() {
     <Container
       maxWidth={false}
       sx={{ py: 4 }}
-      className="flex flex-col items-center w-full h-screen bg-gradient-to-br from-zinc-50 to-slate-100"
+      className="flex h-screen w-full flex-col items-center bg-gradient-to-br from-zinc-50 to-slate-100"
     >
-      <div className="flex items-center justify-between  mt-2 mb-8 sm:mt-4 sm:w-full md:w-[80%]">
+      <div className="mb-8 mt-2 flex items-center justify-between sm:mt-4 sm:w-full md:w-[80%]">
         <ArrowBack type="not home" />
-        <span className="font-bold sm:text-lg md:text-3xl md:mx-8 sm:mx-1 whitespace-nowrap">
+        <span className="whitespace-nowrap font-bold sm:mx-1 sm:text-lg md:mx-8 md:text-3xl">
           {formDate}
         </span>
         <Blank />
@@ -324,7 +323,7 @@ function EmployeeForm() {
         elevation={3}
         sx={{
           boxShadow:
-            '0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)',
+            "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)",
         }}
         className="sm:w-full md:w-[80%]"
       >
@@ -344,9 +343,9 @@ function EmployeeForm() {
                       <MobileDatePicker
                         onChange={handleDiffDateChange}
                         sx={{
-                          width: '100%',
-                          '& .MuiOutlinedInput-root': {
-                            backgroundColor: 'white',
+                          width: "100%",
+                          "& .MuiOutlinedInput-root": {
+                            backgroundColor: "white",
                           },
                         }}
                         label="날짜 *"
@@ -362,9 +361,9 @@ function EmployeeForm() {
                           <MobileDatePicker
                             onChange={handleStartDateChange}
                             sx={{
-                              width: '100%',
-                              '& .MuiOutlinedInput-root': {
-                                backgroundColor: 'white',
+                              width: "100%",
+                              "& .MuiOutlinedInput-root": {
+                                backgroundColor: "white",
                               },
                             }}
                             label="시작일 *"
@@ -372,9 +371,9 @@ function EmployeeForm() {
                           <MobileDatePicker
                             onChange={handleEndDateChange}
                             sx={{
-                              width: '100%',
-                              '& .MuiOutlinedInput-root': {
-                                backgroundColor: 'white',
+                              width: "100%",
+                              "& .MuiOutlinedInput-root": {
+                                backgroundColor: "white",
                               },
                             }}
                             label="종료일 *"
@@ -439,7 +438,7 @@ function EmployeeForm() {
           </Grid>
 
           {/* 상세 정보 섹션 */}
-          <Grid item xs={12} sx={{ width: '100%' }}>
+          <Grid item xs={12} sx={{ width: "100%" }}>
             <Grid container spacing={3}>
               {/* 방문지 섹션 */}
               <Grid item xs={12} md={4}>
@@ -453,7 +452,7 @@ function EmployeeForm() {
                       renderInput={(params) => (
                         <TextField
                           {...params}
-                          label={`방문지${index + 1} ${index === 0 ? '*' : ''}`}
+                          label={`방문지${index + 1} ${index === 0 ? "*" : ""}`}
                           sx={{ mb: 2 }}
                         />
                       )}
@@ -478,13 +477,13 @@ function EmployeeForm() {
                     <Autocomplete
                       key={index}
                       options={getBusinessOptions(
-                        selectedDestinations[index]?.id || 'none'
+                        selectedDestinations[index]?.id || "none",
                       )}
                       getOptionLabel={(option) => option.business}
                       renderInput={(params) => (
                         <TextField
                           {...params}
-                          label={`사업명${index + 1} ${index === 0 ? '*' : ''}`}
+                          label={`사업명${index + 1} ${index === 0 ? "*" : ""}`}
                           sx={{ mb: 2 }}
                         />
                       )}
@@ -517,7 +516,7 @@ function EmployeeForm() {
                       renderInput={(params) => (
                         <TextField
                           {...params}
-                          label={`업무${index + 1} ${index === 0 ? '*' : ''}`}
+                          label={`업무${index + 1} ${index === 0 ? "*" : ""}`}
                           sx={{ mb: 2 }}
                         />
                       )}
@@ -561,18 +560,18 @@ function EmployeeForm() {
         </Grid>
 
         {/* 완료 버튼 */}
-        <Box sx={{ textAlign: 'center', width: '100%' }}>
+        <Box sx={{ textAlign: "center", width: "100%" }}>
           <Button
             variant="contained"
             onClick={onClickComplete}
             sx={{
-              height: '48px',
-              fontSize: '1.1rem',
-              bgcolor: '#00ab39',
-              '&:hover': {
-                bgcolor: '#009933',
+              height: "48px",
+              fontSize: "1.1rem",
+              bgcolor: "#00ab39",
+              "&:hover": {
+                bgcolor: "#009933",
               },
-              width: '20%',
+              width: "20%",
             }}
           >
             입력 완료

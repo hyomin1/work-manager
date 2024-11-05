@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import {
   calMonth,
   calYear,
@@ -7,46 +7,46 @@ import {
   getCars,
   getDrivingInform,
   getNotification,
-} from '../../api';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { ICars, IDrivingInform } from '../../interfaces/interface';
-import Title from '../../components/layout/Title';
-import { useNavigate } from 'react-router-dom';
-import { SlRefresh } from 'react-icons/sl';
-import Page from '../../components/common/Page';
-import { useMediaQuery } from 'react-responsive';
-import ArrowBack from './../../components/common/ArrowBack';
-import Logout from '../auth/Logout';
-import { Pencil, Settings, Users } from 'lucide-react';
-import DriveMobile from './DriveMobile';
-import DrivePC from './DriveDesktop';
-import { ROUTES } from '../../constants/constant';
-import { Alert } from '@mui/material';
-import AddDriveNotification from './AddDriveNotification';
+} from "../../api";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { ICars, IDrivingInform } from "../../interfaces/interface";
+import Title from "../../components/layout/Title";
+import { useNavigate } from "react-router-dom";
+import { SlRefresh } from "react-icons/sl";
+import Page from "../../components/common/Page";
+import { useMediaQuery } from "react-responsive";
+import ArrowBack from "./../../components/common/ArrowBack";
+import Logout from "../auth/Logout";
+import { Pencil, Settings, Users } from "lucide-react";
+import DriveMobile from "./DriveMobile";
+import DrivePC from "./DriveDesktop";
+import { ROUTES } from "../../constants/constant";
+import { Alert } from "@mui/material";
+import AddDriveNotification from "./AddDriveNotification";
 
 function DrivePage() {
   const navigate = useNavigate();
-  const isMobile = useMediaQuery({ query: '(max-width: 540px)' });
+  const isMobile = useMediaQuery({ query: "(max-width: 540px)" });
 
   const [currentDate, setCurrentDate] = useState<Date | null>(null);
-  const [carId, setCarId] = useState('');
-  const [car, setCar] = useState('');
+  const [carId, setCarId] = useState("");
+  const [car, setCar] = useState("");
   const [isAdding, setIsAdding] = useState(false);
 
   const { data: drivingInform, refetch } = useQuery<IDrivingInform[]>({
-    queryKey: ['drivingInform'],
+    queryKey: ["drivingInform"],
     queryFn: () =>
       getDrivingInform(
         calYear(currentDate || new Date()),
         calMonth(currentDate || new Date()),
-        carId
+        carId,
       ),
     refetchInterval: 300_000,
     enabled: carId.length > 0,
   });
 
   const { data: notification } = useQuery<ICars>({
-    queryKey: ['notification', carId],
+    queryKey: ["notification", carId],
     queryFn: () => getNotification(carId),
     enabled: carId.length > 0,
   });
@@ -67,7 +67,7 @@ function DrivePage() {
   const [showInput, setShowInput] = useState(false);
 
   const { data: cars } = useQuery<ICars[]>({
-    queryKey: ['car', 1],
+    queryKey: ["car", 1],
     queryFn: getCars,
   });
 
@@ -76,8 +76,8 @@ function DrivePage() {
   };
 
   const onChangeCarNum = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const carId = e.target.value.split(',')[0];
-    const carName = e.target.value.split(',')[1];
+    const carId = e.target.value.split(",")[0];
+    const carName = e.target.value.split(",")[1];
     setCar(carName);
     setCarId(carId);
     setCurrentPage(1);
@@ -86,23 +86,19 @@ function DrivePage() {
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value;
 
-    const [year, month] = inputValue.split('-');
+    const [year, month] = inputValue.split("-");
     if (month && year) {
-      const formattedMonth = month.padStart(2, '0');
+      const formattedMonth = month.padStart(2, "0");
       setCurrentDate(new Date(`${year}-${formattedMonth}-01`));
     }
 
     setCurrentPage(1);
   };
 
-  const onClickInputInform = () => {
-    navigate(ROUTES.DRIVING_INPUT);
-  };
-
   const onClickAdmin = async () => {
     const status = await checkAdminSession();
     if (status === 200) {
-      navigate(ROUTES.ADMIN);
+      navigate(ROUTES.ADMIN.SETTINGS);
     }
   };
 
@@ -117,9 +113,9 @@ function DrivePage() {
   const grandTotal = totalFuelCost + totalToll + totalEtcCost;
 
   return (
-    <div className="flex flex-col items-center justify-between w-full min-h-screen p-4 sm:p-2 bg-gradient-to-br from-zinc-50 to-slate-100">
-      <div className="sm:w-full w-[80%] flex flex-col items-center">
-        <div className="flex items-center justify-between w-full mt-4 mb-4 print:justify-center sm:mt-4">
+    <div className="flex min-h-screen w-full flex-col items-center justify-between bg-gradient-to-br from-zinc-50 to-slate-100 p-4 sm:p-2">
+      <div className="flex w-[80%] flex-col items-center sm:w-full">
+        <div className="mb-4 mt-4 flex w-full items-center justify-between sm:mt-4 print:justify-center">
           <ArrowBack type="home" />
           <Title
             currentDate={currentDate || new Date()}
@@ -131,28 +127,28 @@ function DrivePage() {
           <Logout />
         </div>
 
-        <div className="flex items-center justify-between w-full mb-2">
+        <div className="mb-2 flex w-full items-center justify-between">
           {showInput && (
-            <div className="flex justify-center w-full hover:opacity-60">
+            <div className="flex w-full justify-center hover:opacity-60">
               <input
                 type="month"
                 onChange={handleDateChange}
                 onBlur={() => setShowInput(false)}
-                className="sm:w-[70%] w-[33%] my-4 p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 ease-in-out"
+                className="my-4 w-[33%] rounded-lg border border-gray-300 p-2 shadow-sm transition duration-200 ease-in-out focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 sm:w-[70%]"
               />
             </div>
           )}
         </div>
 
         <div className="w-full">
-          <div className="hidden w-full mb-4 font-bold print:flex">
+          <div className="mb-4 hidden w-full font-bold print:flex">
             <span>{car}</span>
           </div>
 
-          <div className="w-[100%] flex sm:flex-col md:justify-between items-center border border-t-gray-300 rounded-t-2xl md:h-20 sm:h-auto print-hidden">
-            <div className="flex sm:flex-col md:w-[50%] items-center md:justify-between sm:w-full sm:p-3 md:ml-2">
+          <div className="print-hidden flex w-[100%] items-center rounded-t-2xl border border-t-gray-300 sm:h-auto sm:flex-col md:h-20 md:justify-between">
+            <div className="flex items-center sm:w-full sm:flex-col sm:p-3 md:ml-2 md:w-[50%] md:justify-between">
               <select
-                className="md:w-[20%] sm:w-full hover:opacity-60 font-bold h-10 border border-gray-300 rounded-lg p-2 text-sm sm:mb-3 md:mr-16"
+                className="h-10 rounded-lg border border-gray-300 p-2 text-sm font-bold hover:opacity-60 sm:mb-3 sm:w-full md:mr-16 md:w-[20%]"
                 onChange={onChangeCarNum}
                 defaultValue=""
               >
@@ -174,28 +170,28 @@ function DrivePage() {
                   onClick={() => setIsAdding(true)}
                   severity="info"
                   variant="outlined"
-                  className="md:w-[80%] sm:w-full flex items-center h-16 p-2 cursor-pointer hover:opacity-60"
+                  className="flex h-16 cursor-pointer items-center p-2 hover:opacity-60 sm:w-full md:w-[80%]"
                   sx={{
-                    fontSize: 'medium',
-                    bgColor: '#93C5FD',
-                    borderRadius: '8px',
-                    border: '1px solid lightgray',
-                    fontWeight: 'bold',
-                    '@media (max-width: 640px)': {
-                      whiteSpace: 'normal',
-                      height: 'auto',
-                      minHeight: '40px',
-                      '& .MuiAlert-message': {
-                        overflow: 'visible',
-                        whiteSpace: 'normal',
+                    fontSize: "medium",
+                    bgColor: "#93C5FD",
+                    borderRadius: "8px",
+                    border: "1px solid lightgray",
+                    fontWeight: "bold",
+                    "@media (max-width: 640px)": {
+                      whiteSpace: "normal",
+                      height: "auto",
+                      minHeight: "40px",
+                      "& .MuiAlert-message": {
+                        overflow: "visible",
+                        whiteSpace: "normal",
                       },
                     },
-                    '&:hover': {
-                      transform: 'translateY(-1px)',
+                    "&:hover": {
+                      transform: "translateY(-1px)",
                     },
                   }}
                 >
-                  {notification?.notification || '공지사항을 등록해주세요'}
+                  {notification?.notification || "공지사항을 등록해주세요"}
                 </Alert>
               )}
             </div>
@@ -205,39 +201,39 @@ function DrivePage() {
                 setIsAdding={setIsAdding}
                 id={carId}
                 queryClient={queryClient}
-                notice={notification?.notification || ''}
+                notice={notification?.notification || ""}
               />
             )}
 
-            <div className="p-4 items-center flex flex-1 md:w-[50%] justify-end sm:w-full sm:flex-col sm:gap-2">
-              <div className="flex items-center justify-center sm:w-full sm:gap-2 sm:mb-2">
+            <div className="flex flex-1 items-center justify-end p-4 sm:w-full sm:flex-col sm:gap-2 md:w-[50%]">
+              <div className="flex items-center justify-center sm:mb-2 sm:w-full sm:gap-2">
                 <button
-                  onClick={() => navigate(ROUTES.EMPLOYEE_STATUS)}
-                  className="whitespace-nowrap bg-[#0EA5E9] rounded-lg text-white py-2 px-4 hover:opacity-60 md:mr-4 button-effect flex justify-center items-center sm:flex-1"
+                  onClick={() => navigate(ROUTES.EMPLOYEES.LIST)}
+                  className="button-effect flex items-center justify-center whitespace-nowrap rounded-lg bg-[#0EA5E9] px-4 py-2 text-white hover:opacity-60 sm:flex-1 md:mr-4"
                 >
-                  <Users className="sm:w-4 sm:h-4" />
+                  <Users className="sm:h-4 sm:w-4" />
                   <span className="ml-1 sm:text-xs">근무</span>
                 </button>
                 <button
-                  className="whitespace-nowrap bg-[#10B981] rounded-lg text-white py-2 sm:text-lg px-4 button-effect md:mr-4 flex justify-center items-center sm:flex-1"
-                  onClick={onClickInputInform}
+                  className="button-effect flex items-center justify-center whitespace-nowrap rounded-lg bg-[#10B981] px-4 py-2 text-white sm:flex-1 sm:text-lg md:mr-4"
+                  onClick={() => navigate(ROUTES.VEHICLES.CREATE)}
                 >
-                  <Pencil className="sm:w-4 sm:h-4" />
+                  <Pencil className="sm:h-4 sm:w-4" />
                   <span className="ml-1 sm:text-xs">입력</span>
                 </button>
                 <button
-                  className="whitespace-nowrap bg-[#0EA5E9] rounded-lg text-white py-2 px-4 hover:opacity-60 button-effect flex justify-center items-center sm:flex-1"
+                  className="button-effect flex items-center justify-center whitespace-nowrap rounded-lg bg-[#0EA5E9] px-4 py-2 text-white hover:opacity-60 sm:flex-1"
                   onClick={onClickAdmin}
                 >
-                  <Settings className="sm:w-4 sm:h-4" />
+                  <Settings className="sm:h-4 sm:w-4" />
                   <span className="ml-1 sm:text-xs">관리</span>
                 </button>
               </div>
 
-              <div className="flex items-center sm:w-full sm:justify-center sm:hidden">
-                <div className="mx-4 border border-gray-300 md:h-10 " />
+              <div className="flex items-center sm:hidden sm:w-full sm:justify-center">
+                <div className="mx-4 border border-gray-300 md:h-10" />
                 <button onClick={() => refetch()}>
-                  <SlRefresh className="md:w-7 md:h-7 sm:w-6 sm:h-6 hover:opacity-60" />
+                  <SlRefresh className="hover:opacity-60 sm:h-6 sm:w-6 md:h-7 md:w-7" />
                 </button>
               </div>
             </div>

@@ -1,4 +1,5 @@
-import axios, { AxiosError, AxiosResponse } from 'axios';
+import axios, { AxiosError, AxiosResponse } from "axios";
+import { ROUTES } from "./constants/constant";
 
 const axiosIP = axios.create({
   baseURL: process.env.REACT_APP_IP,
@@ -13,7 +14,7 @@ const axiosDomain = axios.create({
 });
 
 const handleResponseInterceptor = async (
-  error: AxiosError
+  error: AxiosError,
 ): Promise<AxiosResponse> => {
   if (error.response?.status === 400) {
     const errMsg = error.response.data as { error: string };
@@ -29,17 +30,16 @@ const handleResponseInterceptor = async (
     alert(errMsg.error);
 
     // 유저 아닌 경우
-    if (errType.type === 'not User') {
-      window.location.href = '/';
-    } else if (errType.type === 'not admin') {
-      window.location.href = '/';
-    } else if (errType.type === 'not granted admin') {
+    if (errType.type === "not User") {
+      window.location.href = ROUTES.AUTH.LOGIN;
+    } else if (errType.type === "not admin") {
+      window.location.href = ROUTES.AUTH.LOGIN;
+    } else if (errType.type === "not granted admin") {
     }
 
-    //window.location.href = "/";
     return new Promise(() => {});
   } else if (error.response?.status === 404) {
-    console.error('c', error.response);
+    console.error("c", error.response);
     const errMsg = error.response.data as { error: string };
     alert(errMsg.error);
   } else if (error.response?.status === 500) {
@@ -51,12 +51,12 @@ const handleResponseInterceptor = async (
 };
 axiosIP.interceptors.response.use(
   (response) => response,
-  (error: AxiosError) => handleResponseInterceptor(error)
+  (error: AxiosError) => handleResponseInterceptor(error),
 );
 
 axiosDomain.interceptors.response.use(
   (response) => response,
-  (error: AxiosError) => handleResponseInterceptor(error)
+  (error: AxiosError) => handleResponseInterceptor(error),
 );
 
 export { axiosIP, axiosDomain };

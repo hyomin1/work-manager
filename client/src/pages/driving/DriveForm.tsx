@@ -103,11 +103,11 @@ function DriveInput() {
     setToll(parseInt(event.target.value));
   };
   const handleEtcNameChange = (event: SelectChangeEvent) => {
-    setEtc({ name: event.target.value, cost: etc.cost }); // ���기값 설정
+    setEtc({ name: event.target.value, cost: etc.cost });
   };
 
   const handleEtcCostChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setEtc({ name: etc.name, cost: parseInt(event.target.value) }); // ���기값 설정
+    setEtc({ name: etc.name, cost: parseInt(event.target.value) });
   };
 
   const handleDriverChange = (index: number) => (event: SelectChangeEvent) => {
@@ -181,7 +181,7 @@ function DriveInput() {
     });
     if (res.status === 200) {
       alert(res.data.message);
-      navigate(ROUTES.DRIVING_STATUS);
+      navigate(ROUTES.VEHICLES.LIST);
     }
   };
   if (namesLoading || carsLoading || etcNamesLoading) {
