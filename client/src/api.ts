@@ -1,53 +1,53 @@
-import { axiosIP, axiosDomain } from './axios';
+import { axiosIP, axiosDomain } from "./axios";
 
 // 현재 URL 정보 get ex) http://localhost:3000/login -> http://localhost:3000
 export const getBaseUrl = () => {
   return window.location.origin;
 };
 
-export const domainName = 'https://tech.bonc.co.kr';
+export const domainName = "https://tech.bonc.co.kr";
 
 export const axiosReq = getBaseUrl() === domainName ? axiosDomain : axiosIP;
 
 // 이름 정보
 export const getNames = async () => {
-  const res = await axiosReq.get('/api/employee-inform/getName');
+  const res = await axiosReq.get("/api/employee-inform/getName");
   return res.data.allNames || [];
 };
 
 // 방문지 정보
 export const getDestinations = async () => {
-  const res = await axiosReq.get('/api/employee-inform/getDestination');
+  const res = await axiosReq.get("/api/employee-inform/getDestination");
   return res.data.allDestinations || [];
 };
 
 // 사업명 정보
 export const getBusinesses = async () => {
-  const res = await axiosReq.get('/api/employee-inform/getBusinesses');
+  const res = await axiosReq.get("/api/employee-inform/getBusinesses");
   return res.data.allBusinesses || [];
 };
 
 export const getBusiness = async (business: string) => {
   const res = await axiosReq.get(
-    `/api/employee-inform/getBusiness/${business}`
+    `/api/employee-inform/getBusiness/${business}`,
   );
-  return res.data.business || '';
+  return res.data.business || "";
 };
 
 // 업무 정보
 export const getWorks = async () => {
-  const res = await axiosReq.get('/api/employee-inform/getWork');
+  const res = await axiosReq.get("/api/employee-inform/getWork");
   return res.data.allWorks || [];
 };
 
 // 차량 정보
 export const getCars = async () => {
-  const res = await axiosReq.get('/api/employee-inform/getCar');
+  const res = await axiosReq.get("/api/employee-inform/getCar");
   return res.data.allCars || [];
 };
 
 export const getEtcNames = async () => {
-  const res = await axiosReq.get('/api/employee-inform/getEtcName');
+  const res = await axiosReq.get("/api/employee-inform/getEtcName");
   return res.data.allEtcNames || [];
 };
 
@@ -60,11 +60,11 @@ export const getEmployeeInform = async (date: Date) => {
 export const getDrivingInform = async (
   year: number,
   month: number,
-  car: string
+  car: string,
 ) => {
   if (car) {
     const res = await axiosReq.get(
-      `/api/driving-inform/getInform?year=${year}&month=${month}&car=${car}&date=${new Date()}`
+      `/api/driving-inform/getInform?year=${year}&month=${month}&car=${car}&date=${new Date()}`,
     );
     return res.data.allDrivingInforms || [];
   }
@@ -75,10 +75,10 @@ export const getDrivingInform = async (
 export const getUserStatistics = async (
   username: string,
   startDate: Date,
-  endDate: Date
+  endDate: Date,
 ) => {
   const res = await axiosReq.get(
-    `/api/employee-inform/userStatistics?username=${username}&startDate=${startDate}&endDate=${endDate}`
+    `/api/employee-inform/userStatistics?username=${username}&startDate=${startDate}&endDate=${endDate}`,
   );
 
   return res.data.userStatistics || [];
@@ -88,10 +88,10 @@ export const getUserStatistics = async (
 export const getDestinationStatistics = async (
   destination: string,
   startDate: Date,
-  endDate: Date
+  endDate: Date,
 ) => {
   const res = await axiosReq.get(
-    `/api/employee-inform/destinationStatistics?destination=${destination}&startDate=${startDate}&endDate=${endDate}`
+    `/api/employee-inform/destinationStatistics?destination=${destination}&startDate=${startDate}&endDate=${endDate}`,
   );
 
   return res.data.destinationStatistics || [];
@@ -100,7 +100,7 @@ export const getDestinationStatistics = async (
 // 일정 fetch
 export const getSchedule = async (year: number, month: number) => {
   const res = await axiosReq.get(
-    `/api/schedule/getSchedule?year=${year}&month=${month}`
+    `/api/schedule/getSchedule?year=${year}&month=${month}`,
   );
 
   return res.data.schedules || [];
@@ -109,20 +109,20 @@ export const getSchedule = async (year: number, month: number) => {
 // 차량 공지 사항
 export const getNotification = async (carId: string) => {
   const response = await axiosReq.get(
-    `/api/driving-inform/getNotification?id=${carId}`
+    `/api/driving-inform/getNotification?id=${carId}`,
   );
-  return response.data || '';
+  return response.data || "";
 };
 
 // 메인화면에서 관리 버튼 눌러서 들어간 경우 check, 접근 불가 메시지만 띄워줌
 export const checkAdminSession = async () => {
-  const res = await axiosReq.get('/auth/checkAdminSession');
+  const res = await axiosReq.get("/auth/checkAdminSession");
   return res.status;
 };
 
 // /admin 경로로 접근시
 export const directAdminSession = async () => {
-  const res = await axiosReq.get('/auth/directAdminSession');
+  const res = await axiosReq.get("/auth/directAdminSession");
   return res.status;
 };
 
@@ -130,16 +130,16 @@ const today = new Date();
 const year = today.getFullYear();
 const month = today.getMonth() + 1;
 const day = today.getDate();
-const daysOfWeek = ['일', '월', '화', '수', '목', '금', '토'];
+const daysOfWeek = ["일", "월", "화", "수", "목", "금", "토"];
 const dayOfWeek = daysOfWeek[today.getDay()];
 
 export const formDate = `${year}년 ${month}월 ${day}일 (${dayOfWeek})`;
 
-export const calDate = (date: Date) => {
+export const calculateDate = (date: Date) => {
   const year = date.getFullYear();
   const month = date.getMonth() + 1;
   const day = date.getDate();
-  const daysOfWeek = ['일', '월', '화', '수', '목', '금', '토'];
+  const daysOfWeek = ["일", "월", "화", "수", "목", "금", "토"];
   const dayOfWeek = daysOfWeek[date.getDay()];
 
   return `${year}년 ${month}월 ${day}일 (${dayOfWeek})`;
@@ -165,7 +165,7 @@ export const calDay = (date: Date) => {
 };
 
 export const calDayOfWeek = (date: Date) => {
-  const daysOfWeek = ['일', '월', '화', '수', '목', '금', '토'];
+  const daysOfWeek = ["일", "월", "화", "수", "목", "금", "토"];
   return daysOfWeek[date.getDay()];
 };
 

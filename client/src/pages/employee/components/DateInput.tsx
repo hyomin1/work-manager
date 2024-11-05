@@ -1,11 +1,11 @@
-import useEmployeeStore from '../../../stores/employeeStore';
+import useEmployeeStore from "../../../stores/employeeStore";
 
 interface DateInputProps {
-  showInput: boolean;
+  isDatePickerOpen: boolean;
   onClose: () => void;
 }
 
-function DateInput({ showInput, onClose }: DateInputProps) {
+function DateInput({ isDatePickerOpen, onClose }: DateInputProps) {
   const { currentDate, setCurrentDate } = useEmployeeStore();
 
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -18,14 +18,14 @@ function DateInput({ showInput, onClose }: DateInputProps) {
     }
   };
 
-  if (!showInput) return null;
+  if (!isDatePickerOpen) return null;
 
   return (
-    <div className="w-[21%] sm:w-[40%] flex justify-center">
+    <div className="flex w-[21%] justify-center sm:w-[40%]">
       <input
         type="date"
-        value={currentDate ? currentDate.toISOString().split('T')[0] : ''}
-        className="sm:w-full w-[60%] my-4 p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 ease-in-out"
+        value={currentDate ? currentDate.toISOString().split("T")[0] : ""}
+        className="my-4 w-[60%] rounded-lg border border-gray-300 p-2 shadow-sm transition duration-200 ease-in-out focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 sm:w-full"
         onChange={handleDateChange}
         onBlur={onClose}
       />

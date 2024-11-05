@@ -1,35 +1,35 @@
-import { Button, Paper, Tooltip } from '@mui/material';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import { useEffect, useState } from 'react';
-import StatisticsTab from './StatisticsTab';
-import { IDestStat, INameStat } from '../../interfaces/interface';
-import { useQuery } from '@tanstack/react-query';
+import { Button, Paper, Tooltip } from "@mui/material";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import { useEffect, useState } from "react";
+import StatisticsTab from "./StatisticsTab";
+import { IDestStat, INameStat } from "../../interfaces/interface";
+import { useQuery } from "@tanstack/react-query";
 import {
-  calDate,
+  calculateDate,
   calStatDay,
   checkAdminSession,
   extractMonthAndDay,
   getDestinationStatistics,
   getUserStatistics,
-} from '../../api';
-import ArrowBack from '../../components/common/ArrowBack';
-import Blank from '../../components/common/Blank';
+} from "../../api";
+import ArrowBack from "../../components/common/ArrowBack";
+import Blank from "../../components/common/Blank";
 import {
   statisticsDestinationHeader,
   statisticsNameHeader,
-} from '../../constants/headers';
+} from "../../constants/headers";
 
 function StatisticsPage() {
   // 0: 이름 검색, 1: 방문지 검색
   const [value, setValue] = useState(0);
 
-  const [username, setUserName] = useState('');
-  const [destination, setDestination] = useState('');
+  const [username, setUserName] = useState("");
+  const [destination, setDestination] = useState("");
   // 시작일은 해당 날짜의 시작(00:00:00)으로, 종료일은 해당 날짜의 끝(23:59:59)으로 설정
   const [startDate, setStartDate] = useState(() => {
     const date = new Date();
@@ -48,14 +48,14 @@ function StatisticsPage() {
   const { data: statisticsNameData, refetch: nameRefetch } = useQuery<
     INameStat[]
   >({
-    queryKey: ['statistics', username, startDate],
+    queryKey: ["statistics", username, startDate],
     queryFn: () => getUserStatistics(username, startDate, endDate), // startDate ~ endDate 범위의 데이터 get
     enabled: false,
   });
 
   const { data: statisticsDestinationData, refetch: destinationRefetch } =
     useQuery<IDestStat[]>({
-      queryKey: ['statistics', destination],
+      queryKey: ["statistics", destination],
       queryFn: () => getDestinationStatistics(destination, startDate, endDate),
       enabled: false,
     });
@@ -65,12 +65,12 @@ function StatisticsPage() {
   }, []);
 
   return (
-    <div className="flex flex-col items-center w-full h-screen p-10 sm:p-2 bg-gradient-to-br from-gray-50 to-zinc-100">
-      <div className="flex flex-col items-center w-[85%] sm:w-full">
-        <div className="flex items-center justify-between w-full mt-2 mb-8 sm:mt-4">
+    <div className="flex h-screen w-full flex-col items-center bg-gradient-to-br from-gray-50 to-zinc-100 p-10 sm:p-2">
+      <div className="flex w-[85%] flex-col items-center sm:w-full">
+        <div className="mb-8 mt-2 flex w-full items-center justify-between sm:mt-4">
           <ArrowBack type="not home" />
-          <span className="font-bold sm:text-sm md:text-3xl md:mx-8 sm:mx-1 whitespace-nowrap">
-            {calDate(new Date())}
+          <span className="whitespace-nowrap font-bold sm:mx-1 sm:text-sm md:mx-8 md:text-3xl">
+            {calculateDate(new Date())}
           </span>
           <Blank />
         </div>
@@ -92,9 +92,9 @@ function StatisticsPage() {
       />
 
       <TableContainer
-        sx={{ width: '85%', marginTop: 4 }}
+        sx={{ width: "85%", marginTop: 4 }}
         component={Paper}
-        className="shadow-lg rounded-xl"
+        className="rounded-xl shadow-lg"
       >
         <Table stickyHeader>
           <TableHead>
@@ -105,15 +105,15 @@ function StatisticsPage() {
                 statisticsNameHeader.map((item, index) => (
                   <TableCell
                     key={index}
-                    className="font-semibold text-gray-700 bg-blue-50"
+                    className="bg-blue-50 font-semibold text-gray-700"
                     sx={{
-                      fontSize: '0.9rem',
-                      fontWeight: 'bold',
+                      fontSize: "0.9rem",
+                      fontWeight: "bold",
                       py: 2,
-                      '&:first-of-type': {
+                      "&:first-of-type": {
                         paddingLeft: 2,
                       },
-                      whiteSpace: 'nowrap',
+                      whiteSpace: "nowrap",
                     }}
                   >
                     {item}
@@ -145,25 +145,25 @@ function StatisticsPage() {
                 })
                 ?.map((item, index) => (
                   <TableRow key={index}>
-                    <TableCell sx={{ fontSize: 'medium' }}>
+                    <TableCell sx={{ fontSize: "medium" }}>
                       {calStatDay(item.specificDate)}
                     </TableCell>
-                    <TableCell sx={{ fontSize: 'medium' }}>
+                    <TableCell sx={{ fontSize: "medium" }}>
                       {item.username}
                     </TableCell>
-                    <TableCell sx={{ fontSize: 'medium' }}>
+                    <TableCell sx={{ fontSize: "medium" }}>
                       {item.destination}
                     </TableCell>
-                    <TableCell sx={{ fontSize: 'medium' }}>
+                    <TableCell sx={{ fontSize: "medium" }}>
                       {item.business}
                     </TableCell>
-                    <TableCell sx={{ fontSize: 'medium' }}>
+                    <TableCell sx={{ fontSize: "medium" }}>
                       {item.work}
                     </TableCell>
-                    <TableCell sx={{ fontSize: 'medium' }}>
+                    <TableCell sx={{ fontSize: "medium" }}>
                       {item.car}
                     </TableCell>
-                    <TableCell sx={{ fontSize: 'medium' }}>
+                    <TableCell sx={{ fontSize: "medium" }}>
                       {item.remarks && (
                         <Tooltip
                           title={item.remarks}
@@ -172,18 +172,18 @@ function StatisticsPage() {
                           componentsProps={{
                             tooltip: {
                               sx: {
-                                maxWidth: '500px',
-                                fontSize: '16px',
-                                padding: '8px 16px',
+                                maxWidth: "500px",
+                                fontSize: "16px",
+                                padding: "8px 16px",
                               },
                             },
                           }}
                         >
                           <Button
                             sx={{
-                              minWidth: 'auto',
-                              justifyContent: 'flex-start',
-                              padding: '0px',
+                              minWidth: "auto",
+                              justifyContent: "flex-start",
+                              padding: "0px",
                             }}
                           >
                             확인
@@ -213,22 +213,22 @@ function StatisticsPage() {
                     key={index}
                     className="transition-colors hover:bg-gray-50"
                   >
-                    <TableCell sx={{ fontSize: 'medium' }}>
+                    <TableCell sx={{ fontSize: "medium" }}>
                       {calStatDay(item.specificDate)}
                     </TableCell>
-                    <TableCell sx={{ fontSize: 'medium' }}>
+                    <TableCell sx={{ fontSize: "medium" }}>
                       {item.username}
                     </TableCell>
-                    <TableCell sx={{ fontSize: 'medium' }}>
+                    <TableCell sx={{ fontSize: "medium" }}>
                       {item.destination}
                     </TableCell>
-                    <TableCell sx={{ fontSize: 'medium' }}>
+                    <TableCell sx={{ fontSize: "medium" }}>
                       {item.business}
                     </TableCell>
-                    <TableCell sx={{ fontSize: 'medium' }}>
+                    <TableCell sx={{ fontSize: "medium" }}>
                       {item.work}
                     </TableCell>
-                    <TableCell sx={{ fontSize: 'medium' }}>
+                    <TableCell sx={{ fontSize: "medium" }}>
                       {item.remarks && (
                         <Tooltip
                           title={item.remarks}
@@ -237,18 +237,18 @@ function StatisticsPage() {
                           componentsProps={{
                             tooltip: {
                               sx: {
-                                maxWidth: '500px',
-                                fontSize: '16px',
-                                padding: '8px 16px',
+                                maxWidth: "500px",
+                                fontSize: "16px",
+                                padding: "8px 16px",
                               },
                             },
                           }}
                         >
                           <Button
                             sx={{
-                              minWidth: 'auto',
-                              justifyContent: 'flex-start',
-                              padding: '0px',
+                              minWidth: "auto",
+                              justifyContent: "flex-start",
+                              padding: "0px",
                             }}
                           >
                             확인

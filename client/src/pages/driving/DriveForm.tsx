@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { axiosReq, calDate } from '../../api';
-import ArrowBack from '../../components/common/ArrowBack';
-import { useCustomQueries } from '../../hooks/useCustomQuery';
-import { LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { axiosReq, calculateDate } from "../../api";
+import ArrowBack from "../../components/common/ArrowBack";
+import { useCustomQueries } from "../../hooks/useCustomQuery";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 import {
   Paper,
@@ -20,19 +20,19 @@ import {
   Divider,
   SelectChangeEvent,
   Grid,
-} from '@mui/material';
-import dayjs, { Dayjs } from 'dayjs';
-import { styled } from '@mui/material/styles';
-import Blank from '../../components/common/Blank';
-import { DatePicker } from '@mui/x-date-pickers';
-import { ROUTES } from '../../constants/constant';
-dayjs.locale('ko');
+} from "@mui/material";
+import dayjs, { Dayjs } from "dayjs";
+import { styled } from "@mui/material/styles";
+import Blank from "../../components/common/Blank";
+import { DatePicker } from "@mui/x-date-pickers";
+import { ROUTES } from "../../constants/constant";
+dayjs.locale("ko");
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(3),
-  borderRadius: '12px',
-  boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-  '& .MuiTextField-root, & .MuiFormControl-root': {
+  borderRadius: "12px",
+  boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+  "& .MuiTextField-root, & .MuiFormControl-root": {
     marginBottom: theme.spacing(2),
   },
 }));
@@ -40,7 +40,7 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
 const StyledFormSection = styled(Box)(({ theme }) => ({
   padding: theme.spacing(2),
   border: `1px dashed ${theme.palette.divider}`,
-  borderRadius: '8px',
+  borderRadius: "8px",
   marginBottom: theme.spacing(2),
 }));
 
@@ -48,10 +48,10 @@ function DriveInput() {
   const navigate = useNavigate();
   const [driveDay, setDriveDay] = useState<Date>(); // 주행 날짜
 
-  const [car, setCar] = useState(''); // 차량
-  const [drivers, setDrivers] = useState(['', '']); // 운전자 배열
+  const [car, setCar] = useState(""); // 차량
+  const [drivers, setDrivers] = useState(["", ""]); // 운전자 배열
 
-  const [drivingDestination, setDrivingDestination] = useState(''); // 행선지
+  const [drivingDestination, setDrivingDestination] = useState(""); // 행선지
   const [startKM, setStartKM] = useState(0); // 출발 km
   const [endKM, setEndKM] = useState(0); // 도착 km
   const [totalKM, setTotalKM] = useState(0); // 도착-출발 (주행거리)
@@ -61,7 +61,7 @@ function DriveInput() {
 
   const [etc, setEtc] = useState<{ name: string; cost: number }>({
     // 기타 비용
-    name: '', // 초기값 설정
+    name: "", // 초기값 설정
     cost: 0,
   });
 
@@ -82,7 +82,7 @@ function DriveInput() {
     setCar(event.target.value);
   };
   const handleDrivingDestinationChange = (
-    event: React.ChangeEvent<HTMLInputElement>
+    event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     setDrivingDestination(event.target.value);
   };
@@ -119,55 +119,55 @@ function DriveInput() {
   const onClickComplete = async () => {
     const driverArr = selectedDriver
       .map((driver) => driver.trim())
-      .filter((driver) => driver !== null && driver !== '')
+      .filter((driver) => driver !== null && driver !== "")
 
       .filter(Boolean);
 
     if (!driveDay) {
-      alert('날짜를 선택해주세요');
+      alert("날짜를 선택해주세요");
       return;
     }
     if (driverArr.length === 0) {
-      alert('운전자를 선택해주세요');
+      alert("운전자를 선택해주세요");
       return;
     }
     if (!car) {
-      alert('차량을 선택해주세요');
+      alert("차량을 선택해주세요");
       return;
     }
     if (!drivingDestination) {
-      alert('행선지를 입력해주세요');
+      alert("행선지를 입력해주세요");
       return;
     }
 
     if (car !== privateCarId && (!startKM || !endKM)) {
-      alert('주행거리를 입력해주세요.');
+      alert("주행거리를 입력해주세요.");
       return;
     }
     if (car === privateCarId && !totalKM) {
-      alert('주행거리를 입력해주세요.');
+      alert("주행거리를 입력해주세요.");
       return;
     }
     if (etc.name && !etc.cost) {
-      alert('비용을 입력해주세요.');
+      alert("비용을 입력해주세요.");
       return;
     }
     if (etc.cost && !etc.name) {
-      alert('항목을 선택해주세요.');
+      alert("항목을 선택해주세요.");
       return;
     }
-    if (typeof fuelCost !== 'number') {
+    if (typeof fuelCost !== "number") {
       setFuelCost(0);
     }
-    if (typeof toll !== 'number') {
+    if (typeof toll !== "number") {
       setToll(0);
     }
-    if (typeof etc.cost !== 'number') {
+    if (typeof etc.cost !== "number") {
       setEtc({ name: etc.name, cost: 0 });
     }
 
-    const driverJoined = driverArr.join(', ');
-    const res = await axiosReq.post('/api/driving-inform/addInform', {
+    const driverJoined = driverArr.join(", ");
+    const res = await axiosReq.post("/api/driving-inform/addInform", {
       driveDay,
       username: driverJoined,
       car,
@@ -192,12 +192,12 @@ function DriveInput() {
     <Container
       sx={{ py: 4 }}
       maxWidth={false}
-      className="flex flex-col items-center w-full h-screen bg-gradient-to-br from-zinc-50 to-slate-100"
+      className="flex h-screen w-full flex-col items-center bg-gradient-to-br from-zinc-50 to-slate-100"
     >
-      <div className="flex items-center justify-between sm:w-full mt-2 mb-8 sm:mt-4 md:w-[80%]">
+      <div className="mb-8 mt-2 flex items-center justify-between sm:mt-4 sm:w-full md:w-[80%]">
         <ArrowBack type="not home" />
-        <span className="font-bold sm:text-sm md:text-3xl md:mx-8 sm:mx-1 whitespace-nowrap">
-          {calDate(new Date())}
+        <span className="whitespace-nowrap font-bold sm:mx-1 sm:text-sm md:mx-8 md:text-3xl">
+          {calculateDate(new Date())}
         </span>
         <Blank />
       </div>
@@ -230,11 +230,11 @@ function DriveInput() {
                 <Grid item xs={12} sm={6} md={3} key={index}>
                   <FormControl fullWidth>
                     <InputLabel>
-                      운전자 {index + 1} {index === 0 && '*'}
+                      운전자 {index + 1} {index === 0 && "*"}
                     </InputLabel>
                     <Select
                       value={drivers[index]}
-                      label={`운전자 ${index + 1} ${index === 0 && '*'}`}
+                      label={`운전자 ${index + 1} ${index === 0 && "*"}`}
                       onChange={handleDriverChange(index)}
                     >
                       {names
@@ -371,18 +371,18 @@ function DriveInput() {
         </Grid>
 
         {/* 제출 버튼 */}
-        <Box sx={{ mt: 4, textAlign: 'center' }}>
+        <Box sx={{ mt: 4, textAlign: "center" }}>
           <Button
             variant="contained"
             color="primary"
             size="large"
             onClick={onClickComplete}
             sx={{
-              height: '48px',
-              fontSize: '1.1rem',
-              bgcolor: '#00ab39',
-              '&:hover': {
-                bgcolor: '#009933',
+              height: "48px",
+              fontSize: "1.1rem",
+              bgcolor: "#00ab39",
+              "&:hover": {
+                bgcolor: "#009933",
               },
             }}
           >
