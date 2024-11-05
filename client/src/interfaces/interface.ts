@@ -49,6 +49,18 @@ export interface IInform extends INameStat {
   createdAt: Date;
   isOwner: boolean;
 }
+
+export interface FormData {
+  date: Date;
+  username: string;
+  destination: string;
+  business: string;
+  work: string;
+  car: string;
+  startDate: Date;
+  endDate: Date;
+  remarks: string;
+}
 export interface IDrivingInform {
   _id: string;
   isOwner: boolean;

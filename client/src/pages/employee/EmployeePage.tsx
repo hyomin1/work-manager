@@ -15,7 +15,7 @@ import Title from "../../components/layout/Title";
 import Logout from "../auth/Logout";
 
 import EmployeeTableBody from "./components/TableBody";
-import EmployeeTableHead from "./components/TableHead";
+import EmployeeTableHeader from "./components/TableHeader";
 import DateInput from "./components/DateInput";
 import NavigationButtons from "./components/NavigationButtons";
 
@@ -70,7 +70,7 @@ function EmployeePage() {
           className="shadow-custom-shadow"
         >
           <Table stickyHeader>
-            <EmployeeTableHead />
+            <EmployeeTableHeader />
             <EmployeeTableBody refetch={refetch} />
           </Table>
         </TableContainer>

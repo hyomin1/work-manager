@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useCustomQueries } from "../../hooks/useCustomQuery";
-import { IInform } from "../../interfaces/interface";
+import { IInform, FormData } from "../../interfaces/interface";
 import { useQueryClient } from "@tanstack/react-query";
 import { axiosReq } from "../../api";
 import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker";
@@ -36,17 +36,33 @@ function EmployeeEdit({
     carsLoading,
   } = useCustomQueries();
 
-  const [date, setDate] = useState(currentDate);
-  const [username, setUserName] = useState(item.username);
-  const [destination, setDestination] = useState(item.destination);
-  const [business, setBusiness] = useState(item.business);
-  const [work, setWork] = useState(item.work);
-  const [car, setCar] = useState(item.car);
-  const [startDate, setStartDate] = useState(item.startDate);
-  const [endDate, setEndDate] = useState(item.endDate);
-  const [remarks, setRemarks] = useState(item.remarks);
-
   const queryClient = useQueryClient();
+
+  const isLoading =
+    namesLoading ||
+    destinationsLoading ||
+    businessesLoading ||
+    worksLoading ||
+    carsLoading;
+
+  const [formData, setFormData] = useState<FormData>({
+    date: currentDate,
+    username: item.username,
+    destination: item.destination,
+    business: item.business,
+    work: item.work,
+    car: item.car,
+    startDate: item.startDate,
+    endDate: item.endDate,
+    remarks: item.remarks,
+  });
+
+  const updateField = (field: string, value: any) => {
+    setFormData((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
 
   const carOptions = [
     "선택 안함",
@@ -56,9 +72,9 @@ function EmployeeEdit({
   ];
 
   useEffect(() => {
-    if (business && businessesData && destinationsData) {
+    if (formData.business && businessesData && destinationsData) {
       const selectedBusiness = businessesData.find(
-        (b) => b.business === business,
+        (b) => b.business === formData.business,
       );
       if (selectedBusiness) {
         const matchingDestination = destinationsData.find(
@@ -66,125 +82,57 @@ function EmployeeEdit({
         );
         if (
           matchingDestination &&
-          matchingDestination.destination !== destination
+          matchingDestination.destination !== formData.destination
         ) {
-          setDestination(matchingDestination.destination);
+          updateField("destination", matchingDestination.destination);
         }
       }
     }
-  }, [business, businessesData, destinationsData, destination]);
+  }, [formData.business, businessesData, destinationsData]);
+
+  const validateForm = () => {
+    if (!formData.username) {
+      return alert("이름을 선택해주세요");
+    }
+    if (!formData.destination) {
+      return alert("방문지를 선택해주세요");
+    }
+    if (!formData.business) {
+      return alert("사업명을 선택해주세요");
+    }
+    if (!formData.work) {
+      return alert("업무를 선택해주세요");
+    }
+  };
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!username) {
-      alert("이름을 선택해주세요");
-      return;
-    }
-    if (!destination) {
-      alert("방문지를 선택해주세요");
-      return;
-    }
-    if (!business) {
-      alert("사업명을 선택해주세요");
-      return;
-    }
-    if (!work) {
-      alert("업무를 선택해주세요");
-      return;
-    }
 
-    const res = await axiosReq.put("/api/employee-inform/editInform", {
+    validateForm();
+
+    const response = await axiosReq.put("/api/employee-inform/editInform", {
       _id: item._id,
-      date,
-      username,
-      destination,
-      business,
-      work,
-      car,
-      startDate: item.isDaily === 3 ? startDate : date,
-      endDate: item.isDaily === 3 ? endDate : date,
-      remarks,
+      ...formData,
+      startDate: item.isDaily === 3 ? formData.startDate : formData.date,
+      endDate: item.isDaily === 3 ? formData.endDate : formData.date,
     });
-    if (res.status === 200) {
-      alert(res.data.message);
-      queryClient.invalidateQueries({ queryKey: ["employeeInform"] });
-      queryClient.invalidateQueries({ queryKey: ["schedule"] });
-      setEditingItemId("");
+    if (response.status !== 200) {
+      return;
     }
-  };
-
-  const handleCancel = () => {
+    alert(response.data.message);
+    queryClient.invalidateQueries({ queryKey: ["employeeInform"] });
     setEditingItemId("");
   };
 
-  const handleDateChange = (newDate: Dayjs | null) => {
-    if (newDate) {
-      setDate(newDate.toDate());
-    }
-  };
-  const handleStartDateChange = (newDate: Dayjs | null) => {
-    if (newDate) {
-      setStartDate(newDate.toDate());
-    }
-  };
-
-  const handleEndDateChange = (newDate: Dayjs | null) => {
-    if (newDate) {
-      setEndDate(newDate.toDate());
-    }
-  };
-
-  const handleNameChange = (
-    e: React.SyntheticEvent,
-    username: string | null,
-  ) => {
-    if (username) {
-      setUserName(username);
-    }
-  };
-
-  const handleDestinationChange = (
-    e: React.SyntheticEvent,
-    destination: string | null,
-  ) => {
-    if (destination) {
-      setDestination(destination);
-      setBusiness("");
-    }
-  };
-
-  const handleBusinessChange = (
-    e: React.SyntheticEvent,
-    business: string | null,
-  ) => {
-    if (business) {
-      setBusiness(business);
-    }
-  };
-
-  const handleWorkChange = (e: React.SyntheticEvent, work: string | null) => {
-    if (work) {
-      setWork(work);
-    }
-  };
-
-  const handleCarChange = (e: React.SyntheticEvent, car: string | null) => {
-    if (car) {
-      setCar(car);
-    }
-  };
-
-  if (
-    namesLoading ||
-    destinationsLoading ||
-    businessesLoading ||
-    worksLoading ||
-    carsLoading ||
-    businessesLoading
-  ) {
+  if (isLoading) {
     return <div>Loading...</div>;
   }
-
+  const datePickerStyles = {
+    width: "100%",
+    "& .MuiOutlinedInput-root": {
+      backgroundColor: "white",
+    },
+  };
   return (
     <div className="fixed inset-0 top-0 z-10 flex w-full items-center justify-center bg-black bg-opacity-65 px-4">
       <form
@@ -199,41 +147,29 @@ function EmployeeEdit({
                 <div className="mt-4 flex">
                   <MobileDatePicker
                     label="시작일"
-                    onChange={handleStartDateChange}
-                    value={dayjs(startDate)}
-                    sx={{
-                      width: "100%",
-
-                      "& .MuiOutlinedInput-root": {
-                        backgroundColor: "white",
-                      },
-                    }}
+                    onChange={(newDate: Dayjs | null) =>
+                      newDate && updateField("startDate", newDate.toDate())
+                    }
+                    value={dayjs(formData.startDate)}
+                    sx={datePickerStyles}
                   />
                   <MobileDatePicker
                     label="종료일"
-                    onChange={handleEndDateChange}
-                    value={dayjs(endDate)}
-                    sx={{
-                      width: "100%",
-
-                      "& .MuiOutlinedInput-root": {
-                        backgroundColor: "white",
-                      },
-                    }}
+                    onChange={(newDate: Dayjs | null) =>
+                      newDate && updateField("endDate", newDate.toDate())
+                    }
+                    value={dayjs(formData.endDate)}
+                    sx={datePickerStyles}
                   />
                 </div>
               ) : (
                 <MobileDatePicker
                   label="시작일"
-                  onChange={handleDateChange}
-                  value={dayjs(date)}
-                  sx={{
-                    width: "100%",
-
-                    "& .MuiOutlinedInput-root": {
-                      backgroundColor: "white",
-                    },
-                  }}
+                  onChange={(newDate: Dayjs | null) =>
+                    newDate && updateField("date", newDate.toDate())
+                  }
+                  value={dayjs(formData.date)}
+                  sx={datePickerStyles}
                 />
               )}
             </LocalizationProvider>
@@ -241,68 +177,69 @@ function EmployeeEdit({
 
           <div className="my-2">
             <Autocomplete
-              value={username}
+              value={formData.username}
               options={
                 names
                   ?.sort((a, b) => a.username.localeCompare(b.username))
                   .map((item) => item.username) || []
               }
-              renderInput={(names) => <TextField {...names} label="이름" />}
-              onChange={handleNameChange}
+              renderInput={(params) => <TextField {...params} label="이름" />}
+              onChange={(_, value) => value && updateField("username", value)}
             />
           </div>
           <div className="my-2">
             <Autocomplete
-              value={destination}
+              value={formData.destination}
               options={
                 destinationsData
                   ?.sort((a, b) => a.destination.localeCompare(b.destination))
                   .map((item) => item.destination) || []
               }
-              renderInput={(destinations) => (
-                <TextField {...destinations} label="방문지" />
-              )}
-              onChange={handleDestinationChange}
+              renderInput={(params) => <TextField {...params} label="방문지" />}
+              onChange={(_, value) => {
+                if (value) {
+                  updateField("destination", value);
+                  updateField("business", "");
+                }
+              }}
             />
           </div>
           <div className="my-2">
             <Autocomplete
-              value={business}
+              value={formData.business}
               options={
                 businessesData
                   ?.filter((business) => {
                     const matchingDestination = destinationsData?.find(
-                      (dest) => dest.destination === destination,
+                      (dest) => dest.destination === formData.destination,
                     );
                     return business.destinationId === matchingDestination?._id;
                   })
                   ?.sort((a, b) => a.business.localeCompare(b.business))
                   .map((item) => item.business) || []
               }
-              renderInput={(businesses) => (
-                <TextField {...businesses} label="사업명" />
-              )}
-              onChange={handleBusinessChange}
+              renderInput={(params) => <TextField {...params} label="사업명" />}
+              onChange={(_, value) => value && updateField("business", value)}
             />
           </div>
           <div className="my-2">
             <Autocomplete
-              value={work}
+              value={formData.work}
               options={
                 workData
                   ?.sort((a, b) => a.work.localeCompare(b.work))
                   .map((item) => item.work) || []
               }
-              renderInput={(works) => <TextField {...works} label="업무" />}
-              onChange={handleWorkChange}
+              renderInput={(params) => <TextField {...params} label="업무" />}
+              onChange={(_, value) => value && updateField("work", value)}
             />
           </div>
           <div className="my-2">
             <Autocomplete
+              value={formData.car}
               options={carOptions}
-              renderInput={(cars) => <TextField {...cars} label="차량" />}
-              onChange={handleCarChange}
-              value={car}
+              renderInput={(params) => <TextField {...params} label="차량" />}
+              onChange={(_, value) => value && updateField("car", value)}
             />
           </div>
           <div className="my-2">
@@ -311,8 +248,8 @@ function EmployeeEdit({
               multiline
               rows={2}
               label="비고"
-              value={remarks}
-              onChange={(e) => setRemarks(e.target.value)}
+              value={formData.remarks}
+              onChange={(e) => updateField("remarks", e.target.value)}
             />
           </div>
         </div>
@@ -326,7 +263,7 @@ function EmployeeEdit({
           </button>
           <button
             type="button"
-            onClick={handleCancel}
+            onClick={() => setEditingItemId("")}
             className="rounded bg-gray-300 px-4 py-2 hover:opacity-80"
           >
             취소

@@ -1,7 +1,7 @@
 import { TableCell, TableHead, TableRow } from "@mui/material";
 import { employeeHeaders } from "../../../constants/headers";
 
-function EmployeeTableHead() {
+function TableHeader() {
   return (
     <TableHead>
       <TableRow className="bg-gray-200">
@@ -22,4 +22,4 @@ function EmployeeTableHead() {
   );
 }
 
-export default EmployeeTableHead;
+export default TableHeader;
