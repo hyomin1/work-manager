@@ -11,7 +11,7 @@ interface IEditData {
   item: { [key: string]: string } | null;
 }
 
-function EditAdminData({
+function AdminEdit({
   setIsEditing,
   type,
   queryClient,
@@ -20,7 +20,7 @@ function EditAdminData({
   item,
 }: IEditData) {
   const [inputValue, setInputValue] = useState(
-    item && item[type] ? item[type] : ""
+    item && item[type] ? item[type] : "",
   );
 
   const handleCancel = () => {
@@ -96,37 +96,37 @@ function EditAdminData({
     }
   };
   return (
-    <div className="fixed inset-0 flex items-center justify-center z-10 bg-black bg-opacity-65 top-0 px-4">
+    <div className="fixed inset-0 top-0 z-10 flex items-center justify-center bg-black bg-opacity-65 px-4">
       <form
-        className="flex flex-col w-96 h-80 p-6 bg-white rounded-lg shadow-lg"
+        className="flex h-80 w-96 flex-col rounded-lg bg-white p-6 shadow-lg"
         onSubmit={onSubmit}
       >
-        <h2 className="text-center text-xl font-bold mb-4">
+        <h2 className="mb-4 text-center text-xl font-bold">
           {changeName()} 수정
         </h2>
         <div className="flex flex-col">
           {type === "business" && destination && (
-            <span className="font-bold mb-2">{destination.split(",")[1]}</span>
+            <span className="mb-2 font-bold">{destination.split(",")[1]}</span>
           )}
           <input
             autoFocus
             value={inputValue}
             onChange={handleOnChange}
-            className="mb-4 p-2 border rounded"
+            className="mb-4 rounded border p-2"
           />
         </div>
 
         <div className="flex justify-between">
           <button
             type="submit"
-            className="bg-blue-500 text-white py-2 px-4 rounded hover:opacity-80"
+            className="rounded bg-blue-500 px-4 py-2 text-white hover:opacity-80"
           >
             변경
           </button>
           <button
             type="button"
             onClick={handleCancel}
-            className="bg-gray-300 py-2 px-4 rounded hover:opacity-80"
+            className="rounded bg-gray-300 px-4 py-2 hover:opacity-80"
           >
             취소
           </button>
@@ -136,4 +136,4 @@ function EditAdminData({
   );
 }
 
-export default EditAdminData;
+export default AdminEdit;

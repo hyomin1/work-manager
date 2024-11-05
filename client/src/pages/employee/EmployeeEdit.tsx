@@ -88,7 +88,7 @@ function EmployeeEdit({
         }
       }
     }
-  }, [formData.business, businessesData, destinationsData]);
+  }, [formData, businessesData, destinationsData]);
 
   const validateForm = () => {
     if (!formData.username) {

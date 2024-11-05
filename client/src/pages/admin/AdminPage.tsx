@@ -1,20 +1,20 @@
-import { useEffect, useState } from 'react';
-import { useQueryClient } from '@tanstack/react-query';
-import { directAdminSession, formDate } from '../../api';
-import Page from '../../components/common/Page';
-import TabHeaderAdmin from './TabHeaderAdmin';
-import TabContentAdmin from './TabContentAdmin';
-import { useAdminData } from '../../hooks/useAdminData';
-import ArrowBack from '../../components/common/ArrowBack';
+import { useEffect, useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
+import { directAdminSession, formDate } from "../../api";
+import Page from "../../components/common/Page";
+import TableHeader from "./components/TableHeader";
+import TableBody from "./components/TableBody";
+import { useAdminData } from "../../hooks/useAdminData";
+import ArrowBack from "../../components/common/ArrowBack";
 
-function Admin() {
+function AdminPage() {
   const queryClient = useQueryClient();
 
-  const [activeTab, setActiveTab] = useState<string>('username');
+  const [activeTab, setActiveTab] = useState<string>("username");
 
   const [page, setPage] = useState(1);
   const { data, removeItem } = useAdminData(activeTab, page, queryClient);
-  const [destination, setDestination] = useState('');
+  const [destination, setDestination] = useState("");
 
   useEffect(() => {
     directAdminSession();
@@ -28,8 +28,8 @@ function Admin() {
     setPage(page);
   };
   const filteredData = data.filter((item) => {
-    if (activeTab === 'business') {
-      return item.destinationId === destination.split(',')[0].trim();
+    if (activeTab === "business") {
+      return item.destinationId === destination.split(",")[0].trim();
     }
     return true; // business 탭이 아니면 필터링 없이 모든 항목 반환
   });
@@ -43,13 +43,13 @@ function Admin() {
     : 0;
 
   return (
-    <div className="flex flex-col items-center justify-between w-full h-screen p-10 sm:p-2 bg-gradient-to-br from-zinc-50 to-slate-100">
-      <div className="sm:w-full w-[90%] flex flex-col items-center h-screen">
-        <div className="flex items-center w-full mt-4 mb-20 md:justify-center sm:mb-10 ">
-          <div className="flex items-center justify-between w-full">
+    <div className="flex h-screen w-full flex-col items-center justify-between bg-gradient-to-br from-zinc-50 to-slate-100 p-10 sm:p-2">
+      <div className="flex h-screen w-[90%] flex-col items-center sm:w-full">
+        <div className="mb-20 mt-4 flex w-full items-center sm:mb-10 md:justify-center">
+          <div className="flex w-full items-center justify-between">
             <ArrowBack type="not home" />
             <div className="flex items-center justify-center">
-              <span className="font-bold md:text-3xl md:mx-8 sm:mx-2 whitespace-nowrap">
+              <span className="whitespace-nowrap font-bold sm:mx-2 md:mx-8 md:text-3xl">
                 {formDate}
               </span>
             </div>
@@ -58,9 +58,9 @@ function Admin() {
         </div>
 
         <div className="w-[100%] shadow-xl">
-          <TabHeaderAdmin activeTab={activeTab} onTabClick={handleTabClick} />
+          <TableHeader activeTab={activeTab} onTabClick={handleTabClick} />
 
-          <TabContentAdmin
+          <TableBody
             activeTab={activeTab}
             data={paginatedData}
             removeItem={removeItem}
@@ -75,4 +75,4 @@ function Admin() {
   );
 }
 
-export default Admin;
+export default AdminPage;

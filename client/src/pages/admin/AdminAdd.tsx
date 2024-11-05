@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { QueryClient } from '@tanstack/react-query';
-import { axiosReq } from '../../api';
+import React, { useState } from "react";
+import { QueryClient } from "@tanstack/react-query";
+import { axiosReq } from "../../api";
 
 interface IAddData {
   setIsAdding: React.Dispatch<React.SetStateAction<boolean>>;
@@ -9,13 +9,8 @@ interface IAddData {
   destination?: string;
 }
 
-function AddAdminData({
-  setIsAdding,
-  type,
-  queryClient,
-  destination,
-}: IAddData) {
-  const [inputValue, setInputValue] = useState('');
+function AdminAdd({ setIsAdding, type, queryClient, destination }: IAddData) {
+  const [inputValue, setInputValue] = useState("");
 
   const handleCancel = () => {
     setIsAdding(false);
@@ -23,20 +18,20 @@ function AddAdminData({
 
   const changeName = () => {
     switch (type) {
-      case 'username':
-        return '이름';
-      case 'destination':
-        return '방문지';
-      case 'business':
-        return '사업명';
-      case 'work':
-        return '업무';
-      case 'car':
-        return '차량';
-      case 'etcName':
-        return '기타 비용';
+      case "username":
+        return "이름";
+      case "destination":
+        return "방문지";
+      case "business":
+        return "사업명";
+      case "work":
+        return "업무";
+      case "car":
+        return "차량";
+      case "etcName":
+        return "기타 비용";
       default:
-        return '';
+        return "";
     }
   };
 
@@ -47,35 +42,35 @@ function AddAdminData({
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    let url = '/api/employee-inform/';
+    let url = "/api/employee-inform/";
     let body = {};
 
     switch (type) {
-      case 'username':
-        url += 'addName';
+      case "username":
+        url += "addName";
         body = { username: inputValue };
         break;
-      case 'destination':
-        url += 'addDestination';
+      case "destination":
+        url += "addDestination";
         body = { destination: inputValue };
         break;
-      case 'business':
-        url += 'addBusiness';
+      case "business":
+        url += "addBusiness";
         body = {
           business: inputValue,
-          destinationId: destination?.split(',')[0],
+          destinationId: destination?.split(",")[0],
         };
         break;
-      case 'work':
-        url += 'addWork';
+      case "work":
+        url += "addWork";
         body = { work: inputValue };
         break;
-      case 'car':
-        url += 'addCar';
+      case "car":
+        url += "addCar";
         body = { car: inputValue };
         break;
-      case 'etcName':
-        url += 'addEtcName';
+      case "etcName":
+        url += "addEtcName";
         body = { etcName: inputValue };
         break;
       default:
@@ -84,45 +79,45 @@ function AddAdminData({
 
     const res = await axiosReq.post(url, body);
     if (res.status === 200) {
-      alert('성공적으로 등록하였습니다.');
+      alert("성공적으로 등록하였습니다.");
       queryClient.invalidateQueries({ queryKey: [type] });
       setIsAdding(false);
     }
   };
 
   return (
-    <div className="fixed inset-0 top-0 z-10 flex items-center justify-center px-4 bg-black bg-opacity-65">
+    <div className="fixed inset-0 top-0 z-10 flex items-center justify-center bg-black bg-opacity-65 px-4">
       <form
-        className="flex flex-col p-6 bg-white rounded-lg shadow-lg w-96 h-80"
+        className="flex h-80 w-96 flex-col rounded-lg bg-white p-6 shadow-lg"
         onSubmit={onSubmit}
       >
-        <h2 className="mb-4 text-xl font-bold text-center">
+        <h2 className="mb-4 text-center text-xl font-bold">
           {changeName()} 등록
         </h2>
         <div className="flex flex-col">
-          {type === 'business' && destination && (
-            <span className="mb-2 font-bold">{destination.split(',')[1]}</span>
+          {type === "business" && destination && (
+            <span className="mb-2 font-bold">{destination.split(",")[1]}</span>
           )}
           <input
             autoFocus
             placeholder="입력"
             value={inputValue}
             onChange={handleOnChange}
-            className="p-2 mb-4 border rounded"
+            className="mb-4 rounded border p-2"
           />
         </div>
 
         <div className="flex justify-between">
           <button
             type="submit"
-            className="px-4 py-2 text-white bg-blue-500 rounded hover:opacity-80"
+            className="rounded bg-blue-500 px-4 py-2 text-white hover:opacity-80"
           >
             등록
           </button>
           <button
             type="button"
             onClick={handleCancel}
-            className="px-4 py-2 bg-gray-300 rounded hover:opacity-80"
+            className="rounded bg-gray-300 px-4 py-2 hover:opacity-80"
           >
             취소
           </button>
@@ -132,4 +127,4 @@ function AddAdminData({
   );
 }
 
-export default AddAdminData;
+export default AdminAdd;

@@ -12,10 +12,10 @@ interface NavProps {
 function NavigationButtons({ refetch }: NavProps) {
   const navigate = useNavigate();
 
-  const handleAdminAction = async (category: string) => {
+  const handleAdminAction = async (category: "STATISTICS" | "SETTINGS") => {
     const status = await checkAdminSession();
     if (status === 200) {
-      navigate(`${ROUTES.ADMIN}/${category}`);
+      navigate(`${ROUTES.ADMIN[category]}`);
     }
   };
   return (
@@ -49,14 +49,14 @@ function NavigationButtons({ refetch }: NavProps) {
           <div className="flex sm:w-full sm:gap-2">
             <button
               className="button-effect flex items-center justify-center whitespace-nowrap rounded-lg bg-[#0EA5E9] px-4 py-2 text-white hover:opacity-60 sm:mr-0 sm:flex-1 md:mr-4"
-              onClick={() => handleAdminAction("settings")}
+              onClick={() => handleAdminAction("SETTINGS")}
             >
               <Settings className="sm:h-4 sm:w-4" />
               <span className="ml-1 sm:text-xs">관리</span>
             </button>
             <button
               className="button-effect flex items-center justify-center whitespace-nowrap rounded-lg bg-[#10B981] px-4 py-2 text-white sm:mr-0 sm:flex-1 md:mr-4"
-              onClick={() => handleAdminAction("statistics")}
+              onClick={() => handleAdminAction("STATISTICS")}
             >
               <LineChart className="sm:h-4 sm:w-4" />
               <span className="ml-1 sm:text-xs">통계</span>
