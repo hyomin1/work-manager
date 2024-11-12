@@ -37,17 +37,18 @@ function EmployeeTableBody({ refetch }: EmployeeTableBodyProps) {
 
   const destinations = Array.from(
     new Set(inform.map((item) => item.destination)),
-  );
+  ).sort((a, b) => a.localeCompare(b));
 
   const styleMap = new Map();
 
   const bgColors = [
-    "#F8F9FC", // 진한 흰색 - 광주광역시
-    "#EEF6FF", // 맑은 하늘색 - 국립전파연구원
-    "#F2EEFF", // 은은한 퍼플 - 농식품공무원교육원
-    "#E6FFEF", // 깔끔한 민트 - 농촌진흥청
-    "#FFF4E8", // 연한 피치 - 우정사업정보센터
+    "#F8F9FC", // 진한 흰색
+    "#EEF6FF", // 맑은 하늘색
+    "#F2EEFF", // 은은한 퍼플
+    "#E6FFEF", // 깔끔한 민트
+    "#FFF4E8", // 연한 피치
   ];
+
   destinations.forEach((dest, index) => {
     const colorIndex = index % bgColors.length;
     const color = bgColors[colorIndex];
@@ -61,7 +62,7 @@ function EmployeeTableBody({ refetch }: EmployeeTableBodyProps) {
     );
 
     businesses.forEach((bus, busIndex) => {
-      const opacity = 1 - busIndex * 0.2; // 투명도: 1, 0.9, 0.8 등으로 설정
+      const opacity = 1 - busIndex * 0.2;
       styleMap.set(`${dest}-${bus}`, {
         backgroundColor: `rgba(${parseInt(color.slice(1, 3), 16)}, ${parseInt(
           color.slice(3, 5),
