@@ -35,6 +35,42 @@ function EmployeeTableBody({ refetch }: EmployeeTableBodyProps) {
     });
   };
 
+  const destinations = Array.from(
+    new Set(inform.map((item) => item.destination)),
+  );
+
+  const styleMap = new Map();
+
+  const bgColors = [
+    "#F8F9FC", // 진한 흰색
+    "#EEF6FF", // 맑은 하늘색
+    "#F2EEFF", // 은은한 퍼플
+    "#E8F4FF", // 시원한 아이스블루
+    "#E6FFEF", // 깔끔한 민트
+  ];
+  destinations.forEach((dest, index) => {
+    const colorIndex = index % bgColors.length;
+    const color = bgColors[colorIndex];
+
+    const businesses = Array.from(
+      new Set(
+        inform
+          .filter((item) => item.destination === dest)
+          .map((item) => item.business),
+      ),
+    );
+
+    businesses.forEach((bus, busIndex) => {
+      const opacity = 1 - busIndex * 0.2; // 투명도: 1, 0.9, 0.8 등으로 설정
+      styleMap.set(`${dest}-${bus}`, {
+        backgroundColor: `rgba(${parseInt(color.slice(1, 3), 16)}, ${parseInt(
+          color.slice(3, 5),
+          16,
+        )}, ${parseInt(color.slice(5, 7), 16)}, ${opacity})`,
+      });
+    });
+  });
+
   if (!inform?.length) {
     return (
       <TableBody>
@@ -49,12 +85,11 @@ function EmployeeTableBody({ refetch }: EmployeeTableBodyProps) {
 
   return (
     <TableBody>
-      {sortEmployeeInform().map((item, index) => (
+      {sortEmployeeInform().map((item) => (
         <TableRow
           key={item._id}
-          className={`w-[100%] sm:text-sm ${
-            index % 2 === 0 ? "bg-white" : "bg-gray-200"
-          }`}
+          className="w-[100%] sm:text-sm"
+          sx={styleMap.get(`${item.destination}-${item.business}`)}
         >
           <TableCell sx={{ fontSize: "large", whiteSpace: "nowrap" }}>
             {item.username}
@@ -63,11 +98,7 @@ function EmployeeTableBody({ refetch }: EmployeeTableBodyProps) {
           <TableCell sx={{ fontSize: "large" }}>{item.business}</TableCell>
           <TableCell sx={{ fontSize: "large" }}>{item.work}</TableCell>
           <TableCell sx={{ fontSize: "large" }}>{item.car}</TableCell>
-          <TableCell
-            sx={{
-              fontSize: "large",
-            }}
-          >
+          <TableCell sx={{ fontSize: "large" }}>
             {item.remarks && (
               <Tooltip
                 title={item.remarks}
