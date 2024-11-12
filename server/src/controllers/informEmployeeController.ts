@@ -1,4 +1,3 @@
-import { IInform } from './../../../client/src/interfaces/interface';
 // 이름, 차량, 행선지, 상태 추가 삭제 제어
 import { Request, Response } from 'express';
 import Name from '../models/Name';

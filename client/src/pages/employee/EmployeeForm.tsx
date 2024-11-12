@@ -309,11 +309,11 @@ function EmployeeForm() {
     <Container
       maxWidth={false}
       sx={{ py: 4 }}
-      className="flex h-screen w-full flex-col items-center bg-gradient-to-br from-zinc-50 to-slate-100"
+      className="flex flex-col items-center w-full h-screen bg-gradient-to-br from-zinc-50 to-slate-100"
     >
       <div className="mb-8 mt-2 flex items-center justify-between sm:mt-4 sm:w-full md:w-[80%]">
         <ArrowBack type="not home" />
-        <span className="whitespace-nowrap font-bold sm:mx-1 sm:text-lg md:mx-8 md:text-3xl">
+        <span className="font-bold whitespace-nowrap sm:mx-1 sm:text-lg md:mx-8 md:text-3xl">
           {formDate}
         </span>
         <Blank />

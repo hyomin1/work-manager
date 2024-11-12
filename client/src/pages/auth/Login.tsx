@@ -47,8 +47,8 @@ function Login() {
   };
 
   const checkSession = useCallback(async () => {
-    const res = await axiosReq.get("/auth/checkSession");
-    if (res.status === 200) {
+    const response = await axiosReq.get("/auth/checkSession");
+    if (response.status === 200) {
       navigate(ROUTES.DASHBOARD);
     }
   }, [navigate]);

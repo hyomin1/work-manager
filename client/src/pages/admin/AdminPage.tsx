@@ -31,7 +31,7 @@ function AdminPage() {
     if (activeTab === "business") {
       return item.destinationId === destination.split(",")[0].trim();
     }
-    return true; // business 탭이 아니면 필터링 없이 모든 항목 반환
+    return true;
   });
   const itemsPerPage = 10;
   const indexOfLastItem = page * itemsPerPage;
