@@ -55,7 +55,7 @@ function NavigationButtons({ refetch }: NavProps) {
 
           <div className="flex sm:w-full sm:gap-2">
             <button
-              className="button-effect flex items-center justify-center whitespace-nowrap rounded-lg bg-[#0EA5E9] px-4 py-2 text-white hover:opacity-60 sm:mr-0 sm:flex-1 md:mr-4"
+              className="button-effect flex items-center justify-center whitespace-nowrap rounded-lg bg-[#10B981] px-4 py-2 text-white hover:opacity-60 sm:mr-0 sm:flex-1 md:mr-4"
               onClick={() => handleAdminAction("MANAGE")}
             >
               <Users className="sm:h-4 sm:w-4" />

@@ -37,7 +37,7 @@ function UserManagePage() {
 
       <UserManageTab value={value} setValue={setValue} />
 
-      <UserManageTable users={users || []} refetch={refetch} />
+      <UserManageTable users={users || []} refetch={refetch} value={value} />
     </div>
   );
 }

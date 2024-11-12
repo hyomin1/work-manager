@@ -81,4 +81,5 @@ export interface Users {
   _id: string;
   userId: string;
   isApproved: true;
+  role: string;
 }
