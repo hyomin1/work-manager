@@ -62,7 +62,7 @@ function DrivePage() {
     : 0;
 
   const checkSession = async () => {
-    const response = await axiosReq.get("/auth/checkSession"); // 세션 없을시 로그인 창으로 redirect
+    const response = await axiosReq.get("/auth/checkSession");
   };
 
   useEffect(() => {
@@ -70,8 +70,7 @@ function DrivePage() {
   }, [carId, refetch, currentDate]);
 
   useEffect(() => {
-    console.log("hi");
-    checkSession();
+    //checkSession();
   }, []);
 
   const [showInput, setShowInput] = useState(false);

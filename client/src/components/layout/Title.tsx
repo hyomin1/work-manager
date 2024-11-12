@@ -1,10 +1,10 @@
-import React from 'react';
-import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
-import useEmployeeStore from '../../stores/employeeStore';
+import React from "react";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import useEmployeeStore from "../../stores/employeeStore";
 
 interface ITitleProps {
-  currentDate?: Date;
-  setCurrentDate?: React.Dispatch<React.SetStateAction<Date | null>>;
+  currentDate: Date;
+  setCurrentDate: React.Dispatch<React.SetStateAction<Date | null>>;
   setShowInput: React.Dispatch<React.SetStateAction<boolean>>;
   category: string;
   calDate?: (arg0: Date) => string;
@@ -15,15 +15,17 @@ function Title({
   calDate,
   calYearMonth,
   category,
+  currentDate,
+  setCurrentDate,
 
   setShowInput,
 }: ITitleProps) {
-  const { currentDate, setCurrentDate } = useEmployeeStore();
+  //const { currentDate, setCurrentDate } = useEmployeeStore();
   const previous = () => {
     const prevDate = new Date(currentDate);
-    if (category === 'employee') {
+    if (category === "employee") {
       prevDate.setDate(prevDate.getDate() - 1);
-    } else if (category === 'driving') {
+    } else if (category === "driving") {
       prevDate.setMonth(prevDate.getMonth() - 1);
     }
     setCurrentDate(prevDate);
@@ -33,9 +35,9 @@ function Title({
 
   const next = () => {
     const prevDate = new Date(currentDate);
-    if (category === 'employee') {
+    if (category === "employee") {
       prevDate.setDate(prevDate.getDate() + 1);
-    } else if (category === 'driving') {
+    } else if (category === "driving") {
       prevDate.setMonth(prevDate.getMonth() + 1);
     }
     setCurrentDate(prevDate);
@@ -47,25 +49,25 @@ function Title({
 
   return (
     <div>
-      <div className=" flex items-center justify-center w-[100%]">
-        <button onClick={previous} className="hover:opacity-60 print-hidden">
-          <IoIosArrowBack className="w-8 h-8 sm:w-4 sm:h-4" />
+      <div className="flex w-[100%] items-center justify-center">
+        <button onClick={previous} className="print-hidden hover:opacity-60">
+          <IoIosArrowBack className="h-8 w-8 sm:h-4 sm:w-4" />
         </button>
         <button>
           <span
             onClick={selectDate}
-            className="font-bold md:text-3xl md:mx-8 sm:mx-1 hover:opacity-70 whitespace-nowrap"
+            className="whitespace-nowrap font-bold hover:opacity-70 sm:mx-1 md:mx-8 md:text-3xl"
           >
-            {category === 'driving' &&
+            {category === "driving" &&
               calYearMonth &&
               calYearMonth(currentDate)}
-            {category === 'driving' && ' 차량운행일지'}
-            {category === 'employee' && calDate && calDate(currentDate)}
+            {category === "driving" && " 차량운행일지"}
+            {category === "employee" && calDate && calDate(currentDate)}
           </span>
         </button>
 
-        <button onClick={next} className="hover:opacity-60 print-hidden">
-          <IoIosArrowForward className="w-8 h-8 sm:w-4 sm:h-4" />
+        <button onClick={next} className="print-hidden hover:opacity-60">
+          <IoIosArrowForward className="h-8 w-8 sm:h-4 sm:w-4" />
         </button>
       </div>
     </div>

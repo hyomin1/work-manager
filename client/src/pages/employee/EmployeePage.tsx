@@ -20,12 +20,12 @@ import DateInput from "./components/DateInput";
 import NavigationButtons from "./components/NavigationButtons";
 
 function EmployeePage() {
-  const { setInform, currentDate } = useEmployeeStore();
+  const { setInform } = useEmployeeStore();
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
-
+  const [currentDate, setCurrentDate] = useState<Date | null>(new Date());
   const { data, refetch } = useQuery<IInform[]>({
     queryKey: ["employeeInform"],
-    queryFn: () => getEmployeeInform(currentDate),
+    queryFn: () => getEmployeeInform(currentDate || new Date()),
     refetchInterval: REFETCH_INTERVAL,
   });
 
@@ -50,6 +50,8 @@ function EmployeePage() {
             setShowInput={setIsDatePickerOpen}
             calDate={calculateDate}
             category="employee"
+            currentDate={currentDate || new Date()}
+            setCurrentDate={setCurrentDate}
           />
           <Logout />
         </div>

@@ -1,6 +1,5 @@
 import {
   FormControl,
-  InputLabel,
   MenuItem,
   Paper,
   Select,
@@ -113,10 +112,10 @@ function UserManageTable({ users, refetch, value }: ITableProps) {
             ?.sort((a, b) => a.userId.localeCompare(b.userId))
             .map((user, index) => (
               <TableRow key={index}>
-                <TableCell sx={{ fontSize: "medium" }}>{user.userId}</TableCell>
+                <TableCell sx={{ fontSize: "large" }}>{user.userId}</TableCell>
                 {user.isApproved && (
                   <TableCell sx={{ fontSize: "medium" }}>
-                    <FormControl>
+                    <FormControl sx={{ width: "15%" }}>
                       <Select
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
@@ -137,22 +136,22 @@ function UserManageTable({ users, refetch, value }: ITableProps) {
                         onClick={() => deleteUser(user._id)}
                         className="rounded-full p-2 transition-colors hover:bg-gray-100"
                       >
-                        <Trash2 className="h-5 w-5 text-gray-600" />
+                        <Trash2 className="h-6 w-6 text-gray-600" />
                       </button>
                     </div>
                   ) : (
-                    <div>
+                    <div className="flex justify-center">
                       <button
                         onClick={() => approveUser(user._id)}
-                        className="rounded-full bg-green-100 p-2 transition-colors hover:bg-green-200"
+                        className="mr-8 rounded-full bg-green-100 p-2 transition-colors hover:bg-green-200"
                       >
-                        <CheckCircle className="h-5 w-5 text-green-600" />
+                        <CheckCircle className="h-6 w-6 text-green-600" />
                       </button>
                       <button
                         onClick={() => rejectUser(user._id)}
                         className="ml-2 rounded-full bg-red-100 p-2 transition-colors hover:bg-red-200"
                       >
-                        <XCircle className="h-5 w-5 text-red-600" />
+                        <XCircle className="h-6 w-6 text-red-600" />
                       </button>
                     </div>
                   )}
