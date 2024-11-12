@@ -13,6 +13,7 @@ const DriveForm = lazy(() => import("./pages/driving/DriveForm"));
 const StatisticsPage = lazy(() => import("./pages/statistics/StatisticsPage"));
 const SchedulePage = lazy(() => import("./pages/schedule/SchedulePage"));
 const AdminPage = lazy(() => import("./pages/admin/AdminPage"));
+const UserManagePage = lazy(() => import("./pages/userManage/UserManagePage"));
 
 const router = createBrowserRouter([
   {
@@ -58,6 +59,10 @@ const router = createBrowserRouter([
       {
         path: ROUTES.SCHEDULE,
         element: <SchedulePage />,
+      },
+      {
+        path: ROUTES.ADMIN.MANAGE,
+        element: <UserManagePage />,
       },
     ],
   },

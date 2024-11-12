@@ -75,3 +75,10 @@ export interface IDrivingInform {
   toll: number;
   etc: { name: string; cost: number };
 }
+
+// 유저 인터페이스
+export interface Users {
+  _id: string;
+  userId: string;
+  isApproved: true;
+}

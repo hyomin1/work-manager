@@ -21,5 +21,6 @@ export const ROUTES = {
   ADMIN: {
     STATISTICS: "/admin/statistics",
     SETTINGS: "/admin/settings",
+    MANAGE: "/admin/manage",
   },
 };

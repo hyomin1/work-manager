@@ -114,6 +114,12 @@ export const getNotification = async (carId: string) => {
   return response.data || "";
 };
 
+// 유저 목록 (승인된)
+export const getUsers = async () => {
+  const response = await axiosReq.get("/api/users");
+  return response.data.users || "";
+};
+
 // 메인화면에서 관리 버튼 눌러서 들어간 경우 check, 접근 불가 메시지만 띄워줌
 export const checkAdminSession = async () => {
   const res = await axiosReq.get("/auth/checkAdminSession");

@@ -1,10 +1,17 @@
-import { Calendar, LineChart, Pencil, Settings, Truck } from "lucide-react";
+import {
+  Calendar,
+  LineChart,
+  Pencil,
+  Settings,
+  Truck,
+  Users,
+} from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 import { ROUTES } from "../../../constants/constant";
 import { SlRefresh } from "react-icons/sl";
 import { checkAdminSession } from "../../../api";
-
+type Category = "STATISTICS" | "SETTINGS" | "MANAGE";
 interface NavProps {
   refetch: () => void;
 }
@@ -12,7 +19,7 @@ interface NavProps {
 function NavigationButtons({ refetch }: NavProps) {
   const navigate = useNavigate();
 
-  const handleAdminAction = async (category: "STATISTICS" | "SETTINGS") => {
+  const handleAdminAction = async (category: Category) => {
     const status = await checkAdminSession();
     if (status === 200) {
       navigate(`${ROUTES.ADMIN[category]}`);
@@ -49,10 +56,17 @@ function NavigationButtons({ refetch }: NavProps) {
           <div className="flex sm:w-full sm:gap-2">
             <button
               className="button-effect flex items-center justify-center whitespace-nowrap rounded-lg bg-[#0EA5E9] px-4 py-2 text-white hover:opacity-60 sm:mr-0 sm:flex-1 md:mr-4"
+              onClick={() => handleAdminAction("MANAGE")}
+            >
+              <Users className="sm:h-4 sm:w-4" />
+              <span className="ml-1 sm:text-xs">관리</span>
+            </button>
+            <button
+              className="button-effect flex items-center justify-center whitespace-nowrap rounded-lg bg-[#0EA5E9] px-4 py-2 text-white hover:opacity-60 sm:mr-0 sm:flex-1 md:mr-4"
               onClick={() => handleAdminAction("SETTINGS")}
             >
               <Settings className="sm:h-4 sm:w-4" />
-              <span className="ml-1 sm:text-xs">관리</span>
+              <span className="ml-1 sm:text-xs">설정</span>
             </button>
             <button
               className="button-effect flex items-center justify-center whitespace-nowrap rounded-lg bg-[#10B981] px-4 py-2 text-white sm:mr-0 sm:flex-1 md:mr-4"

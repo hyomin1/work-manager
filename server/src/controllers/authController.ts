@@ -38,6 +38,9 @@ export const loginUser = async (req: Request, res: Response) => {
     if (!isPasswordMatch) {
       return res.status(401).json({ error: '비밀번호가 일치하지 않습니다.' });
     }
+    if (!user.isApproved) {
+      return res.status(403).json({ error: '승인된 계정이 아닙니다.' });
+    }
     req.session.isUser = true;
     req.session.userId = user._id.toString();
 
