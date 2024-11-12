@@ -68,13 +68,13 @@ function UserManageTable({ users, refetch, value }: ITableProps) {
     <TableContainer
       sx={{ width: "85%", marginTop: 4 }}
       component={Paper}
-      className="rounded-xl shadow-lg"
+      className="shadow-lg rounded-xl"
     >
       <Table stickyHeader>
         <TableHead>
           <TableRow className="bg-blue-50">
             <TableCell
-              className="bg-blue-50 font-semibold text-gray-700"
+              className="font-semibold text-gray-700 bg-blue-50"
               sx={{
                 fontSize: "0.9rem",
                 fontWeight: "bold",
@@ -89,7 +89,7 @@ function UserManageTable({ users, refetch, value }: ITableProps) {
             </TableCell>
             {value === 0 && (
               <TableCell
-                className="bg-blue-50 font-semibold text-gray-700"
+                className="font-semibold text-gray-700 bg-blue-50"
                 sx={{
                   fontSize: "0.9rem",
                   fontWeight: "bold",
@@ -115,7 +115,7 @@ function UserManageTable({ users, refetch, value }: ITableProps) {
                 <TableCell sx={{ fontSize: "large" }}>{user.userId}</TableCell>
                 {user.isApproved && (
                   <TableCell sx={{ fontSize: "medium" }}>
-                    <FormControl sx={{ width: "15%" }}>
+                    <FormControl sx={{ width: "20%" }}>
                       <Select
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
@@ -134,24 +134,24 @@ function UserManageTable({ users, refetch, value }: ITableProps) {
                     <div className="flex">
                       <button
                         onClick={() => deleteUser(user._id)}
-                        className="rounded-full p-2 transition-colors hover:bg-gray-100"
+                        className="p-2 transition-colors rounded-full hover:bg-gray-100"
                       >
-                        <Trash2 className="h-6 w-6 text-gray-600" />
+                        <Trash2 className="w-6 h-6 text-gray-600" />
                       </button>
                     </div>
                   ) : (
                     <div className="flex justify-center">
                       <button
                         onClick={() => approveUser(user._id)}
-                        className="mr-8 rounded-full bg-green-100 p-2 transition-colors hover:bg-green-200"
+                        className="p-2 mr-8 transition-colors bg-green-100 rounded-full hover:bg-green-200"
                       >
-                        <CheckCircle className="h-6 w-6 text-green-600" />
+                        <CheckCircle className="w-6 h-6 text-green-600" />
                       </button>
                       <button
                         onClick={() => rejectUser(user._id)}
-                        className="ml-2 rounded-full bg-red-100 p-2 transition-colors hover:bg-red-200"
+                        className="p-2 ml-2 transition-colors bg-red-100 rounded-full hover:bg-red-200"
                       >
-                        <XCircle className="h-6 w-6 text-red-600" />
+                        <XCircle className="w-6 h-6 text-red-600" />
                       </button>
                     </div>
                   )}
