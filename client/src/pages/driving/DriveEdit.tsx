@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { IDrivingInform } from '../../interfaces/interface';
-import { useCustomQueries } from '../../hooks/useCustomQuery';
+import React, { useState } from "react";
+import { IDrivingInform } from "../../interfaces/interface";
+import { useCustomQueries } from "../../hooks/useCustomQuery";
 
-import { useQueryClient } from '@tanstack/react-query';
-import { axiosReq } from '../../api';
+import { useQueryClient } from "@tanstack/react-query";
+import { axiosReq } from "../../api";
 
 interface IEditInformProps {
   item: IDrivingInform;
@@ -15,7 +15,7 @@ function EditDrivingInform({ item, setEditingItemId }: IEditInformProps) {
 
   const [driveDay, setDriveDay] = useState(item.driveDay);
   const [drivingDestination, setDrivingDestination] = useState(
-    item.drivingDestination
+    item.drivingDestination,
   );
   const [startKM, setStartKM] = useState(item.startKM);
   const [endKM, setEndKM] = useState(item.endKM);
@@ -24,7 +24,7 @@ function EditDrivingInform({ item, setEditingItemId }: IEditInformProps) {
   const [etc, setEtc] = useState(item.etc);
 
   const queryClient = useQueryClient();
-  const [drivers, setDrivers] = useState(item.username.split(', '));
+  const [drivers, setDrivers] = useState(item.username.split(", "));
 
   const handleDriveDayChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDriveDay(new Date(e.target.value));
@@ -38,7 +38,7 @@ function EditDrivingInform({ item, setEditingItemId }: IEditInformProps) {
     };
 
   const handleDrivingDestinationChange = (
-    e: React.ChangeEvent<HTMLInputElement>
+    e: React.ChangeEvent<HTMLInputElement>,
   ) => {
     setDrivingDestination(e.target.value);
   };
@@ -56,43 +56,43 @@ function EditDrivingInform({ item, setEditingItemId }: IEditInformProps) {
     setToll(parseInt(e.target.value));
   };
   const handleEtcNameChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setEtc({ name: event.target.value, cost: etc.cost }); // ���기값 설정
+    setEtc({ name: event.target.value, cost: etc.cost });
   };
 
   const handleEtcCostChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setEtc({ name: etc.name, cost: parseInt(event.target.value) }); // ���기값 설정
+    setEtc({ name: etc.name, cost: parseInt(event.target.value) });
   };
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!driveDay) {
-      alert('날짜를 선택해주세요');
+      alert("날짜를 선택해주세요");
       return;
     }
     if (!drivers) {
-      alert('운전자를 선택해주세요');
+      alert("운전자를 선택해주세요");
       return;
     }
 
     if (!drivingDestination) {
-      alert('행선지를 입력해주세요');
+      alert("행선지를 입력해주세요");
       return;
     }
 
     if (!startKM || !endKM) {
-      alert('주행거리를 입력해주세요.');
+      alert("주행거리를 입력해주세요.");
       return;
     }
     if (etc.name && !etc.cost) {
-      alert('비용을 입력해주세요.');
+      alert("비용을 입력해주세요.");
       return;
     }
     if (etc.cost && !etc.name) {
-      alert('항목을 선택해주세요.');
+      alert("항목을 선택해주세요.");
       return;
     }
-    const driverJoined = drivers.join(', ');
-    const res = await axiosReq.put('/api/driving-inform/editInform', {
+    const driverJoined = drivers.join(", ");
+    const res = await axiosReq.put("/api/driving-inform/editInform", {
       _id: item._id,
       username: driverJoined,
       driveDay,
@@ -105,8 +105,8 @@ function EditDrivingInform({ item, setEditingItemId }: IEditInformProps) {
     });
     if (res.status === 200) {
       alert(res.data.message);
-      queryClient.invalidateQueries({ queryKey: ['drivingInform'] });
-      setEditingItemId('');
+      queryClient.invalidateQueries({ queryKey: ["drivingInform"] });
+      setEditingItemId("");
     }
   };
 
@@ -115,29 +115,29 @@ function EditDrivingInform({ item, setEditingItemId }: IEditInformProps) {
   }
 
   return (
-    <div className="fixed inset-0 top-0 z-10 flex items-center justify-center px-4 bg-black bg-opacity-65">
+    <div className="fixed inset-0 top-0 z-10 flex items-center justify-center bg-black bg-opacity-65 px-4">
       <form
         onSubmit={onSubmit}
-        className="flex flex-col w-full max-w-2xl p-6 bg-white rounded-lg shadow-lg"
+        className="flex w-full max-w-2xl flex-col rounded-lg bg-white p-6 shadow-lg"
       >
-        <h2 className="mb-6 text-xl font-bold text-center">정보 수정</h2>
+        <h2 className="mb-6 text-center text-xl font-bold">정보 수정</h2>
 
         <div className="space-y-4">
           <div className="grid grid-cols-1 gap-4">
             <div className="form-group">
-              <label className="block mb-2 font-bold text-left text-gray-700 ">
+              <label className="mb-2 block text-left font-bold text-gray-700">
                 날짜
               </label>
               <input
-                value={new Date(driveDay).toISOString().split('T')[0]}
+                value={new Date(driveDay).toISOString().split("T")[0]}
                 onChange={handleDriveDayChange}
-                className="w-full p-3 border rounded focus:ring-2 focus:ring-blue-400 focus:outline-none"
+                className="w-full rounded border p-3 focus:outline-none focus:ring-2 focus:ring-blue-400"
                 type="date"
               />
             </div>
 
             <div className="form-group">
-              <label className="block mb-2 font-bold text-left text-gray-700">
+              <label className="mb-2 block text-left font-bold text-gray-700">
                 이름
               </label>
               <div className="flex gap-2">
@@ -146,7 +146,7 @@ function EditDrivingInform({ item, setEditingItemId }: IEditInformProps) {
                     key={index}
                     value={drivers[index]}
                     onChange={handleNameChange(index)}
-                    className="w-full p-3 border rounded focus:ring-2 focus:ring-blue-400 focus:outline-none"
+                    className="w-full rounded border p-3 focus:outline-none focus:ring-2 focus:ring-blue-400"
                   >
                     {names
                       ?.sort((a, b) => a.username.localeCompare(b.username))
@@ -161,73 +161,73 @@ function EditDrivingInform({ item, setEditingItemId }: IEditInformProps) {
             </div>
 
             <div className="form-group">
-              <label className="block mb-2 font-bold text-left text-gray-700">
+              <label className="mb-2 block text-left font-bold text-gray-700">
                 방문지
               </label>
               <input
                 onChange={handleDrivingDestinationChange}
-                className="w-full p-3 border rounded focus:ring-2 focus:ring-blue-400 focus:outline-none"
+                className="w-full rounded border p-3 focus:outline-none focus:ring-2 focus:ring-blue-400"
                 value={drivingDestination}
               />
             </div>
 
             <div className="form-group">
-              <label className="block mb-2 font-bold text-left text-gray-700">
+              <label className="mb-2 block text-left font-bold text-gray-700">
                 출발(Km)
               </label>
               <input
                 type="number"
                 onChange={handleStartKMChange}
-                className="w-full p-3 border rounded focus:ring-2 focus:ring-blue-400 focus:outline-none"
+                className="w-full rounded border p-3 focus:outline-none focus:ring-2 focus:ring-blue-400"
                 value={startKM}
               />
             </div>
 
             <div className="form-group">
-              <label className="block mb-2 font-bold text-left text-gray-700">
+              <label className="mb-2 block text-left font-bold text-gray-700">
                 도착(Km)
               </label>
               <input
                 type="number"
                 onChange={handleEndKMChange}
-                className="w-full p-3 border rounded focus:ring-2 focus:ring-blue-400 focus:outline-none"
+                className="w-full rounded border p-3 focus:outline-none focus:ring-2 focus:ring-blue-400"
                 value={endKM}
               />
             </div>
 
             <div className="form-group">
-              <label className="block mb-2 font-bold text-left text-gray-700">
+              <label className="mb-2 block text-left font-bold text-gray-700">
                 주유비(Km)
               </label>
               <input
                 type="number"
                 onChange={handleFuelCostChange}
-                className="w-full p-3 border rounded focus:ring-2 focus:ring-blue-400 focus:outline-none"
+                className="w-full rounded border p-3 focus:outline-none focus:ring-2 focus:ring-blue-400"
                 value={fuelCost}
               />
             </div>
 
             <div className="form-group">
-              <label className="block mb-2 font-bold text-left text-gray-700">
+              <label className="mb-2 block text-left font-bold text-gray-700">
                 하이패스
               </label>
               <input
                 type="number"
                 onChange={handleTollChange}
-                className="w-full p-3 border rounded focus:ring-2 focus:ring-blue-400 focus:outline-none"
+                className="w-full rounded border p-3 focus:outline-none focus:ring-2 focus:ring-blue-400"
                 value={toll}
               />
             </div>
 
             <div className="form-group">
-              <label className="block mb-2 font-bold text-left text-gray-700">
+              <label className="mb-2 block text-left font-bold text-gray-700">
                 기타
               </label>
               <div className="flex gap-2">
                 <select
                   value={etc.name}
                   onChange={handleEtcNameChange}
-                  className="w-1/2 p-3 border rounded focus:ring-2 focus:ring-blue-400 focus:outline-none"
+                  className="w-1/2 rounded border p-3 focus:outline-none focus:ring-2 focus:ring-blue-400"
                 >
                   <option value="">항목 선택</option>
                   {etcNames
@@ -242,24 +242,24 @@ function EditDrivingInform({ item, setEditingItemId }: IEditInformProps) {
                   type="number"
                   value={etc.cost}
                   onChange={handleEtcCostChange}
-                  className="w-1/2 p-3 border rounded focus:ring-2 focus:ring-blue-400 focus:outline-none"
+                  className="w-1/2 rounded border p-3 focus:outline-none focus:ring-2 focus:ring-blue-400"
                 />
               </div>
             </div>
           </div>
         </div>
 
-        <div className="flex justify-end gap-4 mt-6">
+        <div className="mt-6 flex justify-end gap-4">
           <button
             type="submit"
-            className="px-6 py-2 text-white bg-blue-500 rounded hover:bg-blue-600 focus:ring-2 focus:ring-blue-400 focus:outline-none"
+            className="rounded bg-blue-500 px-6 py-2 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
           >
             변경
           </button>
           <button
             type="button"
-            onClick={() => setEditingItemId('')}
-            className="px-6 py-2 text-gray-700 bg-gray-200 rounded hover:bg-gray-300 focus:ring-2 focus:ring-gray-400 focus:outline-none"
+            onClick={() => setEditingItemId("")}
+            className="rounded bg-gray-200 px-6 py-2 text-gray-700 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400"
           >
             취소
           </button>

@@ -155,7 +155,7 @@ function DrivePage() {
           </div>
 
           <div className="print-hidden flex w-[100%] items-center rounded-t-2xl border border-t-gray-300 sm:h-auto sm:flex-col md:h-20 md:justify-between">
-            <div className="flex items-center sm:w-full sm:flex-col sm:p-3 md:ml-2 md:w-[50%] md:justify-between">
+            <div className="flex items-center sm:w-full sm:flex-col sm:p-3 md:ml-2 md:h-full md:w-[50%] md:justify-between">
               <select
                 className="h-10 rounded-lg border border-gray-300 p-2 text-sm font-bold hover:opacity-60 sm:mb-3 sm:w-full md:mr-16 md:w-[20%]"
                 onChange={onChangeCarNum}
@@ -179,11 +179,13 @@ function DrivePage() {
                   onClick={() => setIsAdding(true)}
                   severity="info"
                   variant="outlined"
-                  className="flex h-16 cursor-pointer items-center p-2 hover:opacity-60 sm:w-full md:w-[80%]"
+                  className="flex h-16 cursor-pointer items-center hover:opacity-60 sm:w-full md:w-[80%]"
                   sx={{
                     fontSize: "medium",
+                    overflowY: "auto",
                     bgColor: "#93C5FD",
                     borderRadius: "8px",
+
                     border: "1px solid lightgray",
                     fontWeight: "bold",
                     "@media (max-width: 640px)": {

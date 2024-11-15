@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { IDrivingInform } from '../../interfaces/interface';
-import { drivingHeaders } from '../../constants/headers';
-import { axiosReq, calCarDay } from '../../api';
-import { Edit, Trash2 } from 'lucide-react';
-import EditDrivingInform from './DriveEdit';
+import React, { useState } from "react";
+import { IDrivingInform } from "../../interfaces/interface";
+import { drivingHeaders } from "../../constants/headers";
+import { axiosReq, calCarDay } from "../../api";
+import { Edit, Trash2 } from "lucide-react";
+import EditDrivingInform from "./DriveEdit";
 import {
   Paper,
   Table,
@@ -13,8 +13,8 @@ import {
   TableFooter,
   TableHead,
   TableRow,
-} from '@mui/material';
-import DrivePrint from './DrivePrint';
+} from "@mui/material";
+import DrivePrint from "./DrivePrint";
 
 interface IDrivePCProps {
   drivingInform: IDrivingInform[];
@@ -39,13 +39,13 @@ function DrivePC({
   totalEtcCost,
   refetch,
 }: IDrivePCProps) {
-  const [editingItemId, setEditingItemId] = useState('');
+  const [editingItemId, setEditingItemId] = useState("");
 
   const deleteInform = async (id: string) => {
-    const isConfirm = window.confirm('삭제하시겠습니까?');
+    const isConfirm = window.confirm("삭제하시겠습니까?");
     if (isConfirm) {
       const res = await axiosReq.delete(
-        `/api/driving-inform/removeInform/${id}`
+        `/api/driving-inform/removeInform/${id}`,
       );
       if (res.status === 200) {
         alert(res.data.message);
@@ -55,11 +55,11 @@ function DrivePC({
   };
 
   return (
-    <div className="w-full h-full">
+    <div className="h-full w-full">
       <TableContainer
         component={Paper}
         className="block print:hidden"
-        sx={{ maxHeight: '75vh', overflowY: 'auto' }} // 높이 제한과 스크롤 추가
+        sx={{ maxHeight: "75vh", overflowY: "auto" }}
       >
         <Table stickyHeader aria-label="a dense table" size="small">
           <TableHead>
@@ -68,8 +68,8 @@ function DrivePC({
                 <TableCell
                   key={index}
                   sx={{
-                    fontWeight: '800',
-                    whiteSpace: 'nowrap',
+                    fontWeight: "800",
+                    whiteSpace: "nowrap",
                   }}
                 >
                   {item}
@@ -95,8 +95,8 @@ function DrivePC({
               .map((item, index) => (
                 <TableRow
                   key={index}
-                  className={`sm:text-sm w-[100%] ${
-                    index % 2 === 0 ? 'bg-white' : 'bg-gray-200'
+                  className={`w-[100%] sm:text-sm ${
+                    index % 2 === 0 ? "bg-white" : "bg-gray-200"
                   }`}
                 >
                   <TableCell className="border border-gray-300">
@@ -118,10 +118,10 @@ function DrivePC({
                     {item.totalKM.toLocaleString()}km
                   </TableCell>
                   <TableCell className="border border-gray-300">
-                    {item.fuelCost ? item.fuelCost.toLocaleString() : ''}
+                    {item.fuelCost ? item.fuelCost.toLocaleString() : ""}
                   </TableCell>
                   <TableCell className="border border-gray-300">
-                    {item.toll ? item.toll.toLocaleString() : ''}
+                    {item.toll ? item.toll.toLocaleString() : ""}
                   </TableCell>
                   <TableCell className="border border-gray-300">
                     {item.etc.cost > 0 &&
@@ -131,7 +131,7 @@ function DrivePC({
                     {item.isOwner && (
                       <div className="flex justify-end">
                         <button
-                          className="flex items-center mr-4 hover:opacity-60"
+                          className="mr-4 flex items-center hover:opacity-60"
                           onClick={() => setEditingItemId(item._id)}
                         >
                           <Edit strokeWidth={2.2} size={15} />
@@ -159,14 +159,14 @@ function DrivePC({
           <TableFooter>
             <TableRow
               sx={{
-                position: 'sticky',
+                position: "sticky",
                 bottom: 0,
-                background: '#f5f5f5',
-                '& .MuiTableCell-root': {
+                background: "#f5f5f5",
+                "& .MuiTableCell-root": {
                   fontWeight: 600,
-                  backgroundColor: '#f5f5f5',
-                  borderBottom: 'none',
-                  fontSize: '0.85rem',
+                  backgroundColor: "#f5f5f5",
+                  borderBottom: "none",
+                  fontSize: "0.85rem",
                 },
               }}
             >

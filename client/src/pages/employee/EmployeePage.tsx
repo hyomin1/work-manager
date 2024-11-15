@@ -59,6 +59,8 @@ function EmployeePage() {
         <DateInput
           isDatePickerOpen={isDatePickerOpen}
           onClose={() => setIsDatePickerOpen(false)}
+          currentDate={currentDate || new Date()}
+          setCurrentDate={setCurrentDate}
         />
 
         <NavigationButtons refetch={refetch} />

@@ -3,11 +3,16 @@ import useEmployeeStore from "../../../stores/employeeStore";
 interface DateInputProps {
   isDatePickerOpen: boolean;
   onClose: () => void;
+  currentDate: Date;
+  setCurrentDate: React.Dispatch<React.SetStateAction<Date | null>>;
 }
 
-function DateInput({ isDatePickerOpen, onClose }: DateInputProps) {
-  const { currentDate, setCurrentDate } = useEmployeeStore();
-
+function DateInput({
+  isDatePickerOpen,
+  onClose,
+  currentDate,
+  setCurrentDate,
+}: DateInputProps) {
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newDate = e.target.value;
     if (newDate) {
