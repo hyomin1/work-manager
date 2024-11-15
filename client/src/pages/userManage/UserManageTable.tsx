@@ -64,7 +64,7 @@ function UserManageTable({ users, refetch, value }: ITableProps) {
       refetch();
     }
   };
-  console.log(users);
+
   return (
     <TableContainer
       sx={{ width: "85%", marginTop: 4 }}

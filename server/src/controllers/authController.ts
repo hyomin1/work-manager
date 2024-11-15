@@ -49,7 +49,6 @@ export const loginUser = async (req: Request, res: Response) => {
 
     req.session.userId = user._id.toString();
 
-    // 관리자 권한 유저 처음 로그인시 관리자 권한 부여
     if (user.role === 'admin') {
       req.session.isAdmin = true;
     }
@@ -68,7 +67,7 @@ export const logoutUser = async (req: Request, res: Response) => {
         console.error(err);
         return res.status(500).json({ error: '서버 에러' });
       }
-      res.clearCookie('connect.sid'); // 세션 쿠키 삭제
+      res.clearCookie('connect.sid');
       return res.status(200).json({ message: '로그아웃 성공' });
     });
   } catch (error) {
