@@ -64,17 +64,18 @@ function UserManageTable({ users, refetch, value }: ITableProps) {
       refetch();
     }
   };
+  console.log(users);
   return (
     <TableContainer
       sx={{ width: "85%", marginTop: 4 }}
       component={Paper}
-      className="shadow-lg rounded-xl"
+      className="rounded-xl shadow-lg"
     >
       <Table stickyHeader>
         <TableHead>
           <TableRow className="bg-blue-50">
             <TableCell
-              className="font-semibold text-gray-700 bg-blue-50"
+              className="bg-blue-50 font-semibold text-gray-700"
               sx={{
                 fontSize: "0.9rem",
                 fontWeight: "bold",
@@ -89,7 +90,7 @@ function UserManageTable({ users, refetch, value }: ITableProps) {
             </TableCell>
             {value === 0 && (
               <TableCell
-                className="font-semibold text-gray-700 bg-blue-50"
+                className="bg-blue-50 font-semibold text-gray-700"
                 sx={{
                   fontSize: "0.9rem",
                   fontWeight: "bold",
@@ -115,7 +116,7 @@ function UserManageTable({ users, refetch, value }: ITableProps) {
                 <TableCell sx={{ fontSize: "large" }}>{user.userId}</TableCell>
                 {user.isApproved && (
                   <TableCell sx={{ fontSize: "medium" }}>
-                    <FormControl sx={{ width: "20%" }}>
+                    <FormControl sx={{ width: "24%" }}>
                       <Select
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
@@ -124,6 +125,7 @@ function UserManageTable({ users, refetch, value }: ITableProps) {
                       >
                         <MenuItem value={"admin"}>관리자</MenuItem>
                         <MenuItem value={"user"}>일반</MenuItem>
+                        <MenuItem value={"car"}>차량 전용</MenuItem>
                       </Select>
                     </FormControl>
                   </TableCell>
@@ -134,24 +136,24 @@ function UserManageTable({ users, refetch, value }: ITableProps) {
                     <div className="flex">
                       <button
                         onClick={() => deleteUser(user._id)}
-                        className="p-2 transition-colors rounded-full hover:bg-gray-100"
+                        className="rounded-full p-2 transition-colors hover:bg-gray-100"
                       >
-                        <Trash2 className="w-6 h-6 text-gray-600" />
+                        <Trash2 className="h-6 w-6 text-gray-600" />
                       </button>
                     </div>
                   ) : (
                     <div className="flex justify-center">
                       <button
                         onClick={() => approveUser(user._id)}
-                        className="p-2 mr-8 transition-colors bg-green-100 rounded-full hover:bg-green-200"
+                        className="mr-8 rounded-full bg-green-100 p-2 transition-colors hover:bg-green-200"
                       >
-                        <CheckCircle className="w-6 h-6 text-green-600" />
+                        <CheckCircle className="h-6 w-6 text-green-600" />
                       </button>
                       <button
                         onClick={() => rejectUser(user._id)}
-                        className="p-2 ml-2 transition-colors bg-red-100 rounded-full hover:bg-red-200"
+                        className="ml-2 rounded-full bg-red-100 p-2 transition-colors hover:bg-red-200"
                       >
-                        <XCircle className="w-6 h-6 text-red-600" />
+                        <XCircle className="h-6 w-6 text-red-600" />
                       </button>
                     </div>
                   )}

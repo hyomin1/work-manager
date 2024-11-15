@@ -41,7 +41,12 @@ export const loginUser = async (req: Request, res: Response) => {
     if (!user.isApproved) {
       return res.status(403).json({ error: '승인된 계정이 아닙니다.' });
     }
+
     req.session.isUser = true;
+    if (user.role === 'car') {
+      req.session.isCar = true;
+    }
+
     req.session.userId = user._id.toString();
 
     // 관리자 권한 유저 처음 로그인시 관리자 권한 부여
@@ -74,19 +79,25 @@ export const logoutUser = async (req: Request, res: Response) => {
 
 export const checkSession = async (req: Request, res: Response) => {
   if (req.session.isUser) {
-    return res.status(200).json();
+    return res.status(200).json({});
   }
 };
 
 export const checkAdminSession = async (req: Request, res: Response) => {
   if (req.session.isAdmin) {
     return res.status(200).json();
-  } else {
-    return res.status(403).json({
-      error: '관리자 권한이 없습니다.',
-      type: 'not granted admin',
-    });
   }
+  return res.status(403).json({
+    error: '관리자 권한이 없습니다.',
+    type: 'not granted admin',
+  });
+};
+
+export const checkCarSession = async (req: Request, res: Response) => {
+  if (req.session.isCar) {
+    return res.status(200).json({ isUser: false });
+  }
+  return res.status(200).json({ isUser: true });
 };
 
 export const directAdminSession = async (req: Request, res: Response) => {

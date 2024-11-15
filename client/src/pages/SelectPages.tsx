@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Users, Truck, ChevronRight } from "lucide-react";
 import { ROUTES } from "../constants/constant";
+import { checkCarSession } from "../api";
 
 interface SelectionCardProps {
   title: string;
@@ -13,6 +14,15 @@ interface SelectionCardProps {
 const SelectPages = () => {
   const navigate = useNavigate();
 
+  const checkUser = async () => {
+    const response = await checkCarSession();
+    if (response.isUser) {
+      navigate(ROUTES.EMPLOYEES.LIST);
+      return;
+    }
+    alert("권한이 없습니다.");
+  };
+
   return (
     <div className="flex min-h-screen bg-gradient-to-br from-indigo-50 to-slate-100">
       {/* 배경 장식 요소 */}
@@ -23,16 +33,16 @@ const SelectPages = () => {
       <div className="relative mx-auto flex w-full max-w-6xl flex-col gap-8 px-6 py-8">
         {/* 상단 장식 패턴 */}
         <div className="mb-8 grid grid-cols-3 gap-4">
-          <div className="h-2 rounded-full bg-blue-200/50"></div>
-          <div className="h-2 rounded-full bg-green-200/50"></div>
-          <div className="h-2 rounded-full bg-blue-200/50"></div>
+          <div className="h-2 rounded-full bg-blue-200/50" />
+          <div className="h-2 rounded-full bg-green-200/50" />
+          <div className="h-2 rounded-full bg-blue-200/50" />
         </div>
 
         {/* 웰컴 메시지 또는 장식적 타이틀 */}
         <div className="mb-8 flex items-center justify-center">
-          <div className="h-[1px] w-20 bg-gradient-to-r from-transparent to-blue-200"></div>
+          <div className="h-[1px] w-20 bg-gradient-to-r from-transparent to-blue-200" />
           <div className="px-6 text-3xl font-light text-gray-400">메뉴</div>
-          <div className="h-[1px] w-20 bg-gradient-to-l from-transparent to-blue-200"></div>
+          <div className="h-[1px] w-20 bg-gradient-to-l from-transparent to-blue-200" />
         </div>
 
         {/* 메인 메뉴 카드 */}
@@ -41,7 +51,7 @@ const SelectPages = () => {
             title="근무 현황"
             description="근무 현황 확인"
             icon={<Users className="text-blue-600" size={32} />}
-            onClick={() => navigate(ROUTES.EMPLOYEES.LIST)}
+            onClick={checkUser}
           />
           <SelectionCard
             title="차량 운행 일지"
@@ -57,7 +67,7 @@ const SelectPages = () => {
             <div
               key={i}
               className="h-1 rounded-full bg-gradient-to-r from-blue-100 to-green-100"
-            ></div>
+            />
           ))}
         </div>
       </div>

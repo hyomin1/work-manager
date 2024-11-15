@@ -2,6 +2,7 @@ import express from 'express';
 import {
   checkAdminSession,
   checkSession,
+  checkCarSession,
   directAdminSession,
   joinUser,
   loginUser,
@@ -13,6 +14,7 @@ const router = express.Router();
 router.get('/checkSession', checkSession);
 router.get('/checkAdminSession', checkAdminSession);
 router.get('/directAdminSession', directAdminSession);
+router.get('/checkCarSession', checkCarSession);
 
 router.post('/login', loginUser);
 router.post('/logout', logoutUser);

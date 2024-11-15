@@ -120,6 +120,11 @@ export const getUsers = async () => {
   return response.data.users || "";
 };
 
+export const checkCarSession = async () => {
+  const res = await axiosReq.get("/auth/checkCarSession");
+  return res.data;
+};
+
 // 메인화면에서 관리 버튼 눌러서 들어간 경우 check, 접근 불가 메시지만 띄워줌
 export const checkAdminSession = async () => {
   const res = await axiosReq.get("/auth/checkAdminSession");

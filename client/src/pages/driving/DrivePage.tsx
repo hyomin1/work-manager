@@ -5,6 +5,7 @@ import {
   calYear,
   calYearMonth,
   checkAdminSession,
+  checkCarSession,
   getCars,
   getDrivingInform,
   getNotification,
@@ -109,6 +110,24 @@ function DrivePage() {
     if (status === 200) {
       navigate(ROUTES.ADMIN.SETTINGS);
     }
+  };
+
+  const checkUser = async () => {
+    const response = await checkCarSession();
+    if (response.isUser) {
+      navigate(ROUTES.EMPLOYEES.LIST);
+      return;
+    }
+    alert("권한이 없습니다.");
+  };
+
+  const checkUserInput = async () => {
+    const response = await checkCarSession();
+    if (response.isUser) {
+      navigate(ROUTES.VEHICLES.CREATE);
+      return;
+    }
+    alert("권한이 없습니다.");
   };
 
   const totalFuelCost =
@@ -219,7 +238,7 @@ function DrivePage() {
             <div className="flex flex-1 items-center justify-end p-4 sm:w-full sm:flex-col sm:gap-2 md:w-[50%]">
               <div className="flex items-center justify-center sm:mb-2 sm:w-full sm:gap-2">
                 <button
-                  onClick={() => navigate(ROUTES.EMPLOYEES.LIST)}
+                  onClick={checkUser}
                   className="button-effect flex items-center justify-center whitespace-nowrap rounded-lg bg-[#0EA5E9] px-4 py-2 text-white hover:opacity-60 sm:flex-1 md:mr-4"
                 >
                   <Users className="sm:h-4 sm:w-4" />
@@ -227,7 +246,7 @@ function DrivePage() {
                 </button>
                 <button
                   className="button-effect flex items-center justify-center whitespace-nowrap rounded-lg bg-[#10B981] px-4 py-2 text-white sm:flex-1 sm:text-lg md:mr-4"
-                  onClick={() => navigate(ROUTES.VEHICLES.CREATE)}
+                  onClick={checkUserInput}
                 >
                   <Pencil className="sm:h-4 sm:w-4" />
                   <span className="ml-1 sm:text-xs">입력</span>
