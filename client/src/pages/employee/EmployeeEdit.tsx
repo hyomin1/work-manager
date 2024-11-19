@@ -113,8 +113,8 @@ function EmployeeEdit({
     const response = await axiosReq.put("/api/employee-inform/editInform", {
       _id: item._id,
       ...formData,
-      startDate: item.isDaily === 3 ? formData.startDate : formData.date,
-      endDate: item.isDaily === 3 ? formData.endDate : formData.date,
+      startDate: formData.startDate,
+      endDate: formData.endDate,
     });
     if (response.status !== 200) {
       return;
@@ -165,9 +165,10 @@ function EmployeeEdit({
               ) : (
                 <MobileDatePicker
                   label="시작일"
-                  onChange={(newDate: Dayjs | null) =>
-                    newDate && updateField("date", newDate.toDate())
-                  }
+                  onChange={(newDate: Dayjs | null) => {
+                    if (newDate) updateField("startDate", newDate.toDate());
+                    if (newDate) updateField("endDate", newDate.toDate());
+                  }}
                   value={dayjs(formData.startDate)}
                   sx={datePickerStyles}
                 />
