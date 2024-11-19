@@ -36,7 +36,7 @@ function Login() {
     if (isRemember) {
       setCookie("rememberUserId", data.userId, {
         path: "/",
-        maxAge: 30 * 24 * 60 * 60,
+        maxAge: 365 * 24 * 60 * 60,
       });
     } else {
       removeCookie("rememberUserId");

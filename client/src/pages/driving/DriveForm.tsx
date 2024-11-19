@@ -26,14 +26,7 @@ import { styled } from "@mui/material/styles";
 import Blank from "../../components/common/Blank";
 import { DatePicker } from "@mui/x-date-pickers";
 import { ROUTES } from "../../constants/constant";
-import {
-  Calculator,
-  Milestone,
-  Navigation,
-  Receipt,
-  Route,
-  Wallet,
-} from "lucide-react";
+import { Calculator, Navigation, Wallet } from "lucide-react";
 dayjs.locale("ko");
 
 const StyledPaper = styled(Paper)(({ theme }) => ({

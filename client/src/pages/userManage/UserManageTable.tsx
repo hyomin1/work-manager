@@ -67,7 +67,7 @@ function UserManageTable({ users, refetch, value }: ITableProps) {
 
   return (
     <TableContainer
-      sx={{ width: "85%", marginTop: 4 }}
+      sx={{ width: "90%", marginTop: 4 }}
       component={Paper}
       className="rounded-xl shadow-lg"
     >
