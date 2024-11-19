@@ -25,6 +25,15 @@ import { styled } from "@mui/material/styles";
 import "dayjs/locale/ko";
 import Blank from "../../components/common/Blank";
 import { ROUTES } from "../../constants/constant";
+import {
+  Briefcase,
+  Calendar,
+  Car,
+  ClipboardList,
+  MapPin,
+  MessageSquare,
+  User,
+} from "lucide-react";
 dayjs.locale("ko");
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
@@ -146,7 +155,6 @@ function EmployeeForm() {
       newDestinations[index] = newValue;
       setSelectedDestinations(newDestinations);
 
-      // Reset corresponding business when destination changes
       const newBusinesses = [...selectedBusinesses];
       newBusinesses[index] = null;
       setSelectedBusinesses(newBusinesses);
@@ -309,11 +317,11 @@ function EmployeeForm() {
     <Container
       maxWidth={false}
       sx={{ py: 4 }}
-      className="flex flex-col items-center w-full h-screen bg-gradient-to-br from-zinc-50 to-slate-100"
+      className="flex h-screen w-full flex-col items-center bg-gradient-to-br from-zinc-50 to-slate-100"
     >
       <div className="mb-8 mt-2 flex items-center justify-between sm:mt-4 sm:w-full md:w-[80%]">
         <ArrowBack type="not home" />
-        <span className="font-bold whitespace-nowrap sm:mx-1 sm:text-lg md:mx-8 md:text-3xl">
+        <span className="whitespace-nowrap font-bold sm:mx-1 sm:text-lg md:mx-8 md:text-3xl">
           {formDate}
         </span>
         <Blank />
@@ -330,10 +338,13 @@ function EmployeeForm() {
         <Grid container spacing={3}>
           {/* 기본 정보 섹션 */}
           <Grid item xs={12}>
-            <span className="text-xl font-bold">근무 현황</span>
             <Grid container spacing={2}>
               {/* 날짜 선택 섹션 */}
               <Grid item xs={12} sm={6} md={4}>
+                <div className="flex items-center space-x-2 text-slate-700">
+                  <Calendar className="h-5 w-5" />
+                  <h2 className="text-lg font-semibold">날짜</h2>
+                </div>
                 <FormControl component="fieldset" fullWidth>
                   {isDaily === 2 ? (
                     <LocalizationProvider
@@ -383,6 +394,7 @@ function EmployeeForm() {
                     )
                   )}
                   <RadioGroup
+                    sx={{ display: "flex" }}
                     className="flex"
                     row
                     value={isDaily}
@@ -408,6 +420,10 @@ function EmployeeForm() {
               </Grid>
 
               <Grid item xs={12} sm={6} md={4}>
+                <div className="mb-4 flex items-center space-x-2 text-slate-700">
+                  <User className="h-5 w-5" />
+                  <h2 className="text-lg font-semibold">이름</h2>
+                </div>
                 <Autocomplete
                   options={
                     names
@@ -421,6 +437,10 @@ function EmployeeForm() {
                 />
               </Grid>
               <Grid item xs={12} sm={6} md={4}>
+                <div className="mb-4 flex items-center space-x-2 text-slate-700">
+                  <Car className="h-5 w-5" />
+                  <h2 className="text-lg font-semibold">차량</h2>
+                </div>
                 <Autocomplete
                   options={carOptions}
                   getOptionLabel={(options) => options.car}
@@ -443,7 +463,10 @@ function EmployeeForm() {
               {/* 방문지 섹션 */}
               <Grid item xs={12} md={4}>
                 <StyledFormSection>
-                  <div className="mb-4">방문지</div>
+                  <div className="mb-4 flex items-center space-x-2 text-slate-700">
+                    <MapPin className="h-5 w-5" />
+                    <h2 className="text-lg font-semibold">방문지</h2>
+                  </div>
                   {[0, 1, 2].map((index) => (
                     <Autocomplete
                       key={index}
@@ -472,7 +495,10 @@ function EmployeeForm() {
               {/* 사업명 섹션 */}
               <Grid item xs={12} md={6}>
                 <StyledFormSection>
-                  <div className="mb-4">사업명</div>
+                  <div className="mb-4 flex items-center space-x-2 text-slate-700">
+                    <Briefcase className="h-5 w-5" />
+                    <h2 className="text-lg font-semibold">사업명</h2>
+                  </div>
                   {[0, 1, 2].map((index) => (
                     <Autocomplete
                       key={index}
@@ -507,7 +533,10 @@ function EmployeeForm() {
               {/* 업무 섹션 */}
               <Grid item xs={12} md={2}>
                 <StyledFormSection>
-                  <div className="mb-4">업무</div>
+                  <div className="mb-4 flex items-center space-x-2 text-slate-700">
+                    <ClipboardList className="h-5 w-5" />
+                    <h2 className="text-lg font-semibold">업무</h2>
+                  </div>
                   {[0, 1, 2].map((index) => (
                     <Autocomplete
                       key={index}
@@ -545,12 +574,14 @@ function EmployeeForm() {
           <Grid item xs={12}>
             <Grid container spacing={1}>
               <Grid item xs={12} md={4}>
-                <div className="mb-4">비고</div>
+                <div className="mb-4 flex items-center space-x-2 text-slate-700">
+                  <MessageSquare className="h-5 w-5" />
+                  <h2 className="text-lg font-semibold">비고</h2>
+                </div>
                 <TextField
                   fullWidth
                   multiline
                   rows={2}
-                  label="비고"
                   value={remarks}
                   onChange={(e) => setRemarks(e.target.value)}
                 />
@@ -560,10 +591,11 @@ function EmployeeForm() {
         </Grid>
 
         {/* 완료 버튼 */}
-        <Box sx={{ textAlign: "center", width: "100%" }}>
+        <Box sx={{ textAlign: "center", width: "100%", whiteSpace: "nowrap" }}>
           <Button
             variant="contained"
             onClick={onClickComplete}
+            className="sm:w-[100%] md:w-[20%]"
             sx={{
               height: "48px",
               fontSize: "1.1rem",
@@ -571,7 +603,6 @@ function EmployeeForm() {
               "&:hover": {
                 bgcolor: "#009933",
               },
-              width: "20%",
             }}
           >
             입력 완료

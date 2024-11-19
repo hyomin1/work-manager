@@ -17,7 +17,7 @@ function UserManageTab({ value, setValue }: ITabs) {
     setValue(newValue);
   };
   return (
-    <div className="space-y-6 md:w-[85%]">
+    <div className="w-[85%] space-y-6">
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
           value={value}

@@ -116,7 +116,7 @@ function UserManageTable({ users, refetch, value }: ITableProps) {
                 <TableCell sx={{ fontSize: "large" }}>{user.userId}</TableCell>
                 {user.isApproved && (
                   <TableCell sx={{ fontSize: "medium" }}>
-                    <FormControl sx={{ width: "24%" }}>
+                    <FormControl className="sm:w-[100%] md:w-[25%]">
                       <Select
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
@@ -142,7 +142,7 @@ function UserManageTable({ users, refetch, value }: ITableProps) {
                       </button>
                     </div>
                   ) : (
-                    <div className="flex justify-center">
+                    <div className="flex">
                       <button
                         onClick={() => approveUser(user._id)}
                         className="mr-8 rounded-full bg-green-100 p-2 transition-colors hover:bg-green-200"

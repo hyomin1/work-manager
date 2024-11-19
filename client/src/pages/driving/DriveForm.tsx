@@ -26,6 +26,14 @@ import { styled } from "@mui/material/styles";
 import Blank from "../../components/common/Blank";
 import { DatePicker } from "@mui/x-date-pickers";
 import { ROUTES } from "../../constants/constant";
+import {
+  Calculator,
+  Milestone,
+  Navigation,
+  Receipt,
+  Route,
+  Wallet,
+} from "lucide-react";
 dayjs.locale("ko");
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
@@ -281,9 +289,10 @@ function DriveInput() {
           {/* 주행 거리 섹션 */}
           <Grid item xs={12} md={4}>
             <StyledFormSection>
-              <Typography variant="subtitle1" sx={{ mb: 2 }}>
-                주행 거리
-              </Typography>
+              <div className="mb-4 flex items-center space-x-2 text-slate-700">
+                <Navigation className="h-5 w-5" />
+                <h2 className="text-lg font-semibold">주행 거리</h2>
+              </div>
               <Grid container spacing={2}>
                 <Grid item xs={6}>
                   <TextField
@@ -320,9 +329,10 @@ function DriveInput() {
           {/* 비용 섹션 */}
           <Grid item xs={12} md={4}>
             <StyledFormSection>
-              <Typography variant="subtitle1" sx={{ mb: 2 }}>
-                비용
-              </Typography>
+              <div className="mb-4 flex items-center space-x-2 text-slate-700">
+                <Wallet className="h-5 w-5" />
+                <h2 className="text-lg font-semibold">비용</h2>
+              </div>
               <TextField
                 fullWidth
                 type="number"
@@ -341,9 +351,10 @@ function DriveInput() {
           {/* 기타 비용 섹션 */}
           <Grid item xs={12} md={4}>
             <StyledFormSection>
-              <Typography variant="subtitle1" sx={{ mb: 2 }}>
-                기타 비용
-              </Typography>
+              <div className="mb-4 flex items-center space-x-2 text-slate-700">
+                <Calculator className="h-5 w-5" />
+                <h2 className="text-lg font-semibold">기타 비용</h2>
+              </div>
               <FormControl fullWidth sx={{ mb: 2 }}>
                 <InputLabel>항목 선택</InputLabel>
                 <Select
@@ -371,11 +382,12 @@ function DriveInput() {
         </Grid>
 
         {/* 제출 버튼 */}
-        <Box sx={{ mt: 4, textAlign: "center" }}>
+        <Box sx={{ textAlign: "center", width: "100%" }}>
           <Button
             variant="contained"
             color="primary"
             size="large"
+            className="sm:w-[90%] md:w-[20%]"
             onClick={onClickComplete}
             sx={{
               height: "48px",

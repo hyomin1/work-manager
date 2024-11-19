@@ -55,27 +55,27 @@ function NavigationButtons({ refetch }: NavProps) {
 
           <div className="flex sm:w-full sm:gap-2">
             <button
-              className="button-effect flex items-center justify-center whitespace-nowrap rounded-lg bg-[#10B981] px-4 py-2 text-white hover:opacity-60 sm:mr-0 sm:flex-1 md:mr-4"
+              className="button-effect flex items-center justify-center whitespace-nowrap rounded-lg bg-[#0EA5E9] px-4 py-2 text-white hover:opacity-60 sm:mr-0 sm:flex-1 md:mr-4"
               onClick={() => handleAdminAction("MANAGE")}
             >
               <Users className="sm:h-4 sm:w-4" />
               <span className="ml-1 sm:text-xs">관리</span>
             </button>
             <button
-              className="button-effect flex items-center justify-center whitespace-nowrap rounded-lg bg-[#0EA5E9] px-4 py-2 text-white hover:opacity-60 sm:mr-0 sm:flex-1 md:mr-4"
+              className="button-effect flex items-center justify-center whitespace-nowrap rounded-lg bg-[#10B981] px-4 py-2 text-white hover:opacity-60 sm:mr-0 sm:flex-1 md:mr-4"
               onClick={() => handleAdminAction("SETTINGS")}
             >
               <Settings className="sm:h-4 sm:w-4" />
               <span className="ml-1 sm:text-xs">설정</span>
             </button>
             <button
-              className="button-effect flex items-center justify-center whitespace-nowrap rounded-lg bg-[#10B981] px-4 py-2 text-white sm:mr-0 sm:flex-1 md:mr-4"
+              className="button-effect flex items-center justify-center whitespace-nowrap rounded-lg bg-[#0EA5E9] px-4 py-2 text-white sm:mr-0 sm:flex-1 md:mr-4"
               onClick={() => handleAdminAction("STATISTICS")}
             >
               <LineChart className="sm:h-4 sm:w-4" />
               <span className="ml-1 sm:text-xs">통계</span>
             </button>
-            <div className="flex items-center sm:w-full sm:flex-1 sm:justify-center">
+            <div className="flex items-center sm:hidden sm:w-full sm:flex-1 sm:justify-center">
               <button onClick={() => refetch()}>
                 <SlRefresh className="hover:opacity-60 sm:h-6 sm:w-6 md:h-7 md:w-7" />
               </button>
