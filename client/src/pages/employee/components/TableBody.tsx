@@ -41,13 +41,7 @@ function EmployeeTableBody({ refetch }: EmployeeTableBodyProps) {
 
   const styleMap = new Map();
 
-  const bgColors = [
-    "#F8F9FC", // 진한 흰색
-    "#EEF6FF", // 맑은 하늘색
-    "#F2EEFF", // 은은한 퍼플
-    "#E6FFEF", // 깔끔한 민트
-    "#FFF4E8", // 연한 피치
-  ];
+  const bgColors = ["#F8F9FC", "#EEF6FF", "#F2EEFF", "#E6FFEF", "#FFF4E8"];
 
   destinations.forEach((dest, index) => {
     const colorIndex = index % bgColors.length;

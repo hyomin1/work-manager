@@ -168,7 +168,7 @@ function EmployeeEdit({
                   onChange={(newDate: Dayjs | null) =>
                     newDate && updateField("date", newDate.toDate())
                   }
-                  value={dayjs(formData.date)}
+                  value={dayjs(formData.startDate)}
                   sx={datePickerStyles}
                 />
               )}

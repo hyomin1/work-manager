@@ -1,4 +1,3 @@
-// src/hooks/useCustomQuery.ts
 import { useQuery } from "@tanstack/react-query";
 import {
   getNames,
@@ -15,7 +14,7 @@ import {
   IWorks,
   ICars,
   IEtcNames,
-} from "../interfaces/interface"; // 타입 경로에 맞게 수정
+} from "../interfaces/interface";
 
 export const useCustomQueries = () => {
   const { data: names, isLoading: namesLoading } = useQuery<INames[]>({
