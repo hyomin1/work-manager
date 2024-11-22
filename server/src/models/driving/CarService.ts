@@ -5,8 +5,8 @@ interface ICarService {
   date: Date;
   type: string;
   mileage: {
-    base: number;
-    next?: number;
+    base: string;
+    next?: string;
   };
 
   note: string;
@@ -18,8 +18,8 @@ const carServiceSchema = new Schema<ICarService>(
     date: { type: Date, required: true },
     type: { type: String, required: true },
     mileage: {
-      base: { type: Number, required: true },
-      next: { type: Number },
+      base: { type: String, required: true },
+      next: { type: String },
     },
     note: { type: String },
   },

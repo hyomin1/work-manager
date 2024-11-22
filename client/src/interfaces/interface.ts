@@ -83,3 +83,16 @@ export interface Users {
   isApproved: true;
   role: string;
 }
+
+// 차량 정비 내역
+
+export interface ICarService {
+  _id: string;
+  date: Date;
+  type: string;
+  mileage: {
+    base: number;
+    next: number;
+  };
+  note: string;
+}

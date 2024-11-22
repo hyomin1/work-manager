@@ -62,7 +62,7 @@ export const statisticsDestinationHeader = [
 export const carServiceHeader = [
   "정비 일자",
   "정비 유형",
-  "최근 점검",
-  "다음 점검",
+  "최근 점검(km)",
+  "다음 점검(km)",
   "비고",
 ];

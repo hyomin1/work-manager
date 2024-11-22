@@ -4,6 +4,7 @@ import Etc from '../models/driving/Etc';
 import User from '../models/employee/User';
 import Car from '../models/Car';
 import mongoose from 'mongoose';
+import CarService from '../models/driving/CarService';
 
 export const addEtcName = async (req: Request, res: Response) => {
   const { etcName } = req.body;
@@ -88,7 +89,6 @@ export const addInform = async (req: Request, res: Response) => {
       (car !== privateCarId && !startKM) ||
       (car !== privateCarId && !endKM)
     ) {
-      return res.status(400).json({ error: '정보를 입력해야 합니다.' });
     }
     const data = {
       ...req.body,
@@ -155,7 +155,7 @@ export const getInform = async (req: Request, res: Response) => {
     return res.status(200).json({ allDrivingInforms });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ error: '서버 에러dd' });
+    return res.status(500).json({ error: '서버 에러' });
   }
 };
 
@@ -285,4 +285,54 @@ export const removeNotification = async (req: Request, res: Response) => {
     console.error(error);
     return res.status(500).json({ error: '서버 에러' });
   }
+};
+
+export const getService = async (req: Request, res: Response) => {
+  if (!req.session.isUser) {
+    return res
+      .status(403)
+      .json({ type: 'not User', error: '다시 로그인 해주세요' });
+  }
+  try {
+    const { carId } = req.query;
+    console.log(carId);
+
+    const services = await CarService.find(
+      { carId },
+      {
+        date: 1,
+        type: 1,
+        mileage: 1,
+        note: 1,
+      }
+    );
+    if (!services) {
+      return res
+        .status(404)
+        .json({ error: '차량 정비 정보가 존재하지 않습니다.' });
+    }
+    return res.status(200).json({ services });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: '서버 에러' });
+  }
+};
+
+export const addService = async (req: Request, res: Response) => {
+  if (!req.session.isUser) {
+    return res
+      .status(403)
+      .json({ type: 'not User', error: '다시 로그인 해주세요' });
+  }
+  const { date, type, mileage, note } = req.body;
+  try {
+    if (!date || !type || !mileage) {
+      return res.status(400).json({ error: '정보를 입력해야 합니다.' });
+    }
+    const data = {
+      ...req.body,
+    };
+    await CarService.create(data);
+    return res.status(200).json({ message: '정보 입력 완료' });
+  } catch (error) {}
 };
