@@ -49,17 +49,19 @@ function ServiceTable({ services }: ITableBody) {
             )
             .map((item, index) => (
               <TableRow key={index}>
-                <TableCell>{serviceDay(item.date)}</TableCell>
-                <TableCell>{item.type}</TableCell>
-                <TableCell>
+                <TableCell sx={{ fontSize: "medium" }}>
+                  {serviceDay(item.date)}
+                </TableCell>
+                <TableCell sx={{ fontSize: "medium" }}>{item.type}</TableCell>
+                <TableCell sx={{ fontSize: "medium" }}>
                   {Number(item.mileage.base).toLocaleString()}km
                 </TableCell>
-                <TableCell>
+                <TableCell sx={{ fontSize: "medium" }}>
                   {item.mileage.next &&
                     Number(item.mileage.next).toLocaleString()}
                   {item.mileage.next && "km"}
                 </TableCell>
-                <TableCell>{item.note}</TableCell>
+                <TableCell sx={{ fontSize: "medium" }}>{item.note}</TableCell>
               </TableRow>
             ))}
         </TableBody>
