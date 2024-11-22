@@ -19,7 +19,7 @@ import Page from "../../components/common/Page";
 import { useMediaQuery } from "react-responsive";
 import ArrowBack from "./../../components/common/ArrowBack";
 import Logout from "../auth/Logout";
-import { Pencil, Settings, Users } from "lucide-react";
+import { Pencil, Settings, Users, Wrench } from "lucide-react";
 import DriveMobile from "./DriveMobile";
 import DrivePC from "./DriveDesktop";
 import { ROUTES } from "../../constants/constant";
@@ -121,6 +121,15 @@ function DrivePage() {
     alert("권한이 없습니다.");
   };
 
+  const checkCarService = async () => {
+    const response = await checkCarSession();
+    if (response.isUser) {
+      navigate(ROUTES.VEHICLES.SERVICE);
+      return;
+    }
+    alert("권한이 없습니다.");
+  };
+
   const checkUserInput = async () => {
     const response = await checkCarSession();
     if (response.isUser) {
@@ -142,7 +151,7 @@ function DrivePage() {
 
   return (
     <div className="flex min-h-screen w-full flex-col items-center justify-between bg-gradient-to-br from-zinc-50 to-slate-100 p-4 sm:p-2">
-      <div className="flex w-[80%] flex-col items-center sm:w-full">
+      <div className="flex w-[90%] flex-col items-center sm:w-full">
         <div className="mb-4 mt-4 flex w-full items-center justify-between sm:mt-4 print:justify-center">
           <ArrowBack type="home" />
           <Title
@@ -252,7 +261,15 @@ function DrivePage() {
                   <span className="ml-1 sm:text-xs">입력</span>
                 </button>
                 <button
-                  className="button-effect flex items-center justify-center whitespace-nowrap rounded-lg bg-[#0EA5E9] px-4 py-2 text-white hover:opacity-60 sm:flex-1"
+                  onClick={checkCarService}
+                  className="button-effect flex items-center justify-center whitespace-nowrap rounded-lg bg-[#0EA5E9] px-4 py-2 text-white hover:opacity-60 sm:flex-1 md:mr-4"
+                >
+                  <Wrench className="sm:h-4 sm:w-4" />
+                  <span className="ml-1 sm:text-xs">정비</span>
+                </button>
+
+                <button
+                  className="button-effect flex items-center justify-center whitespace-nowrap rounded-lg bg-[#10B981] px-4 py-2 text-white hover:opacity-60 sm:flex-1"
                   onClick={onClickAdmin}
                 >
                   <Settings className="sm:h-4 sm:w-4" />

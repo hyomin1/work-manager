@@ -3,6 +3,7 @@ import App from "./App";
 import Login from "./pages/auth/Login";
 import { lazy } from "react";
 import { ROUTES } from "./constants/constant";
+import DrivingService from "./pages/driving/service/DrivingService";
 
 const Register = lazy(() => import("./pages/auth/Register"));
 const SelectPages = lazy(() => import("./pages/SelectPages"));
@@ -51,6 +52,10 @@ const router = createBrowserRouter([
       {
         path: ROUTES.VEHICLES.CREATE,
         element: <DriveForm />,
+      },
+      {
+        path: ROUTES.VEHICLES.SERVICE,
+        element: <DrivingService />,
       },
       {
         path: ROUTES.ADMIN.SETTINGS,

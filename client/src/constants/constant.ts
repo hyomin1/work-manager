@@ -14,6 +14,7 @@ export const ROUTES = {
   VEHICLES: {
     LIST: "/vehicles",
     CREATE: "/vehicles/create",
+    SERVICE: "/vehicles/service",
   },
 
   SCHEDULE: "/schedule",
