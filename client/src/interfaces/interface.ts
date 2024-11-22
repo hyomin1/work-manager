@@ -86,14 +86,17 @@ export interface Users {
 
 // 차량 정비 내역
 
-export interface ICarService {
+export interface ICarServiceBase {
   _id: string;
   date: Date;
   type: string;
   mileage: {
-    base: number;
-    next: number;
+    base: string;
+    next: string;
   };
   note: string;
+}
+
+export interface ICarService extends ICarServiceBase {
   isOwner: boolean;
 }

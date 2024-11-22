@@ -4,6 +4,7 @@ import {
   addNotification,
   addService,
   editInform,
+  editService,
   getInform,
   getNotification,
   getService,
@@ -26,5 +27,6 @@ router.delete('/removeNotification/:id', removeNotification);
 router.get('/getServices', getService);
 router.post('/addService', addService);
 router.delete('/removeService/:id', removeService);
+router.put('/editService', editService);
 
 export default router;

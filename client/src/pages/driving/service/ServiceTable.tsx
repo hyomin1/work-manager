@@ -99,8 +99,8 @@ function ServiceTable({ services, refetch }: ITableBody) {
                       </button>
                       {editingItemId === item._id && (
                         <ServiceEdit
-                        //   item={item}
-                        //  setEditingItemId={setEditingItemId}
+                          item={item}
+                          setEditingItemId={setEditingItemId}
                         />
                       )}
                     </div>

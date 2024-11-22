@@ -371,3 +371,33 @@ export const removeService = async (req: Request, res: Response) => {
     return res.status(500).json({ error: '서버 에러' });
   }
 };
+
+export const editService = async (req: Request, res: Response) => {
+  if (!req.session.isUser) {
+    return res
+      .status(403)
+      .json({ type: 'not User', error: '다시 로그인 해주세요' });
+  }
+  const { _id, date, type, mileage, note } = req.body;
+  try {
+    const editService = await CarService.findByIdAndUpdate(
+      _id,
+      {
+        date,
+        type,
+        mileage,
+        note,
+      },
+      { new: true }
+    );
+    if (!editService) {
+      return res
+        .status(404)
+        .json({ error: '수정할 내역이 존재하지 않습니다.' });
+    }
+    return res.status(200).json({ message: '정보 수정 완료' });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: '서버 에러' });
+  }
+};
