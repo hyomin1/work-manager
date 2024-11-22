@@ -68,7 +68,7 @@ function ServiceTab() {
   });
 
   const { data: services, refetch } = useQuery<ICarService[]>({
-    queryKey: ["services"],
+    queryKey: ["services", carId],
     queryFn: () => getServices(carId),
     enabled: carId.length > 0,
   });
