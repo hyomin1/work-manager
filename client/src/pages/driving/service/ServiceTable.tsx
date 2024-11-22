@@ -8,14 +8,32 @@ import {
   TableBody,
 } from "@mui/material";
 import { carServiceHeader } from "../../../constants/headers";
-import { serviceDay } from "../../../api";
+import { axiosReq, serviceDay } from "../../../api";
 import { ICarService } from "../../../interfaces/interface";
+import { Edit, Trash2 } from "lucide-react";
+import ServiceEdit from "./ServiceEdit";
+import { useState } from "react";
 
 interface ITableBody {
   services: ICarService[];
+  refetch: () => void;
 }
 
-function ServiceTable({ services }: ITableBody) {
+function ServiceTable({ services, refetch }: ITableBody) {
+  const [editingItemId, setEditingItemId] = useState("");
+
+  const deleteService = async (id: string) => {
+    const isConfirm = window.confirm("삭제하시겠습니까?");
+    if (isConfirm) {
+      const res = await axiosReq.delete(
+        `/api/driving-inform/removeService/${id}`,
+      );
+      if (res.status === 200) {
+        refetch();
+      }
+    }
+  };
+
   return (
     <TableContainer
       component={Paper}
@@ -62,6 +80,32 @@ function ServiceTable({ services }: ITableBody) {
                   {item.mileage.next && "km"}
                 </TableCell>
                 <TableCell sx={{ fontSize: "medium" }}>{item.note}</TableCell>
+                <TableCell sx={{ fontSize: "medium" }}>
+                  {item.isOwner && (
+                    <div className="flex justify-end">
+                      <button
+                        className="mr-4 flex items-center hover:opacity-60"
+                        onClick={() => setEditingItemId(item._id)}
+                      >
+                        <Edit strokeWidth={2.2} size={15} />
+                        <span className="ml-1 font-semibold">수정</span>
+                      </button>
+                      <button
+                        className="flex items-center hover:opacity-60"
+                        onClick={() => deleteService(item._id)}
+                      >
+                        <Trash2 strokeWidth={2.2} size={15} />
+                        <span className="ml-1 font-semibold">삭제</span>
+                      </button>
+                      {editingItemId === item._id && (
+                        <ServiceEdit
+                        //   item={item}
+                        //  setEditingItemId={setEditingItemId}
+                        />
+                      )}
+                    </div>
+                  )}
+                </TableCell>
               </TableRow>
             ))}
         </TableBody>

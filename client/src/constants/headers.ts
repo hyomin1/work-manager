@@ -65,4 +65,5 @@ export const carServiceHeader = [
   "최근 점검(km)",
   "다음 점검(km)",
   "비고",
+  "",
 ];

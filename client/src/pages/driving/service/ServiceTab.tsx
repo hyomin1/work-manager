@@ -211,7 +211,7 @@ function ServiceTab() {
         </div>
       </div>
 
-      <ServiceTable services={services || []} />
+      <ServiceTable services={services || []} refetch={refetch} />
     </div>
   );
 }

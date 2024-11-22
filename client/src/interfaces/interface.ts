@@ -95,4 +95,5 @@ export interface ICarService {
     next: number;
   };
   note: string;
+  isOwner: boolean;
 }

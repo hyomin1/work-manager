@@ -10,6 +10,7 @@ interface ICarService {
   };
 
   note: string;
+  writerId: ObjectId;
 }
 
 const carServiceSchema = new Schema<ICarService>(
@@ -22,6 +23,11 @@ const carServiceSchema = new Schema<ICarService>(
       next: { type: String },
     },
     note: { type: String },
+    writerId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      required: true,
+    },
   },
   {
     timestamps: true,

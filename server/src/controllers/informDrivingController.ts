@@ -295,22 +295,35 @@ export const getService = async (req: Request, res: Response) => {
   }
   try {
     const { carId } = req.query;
-    console.log(carId);
 
-    const services = await CarService.find(
+    const allServices = await CarService.find(
       { carId },
       {
         date: 1,
         type: 1,
         mileage: 1,
         note: 1,
+        writerId: 1,
       }
     );
-    if (!services) {
+    if (!allServices) {
       return res
         .status(404)
         .json({ error: '차량 정비 정보가 존재하지 않습니다.' });
     }
+    const user = await User.findById(req.session.userId);
+    if (!user) {
+      return res.status(400).json({ error: '유저 정보가 올바르지 않습니다.' });
+    }
+
+    const services = allServices.map((service) => {
+      return {
+        ...service.toObject(),
+        isOwner:
+          service.writerId.toString() === req.session.userId ||
+          user.role === 'admin',
+      };
+    });
     return res.status(200).json({ services });
   } catch (error) {
     console.error(error);
@@ -324,15 +337,37 @@ export const addService = async (req: Request, res: Response) => {
       .status(403)
       .json({ type: 'not User', error: '다시 로그인 해주세요' });
   }
-  const { date, type, mileage, note } = req.body;
+  const { date, type, mileage } = req.body;
   try {
     if (!date || !type || !mileage) {
       return res.status(400).json({ error: '정보를 입력해야 합니다.' });
     }
     const data = {
       ...req.body,
+      writerId: req.session.userId,
     };
     await CarService.create(data);
     return res.status(200).json({ message: '정보 입력 완료' });
   } catch (error) {}
+};
+
+export const removeService = async (req: Request, res: Response) => {
+  if (!req.session.isUser) {
+    return res
+      .status(403)
+      .json({ type: 'not User', error: '다시 로그인 해주세요' });
+  }
+  const { id } = req.params;
+  try {
+    const deletedService = await CarService.deleteOne({ _id: id });
+    if (!deletedService) {
+      return res
+        .status(404)
+        .json({ error: '삭제할 내역이 존재하지 않습니다.' });
+    }
+    return res.status(200).json({ message: '삭제 완료' });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: '서버 에러' });
+  }
 };

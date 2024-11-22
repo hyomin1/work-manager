@@ -9,6 +9,7 @@ import {
   getService,
   removeInform,
   removeNotification,
+  removeService,
 } from '../controllers/informDrivingController';
 
 const router = express.Router();
@@ -24,5 +25,6 @@ router.delete('/removeNotification/:id', removeNotification);
 
 router.get('/getServices', getService);
 router.post('/addService', addService);
+router.delete('/removeService/:id', removeService);
 
 export default router;
