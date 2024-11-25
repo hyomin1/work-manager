@@ -1,4 +1,4 @@
-import mongoose, { ObjectId, Schema, model } from "mongoose";
+import mongoose, { ObjectId, Schema, model } from 'mongoose';
 
 interface IBusiness {
   business: string;
@@ -7,8 +7,11 @@ interface IBusiness {
 
 const businessSchema = new Schema<IBusiness>({
   business: { type: String, required: true, trim: true },
-  destinationId: { type: mongoose.Schema.Types.ObjectId, ref: "Destination" },
+  destinationId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Destination',
+  },
 });
 
-const Business = model<IBusiness>("Business", businessSchema);
+const Business = model<IBusiness>('Business', businessSchema);
 export default Business;

@@ -108,6 +108,7 @@ export const removeDestination = async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
     const deletedDestination = await Destination.deleteOne({ _id: id });
+    await Business.deleteMany({ destinationId: id });
     if (!deletedDestination) {
       return res
         .status(404)
