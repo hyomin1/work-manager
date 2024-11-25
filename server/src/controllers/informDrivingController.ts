@@ -3,14 +3,17 @@ import DrivingRecord from '../models/driving/DrivingRecord';
 import Etc from '../models/driving/Etc';
 import User from '../models/employee/User';
 import Car from '../models/Car';
-import mongoose from 'mongoose';
 import CarService from '../models/driving/CarService';
 
-export const addEtcName = async (req: Request, res: Response) => {
-  const { etcName } = req.body;
+const checkAdmin = (req: Request, res: Response) => {
   if (!req.session.isAdmin) {
     return res.status(403).json({ error: '관리자 권한이 필요합니다.' });
   }
+};
+
+export const addEtcName = async (req: Request, res: Response) => {
+  const { etcName } = req.body;
+  checkAdmin(req, res);
   try {
     await Etc.create({ etcName });
     return res.status(200).json({ message: '차량 추가 성공' });
@@ -22,9 +25,7 @@ export const addEtcName = async (req: Request, res: Response) => {
 
 export const removeEtcName = async (req: Request, res: Response) => {
   const { id } = req.params;
-  if (!req.session.isAdmin) {
-    return res.status(403).json({ error: '관리자 권한이 필요합니다.' });
-  }
+  checkAdmin(req, res);
   try {
     const deletedEtc = await Etc.deleteOne({ _id: id });
     if (!deletedEtc) {
@@ -40,9 +41,7 @@ export const removeEtcName = async (req: Request, res: Response) => {
 };
 export const editEtcName = async (req: Request, res: Response) => {
   const { id, etcName } = req.body;
-  if (!req.session.isAdmin) {
-    return res.status(403).json({ error: '관리자 권한이 필요합니다.' });
-  }
+  checkAdmin(req, res);
   try {
     const editEtcName = await Etc.findByIdAndUpdate(
       id,

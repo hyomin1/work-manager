@@ -10,15 +10,19 @@ import User from '../models/employee/User';
 
 //이름
 
+const checkAdmin = (req: Request, res: Response) => {
+  if (!req.session.isAdmin) {
+    return res.status(403).json({ error: '관리자 권한이 필요합니다.' });
+  }
+};
+
 export const addName = async (req: Request, res: Response) => {
   const { username } = req.body;
 
   if (!username) {
     return res.status(400).json({ error: '이름을 입력하세요.' });
   }
-  if (!req.session.isAdmin) {
-    return res.status(403).json({ error: '관리자 권한이 필요합니다.' });
-  }
+  checkAdmin(req, res);
   try {
     await Name.create({ username });
     return res.status(200).json({ message: '이름 추가 완료' });
@@ -31,9 +35,7 @@ export const addName = async (req: Request, res: Response) => {
 export const removeName = async (req: Request, res: Response) => {
   const { id } = req.params;
 
-  if (!req.session.isAdmin) {
-    return res.status(403).json({ error: '관리자 권한이 필요합니다.' });
-  }
+  checkAdmin(req, res);
   try {
     const deletedName = await Name.deleteOne({ _id: id });
     if (!deletedName) {
@@ -50,9 +52,7 @@ export const removeName = async (req: Request, res: Response) => {
 
 export const editName = async (req: Request, res: Response) => {
   const { id, username } = req.body;
-  if (!req.session.isAdmin) {
-    return res.status(403).json({ error: '관리자 권한이 필요합니다.' });
-  }
+  checkAdmin(req, res);
   try {
     const editName = await Name.findByIdAndUpdate(
       id,
@@ -85,9 +85,7 @@ export const getName = async (req: Request, res: Response) => {
 // 방문지
 
 export const addDestination = async (req: Request, res: Response) => {
-  if (!req.session.isAdmin) {
-    return res.status(403).json({ error: '관리자 권한이 필요합니다.' });
-  }
+  checkAdmin(req, res);
   const { destination } = req.body;
   if (!destination) {
     return res.status(400).json({ error: '방문지를 입력하세요.' });
@@ -102,9 +100,7 @@ export const addDestination = async (req: Request, res: Response) => {
 };
 
 export const removeDestination = async (req: Request, res: Response) => {
-  if (!req.session.isAdmin) {
-    return res.status(403).json({ error: '관리자 권한이 필요합니다.' });
-  }
+  checkAdmin(req, res);
   const { id } = req.params;
   try {
     const deletedDestination = await Destination.deleteOne({ _id: id });
@@ -122,9 +118,7 @@ export const removeDestination = async (req: Request, res: Response) => {
 };
 export const editDestination = async (req: Request, res: Response) => {
   const { id, destination } = req.body;
-  if (!req.session.isAdmin) {
-    return res.status(403).json({ error: '관리자 권한이 필요합니다.' });
-  }
+  checkAdmin(req, res);
   try {
     const editDestination = await Destination.findByIdAndUpdate(
       id,
@@ -157,9 +151,7 @@ export const getDestination = async (req: Request, res: Response) => {
 // 사업명
 
 export const addBusiness = async (req: Request, res: Response) => {
-  if (!req.session.isAdmin) {
-    return res.status(403).json({ error: '관리자 권한이 필요합니다.' });
-  }
+  checkAdmin(req, res);
   const { business } = req.body;
   if (!business) {
     return res.status(400).json({ error: '사업명을 입력하세요.' });
@@ -174,9 +166,7 @@ export const addBusiness = async (req: Request, res: Response) => {
 };
 
 export const removeBusiness = async (req: Request, res: Response) => {
-  if (!req.session.isAdmin) {
-    return res.status(403).json({ error: '관리자 권한이 필요합니다.' });
-  }
+  checkAdmin(req, res);
   const { id } = req.params;
   try {
     const deletedBusiness = await Business.deleteOne({ _id: id });
@@ -193,9 +183,7 @@ export const removeBusiness = async (req: Request, res: Response) => {
 };
 export const editBusiness = async (req: Request, res: Response) => {
   const { id, business } = req.body;
-  if (!req.session.isAdmin) {
-    return res.status(403).json({ error: '관리자 권한이 필요합니다.' });
-  }
+  checkAdmin(req, res);
   try {
     const editBusiness = await Business.findByIdAndUpdate(
       id,
@@ -246,9 +234,7 @@ export const getBusiness = async (req: Request, res: Response) => {
 
 // 업무
 export const addWork = async (req: Request, res: Response) => {
-  if (!req.session.isAdmin) {
-    return res.status(403).json({ error: '관리자 권한이 필요합니다.' });
-  }
+  checkAdmin(req, res);
   const { work } = req.body;
   if (!work) {
     return res.status(400).json({ error: '업무를 입력해야 합니다.' });
@@ -263,9 +249,7 @@ export const addWork = async (req: Request, res: Response) => {
 };
 
 export const removeWork = async (req: Request, res: Response) => {
-  if (!req.session.isAdmin) {
-    return res.status(403).json({ error: '관리자 권한이 필요합니다.' });
-  }
+  checkAdmin(req, res);
   const { id } = req.params;
   try {
     const deletedWork = await Work.deleteOne({ _id: id });
@@ -282,9 +266,7 @@ export const removeWork = async (req: Request, res: Response) => {
 };
 export const editWork = async (req: Request, res: Response) => {
   const { id, work } = req.body;
-  if (!req.session.isAdmin) {
-    return res.status(403).json({ error: '관리자 권한이 필요합니다.' });
-  }
+  checkAdmin(req, res);
   try {
     const editWork = await Work.findByIdAndUpdate(id, { work }, { new: true });
     if (!editWork) {
@@ -311,9 +293,7 @@ export const getWork = async (req: Request, res: Response) => {
 
 export const addCar = async (req: Request, res: Response) => {
   const { car } = req.body;
-  if (!req.session.isAdmin) {
-    return res.status(403).json({ error: '관리자 권한이 필요합니다.' });
-  }
+  checkAdmin(req, res);
   if (!car) {
     return res.status(400).json({ error: '차량 정보를 입력해야 합니다.' });
   }
@@ -328,9 +308,7 @@ export const addCar = async (req: Request, res: Response) => {
 
 export const removeCar = async (req: Request, res: Response) => {
   const { id } = req.params;
-  if (!req.session.isAdmin) {
-    return res.status(403).json({ error: '관리자 권한이 필요합니다.' });
-  }
+  checkAdmin(req, res);
   try {
     const deletedCar = await Car.deleteOne({ _id: id });
     if (!deletedCar) {
@@ -347,9 +325,7 @@ export const removeCar = async (req: Request, res: Response) => {
 
 export const editCar = async (req: Request, res: Response) => {
   const { id, car } = req.body;
-  if (!req.session.isAdmin) {
-    return res.status(403).json({ error: '관리자 권한이 필요합니다.' });
-  }
+  checkAdmin(req, res);
   try {
     const editCar = await Car.findByIdAndUpdate(id, { car }, { new: true });
     if (!editCar) {
@@ -575,9 +551,7 @@ const getFilteredDateRange = (
 };
 
 export const getUserStatistics = async (req: Request, res: Response) => {
-  if (!req.session.isAdmin) {
-    return res.status(403).json({ error: '관리자 권한이 필요합니다.' });
-  }
+  checkAdmin(req, res);
   const { username, startDate, endDate } = req.query;
 
   const translateStartDate = new Date(startDate as string);
