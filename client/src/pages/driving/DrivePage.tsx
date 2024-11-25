@@ -13,7 +13,7 @@ import {
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { ICars, IDrivingInform } from "../../interfaces/interface";
 import Title from "../../components/layout/Title";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { SlRefresh } from "react-icons/sl";
 import Page from "../../components/common/Page";
 import { useMediaQuery } from "react-responsive";
@@ -23,13 +23,20 @@ import { Pencil, Settings, Users, Wrench } from "lucide-react";
 import DriveMobile from "./DriveMobile";
 import DrivePC from "./DriveDesktop";
 import { ROUTES } from "../../constants/constant";
-import { Alert } from "@mui/material";
+import {
+  Alert,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+} from "@mui/material";
 import AddDriveNotification from "./AddDriveNotification";
 
 function DrivePage() {
   const navigate = useNavigate();
   const isMobile = useMediaQuery({ query: "(max-width: 540px)" });
-
+  const location = useLocation();
   const [currentDate, setCurrentDate] = useState<Date | null>(null);
   const [carId, setCarId] = useState("");
   const [car, setCar] = useState("");
@@ -74,6 +81,12 @@ function DrivePage() {
     //checkSession();
   }, []);
 
+  useEffect(() => {
+    if (location.state) {
+      setCarId(location.state.car);
+    }
+  }, [location]);
+
   const [showInput, setShowInput] = useState(false);
 
   const { data: cars } = useQuery<ICars[]>({
@@ -85,11 +98,8 @@ function DrivePage() {
     setCurrentPage(page);
   };
 
-  const onChangeCarNum = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const carId = e.target.value.split(",")[0];
-    const carName = e.target.value.split(",")[1];
-    setCar(carName);
-    setCarId(carId);
+  const onChangeCarNum = (e: SelectChangeEvent) => {
+    setCarId(e.target.value);
     setCurrentPage(1);
   };
 
@@ -183,31 +193,35 @@ function DrivePage() {
           </div>
 
           <div className="print-hidden flex w-[100%] items-center rounded-t-2xl border border-t-gray-300 sm:h-auto sm:flex-col md:h-20 md:justify-between">
-            <div className="flex items-center sm:w-full sm:flex-col sm:p-3 md:ml-2 md:h-full md:w-[50%] md:justify-between">
-              <select
-                className="h-10 rounded-lg border border-gray-300 p-2 text-sm font-bold hover:opacity-60 sm:mb-3 sm:w-full md:mr-16 md:w-[20%]"
-                onChange={onChangeCarNum}
-                defaultValue=""
-              >
-                <option value="" disabled>
-                  차량 선택
-                </option>
-                {cars &&
-                  cars
-                    .sort((a, b) => a.car.localeCompare(b.car))
-                    .map((car) => (
-                      <option key={car._id} value={`${car._id},${car.car}`}>
-                        {car.car}
-                      </option>
-                    ))}
-              </select>
+            <div className="flex items-center sm:w-full sm:flex-col sm:p-3 md:ml-2 md:h-full md:w-[50%] md:justify-start">
+              <FormControl className="w-[30%]" size="small">
+                <InputLabel id="car">차량 선택</InputLabel>
+
+                <Select
+                  className="h-10 rounded-lg border border-gray-300 p-2 text-sm font-bold hover:opacity-60 sm:mb-3 sm:w-full md:mr-16 md:w-[50%]"
+                  onChange={onChangeCarNum}
+                  id="car"
+                  label="차량 선택"
+                  labelId="car"
+                  value={carId}
+                >
+                  {cars &&
+                    cars
+                      .sort((a, b) => a.car.localeCompare(b.car))
+                      .map((car) => (
+                        <MenuItem key={car._id} value={`${car._id}`}>
+                          {car.car}
+                        </MenuItem>
+                      ))}
+                </Select>
+              </FormControl>
 
               {carId.length > 0 && (
                 <Alert
                   onClick={() => setIsAdding(true)}
                   severity="info"
                   variant="outlined"
-                  className="flex h-16 cursor-pointer items-center hover:opacity-60 sm:w-full md:w-[80%]"
+                  className="flex h-16 cursor-pointer items-center border border-black hover:opacity-60 sm:w-full md:w-[70%]"
                   sx={{
                     fontSize: "medium",
                     overflowY: "auto",

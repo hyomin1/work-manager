@@ -48,7 +48,6 @@ function DrivePC({
         `/api/driving-inform/removeInform/${id}`,
       );
       if (res.status === 200) {
-        alert(res.data.message);
         refetch();
       }
     }

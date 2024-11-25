@@ -182,7 +182,11 @@ function DriveInput() {
     });
     if (res.status === 200) {
       alert(res.data.message);
-      navigate(ROUTES.VEHICLES.LIST);
+      navigate(ROUTES.VEHICLES.LIST, {
+        state: {
+          car,
+        },
+      });
     }
   };
   if (namesLoading || carsLoading || etcNamesLoading) {
@@ -224,6 +228,7 @@ function DriveInput() {
                         fullWidth: true,
                       },
                     }}
+                    format="YYYY.MM.DD"
                   />
                 </LocalizationProvider>
               </Grid>
