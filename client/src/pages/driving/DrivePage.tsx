@@ -100,6 +100,12 @@ function DrivePage() {
 
   const onChangeCarNum = (e: SelectChangeEvent) => {
     setCarId(e.target.value);
+    const selectedCar = cars?.find((car) => car._id === e.target.value);
+
+    if (selectedCar) {
+      setCar(selectedCar.car);
+    }
+
     setCurrentPage(1);
   };
 
