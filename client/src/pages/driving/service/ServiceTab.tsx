@@ -19,6 +19,7 @@ import { LocalizationProvider, MobileDatePicker } from "@mui/x-date-pickers";
 import dayjs, { Dayjs } from "dayjs";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import AddDriveNotification from "../components/AddDriveNotification";
+import { useLocation } from "react-router-dom";
 
 dayjs.locale("ko");
 
@@ -54,6 +55,13 @@ function ServiceTab() {
   const [isAdding, setIsAdding] = useState(false);
 
   const queryClient = useQueryClient();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.state) {
+      setCarId(location.state.car);
+    }
+  }, [location]);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -108,9 +116,9 @@ function ServiceTab() {
   }, [carId, cars]);
 
   return (
-    <div className="h-[90%] w-[90%] bg-gradient-to-br from-gray-50 to-zinc-100 sm:p-2">
+    <div className="flex h-full w-[90%] flex-col overflow-hidden bg-gradient-to-br from-gray-50 to-zinc-100 sm:p-2">
       <div className="print-hidden flex w-full items-center rounded-t-2xl border border-t-gray-300 sm:h-auto sm:flex-col md:h-16 md:justify-between">
-        <div className="flex items-center sm:w-full sm:flex-col sm:p-3 md:ml-2 md:w-[50%]">
+        <div className="flex h-[10%] items-center sm:w-full sm:flex-col sm:p-3 md:ml-2 md:w-[50%]">
           <FormControl className="w-[20%]" size="small">
             <InputLabel id="car">차량 선택</InputLabel>
             <Select
@@ -228,6 +236,7 @@ function ServiceTab() {
               fontSize: "medium",
               overflowY: "auto",
               bgColor: "#93C5FD",
+              borderRadius: "0px",
               border: "1px solid lightgray",
               fontWeight: "bold",
               "@media (max-width: 640px)": {

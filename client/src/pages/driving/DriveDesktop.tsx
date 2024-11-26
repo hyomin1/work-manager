@@ -54,11 +54,10 @@ function DrivePC({
   };
 
   return (
-    <div className="h-full w-full">
+    <>
       <TableContainer
         component={Paper}
-        className="block print:hidden"
-        sx={{ maxHeight: "75vh", overflowY: "auto" }}
+        className={`print:hidden ${drivingInform.length > 0 && "h-[70%]"}`}
       >
         <Table stickyHeader aria-label="a dense table" size="small">
           <TableHead>
@@ -195,7 +194,7 @@ function DrivePC({
         indexOfFirstItem={indexOfFirstItem}
         indexOfLastItem={indexOfLastItem}
       />
-    </div>
+    </>
   );
 }
 

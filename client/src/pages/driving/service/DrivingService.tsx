@@ -1,4 +1,3 @@
-import React from "react";
 import ArrowBack from "../../../components/common/ArrowBack";
 import Logout from "../../auth/Logout";
 import { calculateDate } from "../../../api";

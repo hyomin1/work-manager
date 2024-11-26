@@ -152,6 +152,19 @@ function DrivePage() {
     alert("권한이 없습니다.");
   };
 
+  const checkNotification = async () => {
+    const response = await checkCarSession();
+    if (response.isUser) {
+      navigate(ROUTES.VEHICLES.SERVICE, {
+        state: {
+          car: carId,
+        },
+      });
+      return;
+    }
+    alert("권한이 없습니다.");
+  };
+
   const totalFuelCost =
     drivingInform?.reduce((acc, item) => acc + item.fuelCost, 0) || 0;
   const totalToll =
@@ -163,8 +176,8 @@ function DrivePage() {
   const grandTotal = totalFuelCost + totalToll + totalEtcCost;
 
   return (
-    <div className="flex min-h-screen w-full flex-col items-center justify-between bg-gradient-to-br from-zinc-50 to-slate-100 p-4 sm:p-2">
-      <div className="flex w-[90%] flex-col items-center sm:w-full">
+    <div className="flex h-screen w-full flex-col items-center justify-between overflow-hidden bg-gradient-to-br from-zinc-50 to-slate-100 p-4 sm:p-2">
+      <div className="flex h-full w-[90%] flex-col items-center sm:w-full">
         <div className="mb-4 mt-4 flex w-full items-center justify-between sm:mt-4 print:justify-center">
           <ArrowBack type="home" />
           <Title
@@ -195,7 +208,7 @@ function DrivePage() {
             <span>{car}</span>
           </div>
 
-          <div className="print-hidden flex w-[100%] items-center rounded-t-2xl border border-t-gray-300 sm:h-auto sm:flex-col md:h-20 md:justify-between">
+          <div className="print-hidden flex w-[100%] items-center rounded-t-2xl border border-t-gray-300 sm:h-auto sm:flex-col md:justify-between">
             <div className="flex items-center sm:w-full sm:flex-col sm:p-3 md:ml-2 md:h-full md:w-[50%] md:justify-start">
               <FormControl className="w-[30%]" size="small">
                 <InputLabel id="car">차량 선택</InputLabel>
@@ -261,17 +274,19 @@ function DrivePage() {
               </div>
             </div>
           </div>
-          <div>
+          <div className="print-hidden">
             {carId.length > 0 && (
               <Alert
+                onClick={checkNotification}
                 severity="info"
                 variant="outlined"
-                className="flex h-16 w-full cursor-pointer items-center border border-black hover:opacity-60"
+                className="flex w-full cursor-pointer items-center border border-black hover:opacity-60"
                 sx={{
                   fontSize: "medium",
                   overflowY: "auto",
                   bgColor: "#93C5FD",
                   border: "1px solid lightgray",
+                  borderRadius: "0px",
                   fontWeight: "bold",
                   "@media (max-width: 640px)": {
                     whiteSpace: "normal",
@@ -315,11 +330,11 @@ function DrivePage() {
           )}
         </div>
       </div>
-      <Page
+      {/* <Page
         totalPage={totalPages}
         page={currentPage}
         onPageChange={handleClick}
-      />
+      /> */}
     </div>
   );
 }
