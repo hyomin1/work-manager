@@ -22,6 +22,20 @@ interface ITableBody {
 function ServiceTable({ services, refetch }: ITableBody) {
   const [editingItemId, setEditingItemId] = useState("");
 
+  const recentByType = services.reduce(
+    (acc, service) => {
+      const { type, date } = service;
+      if (
+        !acc[type] ||
+        new Date(date).getTime() > new Date(acc[type].date).getTime()
+      ) {
+        acc[type] = service;
+      }
+      return acc;
+    },
+    {} as Record<string, ICarService>,
+  );
+
   const deleteService = async (id: string) => {
     const isConfirm = window.confirm("삭제하시겠습니까?");
     if (isConfirm) {
@@ -40,7 +54,6 @@ function ServiceTable({ services, refetch }: ITableBody) {
       sx={{
         boxShadow:
           "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)",
-
         backgroundColor: "#F8F9FC",
       }}
     >
@@ -78,8 +91,14 @@ function ServiceTable({ services, refetch }: ITableBody) {
                 <TableCell
                   sx={{
                     fontSize: "medium",
-                    color: index === 0 ? "red" : "inherit",
-                    fontWeight: index === 0 ? "bold" : "inherit",
+                    color:
+                      recentByType[item.type]?.date === item.date
+                        ? "red"
+                        : "inherit",
+                    fontWeight:
+                      recentByType[item.type]?.date === item.date
+                        ? "bold"
+                        : "inherit",
                   }}
                 >
                   {item.mileage.next &&
