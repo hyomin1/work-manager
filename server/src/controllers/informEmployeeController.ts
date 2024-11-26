@@ -342,7 +342,7 @@ export const editCar = async (req: Request, res: Response) => {
 
 export const getCar = async (req: Request, res: Response) => {
   try {
-    const allCars = await Car.find({}, { car: 1 });
+    const allCars = await Car.find({}, { car: 1, notification: 1 });
     return res.status(200).json({ allCars });
   } catch (error) {
     console.error(error);

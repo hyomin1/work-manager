@@ -7,16 +7,18 @@ import {
   SelectChangeEvent,
   Box,
   TextField,
+  Alert,
 } from "@mui/material";
 import ServiceTable from "./ServiceTable";
 import { axiosReq, getCars, getServices } from "../../../api";
 import { ICars, ICarService } from "../../../interfaces/interface";
-import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
 import { Pencil } from "lucide-react";
 import { LocalizationProvider, MobileDatePicker } from "@mui/x-date-pickers";
 import dayjs, { Dayjs } from "dayjs";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import AddDriveNotification from "../components/AddDriveNotification";
 
 dayjs.locale("ko");
 
@@ -38,7 +40,6 @@ const datePickerStyles = {
 };
 
 function ServiceTab() {
-  const [car, setCar] = useState("");
   const [carId, setCarId] = useState("");
   const [open, setOpen] = useState(false);
   const [date, setDate] = useState<Date | null>(null);
@@ -48,6 +49,11 @@ function ServiceTab() {
     next: "",
   });
   const [note, setNote] = useState("");
+
+  const [notification, setNotification] = useState("");
+  const [isAdding, setIsAdding] = useState(false);
+
+  const queryClient = useQueryClient();
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -59,8 +65,6 @@ function ServiceTab() {
     }
     handleOpen();
   };
-
-  const handleCarName = (e: any) => {};
 
   const { data: cars } = useQuery<ICars[]>({
     queryKey: ["car", 1],
@@ -96,6 +100,12 @@ function ServiceTab() {
     setMileage({ base: "", next: "" });
     setNote("");
   };
+  useEffect(() => {
+    const car = cars?.find((car) => car._id === carId);
+    if (car) {
+      setNotification(car.notification);
+    }
+  }, [carId, cars]);
 
   return (
     <div className="h-[90%] w-[90%] bg-gradient-to-br from-gray-50 to-zinc-100 sm:p-2">
@@ -114,11 +124,7 @@ function ServiceTab() {
                 cars
                   .sort((a, b) => a.car.localeCompare(b.car))
                   .map((car) => (
-                    <MenuItem
-                      key={car._id}
-                      value={car._id}
-                      onChange={handleCarName}
-                    >
+                    <MenuItem key={car._id} value={car._id}>
                       {car.car}
                     </MenuItem>
                   ))}
@@ -131,6 +137,7 @@ function ServiceTab() {
             <Pencil className="sm:h-4 sm:w-4" />
             <span className="ml-1 sm:text-xs">입력</span>
           </button>
+
           <Modal open={open} onClose={handleClose}>
             <Box sx={style}>
               <h2>정비 내용 입력</h2>
@@ -209,6 +216,45 @@ function ServiceTab() {
             </Box>
           </Modal>
         </div>
+      </div>
+      <div>
+        {carId.length > 0 && (
+          <Alert
+            onClick={() => setIsAdding(true)}
+            severity="info"
+            variant="outlined"
+            className="flex h-16 w-full cursor-pointer items-center border border-black hover:opacity-60"
+            sx={{
+              fontSize: "medium",
+              overflowY: "auto",
+              bgColor: "#93C5FD",
+              border: "1px solid lightgray",
+              fontWeight: "bold",
+              "@media (max-width: 640px)": {
+                whiteSpace: "normal",
+                height: "auto",
+                minHeight: "40px",
+                "& .MuiAlert-message": {
+                  overflow: "visible",
+                  whiteSpace: "normal",
+                },
+              },
+              "&:hover": {
+                transform: "translateY(-1px)",
+              },
+            }}
+          >
+            {notification || "공지사항을 등록해주세요"}
+          </Alert>
+        )}
+        {isAdding && (
+          <AddDriveNotification
+            setIsAdding={setIsAdding}
+            id={carId}
+            queryClient={queryClient}
+            notice={notification || ""}
+          />
+        )}
       </div>
 
       <ServiceTable services={services || []} refetch={refetch} />

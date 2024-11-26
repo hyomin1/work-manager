@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { axiosReq } from '../../api';
-import { QueryClient } from '@tanstack/react-query';
+import React, { useState } from "react";
+import { axiosReq } from "../../../api";
+import { QueryClient } from "@tanstack/react-query";
 import {
   Dialog,
   DialogTitle,
@@ -11,8 +11,8 @@ import {
   IconButton,
   Typography,
   Box,
-} from '@mui/material';
-import { X as CloseIcon, Trash2 as DeleteIcon } from 'lucide-react';
+} from "@mui/material";
+import { X as CloseIcon, Trash2 as DeleteIcon } from "lucide-react";
 
 interface IAddData {
   setIsAdding: React.Dispatch<React.SetStateAction<boolean>>;
@@ -32,15 +32,15 @@ function AddDriveNotification({
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const response = await axiosReq.post(
-      '/api/driving-inform/addNotification',
+      "/api/driving-inform/addNotification",
       {
         id,
         notification,
-      }
+      },
     );
     if (response.status === 200) {
       setIsAdding(false);
-      queryClient.invalidateQueries({ queryKey: ['notification', id] });
+      queryClient.invalidateQueries({ queryKey: ["car", 1] });
     }
   };
 
@@ -49,17 +49,13 @@ function AddDriveNotification({
   };
 
   const handleDelete = async () => {
-    if (window.confirm('공지사항을 삭제하시겠습니까?')) {
-      try {
-        const response = await axiosReq.delete(
-          `/api/driving-inform/removeNotification/${id}`
-        );
-        if (response.status === 200) {
-          setIsAdding(false);
-          queryClient.invalidateQueries({ queryKey: ['notification', id] });
-        }
-      } catch (error) {
-        alert('삭제 중 오류가 발생했습니다.');
+    if (window.confirm("공지사항을 삭제하시겠습니까?")) {
+      const response = await axiosReq.delete(
+        `/api/driving-inform/removeNotification/${id}`,
+      );
+      if (response.status === 200) {
+        setIsAdding(false);
+        queryClient.invalidateQueries({ queryKey: ["car", 1] });
       }
     }
   };
@@ -100,12 +96,12 @@ function AddDriveNotification({
             value={notification}
             onChange={(e) => setNotification(e.target.value)}
             sx={{
-              '& .MuiOutlinedInput-root': {
-                '&:hover fieldset': {
-                  borderColor: '#60A5FA',
+              "& .MuiOutlinedInput-root": {
+                "&:hover fieldset": {
+                  borderColor: "#60A5FA",
                 },
-                '&.Mui-focused fieldset': {
-                  borderColor: '#3B82F6',
+                "&.Mui-focused fieldset": {
+                  borderColor: "#3B82F6",
                 },
               },
             }}
@@ -118,7 +114,7 @@ function AddDriveNotification({
             variant="outlined"
             color="error"
             startIcon={<DeleteIcon size={18} />}
-            sx={{ mr: 'auto' }}
+            sx={{ mr: "auto" }}
           >
             삭제
           </Button>
@@ -126,9 +122,9 @@ function AddDriveNotification({
             type="submit"
             variant="contained"
             sx={{
-              bgcolor: '#3B82F6',
-              '&:hover': {
-                bgcolor: '#2563EB',
+              bgcolor: "#3B82F6",
+              "&:hover": {
+                bgcolor: "#2563EB",
               },
             }}
           >
@@ -139,11 +135,11 @@ function AddDriveNotification({
             variant="outlined"
             sx={{
               mr: 1,
-              borderColor: 'grey.400',
-              color: 'grey.700',
-              '&:hover': {
-                borderColor: 'grey.500',
-                backgroundColor: 'grey.50',
+              borderColor: "grey.400",
+              color: "grey.700",
+              "&:hover": {
+                borderColor: "grey.500",
+                backgroundColor: "grey.50",
               },
             }}
           >

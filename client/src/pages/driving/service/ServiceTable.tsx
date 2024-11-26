@@ -64,7 +64,7 @@ function ServiceTable({ services, refetch }: ITableBody) {
         <TableBody>
           {services
             ?.sort(
-              (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
+              (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
             )
             .map((item, index) => (
               <TableRow key={index}>
@@ -75,7 +75,13 @@ function ServiceTable({ services, refetch }: ITableBody) {
                 <TableCell sx={{ fontSize: "medium" }}>
                   {Number(item.mileage.base).toLocaleString()}km
                 </TableCell>
-                <TableCell sx={{ fontSize: "medium" }}>
+                <TableCell
+                  sx={{
+                    fontSize: "medium",
+                    color: index === 0 ? "red" : "inherit",
+                    fontWeight: index === 0 ? "bold" : "inherit",
+                  }}
+                >
                   {item.mileage.next &&
                     Number(item.mileage.next).toLocaleString()}
                   {item.mileage.next && "km"}

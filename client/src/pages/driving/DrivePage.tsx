@@ -10,7 +10,7 @@ import {
   getDrivingInform,
   getNotification,
 } from "../../api";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { ICars, IDrivingInform } from "../../interfaces/interface";
 import Title from "../../components/layout/Title";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -31,7 +31,6 @@ import {
   Select,
   SelectChangeEvent,
 } from "@mui/material";
-import AddDriveNotification from "./AddDriveNotification";
 
 function DrivePage() {
   const navigate = useNavigate();
@@ -40,7 +39,6 @@ function DrivePage() {
   const [currentDate, setCurrentDate] = useState<Date | null>(null);
   const [carId, setCarId] = useState("");
   const [car, setCar] = useState("");
-  const [isAdding, setIsAdding] = useState(false);
 
   const { data: drivingInform, refetch } = useQuery<IDrivingInform[]>({
     queryKey: ["drivingInform"],
@@ -60,7 +58,6 @@ function DrivePage() {
     enabled: carId.length > 0,
   });
 
-  const queryClient = useQueryClient();
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = isMobile ? 10 : 25;
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -221,48 +218,7 @@ function DrivePage() {
                       ))}
                 </Select>
               </FormControl>
-
-              {carId.length > 0 && (
-                <Alert
-                  onClick={() => setIsAdding(true)}
-                  severity="info"
-                  variant="outlined"
-                  className="flex h-16 cursor-pointer items-center border border-black hover:opacity-60 sm:w-full md:w-[70%]"
-                  sx={{
-                    fontSize: "medium",
-                    overflowY: "auto",
-                    bgColor: "#93C5FD",
-                    borderRadius: "8px",
-
-                    border: "1px solid lightgray",
-                    fontWeight: "bold",
-                    "@media (max-width: 640px)": {
-                      whiteSpace: "normal",
-                      height: "auto",
-                      minHeight: "40px",
-                      "& .MuiAlert-message": {
-                        overflow: "visible",
-                        whiteSpace: "normal",
-                      },
-                    },
-                    "&:hover": {
-                      transform: "translateY(-1px)",
-                    },
-                  }}
-                >
-                  {notification?.notification || "공지사항을 등록해주세요"}
-                </Alert>
-              )}
             </div>
-
-            {isAdding && (
-              <AddDriveNotification
-                setIsAdding={setIsAdding}
-                id={carId}
-                queryClient={queryClient}
-                notice={notification?.notification || ""}
-              />
-            )}
 
             <div className="flex flex-1 items-center justify-end p-4 sm:w-full sm:flex-col sm:gap-2 md:w-[50%]">
               <div className="flex items-center justify-center sm:mb-2 sm:w-full sm:gap-2">
@@ -304,6 +260,33 @@ function DrivePage() {
                 </button>
               </div>
             </div>
+          </div>
+          <div>
+            {carId.length > 0 && (
+              <Alert
+                severity="info"
+                variant="outlined"
+                className="flex h-16 w-full cursor-pointer items-center border border-black hover:opacity-60"
+                sx={{
+                  fontSize: "medium",
+                  overflowY: "auto",
+                  bgColor: "#93C5FD",
+                  border: "1px solid lightgray",
+                  fontWeight: "bold",
+                  "@media (max-width: 640px)": {
+                    whiteSpace: "normal",
+                    height: "auto",
+                    minHeight: "40px",
+                    "& .MuiAlert-message": {
+                      overflow: "visible",
+                      whiteSpace: "normal",
+                    },
+                  },
+                }}
+              >
+                {notification?.notification || "공지사항을 등록해주세요"}
+              </Alert>
+            )}
           </div>
 
           {isMobile ? (
