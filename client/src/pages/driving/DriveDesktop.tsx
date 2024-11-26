@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { IDrivingInform } from "../../interfaces/interface";
 import { drivingHeaders } from "../../constants/headers";
 import { axiosReq, calCarDay } from "../../api";

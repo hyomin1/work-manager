@@ -176,9 +176,9 @@ function DrivePage() {
   const grandTotal = totalFuelCost + totalToll + totalEtcCost;
 
   return (
-    <div className="flex h-screen w-full flex-col items-center justify-between overflow-hidden bg-gradient-to-br from-zinc-50 to-slate-100 p-4 sm:p-2">
+    <div className="flex flex-col items-center justify-between w-full h-screen p-4 overflow-hidden bg-gradient-to-br from-zinc-50 to-slate-100 sm:p-2">
       <div className="flex h-full w-[90%] flex-col items-center sm:w-full">
-        <div className="mb-4 mt-4 flex w-full items-center justify-between sm:mt-4 print:justify-center">
+        <div className="flex items-center justify-between w-full mt-4 mb-4 sm:mt-4 print:justify-center">
           <ArrowBack type="home" />
           <Title
             currentDate={currentDate || new Date()}
@@ -190,9 +190,9 @@ function DrivePage() {
           <Logout />
         </div>
 
-        <div className="mb-2 flex w-full items-center justify-between">
+        <div className="flex items-center justify-between w-full mb-2">
           {showInput && (
-            <div className="flex w-full justify-center hover:opacity-60">
+            <div className="flex justify-center w-full hover:opacity-60">
               <input
                 type="month"
                 onChange={handleDateChange}
@@ -204,7 +204,7 @@ function DrivePage() {
         </div>
 
         <div className="w-full">
-          <div className="mb-4 hidden w-full font-bold print:flex">
+          <div className="hidden w-full mb-4 font-bold print:flex">
             <span>{car}</span>
           </div>
 
@@ -254,7 +254,7 @@ function DrivePage() {
                   className="button-effect flex items-center justify-center whitespace-nowrap rounded-lg bg-[#0EA5E9] px-4 py-2 text-white hover:opacity-60 sm:flex-1 md:mr-4"
                 >
                   <Wrench className="sm:h-4 sm:w-4" />
-                  <span className="ml-1 sm:text-xs">정비</span>
+                  <span className="ml-1 sm:text-xs">점검</span>
                 </button>
 
                 <button
@@ -280,7 +280,7 @@ function DrivePage() {
                 onClick={checkNotification}
                 severity="info"
                 variant="outlined"
-                className="flex w-full cursor-pointer items-center border border-black hover:opacity-60"
+                className="flex items-center w-full border border-black cursor-pointer hover:opacity-60"
                 sx={{
                   fontSize: "medium",
                   overflowY: "auto",
