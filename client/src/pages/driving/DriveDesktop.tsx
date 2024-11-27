@@ -56,10 +56,15 @@ function DrivePC({
   return (
     <>
       <TableContainer
+        sx={{
+          boxShadow:
+            "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)",
+          backgroundColor: "#F8F9FC",
+        }}
         component={Paper}
-        className={`print:hidden ${drivingInform.length > 0 && "h-[70%]"}`}
+        className={`h-[65%] print:hidden`}
       >
-        <Table stickyHeader aria-label="a dense table" size="small">
+        <Table stickyHeader size="small">
           <TableHead>
             <TableRow>
               {drivingHeaders.map((item, index) => (

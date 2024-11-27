@@ -176,9 +176,9 @@ function DrivePage() {
   const grandTotal = totalFuelCost + totalToll + totalEtcCost;
 
   return (
-    <div className="flex flex-col items-center justify-between w-full h-screen p-4 overflow-hidden bg-gradient-to-br from-zinc-50 to-slate-100 sm:p-2">
+    <div className="flex h-screen w-full flex-col items-center justify-between overflow-hidden bg-gradient-to-br from-zinc-50 to-slate-100 p-4 sm:p-2">
       <div className="flex h-full w-[90%] flex-col items-center sm:w-full">
-        <div className="flex items-center justify-between w-full mt-4 mb-4 sm:mt-4 print:justify-center">
+        <div className="mb-4 mt-4 flex w-full items-center justify-between sm:mt-4 print:justify-center">
           <ArrowBack type="home" />
           <Title
             currentDate={currentDate || new Date()}
@@ -190,9 +190,9 @@ function DrivePage() {
           <Logout />
         </div>
 
-        <div className="flex items-center justify-between w-full mb-2">
+        <div className="mb-2 flex w-full items-center justify-between">
           {showInput && (
-            <div className="flex justify-center w-full hover:opacity-60">
+            <div className="flex w-full justify-center hover:opacity-60">
               <input
                 type="month"
                 onChange={handleDateChange}
@@ -204,7 +204,7 @@ function DrivePage() {
         </div>
 
         <div className="w-full">
-          <div className="hidden w-full mb-4 font-bold print:flex">
+          <div className="mb-4 hidden w-full font-bold print:flex">
             <span>{car}</span>
           </div>
 
@@ -280,7 +280,7 @@ function DrivePage() {
                 onClick={checkNotification}
                 severity="info"
                 variant="outlined"
-                className="flex items-center w-full border border-black cursor-pointer hover:opacity-60"
+                className="flex h-16 w-full cursor-pointer items-center border border-black hover:opacity-60"
                 sx={{
                   fontSize: "medium",
                   overflowY: "auto",
@@ -296,6 +296,9 @@ function DrivePage() {
                       overflow: "visible",
                       whiteSpace: "normal",
                     },
+                  },
+                  "&:hover": {
+                    transform: "translateY(-1px)",
                   },
                 }}
               >
