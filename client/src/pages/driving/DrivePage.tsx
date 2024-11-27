@@ -31,14 +31,16 @@ import {
   Select,
   SelectChangeEvent,
 } from "@mui/material";
+import useDrivingStore from "../../stores/drivingStore";
 
 function DrivePage() {
   const navigate = useNavigate();
   const isMobile = useMediaQuery({ query: "(max-width: 540px)" });
   const location = useLocation();
   const [currentDate, setCurrentDate] = useState<Date | null>(null);
-  const [carId, setCarId] = useState("");
+  //const [carId, setCarId] = useState("");
   const [car, setCar] = useState("");
+  const { carId, setCarId } = useDrivingStore();
 
   const { data: drivingInform, refetch } = useQuery<IDrivingInform[]>({
     queryKey: ["drivingInform"],

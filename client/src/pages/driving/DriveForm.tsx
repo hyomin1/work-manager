@@ -27,6 +27,7 @@ import Blank from "../../components/common/Blank";
 import { DatePicker } from "@mui/x-date-pickers";
 import { ROUTES } from "../../constants/constant";
 import { Calculator, Navigation, Wallet } from "lucide-react";
+import useDrivingStore from "../../stores/drivingStore";
 dayjs.locale("ko");
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
@@ -49,7 +50,6 @@ function DriveInput() {
   const navigate = useNavigate();
   const [driveDay, setDriveDay] = useState<Date>(); // 주행 날짜
 
-  const [car, setCar] = useState(""); // 차량
   const [drivers, setDrivers] = useState(["", ""]); // 운전자 배열
 
   const [drivingDestination, setDrivingDestination] = useState(""); // 행선지
@@ -66,6 +66,8 @@ function DriveInput() {
     cost: 0,
   });
 
+  const { carId, setCarId } = useDrivingStore();
+
   const selectedDriver = drivers.filter(Boolean);
 
   const privateCarId = process.env.REACT_APP_PRIVATE_CAR;
@@ -80,7 +82,7 @@ function DriveInput() {
   };
 
   const handleCarChange = (event: SelectChangeEvent) => {
-    setCar(event.target.value);
+    setCarId(event.target.value);
   };
   const handleDrivingDestinationChange = (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -132,7 +134,7 @@ function DriveInput() {
       alert("운전자를 선택해주세요");
       return;
     }
-    if (!car) {
+    if (!carId) {
       alert("차량을 선택해주세요");
       return;
     }
@@ -141,11 +143,11 @@ function DriveInput() {
       return;
     }
 
-    if (car !== privateCarId && (!startKM || !endKM)) {
+    if (carId !== privateCarId && (!startKM || !endKM)) {
       alert("주행거리를 입력해주세요.");
       return;
     }
-    if (car === privateCarId && !totalKM) {
+    if (carId === privateCarId && !totalKM) {
       alert("주행거리를 입력해주세요.");
       return;
     }
@@ -171,11 +173,11 @@ function DriveInput() {
     const res = await axiosReq.post("/api/driving-inform/addInform", {
       driveDay,
       username: driverJoined,
-      car,
+      car: carId,
       drivingDestination,
       startKM,
       endKM,
-      totalKM: car === privateCarId ? totalKM : endKM - startKM,
+      totalKM: carId === privateCarId ? totalKM : endKM - startKM,
       fuelCost,
       toll,
       etc,
@@ -184,7 +186,7 @@ function DriveInput() {
       alert(res.data.message);
       navigate(ROUTES.VEHICLES.LIST, {
         state: {
-          car,
+          car: carId,
         },
       });
     }
@@ -192,6 +194,7 @@ function DriveInput() {
   if (namesLoading || carsLoading || etcNamesLoading) {
     return <div>Loading...</div>;
   }
+  console.log(carId, privateCarId);
 
   return (
     <Container
@@ -257,7 +260,11 @@ function DriveInput() {
               <Grid item xs={12} sm={6} md={3}>
                 <FormControl fullWidth>
                   <InputLabel>차량 *</InputLabel>
-                  <Select value={car} label="차량 *" onChange={handleCarChange}>
+                  <Select
+                    value={carId}
+                    label="차량 *"
+                    onChange={handleCarChange}
+                  >
                     {cars
                       ?.sort((a, b) => a.car.localeCompare(b.car))
                       .map((item) => (
@@ -297,7 +304,7 @@ function DriveInput() {
                     fullWidth
                     type="number"
                     label="출발 (km) *"
-                    disabled={car === privateCarId}
+                    disabled={carId === privateCarId}
                     onChange={handleStartKMChange}
                   />
                 </Grid>
@@ -306,7 +313,7 @@ function DriveInput() {
                     fullWidth
                     type="number"
                     label="도착 (km) *"
-                    disabled={car === privateCarId}
+                    disabled={carId === privateCarId}
                     onChange={handleEndKMChange}
                   />
                 </Grid>
@@ -315,8 +322,8 @@ function DriveInput() {
                     fullWidth
                     type="number"
                     label="총 주행거리"
-                    disabled={car !== privateCarId}
-                    value={car === privateCarId ? totalKM : endKM - startKM}
+                    disabled={carId !== privateCarId}
+                    value={carId === privateCarId ? totalKM : endKM - startKM}
                     onChange={handleTotalKMChange}
                   />
                 </Grid>

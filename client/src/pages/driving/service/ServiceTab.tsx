@@ -20,6 +20,7 @@ import dayjs, { Dayjs } from "dayjs";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import AddDriveNotification from "../components/AddDriveNotification";
 import { useLocation } from "react-router-dom";
+import useDrivingStore from "../../../stores/drivingStore";
 
 dayjs.locale("ko");
 
@@ -41,7 +42,7 @@ const datePickerStyles = {
 };
 
 function ServiceTab() {
-  const [carId, setCarId] = useState("");
+  //const [carId, setCarId] = useState("");
   const [open, setOpen] = useState(false);
   const [date, setDate] = useState<Date | null>(null);
   const [type, setType] = useState("");
@@ -57,11 +58,13 @@ function ServiceTab() {
   const queryClient = useQueryClient();
   const location = useLocation();
 
+  const { carId, setCarId } = useDrivingStore();
+
   useEffect(() => {
     if (location.state) {
       setCarId(location.state.car);
     }
-  }, [location]);
+  }, [location, setCarId]);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
