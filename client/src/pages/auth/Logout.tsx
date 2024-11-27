@@ -17,10 +17,10 @@ function Logout() {
   return (
     <button
       onClick={goLogin}
-      className="print-hidden flex items-center justify-center whitespace-nowrap rounded-3xl border border-gray-300 px-2 py-2 text-gray-600 hover:opacity-60 sm:px-1"
+      className="print-hidden button-effect flex items-center justify-center whitespace-nowrap rounded-lg bg-[#0EA5E9] px-4 py-2 text-white hover:opacity-60 sm:mr-0 sm:flex-1 md:mr-2"
     >
-      <span className="sm:text-xs md:mr-1">로그아웃</span>
-      <LogOut className="sm:hidden md:h-5 md:w-6" />
+      <LogOut className="sm:hidden md:h-6 md:w-6" />
+      <span className="sm:text-xs md:ml-1">로그아웃</span>
     </button>
   );
 }

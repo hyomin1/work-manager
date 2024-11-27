@@ -63,7 +63,7 @@ function ServiceEdit({ item, setEditingItemId }: IServiceEdit) {
   return (
     <div className="fixed inset-0 top-0 z-10 flex w-full items-center justify-center bg-black bg-opacity-65 px-4">
       <form
-        className="flex w-[40%] flex-col rounded-lg bg-white p-6 shadow-lg"
+        className="flex flex-col rounded-lg bg-white p-6 shadow-lg md:h-[55%] md:w-[40%]"
         onSubmit={onSubmit}
       >
         <h2 className="mb-4 text-center text-xl font-bold">정보 수정</h2>
@@ -129,7 +129,7 @@ function ServiceEdit({ item, setEditingItemId }: IServiceEdit) {
             />
           </div>
         </div>
-        <div className="mt-2 flex justify-between">
+        <div className="mt-4 flex justify-between">
           <button
             type="submit"
             className="rounded bg-blue-500 px-4 py-2 text-white hover:opacity-80"

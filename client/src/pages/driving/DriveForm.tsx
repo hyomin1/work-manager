@@ -194,7 +194,6 @@ function DriveInput() {
   if (namesLoading || carsLoading || etcNamesLoading) {
     return <div>Loading...</div>;
   }
-  console.log(carId, privateCarId);
 
   return (
     <Container

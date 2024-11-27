@@ -211,12 +211,12 @@ function DrivePage() {
           </div>
 
           <div className="print-hidden flex w-[100%] items-center rounded-t-2xl border border-t-gray-300 sm:h-auto sm:flex-col md:justify-between">
-            <div className="flex items-center sm:w-full sm:flex-col sm:p-3 md:ml-2 md:h-full md:w-[50%] md:justify-start">
-              <FormControl className="w-[30%]" size="small">
+            <div className="flex items-center sm:w-full sm:flex-col sm:p-3 md:ml-2 md:h-full md:justify-start">
+              <FormControl fullWidth size="small">
                 <InputLabel id="car">차량 선택</InputLabel>
 
                 <Select
-                  className="h-10 rounded-lg border border-gray-300 p-2 text-sm font-bold hover:opacity-60 sm:mb-3 sm:w-full md:mr-16 md:w-[50%]"
+                  className="h-10 w-[80%] rounded-lg border border-gray-300 p-2 text-sm font-bold hover:opacity-60 sm:mb-3 md:mr-16"
                   onChange={onChangeCarNum}
                   id="car"
                   label="차량 선택"

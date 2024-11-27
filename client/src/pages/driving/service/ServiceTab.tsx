@@ -121,8 +121,8 @@ function ServiceTab() {
   return (
     <div className="flex h-full w-[90%] flex-col overflow-hidden bg-gradient-to-br from-gray-50 to-zinc-100 sm:p-2">
       <div className="print-hidden flex w-full items-center rounded-t-2xl border border-t-gray-300 sm:h-auto sm:flex-col md:h-16 md:justify-between">
-        <div className="flex h-[10%] items-center sm:w-full sm:flex-col sm:p-3 md:ml-2 md:w-[50%]">
-          <FormControl className="w-[20%]" size="small">
+        <div className="flex items-center sm:w-full sm:p-3 md:ml-2 md:w-[30%]">
+          <FormControl fullWidth size="small">
             <InputLabel id="car">차량 선택</InputLabel>
             <Select
               id="car"

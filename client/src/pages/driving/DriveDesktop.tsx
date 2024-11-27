@@ -103,7 +103,7 @@ function DrivePC({
                   <TableCell className="border border-gray-300">
                     {calCarDay(item.driveDay)}
                   </TableCell>
-                  <TableCell className="border border-gray-300">
+                  <TableCell className="whitespace-nowrap border border-gray-300">
                     {item.username}
                   </TableCell>
                   <TableCell className="border border-gray-300">
@@ -136,10 +136,12 @@ function DrivePC({
                           onClick={() => setEditingItemId(item._id)}
                         >
                           <Edit strokeWidth={2.2} size={15} />
-                          <span className="ml-1 font-semibold">수정</span>
+                          <span className="ml-1 whitespace-nowrap font-semibold">
+                            수정
+                          </span>
                         </button>
                         <button
-                          className="flex items-center hover:opacity-60"
+                          className="flex items-center whitespace-nowrap hover:opacity-60"
                           onClick={() => deleteInform(item._id)}
                         >
                           <Trash2 strokeWidth={2.2} size={15} />
