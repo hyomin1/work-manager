@@ -58,7 +58,6 @@ function DrivePC({
       <TableContainer
         sx={{
           backgroundColor: "#f5f7f9",
-          height: "76%",
         }}
         component={Paper}
         className={`print:hidden`}
