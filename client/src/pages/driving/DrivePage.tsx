@@ -203,7 +203,7 @@ function DrivePage() {
           )}
         </div>
 
-        <div className="w-full">
+        <div className="h-full w-full">
           <div className="mb-4 hidden w-full font-bold print:flex">
             <span>{car}</span>
           </div>
@@ -319,17 +319,19 @@ function DrivePage() {
               indexOfLastItem={indexOfLastItem}
             />
           ) : (
-            <DrivePC
-              drivingInform={drivingInform || []}
-              totalDrivingKM={totalDrivingKM}
-              totalEtcCost={totalEtcCost}
-              totalFuelCost={totalFuelCost}
-              totalToll={totalToll}
-              grandTotal={grandTotal}
-              indexOfFirstItem={indexOfFirstItem}
-              indexOfLastItem={indexOfLastItem}
-              refetch={refetch}
-            />
+            <div className="h-[75%] overflow-y-auto">
+              <DrivePC
+                drivingInform={drivingInform || []}
+                totalDrivingKM={totalDrivingKM}
+                totalEtcCost={totalEtcCost}
+                totalFuelCost={totalFuelCost}
+                totalToll={totalToll}
+                grandTotal={grandTotal}
+                indexOfFirstItem={indexOfFirstItem}
+                indexOfLastItem={indexOfLastItem}
+                refetch={refetch}
+              />
+            </div>
           )}
         </div>
       </div>

@@ -161,12 +161,10 @@ function DrivePC({
             <TableRow
               sx={{
                 position: "sticky",
-                bottom: 0,
                 background: "#f5f5f5",
                 "& .MuiTableCell-root": {
                   fontWeight: 600,
                   backgroundColor: "#f5f5f5",
-                  borderBottom: "none",
                   fontSize: "0.85rem",
                 },
               }}
