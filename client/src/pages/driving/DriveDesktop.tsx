@@ -57,12 +57,11 @@ function DrivePC({
     <>
       <TableContainer
         sx={{
-          boxShadow:
-            "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)",
-          backgroundColor: "#F8F9FC",
+          backgroundColor: "#f5f7f9",
+          height: "76%",
         }}
         component={Paper}
-        className={`h-[65%] print:hidden`}
+        className={`print:hidden`}
       >
         <Table stickyHeader size="small">
           <TableHead>
