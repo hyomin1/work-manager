@@ -182,7 +182,6 @@ function DrivePage() {
       `${calYearMonth(currentDate ?? new Date())} 차량운행일지 (${car})`,
     ]);
 
-    // 제목 행 스타일링
     worksheet.mergeCells(`A1:J1`);
     titleRow.font = { bold: true, size: 16, color: { argb: "FFFFFF" } };
     titleRow.alignment = { vertical: "middle", horizontal: "center" };
@@ -195,7 +194,7 @@ function DrivePage() {
     });
 
     worksheet.eachRow((row) => {
-      row.height = 25; // 모든 행 높이를 25pt로 설정
+      row.height = 25;
     });
 
     worksheet.addRow([]);
@@ -235,7 +234,7 @@ function DrivePage() {
           : "",
         "",
       ]);
-
+      dataRow.alignment = { vertical: "middle" };
       dataRow.eachCell((cell) => {
         cell.border = {
           top: { style: "medium" },
@@ -259,6 +258,7 @@ function DrivePage() {
       totalEtcCost.toLocaleString(),
       grandTotal.toLocaleString(),
     ]);
+    totalRow.alignment = { vertical: "middle" };
 
     worksheet.mergeCells(`A${totalRow.number}:E${totalRow.number}`);
 
@@ -295,7 +295,7 @@ function DrivePage() {
 
     // 5. 행 높이 설정
     worksheet.eachRow((row) => {
-      row.height = 25;
+      row.height = 35;
     });
 
     // 6. 파일 생성 및 다운로드
