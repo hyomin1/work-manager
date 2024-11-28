@@ -178,11 +178,31 @@ function DrivePage() {
       `${calYearMonth(currentDate ?? new Date())} 차량운행일지(${car})`,
     );
 
+    const titleRow = worksheet.addRow([
+      `${calYearMonth(currentDate ?? new Date())} 차량운행일지(${car})`,
+    ]);
+
+    // 제목 행 스타일링
+    worksheet.mergeCells(`A1:J1`); // A1부터 J1까지 셀 병합
+    titleRow.font = { bold: true, size: 16, color: { argb: "FFFFFF" } }; // 글자 크게, 굵게
+    titleRow.alignment = { vertical: "middle", horizontal: "center" }; // 가운데 정렬
+    titleRow.height = 30; // 제목 행 높이 조정
+    titleRow.eachCell((cell) => {
+      cell.fill = {
+        type: "pattern",
+        pattern: "solid",
+        fgColor: { argb: "000000" }, // 검정 배경
+      };
+    });
+
+    // 빈 행 추가로 제목과 헤더 사이 간격 생성
+    worksheet.addRow([]);
+
     // 1. 헤더 추가 (스타일 적용)
     const headerRow = worksheet.addRow(drivingExcelHeaders);
 
     headerRow.font = { bold: true };
-    headerRow.alignment = { vertical: "middle", horizontal: "center" };
+    headerRow.alignment = { vertical: "middle", horizontal: "left" };
     headerRow.eachCell((cell) => {
       cell.fill = {
         type: "pattern",
