@@ -32,10 +32,10 @@ import {
   SelectChangeEvent,
 } from "@mui/material";
 import useDrivingStore from "../../stores/drivingStore";
-import { drivingHeaders } from "../../constants/headers";
-import * as XLSX from "xlsx";
+import { drivingExcelHeaders } from "../../constants/headers";
 import { calCarDay } from "./../../api";
 import ExcelJS from "exceljs";
+import { saveAs } from "file-saver";
 
 function DrivePage() {
   const navigate = useNavigate();
@@ -172,26 +172,60 @@ function DrivePage() {
 
   const downloadExcel = () => {
     if (!drivingInform) return;
+
     const workbook = new ExcelJS.Workbook();
     const worksheet = workbook.addWorksheet(
-      `${calYearMonth(currentDate ?? new Date())} 차량운행일지(${car}).xlsx`,
+      `${calYearMonth(currentDate ?? new Date())} 차량운행일지(${car})`,
     );
 
-    const rows = drivingInform.map((drive) => [
-      calCarDay(drive.driveDay),
-      drive.username,
-      drive.drivingDestination,
-      drive.startKM.toLocaleString(),
-      drive.endKM.toLocaleString(),
-      drive.totalKM.toLocaleString(),
-      drive.fuelCost ? drive.fuelCost.toLocaleString() : "",
-      drive.toll ? drive.toll.toLocaleString() : "",
-      drive.etc.cost > 0
-        ? `${drive.etc.cost.toLocaleString()}(${drive.etc.name})`
-        : "",
-    ]);
+    // 1. 헤더 추가 (스타일 적용)
+    const headerRow = worksheet.addRow(drivingExcelHeaders);
 
-    const lastRow = [
+    headerRow.font = { bold: true };
+    headerRow.alignment = { vertical: "middle", horizontal: "center" };
+    headerRow.eachCell((cell) => {
+      cell.fill = {
+        type: "pattern",
+        pattern: "solid",
+        fgColor: { argb: "808080" },
+      };
+      cell.border = {
+        top: { style: "medium" },
+        left: { style: "medium" },
+        bottom: { style: "medium" },
+        right: { style: "medium" },
+      };
+    });
+
+    // 2. 데이터 행 추가 (테두리 추가)
+    drivingInform.forEach((drive) => {
+      const dataRow = worksheet.addRow([
+        calCarDay(drive.driveDay),
+        drive.username,
+        drive.drivingDestination,
+        drive.startKM.toLocaleString(),
+        drive.endKM.toLocaleString(),
+        drive.totalKM.toLocaleString(),
+        drive.fuelCost ? drive.fuelCost.toLocaleString() : "",
+        drive.toll ? drive.toll.toLocaleString() : "",
+        drive.etc.cost > 0
+          ? `${drive.etc.cost.toLocaleString()}(${drive.etc.name})`
+          : "",
+        "",
+      ]);
+
+      dataRow.eachCell((cell) => {
+        cell.border = {
+          top: { style: "medium" },
+          left: { style: "medium" },
+          bottom: { style: "medium" },
+          right: { style: "medium" },
+        };
+      });
+    });
+
+    // 3. 마지막 합계 행 추가 (스타일 적용)
+    const totalRow = worksheet.addRow([
       "",
       "",
       "",
@@ -202,41 +236,46 @@ function DrivePage() {
       totalToll.toLocaleString(),
       totalEtcCost.toLocaleString(),
       grandTotal.toLocaleString(),
-    ];
-
-    const ws = XLSX.utils.aoa_to_sheet([
-      drivingHeaders.slice(0, -1),
-      ...rows,
-      lastRow,
     ]);
 
-    // 열 너비 설정
-    ws["!cols"] = [
-      { wch: 5 }, // 날짜 열 너비
-      { wch: 12 }, // 운전자 열 너비
-      { wch: 49 }, // 행선지 열 너비
-      { wch: 7.5 }, // 출발km 열 너비
-      { wch: 7.5 }, // 도착km 열 너비
-      { wch: 7.5 }, // 주행거리 열 너비
-      { wch: 8 }, // 주유비 열 너비
-      { wch: 8 }, // 통행료 열 너비
-      { wch: 12 }, // 기타 열 너비
+    totalRow.font = { bold: true };
+    totalRow.eachCell((cell) => {
+      cell.border = {
+        top: { style: "medium" },
+        left: { style: "medium" },
+        bottom: { style: "medium" },
+        right: { style: "medium" },
+      };
+    });
+
+    // 4. 열 너비 설정
+    const columnWidths = [
+      { width: 6 }, // 날짜
+      { width: 14 }, // 운전자
+      { width: 49 }, // 행선지
+      { width: 8 }, // 출발km
+      { width: 8 }, // 도착km
+      { width: 8 }, // 주행거리
+      { width: 8 }, // 주유비
+      { width: 8 }, // 통행료
+      { width: 12 }, // 기타
     ];
+    worksheet.columns = columnWidths.map((col) => ({
+      width: col.width,
+    }));
 
-    // 행 높이 설정
-    ws["!rows"] = Array(rows.length + 1).fill({ hpt: 25 });
+    // 5. 행 높이 설정
+    worksheet.eachRow((row, rowNumber) => {
+      row.height = 25; // 모든 행 높이를 25pt로 설정
+    });
 
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(
-      wb,
-      ws,
-      `${calYearMonth(currentDate ?? new Date())} 차량운행일지(${car}).xlsx`,
-    );
-
-    XLSX.writeFile(
-      wb,
-      `${calYearMonth(currentDate ?? new Date())} 차량운행일지(${car}).xlsx`,
-    );
+    // 6. 파일 생성 및 다운로드
+    workbook.xlsx.writeBuffer().then((buffer) => {
+      saveAs(
+        new Blob([buffer]),
+        `${calYearMonth(currentDate ?? new Date())} 차량운행일지(${car}).xlsx`,
+      );
+    });
   };
 
   const totalFuelCost =
@@ -325,7 +364,7 @@ function DrivePage() {
                   </button>
                 </div>
                 <div className="flex">
-                  {/* {carId.length > 0 && (
+                  {carId.length > 0 && (
                     <button
                       onClick={downloadExcel}
                       className="button-effect flex items-center justify-center whitespace-nowrap rounded-lg bg-[#10B981] px-4 py-2 text-white hover:opacity-60 sm:flex-1 md:mr-4"
@@ -333,7 +372,7 @@ function DrivePage() {
                       <Sheet className="sm:h-4 sm:w-4" />
                       <span className="ml-1 sm:text-xs">엑셀</span>
                     </button>
-                  )} */}
+                  )}
 
                   <button
                     onClick={checkCarService}

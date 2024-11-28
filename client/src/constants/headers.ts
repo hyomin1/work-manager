@@ -11,6 +11,19 @@ export const drivingHeaders = [
   "",
 ];
 
+export const drivingExcelHeaders = [
+  "날짜",
+  "운전자",
+  "행선지",
+  "출발(km)",
+  "도착(km)",
+  "거리(km)",
+  "주유비",
+  "하이패스",
+  "기타",
+  "합계",
+];
+
 export const drivingInputHeadersTop = ["날짜", "차량", "운전자", "행선지"];
 
 export const drivingInputHeadersBottom = [
