@@ -189,6 +189,40 @@ function DrivePage() {
     ]);
 
     const ws = XLSX.utils.aoa_to_sheet([drivingHeaders.slice(0, -1), ...rows]);
+
+    // 열 너비 설정
+    ws["!cols"] = [
+      { wch: 5 }, // 날짜 열 너비
+      { wch: 12 }, // 운전자 열 너비
+      { wch: 49 }, // 행선지 열 너비
+      { wch: 7.5 }, // 출발km 열 너비
+      { wch: 7.5 }, // 도착km 열 너비
+      { wch: 5 }, // 주행거리 열 너비
+      { wch: 6 }, // 주유비 열 너비
+      { wch: 7 }, // 통행료 열 너비
+      { wch: 8 }, // 기타 열 너비
+    ];
+
+    // 행 높이 설정
+    ws["!rows"] = Array(rows.length + 1).fill({ hpt: 25 }); // 행 높이를 25로 설정// 행 높이를 18로 줄임
+    const range = XLSX.utils.decode_range(ws["!ref"]!);
+    for (let R = range.s.r; R <= range.e.r; ++R) {
+      for (let C = range.s.c; C <= range.e.c; ++C) {
+        const address = XLSX.utils.encode_cell({ r: R, c: C });
+        if (!ws[address]) ws[address] = { v: "" };
+
+        // 각 셀에 테두리 스타일 추가
+        ws[address].s = {
+          ...ws[address].s,
+          border: {
+            top: { style: "thin", color: { rgb: "000000" } },
+            left: { style: "thin", color: { rgb: "000000" } },
+            bottom: { style: "thin", color: { rgb: "000000" } },
+            right: { style: "thin", color: { rgb: "000000" } },
+          },
+        };
+      }
+    }
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(
       wb,
