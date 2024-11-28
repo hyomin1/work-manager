@@ -74,6 +74,7 @@ function DrivePage() {
   const checkSession = async () => {
     const response = await axiosReq.get("/auth/checkSession");
   };
+  console.log(car);
 
   useEffect(() => {
     refetch();
@@ -110,6 +111,13 @@ function DrivePage() {
 
     setCurrentPage(1);
   };
+  useEffect(() => {
+    const selectedCar = cars?.find((car) => car._id === carId);
+
+    if (selectedCar) {
+      setCar(selectedCar.car);
+    }
+  }, [cars, carId]);
 
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value;
@@ -175,7 +183,7 @@ function DrivePage() {
 
     const workbook = new ExcelJS.Workbook();
     const worksheet = workbook.addWorksheet(
-      `${calYearMonth(currentDate ?? new Date())} 차량운행일지(${car})`,
+      `${calYearMonth(currentDate ?? new Date())} 차량운행일지 (${car})`,
     );
 
     const titleRow = worksheet.addRow([
@@ -286,7 +294,7 @@ function DrivePage() {
       { width: 8 }, // 도착km
       { width: 8 }, // 주행거리
       { width: 8 }, // 주유비
-      { width: 8 }, // 통행료
+      { width: 8 }, // 하이패스
       { width: 12 }, // 기타
     ];
     worksheet.columns = columnWidths.map((col) => ({
@@ -302,7 +310,7 @@ function DrivePage() {
     workbook.xlsx.writeBuffer().then((buffer) => {
       saveAs(
         new Blob([buffer]),
-        `${calYearMonth(currentDate ?? new Date())} 차량운행일지(${car}).xlsx`,
+        `${calYearMonth(currentDate ?? new Date())} 차량운행일지 (${car}).xlsx`,
       );
     });
   };
