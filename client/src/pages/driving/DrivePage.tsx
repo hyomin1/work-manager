@@ -10,6 +10,7 @@ import {
   getDrivingInform,
   getNotification,
 } from "../../api";
+import { CSVLink, CSVDownload } from "react-csv";
 import { useQuery } from "@tanstack/react-query";
 import { ICars, IDrivingInform } from "../../interfaces/interface";
 import Title from "../../components/layout/Title";
@@ -19,7 +20,7 @@ import Page from "../../components/common/Page";
 import { useMediaQuery } from "react-responsive";
 import ArrowBack from "./../../components/common/ArrowBack";
 import Logout from "../auth/Logout";
-import { Pencil, Settings, Users, Wrench } from "lucide-react";
+import { Pencil, Settings, Sheet, Users, Wrench } from "lucide-react";
 import DriveMobile from "./DriveMobile";
 import DrivePC from "./DriveDesktop";
 import { ROUTES } from "../../constants/constant";
@@ -32,6 +33,9 @@ import {
   SelectChangeEvent,
 } from "@mui/material";
 import useDrivingStore from "../../stores/drivingStore";
+import { drivingHeaders } from "../../constants/headers";
+import * as XLSX from "xlsx";
+import { calCarDay } from "./../../api";
 
 function DrivePage() {
   const navigate = useNavigate();
@@ -167,6 +171,37 @@ function DrivePage() {
     alert("권한이 없습니다.");
   };
 
+  const downloadExcel = () => {
+    if (!drivingInform) return;
+
+    const rows = drivingInform.map((drive) => [
+      calCarDay(drive.driveDay),
+      drive.username,
+      drive.drivingDestination,
+      drive.startKM.toLocaleString(),
+      drive.endKM.toLocaleString(),
+      drive.totalKM.toLocaleString(),
+      drive.fuelCost ? drive.fuelCost.toLocaleString() : "",
+      drive.toll ? drive.toll.toLocaleString() : "",
+      drive.etc.cost > 0
+        ? `${drive.etc.cost.toLocaleString()}(${drive.etc.name})`
+        : "",
+    ]);
+
+    const ws = XLSX.utils.aoa_to_sheet([drivingHeaders.slice(0, -1), ...rows]);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(
+      wb,
+      ws,
+      `${calYearMonth(currentDate ?? new Date())} 차량운행일지.xlsx`,
+    );
+
+    XLSX.writeFile(
+      wb,
+      `${calYearMonth(currentDate ?? new Date())} 차량운행일지.xlsx`,
+    );
+  };
+
   const totalFuelCost =
     drivingInform?.reduce((acc, item) => acc + item.fuelCost, 0) || 0;
   const totalToll =
@@ -204,7 +239,6 @@ function DrivePage() {
             </div>
           )}
         </div>
-
         <div className="h-full w-full">
           <div className="mb-4 hidden w-full font-bold print:flex">
             <span>{car}</span>
@@ -235,37 +269,51 @@ function DrivePage() {
               </FormControl>
             </div>
 
-            <div className="flex flex-1 items-center justify-end p-4 sm:w-full sm:flex-col sm:gap-2 md:w-[50%]">
-              <div className="flex items-center justify-center sm:mb-2 sm:w-full sm:gap-2">
-                <button
-                  onClick={checkUser}
-                  className="button-effect flex items-center justify-center whitespace-nowrap rounded-lg bg-[#0EA5E9] px-4 py-2 text-white hover:opacity-60 sm:flex-1 md:mr-4"
-                >
-                  <Users className="sm:h-4 sm:w-4" />
-                  <span className="ml-1 sm:text-xs">근무</span>
-                </button>
-                <button
-                  className="button-effect flex items-center justify-center whitespace-nowrap rounded-lg bg-[#10B981] px-4 py-2 text-white sm:flex-1 sm:text-lg md:mr-4"
-                  onClick={checkUserInput}
-                >
-                  <Pencil className="sm:h-4 sm:w-4" />
-                  <span className="ml-1 sm:text-xs">입력</span>
-                </button>
-                <button
-                  onClick={checkCarService}
-                  className="button-effect flex items-center justify-center whitespace-nowrap rounded-lg bg-[#0EA5E9] px-4 py-2 text-white hover:opacity-60 sm:flex-1 md:mr-4"
-                >
-                  <Wrench className="sm:h-4 sm:w-4" />
-                  <span className="ml-1 sm:text-xs">점검</span>
-                </button>
+            <div className="flex flex-1 items-center justify-between p-4 sm:w-full sm:flex-col sm:gap-2 md:w-[50%]">
+              <div className="flex w-full items-center justify-between sm:mb-2 sm:w-full sm:gap-2">
+                <div className="flex">
+                  <button
+                    className="button-effect flex items-center justify-center whitespace-nowrap rounded-lg bg-[#10B981] px-4 py-2 text-white sm:flex-1 sm:text-lg md:mr-4"
+                    onClick={checkUserInput}
+                  >
+                    <Pencil className="sm:h-4 sm:w-4" />
+                    <span className="ml-1 sm:text-xs">입력</span>
+                  </button>
+                  <button
+                    onClick={checkUser}
+                    className="button-effect flex items-center justify-center whitespace-nowrap rounded-lg bg-[#0EA5E9] px-4 py-2 text-white hover:opacity-60 sm:flex-1 md:mr-4"
+                  >
+                    <Users className="sm:h-4 sm:w-4" />
+                    <span className="ml-1 sm:text-xs">근무</span>
+                  </button>
+                </div>
+                <div className="flex">
+                  {carId.length > 0 && (
+                    <button
+                      onClick={downloadExcel}
+                      className="button-effect flex items-center justify-center whitespace-nowrap rounded-lg bg-[#10B981] px-4 py-2 text-white hover:opacity-60 sm:flex-1 md:mr-4"
+                    >
+                      <Sheet className="sm:h-4 sm:w-4" />
+                      <span className="ml-1 sm:text-xs">엑셀</span>
+                    </button>
+                  )}
 
-                <button
-                  className="button-effect flex items-center justify-center whitespace-nowrap rounded-lg bg-[#10B981] px-4 py-2 text-white hover:opacity-60 sm:flex-1"
-                  onClick={onClickAdmin}
-                >
-                  <Settings className="sm:h-4 sm:w-4" />
-                  <span className="ml-1 sm:text-xs">관리</span>
-                </button>
+                  <button
+                    onClick={checkCarService}
+                    className="button-effect flex items-center justify-center whitespace-nowrap rounded-lg bg-[#0EA5E9] px-4 py-2 text-white hover:opacity-60 sm:flex-1 md:mr-4"
+                  >
+                    <Wrench className="sm:h-4 sm:w-4" />
+                    <span className="ml-1 sm:text-xs">점검</span>
+                  </button>
+
+                  <button
+                    className="button-effect flex items-center justify-center whitespace-nowrap rounded-lg bg-[#10B981] px-4 py-2 text-white hover:opacity-60 sm:flex-1"
+                    onClick={onClickAdmin}
+                  >
+                    <Settings className="sm:h-4 sm:w-4" />
+                    <span className="ml-1 sm:text-xs">관리</span>
+                  </button>
+                </div>
               </div>
 
               <div className="flex items-center sm:hidden sm:w-full sm:justify-center">
