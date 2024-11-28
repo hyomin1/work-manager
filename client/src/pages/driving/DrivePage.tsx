@@ -179,20 +179,24 @@ function DrivePage() {
     );
 
     const titleRow = worksheet.addRow([
-      `${calYearMonth(currentDate ?? new Date())} 차량운행일지(${car})`,
+      `${calYearMonth(currentDate ?? new Date())} 차량운행일지 (${car})`,
     ]);
 
     // 제목 행 스타일링
     worksheet.mergeCells(`A1:J1`); // A1부터 J1까지 셀 병합
     titleRow.font = { bold: true, size: 16, color: { argb: "FFFFFF" } }; // 글자 크게, 굵게
     titleRow.alignment = { vertical: "middle", horizontal: "center" }; // 가운데 정렬
-    titleRow.height = 30; // 제목 행 높이 조정
+    titleRow.height = 60; // 제목 행 높이 조정
     titleRow.eachCell((cell) => {
       cell.fill = {
         type: "pattern",
         pattern: "solid",
         fgColor: { argb: "000000" }, // 검정 배경
       };
+    });
+
+    worksheet.eachRow((row) => {
+      row.height = 100; // 모든 행 높이를 25pt로 설정
     });
 
     // 빈 행 추가로 제목과 헤더 사이 간격 생성
@@ -207,7 +211,7 @@ function DrivePage() {
       cell.fill = {
         type: "pattern",
         pattern: "solid",
-        fgColor: { argb: "808080" },
+        fgColor: { argb: "D3D3D3" },
       };
       cell.border = {
         top: { style: "medium" },
@@ -251,15 +255,22 @@ function DrivePage() {
       "",
       "",
       "",
-      totalDrivingKM.toLocaleString(),
+      `${totalDrivingKM.toLocaleString()}km`,
       totalFuelCost.toLocaleString(),
       totalToll.toLocaleString(),
       totalEtcCost.toLocaleString(),
       grandTotal.toLocaleString(),
     ]);
+    //
+    worksheet.mergeCells(`A${totalRow.number}:E${totalRow.number}`);
 
     totalRow.font = { bold: true };
     totalRow.eachCell((cell) => {
+      cell.fill = {
+        type: "pattern",
+        pattern: "solid",
+        fgColor: { argb: "D3D3D3" },
+      };
       cell.border = {
         top: { style: "medium" },
         left: { style: "medium" },
@@ -285,7 +296,7 @@ function DrivePage() {
     }));
 
     // 5. 행 높이 설정
-    worksheet.eachRow((row, rowNumber) => {
+    worksheet.eachRow((row) => {
       row.height = 25; // 모든 행 높이를 25pt로 설정
     });
 
