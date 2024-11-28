@@ -80,8 +80,7 @@ export interface IDrivingInform {
 export interface Users {
   _id: string;
   userId: string;
-  isApproved: true;
-  role: string;
+  role: number;
 }
 
 // 차량 정비 내역

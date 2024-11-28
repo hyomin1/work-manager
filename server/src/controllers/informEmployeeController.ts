@@ -506,8 +506,7 @@ export const getInform = async (req: Request, res: Response) => {
       return {
         ...inform.toObject(),
         isOwner:
-          inform.writerId.toString() === req.session.userId ||
-          user.role === 'admin',
+          inform.writerId.toString() === req.session.userId || user.role === 3,
       };
     });
 

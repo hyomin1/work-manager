@@ -14,7 +14,7 @@ export const joinUser = async (req: Request, res: Response) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 12);
-    await User.create({ userId, password: hashedPassword, role: 'user' });
+    await User.create({ userId, password: hashedPassword, role: 0 });
     return res.status(201).json({ message: '회원가입 성공' });
   } catch (error) {
     console.error(error);
@@ -38,18 +38,18 @@ export const loginUser = async (req: Request, res: Response) => {
     if (!isPasswordMatch) {
       return res.status(401).json({ error: '비밀번호가 일치하지 않습니다.' });
     }
-    if (!user.isApproved) {
+    if (user.role < 1) {
       return res.status(403).json({ error: '승인된 계정이 아닙니다.' });
     }
 
     req.session.isUser = true;
-    if (user.role === 'car') {
+    if (user.role === 1) {
       req.session.isCar = true;
     }
 
     req.session.userId = user._id.toString();
 
-    if (user.role === 'admin') {
+    if (user.role === 3) {
       req.session.isAdmin = true;
     }
 

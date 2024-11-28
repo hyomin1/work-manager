@@ -3,17 +3,14 @@ import { model, Schema } from 'mongoose';
 interface IUser {
   userId: string;
   password: string;
-  role: string;
-  createdAt: Date;
-  isApproved: boolean;
+  role: number;
 }
 
 const userSchema = new Schema<IUser>(
   {
     userId: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    role: { type: String, enum: ['admin', 'user', 'car'], required: true },
-    isApproved: { type: Boolean, required: true, default: false },
+    role: { type: Number, required: true },
   },
   {
     timestamps: true,

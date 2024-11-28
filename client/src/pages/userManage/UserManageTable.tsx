@@ -55,8 +55,11 @@ function UserManageTable({ users, refetch, value }: ITableProps) {
     }
   };
 
-  const handleChangeRole = async (event: SelectChangeEvent, id: string) => {
-    const role = event.target.value as string;
+  const handleChangeRole = async (
+    event: SelectChangeEvent<number>,
+    id: string,
+  ) => {
+    const role = Number(event.target.value);
     const response = await axiosReq.patch(`/api/users/${id}/role`, {
       role,
     });
@@ -114,7 +117,7 @@ function UserManageTable({ users, refetch, value }: ITableProps) {
             .map((user, index) => (
               <TableRow key={index}>
                 <TableCell sx={{ fontSize: "large" }}>{user.userId}</TableCell>
-                {user.isApproved && (
+                {user.role > 0 && (
                   <TableCell sx={{ fontSize: "medium" }}>
                     <FormControl className="sm:w-[100%] md:w-[25%]">
                       <Select
@@ -123,16 +126,16 @@ function UserManageTable({ users, refetch, value }: ITableProps) {
                         value={user.role}
                         onChange={(e) => handleChangeRole(e, user._id)}
                       >
-                        <MenuItem value={"admin"}>관리자</MenuItem>
-                        <MenuItem value={"user"}>일반</MenuItem>
-                        <MenuItem value={"car"}>차량 전용</MenuItem>
+                        <MenuItem value={3}>관리자</MenuItem>
+                        <MenuItem value={2}>일반</MenuItem>
+                        <MenuItem value={1}>차량 전용</MenuItem>
                       </Select>
                     </FormControl>
                   </TableCell>
                 )}
 
                 <TableCell>
-                  {user.isApproved ? (
+                  {user.role > 0 ? (
                     <div className="flex">
                       <button
                         onClick={() => deleteUser(user._id)}

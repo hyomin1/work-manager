@@ -15,7 +15,6 @@ export const getUsers = async (req: Request, res: Response) => {
       {
         _id: 1,
         userId: 1,
-        isApproved: 1,
         role: 1,
       }
     );
@@ -32,7 +31,7 @@ export const approveUser = async (req: Request, res: Response) => {
   try {
     const updatedUser = await User.findByIdAndUpdate(
       { _id: id },
-      { isApproved: true },
+      { role: 2 },
       { new: true }
     );
     if (!updatedUser) {

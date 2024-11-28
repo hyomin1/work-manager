@@ -9,9 +9,13 @@ import UserManageTable from "./UserManageTable";
 
 function UserManagePage() {
   const [value, setValue] = useState(0);
-
+  // value 0 -> 승인 value 1 -> 승인 x
   const filterUsersByApprovalStatus = (data: Users[], value: number) =>
-    data.filter((user) => user.isApproved === (value === 0));
+    data.filter((user) => {
+      const isRolePositive = user.role > 0;
+      const shouldIncludePositive = value === 0;
+      return isRolePositive === shouldIncludePositive;
+    });
 
   const { data: users, refetch } = useQuery<Users[]>({
     queryKey: ["users", value],

@@ -146,8 +146,7 @@ export const getInform = async (req: Request, res: Response) => {
       return {
         ...inform.toObject(),
         isOwner:
-          inform.writerId.toString() === req.session.userId ||
-          user.role === 'admin',
+          inform.writerId.toString() === req.session.userId || user.role === 3,
       };
     });
 
@@ -319,8 +318,7 @@ export const getService = async (req: Request, res: Response) => {
       return {
         ...service.toObject(),
         isOwner:
-          service.writerId.toString() === req.session.userId ||
-          user.role === 'admin',
+          service.writerId.toString() === req.session.userId || user.role === 3,
       };
     });
     return res.status(200).json({ services });

@@ -183,23 +183,21 @@ function DrivePage() {
     ]);
 
     // 제목 행 스타일링
-    worksheet.mergeCells(`A1:J1`); // A1부터 J1까지 셀 병합
-    titleRow.font = { bold: true, size: 16, color: { argb: "FFFFFF" } }; // 글자 크게, 굵게
-    titleRow.alignment = { vertical: "middle", horizontal: "center" }; // 가운데 정렬
-    titleRow.height = 60; // 제목 행 높이 조정
+    worksheet.mergeCells(`A1:J1`);
+    titleRow.font = { bold: true, size: 16, color: { argb: "FFFFFF" } };
+    titleRow.alignment = { vertical: "middle", horizontal: "center" };
     titleRow.eachCell((cell) => {
       cell.fill = {
         type: "pattern",
         pattern: "solid",
-        fgColor: { argb: "000000" }, // 검정 배경
+        fgColor: { argb: "000000" },
       };
     });
 
     worksheet.eachRow((row) => {
-      row.height = 100; // 모든 행 높이를 25pt로 설정
+      row.height = 25; // 모든 행 높이를 25pt로 설정
     });
 
-    // 빈 행 추가로 제목과 헤더 사이 간격 생성
     worksheet.addRow([]);
 
     // 1. 헤더 추가 (스타일 적용)
@@ -261,7 +259,7 @@ function DrivePage() {
       totalEtcCost.toLocaleString(),
       grandTotal.toLocaleString(),
     ]);
-    //
+
     worksheet.mergeCells(`A${totalRow.number}:E${totalRow.number}`);
 
     totalRow.font = { bold: true };
@@ -297,7 +295,7 @@ function DrivePage() {
 
     // 5. 행 높이 설정
     worksheet.eachRow((row) => {
-      row.height = 25; // 모든 행 높이를 25pt로 설정
+      row.height = 25;
     });
 
     // 6. 파일 생성 및 다운로드

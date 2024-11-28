@@ -1,6 +1,6 @@
 // src/stores/employeeStore.ts
-import { create } from 'zustand';
-import type { IInform } from '../interfaces/interface';
+import { create } from "zustand";
+import type { IInform } from "../interfaces/interface";
 
 type State = {
   inform: IInform[];
