@@ -2,9 +2,9 @@ export const drivingHeaders = [
   "날짜",
   "운전자",
   "행선지",
-  "출발(Km)",
-  "도착(Km)",
-  "거리",
+  "출발(km)",
+  "도착(km)",
+  "거리(km)",
   "주유비",
   "하이패스",
   "기타",
@@ -14,9 +14,9 @@ export const drivingHeaders = [
 export const drivingInputHeadersTop = ["날짜", "차량", "운전자", "행선지"];
 
 export const drivingInputHeadersBottom = [
-  "출발(Km)",
-  "도착(Km)",
-  "거리(Km)",
+  "출발(km)",
+  "도착(km)",
+  "거리(km)",
   "주유비",
   "하이패스",
   "기타비용",

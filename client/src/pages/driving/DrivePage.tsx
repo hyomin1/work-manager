@@ -10,7 +10,6 @@ import {
   getDrivingInform,
   getNotification,
 } from "../../api";
-import { CSVLink, CSVDownload } from "react-csv";
 import { useQuery } from "@tanstack/react-query";
 import { ICars, IDrivingInform } from "../../interfaces/interface";
 import Title from "../../components/layout/Title";
@@ -36,13 +35,13 @@ import useDrivingStore from "../../stores/drivingStore";
 import { drivingHeaders } from "../../constants/headers";
 import * as XLSX from "xlsx";
 import { calCarDay } from "./../../api";
+import ExcelJS from "exceljs";
 
 function DrivePage() {
   const navigate = useNavigate();
   const isMobile = useMediaQuery({ query: "(max-width: 540px)" });
   const location = useLocation();
   const [currentDate, setCurrentDate] = useState<Date | null>(null);
-  //const [carId, setCarId] = useState("");
   const [car, setCar] = useState("");
   const { carId, setCarId } = useDrivingStore();
 
@@ -173,6 +172,10 @@ function DrivePage() {
 
   const downloadExcel = () => {
     if (!drivingInform) return;
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet(
+      `${calYearMonth(currentDate ?? new Date())} 차량운행일지(${car}).xlsx`,
+    );
 
     const rows = drivingInform.map((drive) => [
       calCarDay(drive.driveDay),
@@ -194,11 +197,11 @@ function DrivePage() {
       "",
       "",
       "",
-      totalDrivingKM,
-      totalFuelCost,
-      totalToll,
-      totalEtcCost,
-      grandTotal,
+      totalDrivingKM.toLocaleString(),
+      totalFuelCost.toLocaleString(),
+      totalToll.toLocaleString(),
+      totalEtcCost.toLocaleString(),
+      grandTotal.toLocaleString(),
     ];
 
     const ws = XLSX.utils.aoa_to_sheet([
@@ -214,10 +217,10 @@ function DrivePage() {
       { wch: 49 }, // 행선지 열 너비
       { wch: 7.5 }, // 출발km 열 너비
       { wch: 7.5 }, // 도착km 열 너비
-      { wch: 5 }, // 주행거리 열 너비
-      { wch: 6 }, // 주유비 열 너비
-      { wch: 7 }, // 통행료 열 너비
-      { wch: 8 }, // 기타 열 너비
+      { wch: 7.5 }, // 주행거리 열 너비
+      { wch: 8 }, // 주유비 열 너비
+      { wch: 8 }, // 통행료 열 너비
+      { wch: 12 }, // 기타 열 너비
     ];
 
     // 행 높이 설정
@@ -322,7 +325,7 @@ function DrivePage() {
                   </button>
                 </div>
                 <div className="flex">
-                  {carId.length > 0 && (
+                  {/* {carId.length > 0 && (
                     <button
                       onClick={downloadExcel}
                       className="button-effect flex items-center justify-center whitespace-nowrap rounded-lg bg-[#10B981] px-4 py-2 text-white hover:opacity-60 sm:flex-1 md:mr-4"
@@ -330,7 +333,7 @@ function DrivePage() {
                       <Sheet className="sm:h-4 sm:w-4" />
                       <span className="ml-1 sm:text-xs">엑셀</span>
                     </button>
-                  )}
+                  )} */}
 
                   <button
                     onClick={checkCarService}
