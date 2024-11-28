@@ -188,7 +188,24 @@ function DrivePage() {
         : "",
     ]);
 
-    const ws = XLSX.utils.aoa_to_sheet([drivingHeaders.slice(0, -1), ...rows]);
+    const lastRow = [
+      "",
+      "",
+      "",
+      "",
+      "",
+      totalDrivingKM,
+      totalFuelCost,
+      totalToll,
+      totalEtcCost,
+      grandTotal,
+    ];
+
+    const ws = XLSX.utils.aoa_to_sheet([
+      drivingHeaders.slice(0, -1),
+      ...rows,
+      lastRow,
+    ]);
 
     // 열 너비 설정
     ws["!cols"] = [
@@ -204,35 +221,18 @@ function DrivePage() {
     ];
 
     // 행 높이 설정
-    ws["!rows"] = Array(rows.length + 1).fill({ hpt: 25 }); // 행 높이를 25로 설정// 행 높이를 18로 줄임
-    const range = XLSX.utils.decode_range(ws["!ref"]!);
-    for (let R = range.s.r; R <= range.e.r; ++R) {
-      for (let C = range.s.c; C <= range.e.c; ++C) {
-        const address = XLSX.utils.encode_cell({ r: R, c: C });
-        if (!ws[address]) ws[address] = { v: "" };
+    ws["!rows"] = Array(rows.length + 1).fill({ hpt: 25 });
 
-        // 각 셀에 테두리 스타일 추가
-        ws[address].s = {
-          ...ws[address].s,
-          border: {
-            top: { style: "thin", color: { rgb: "000000" } },
-            left: { style: "thin", color: { rgb: "000000" } },
-            bottom: { style: "thin", color: { rgb: "000000" } },
-            right: { style: "thin", color: { rgb: "000000" } },
-          },
-        };
-      }
-    }
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(
       wb,
       ws,
-      `${calYearMonth(currentDate ?? new Date())} 차량운행일지.xlsx`,
+      `${calYearMonth(currentDate ?? new Date())} 차량운행일지(${car}).xlsx`,
     );
 
     XLSX.writeFile(
       wb,
-      `${calYearMonth(currentDate ?? new Date())} 차량운행일지.xlsx`,
+      `${calYearMonth(currentDate ?? new Date())} 차량운행일지(${car}).xlsx`,
     );
   };
 
