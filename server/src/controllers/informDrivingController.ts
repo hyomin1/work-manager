@@ -88,11 +88,14 @@ export const addInform = async (req: Request, res: Response) => {
       (car !== privateCarId && !startKM) ||
       (car !== privateCarId && !endKM)
     ) {
+      return res.status(400).json({ error: '정보를 입력해야 합니다..' });
     }
     const data = {
       ...req.body,
       writerId: req.session.userId,
     };
+    data.driveDay =
+      new Date(driveDay).setHours(0, 0, 0, 0) + 9 * 60 * 60 * 1000;
     await DrivingRecord.create(data);
     return res.status(200).json({ message: '정보 입력 완료' });
   } catch (error) {
