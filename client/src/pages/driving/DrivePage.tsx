@@ -74,7 +74,6 @@ function DrivePage() {
   const checkSession = async () => {
     const response = await axiosReq.get("/auth/checkSession");
   };
-  console.log(car);
 
   useEffect(() => {
     refetch();

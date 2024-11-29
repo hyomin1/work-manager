@@ -89,11 +89,12 @@ function AdminEdit({
     }
 
     const res = await axiosReq.patch(url, body);
-    if (res.status === 200) {
-      alert("변경이 완료되었습니다");
-      queryClient.invalidateQueries({ queryKey: [type] });
-      setIsEditing(false);
+    if (res.status !== 200) {
+      return;
     }
+    alert("변경이 완료되었습니다");
+    queryClient.invalidateQueries({ queryKey: [type] });
+    setIsEditing(false);
   };
   return (
     <div className="fixed inset-0 top-0 z-10 flex items-center justify-center bg-black bg-opacity-65 px-4">
