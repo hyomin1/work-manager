@@ -1,6 +1,7 @@
 import { TableCell, TableHead, TableRow } from "@mui/material";
 import { employeeHeaders } from "../../../constants/headers";
 
+// 근무 현황 테이블 헤더
 function TableHeader() {
   return (
     <TableHead>

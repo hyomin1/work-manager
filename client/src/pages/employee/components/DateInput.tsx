@@ -4,7 +4,7 @@ interface DateInputProps {
   currentDate: Date;
   setCurrentDate: React.Dispatch<React.SetStateAction<Date | null>>;
 }
-
+// 근무 현황 타이틀(날짜) 클릭 시 나오는 날짜 선택란
 function DateInput({
   isDatePickerOpen,
   onClose,

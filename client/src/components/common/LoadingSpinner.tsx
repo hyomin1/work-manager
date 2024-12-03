@@ -1,8 +1,9 @@
-import { CircularProgress } from '@mui/material';
+import { CircularProgress } from "@mui/material";
 
+// 로딩 원형 바
 function LoadingSpinner() {
   return (
-    <div className="flex items-center justify-center w-full h-screen">
+    <div className="flex h-screen w-full items-center justify-center">
       <CircularProgress />
     </div>
   );

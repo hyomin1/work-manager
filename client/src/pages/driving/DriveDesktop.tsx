@@ -27,7 +27,7 @@ interface IDrivePCProps {
   grandTotal: number;
   refetch: () => void;
 }
-
+// 차량운행일지 PC 화면
 function DrivePC({
   drivingInform,
   indexOfFirstItem,

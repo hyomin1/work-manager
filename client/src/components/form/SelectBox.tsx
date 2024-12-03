@@ -7,6 +7,7 @@ interface CustomSelectProps {
   className?: string;
 }
 
+// 선택 박스 (사용 빈도 낮음)
 function SelectBox({
   onChange,
   options,
@@ -17,7 +18,7 @@ function SelectBox({
     <select
       defaultValue=""
       onChange={onChange}
-      className={` w-[100%] hover:opacity-60 border rounded-md p-2 ${className}`}
+      className={`w-[100%] rounded-md border p-2 hover:opacity-60 ${className}`}
     >
       <option disabled value="">
         {placeholder}

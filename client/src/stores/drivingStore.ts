@@ -1,5 +1,6 @@
 import { create } from "zustand";
 
+// 차량 Id 전역 변수 관리
 type State = {
   carId: string;
 };

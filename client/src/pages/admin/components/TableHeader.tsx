@@ -5,6 +5,7 @@ interface TabHeaderProps {
   onTabClick: (tab: string) => void;
 }
 
+// 관리 페이지 테이블 헤더
 function TableHeader({ activeTab, onTabClick }: TabHeaderProps) {
   return (
     <div className="w-[100%]">

@@ -8,7 +8,7 @@ interface IAddData {
   queryClient: QueryClient;
   destination?: string;
 }
-
+// 관리 페이지 데이터 추가
 function AdminAdd({ setIsAdding, type, queryClient, destination }: IAddData) {
   const [inputValue, setInputValue] = useState("");
 

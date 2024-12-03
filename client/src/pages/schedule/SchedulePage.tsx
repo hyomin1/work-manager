@@ -18,6 +18,7 @@ import { useNavigate } from "react-router-dom";
 import "./Calendar.css";
 import EmployeeEdit from "../employee/EmployeeEdit";
 
+// 일정(캘린더) 화면
 function SchedulePage() {
   const date = new Date();
 

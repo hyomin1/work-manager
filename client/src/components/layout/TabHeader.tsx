@@ -2,6 +2,7 @@ interface TabHeaderProps {
   headers: string[];
 }
 
+// 테이블 헤더 컴포넌트
 function TabHeader({ headers }: TabHeaderProps) {
   return (
     <thead className="w-[100%]">
@@ -9,7 +10,7 @@ function TabHeader({ headers }: TabHeaderProps) {
         {headers.map((header, index) => (
           <th
             key={index}
-            className={'p-1 border border-black text-xs whitespace-nowrap'}
+            className={"whitespace-nowrap border border-black p-1 text-xs"}
           >
             {header}
           </th>

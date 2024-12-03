@@ -52,6 +52,7 @@ const StyledFormSection = styled(Box)(({ theme }) => ({
   marginBottom: theme.spacing(2),
 }));
 
+// 근무 현황 데이터 입력 폼
 function EmployeeForm() {
   const [username, setName] = useState<string | null>(null);
   const [selectedDestinations, setSelectedDestinations] = useState<

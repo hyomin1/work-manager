@@ -11,6 +11,7 @@ interface IEditData {
   item: { [key: string]: string } | null;
 }
 
+// 관리 페이지 데이터 수정
 function AdminEdit({
   setIsEditing,
   type,

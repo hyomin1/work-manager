@@ -1,28 +1,29 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import reportWebVitals from './reportWebVitals';
-import { RouterProvider } from 'react-router-dom';
-import router from './Router';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import reportWebVitals from "./reportWebVitals";
+import { RouterProvider } from "react-router-dom";
+import router from "./Router";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 
+// 프로젝트 시작점
 const theme = createTheme({
   typography: {
-    fontFamily: 'Pretendard',
+    fontFamily: "Pretendard",
     allVariants: {
-      fontFamily: 'Pretendard',
+      fontFamily: "Pretendard",
     },
   },
   components: {
     MuiCssBaseline: {
       styleOverrides: {
-        '*': {
-          fontFamily: 'Pretendard !important',
-          WebkitFontSmoothing: 'antialiased',
-          MozOsxFontSmoothing: 'grayscale',
+        "*": {
+          fontFamily: "Pretendard !important",
+          WebkitFontSmoothing: "antialiased",
+          MozOsxFontSmoothing: "grayscale",
         },
       },
     },
@@ -30,7 +31,7 @@ const theme = createTheme({
 });
 
 const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
+  document.getElementById("root") as HTMLElement,
 );
 const queryClient = new QueryClient();
 root.render(
@@ -41,7 +42,7 @@ root.render(
         <RouterProvider router={router} />
       </ThemeProvider>
     </QueryClientProvider>
-  </LocalizationProvider>
+  </LocalizationProvider>,
 
   // </React.StrictMode>
 );

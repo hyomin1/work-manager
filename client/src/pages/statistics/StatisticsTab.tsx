@@ -6,16 +6,16 @@ import {
   Button,
   Autocomplete,
   TextField,
-} from '@mui/material';
-import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
-import { Search, MapPin, User } from 'lucide-react';
-import dayjs, { Dayjs } from 'dayjs';
-import { useCustomQueries } from '../../hooks/useCustomQuery';
-import { LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import 'dayjs/locale/ko';
-import React from 'react';
-dayjs.locale('ko');
+} from "@mui/material";
+import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker";
+import { Search, MapPin, User } from "lucide-react";
+import dayjs, { Dayjs } from "dayjs";
+import { useCustomQueries } from "../../hooks/useCustomQuery";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import "dayjs/locale/ko";
+import React from "react";
+dayjs.locale("ko");
 
 interface ITabs {
   value: number;
@@ -35,10 +35,11 @@ interface ITabs {
 function a11yProps(index: number) {
   return {
     id: `statistics-tab-${index}`,
-    'aria-controls': `statistics-tabpanel-${index}`,
+    "aria-controls": `statistics-tabpanel-${index}`,
   };
 }
 
+// 통계 페이지 탭(이름, 방문지 검색), 날짜 선택 및 검색
 function StatisticsTab({
   value,
   setValue,
@@ -59,7 +60,7 @@ function StatisticsTab({
 
   const handleChangeName = (
     event: React.SyntheticEvent,
-    name: string | null
+    name: string | null,
   ) => {
     if (name) {
       setUserName(name);
@@ -68,7 +69,7 @@ function StatisticsTab({
 
   const handleChangeDestination = (
     event: React.SyntheticEvent,
-    dest: string | null
+    dest: string | null,
   ) => {
     if (dest) {
       setDestination(dest);
@@ -90,7 +91,7 @@ function StatisticsTab({
 
   const onClickUserStatistics = () => {
     if (!username) {
-      alert('이름을 선택해주세요');
+      alert("이름을 선택해주세요");
       return;
     }
     nameRefetch();
@@ -98,43 +99,43 @@ function StatisticsTab({
 
   const onClickDestinationStatistics = () => {
     if (!destination) {
-      alert('방문지를 선택해주세요');
+      alert("방문지를 선택해주세요");
       return;
     }
     destinationRefetch();
   };
 
   return (
-    <div className="space-y-6  md:w-[85%]">
+    <div className="space-y-6 md:w-[85%]">
       {/* Tabs */}
-      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
           value={value}
           onChange={handleChangeValue}
           variant="fullWidth"
           sx={{
-            '& .MuiTab-root': {
-              fontSize: '0.95rem',
+            "& .MuiTab-root": {
+              fontSize: "0.95rem",
               fontWeight: 600,
-              textTransform: 'none',
+              textTransform: "none",
               minHeight: 48,
             },
-            '& .Mui-selected': {
-              color: '#2563eb',
+            "& .Mui-selected": {
+              color: "#2563eb",
             },
-            '& .MuiTabs-indicator': {
-              backgroundColor: '#2563eb',
+            "& .MuiTabs-indicator": {
+              backgroundColor: "#2563eb",
             },
           }}
         >
           <Tab
-            icon={<User className="w-4 h-4" />}
+            icon={<User className="h-4 w-4" />}
             iconPosition="start"
             label="이름 검색"
             {...a11yProps(0)}
           />
           <Tab
-            icon={<MapPin className="w-4 h-4" />}
+            icon={<MapPin className="h-4 w-4" />}
             iconPosition="start"
             label="방문지 검색"
             {...a11yProps(1)}
@@ -151,10 +152,10 @@ function StatisticsTab({
               onChange={handleChangeStartDate}
               defaultValue={dayjs(startDate)}
               sx={{
-                width: '15%',
+                width: "15%",
 
-                '& .MuiOutlinedInput-root': {
-                  backgroundColor: 'white',
+                "& .MuiOutlinedInput-root": {
+                  backgroundColor: "white",
                 },
               }}
             />
@@ -164,16 +165,16 @@ function StatisticsTab({
               onChange={handleChangeEndDate}
               defaultValue={dayjs(endDate)}
               sx={{
-                width: '15%',
+                width: "15%",
                 marginLeft: 4,
-                '& .MuiOutlinedInput-root': {
-                  backgroundColor: 'white',
+                "& .MuiOutlinedInput-root": {
+                  backgroundColor: "white",
                 },
               }}
             />
           </LocalizationProvider>
 
-          <FormControl sx={{ width: '15%', marginLeft: 4 }}>
+          <FormControl sx={{ width: "15%", marginLeft: 4 }}>
             <Autocomplete
               options={
                 names
@@ -188,20 +189,20 @@ function StatisticsTab({
           <Button
             onClick={onClickUserStatistics}
             variant="contained"
-            startIcon={<Search className="w-4 h-4" />}
+            startIcon={<Search className="h-4 w-4" />}
             sx={{
               marginLeft: 4,
-              backgroundColor: '#2563eb',
-              textTransform: 'none',
+              backgroundColor: "#2563eb",
+              textTransform: "none",
               fontWeight: 600,
-              fontSize: 'large',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              borderRadius: '0.5rem',
-              padding: '0.75rem 1.5rem',
-              '&:hover': {
-                backgroundColor: '#1d4ed8',
+              fontSize: "large",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              borderRadius: "0.5rem",
+              padding: "0.75rem 1.5rem",
+              "&:hover": {
+                backgroundColor: "#1d4ed8",
               },
             }}
           >
@@ -216,10 +217,10 @@ function StatisticsTab({
               onChange={handleChangeStartDate}
               defaultValue={dayjs(startDate)}
               sx={{
-                width: '15%',
+                width: "15%",
 
-                '& .MuiOutlinedInput-root': {
-                  backgroundColor: 'white',
+                "& .MuiOutlinedInput-root": {
+                  backgroundColor: "white",
                 },
               }}
             />
@@ -229,15 +230,15 @@ function StatisticsTab({
               onChange={handleChangeEndDate}
               defaultValue={dayjs(endDate)}
               sx={{
-                width: '15%',
+                width: "15%",
                 marginLeft: 4,
-                '& .MuiOutlinedInput-root': {
-                  backgroundColor: 'white',
+                "& .MuiOutlinedInput-root": {
+                  backgroundColor: "white",
                 },
               }}
             />
           </LocalizationProvider>
-          <FormControl sx={{ width: '30%', marginLeft: 4 }}>
+          <FormControl sx={{ width: "30%", marginLeft: 4 }}>
             <Autocomplete
               options={
                 destinationsData
@@ -254,20 +255,20 @@ function StatisticsTab({
           <Button
             onClick={onClickDestinationStatistics}
             variant="contained"
-            startIcon={<Search className="w-4 h-4" />}
+            startIcon={<Search className="h-4 w-4" />}
             sx={{
               marginLeft: 4,
-              backgroundColor: '#2563eb',
-              textTransform: 'none',
+              backgroundColor: "#2563eb",
+              textTransform: "none",
               fontWeight: 600,
-              fontSize: 'large',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              borderRadius: '0.5rem',
-              padding: '0.75rem 1.5rem',
-              '&:hover': {
-                backgroundColor: '#1d4ed8',
+              fontSize: "large",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              borderRadius: "0.5rem",
+              padding: "0.75rem 1.5rem",
+              "&:hover": {
+                backgroundColor: "#1d4ed8",
               },
             }}
           >

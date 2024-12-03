@@ -24,6 +24,7 @@ import {
   statisticsNameHeader,
 } from "../../constants/headers";
 
+// 통계 페이지
 function StatisticsPage() {
   // 0: 이름 검색, 1: 방문지 검색
   const [value, setValue] = useState(0);

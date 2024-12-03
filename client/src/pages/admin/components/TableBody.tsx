@@ -9,6 +9,7 @@ import AdminEdit from "../AdminEdit";
 import { Autocomplete, TextField } from "@mui/material";
 import { ListPlus } from "lucide-react";
 
+// 관리 페이지 테이블 본문
 interface TabContentProps {
   activeTab: string;
   data: any[];

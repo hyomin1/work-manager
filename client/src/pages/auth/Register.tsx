@@ -10,7 +10,7 @@ interface RegisterFormData {
   password: string;
   passwordConfirm: string;
 }
-
+// 회원가입 화면 및 로직
 function Register() {
   const navigate = useNavigate();
 

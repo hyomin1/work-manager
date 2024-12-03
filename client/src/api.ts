@@ -1,5 +1,6 @@
 import { axiosIP, axiosDomain } from "./axios";
 
+// 데이터 가져오는 함수 모음
 // 현재 URL 정보 get ex) http://localhost:3000/login -> http://localhost:3000
 export const getBaseUrl = () => {
   return window.location.origin;

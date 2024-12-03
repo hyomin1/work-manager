@@ -8,7 +8,7 @@ import useEmployeeStore from "../../../stores/employeeStore";
 interface EmployeeTableBodyProps {
   refetch: () => void;
 }
-
+// 근무 현황 테이블 본문
 function EmployeeTableBody({ refetch }: EmployeeTableBodyProps) {
   const { inform, currentDate } = useEmployeeStore();
   const [editingItemId, setEditingItemId] = useState("");

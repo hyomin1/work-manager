@@ -6,6 +6,7 @@ interface IArrowProps {
   type: string;
 }
 
+// 뒤로가기 버튼
 function ArrowBack({ type }: IArrowProps) {
   const navigate = useNavigate();
 

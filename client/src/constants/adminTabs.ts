@@ -1,3 +1,4 @@
+// 관리 페이지 헤더에 사용하는 상수
 export const TABS = [
   { key: "username", label: "이름", dataKey: "username" },
   { key: "destination", label: "방문지", dataKey: "destination" },

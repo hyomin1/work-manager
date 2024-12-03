@@ -46,6 +46,7 @@ const StyledFormSection = styled(Box)(({ theme }) => ({
   marginBottom: theme.spacing(2),
 }));
 
+// 차량 운행일지 입력 폼
 function DriveInput() {
   const navigate = useNavigate();
   const [driveDay, setDriveDay] = useState<Date>(); // 주행 날짜

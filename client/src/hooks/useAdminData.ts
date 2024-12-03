@@ -9,10 +9,11 @@ import {
 import { QueryClient, useQuery } from "@tanstack/react-query";
 import { removeItem } from "../api/removeItem";
 
+// 관리자 데이터 조회용
 export function useAdminData(
   activeTab: string,
   page: number,
-  queryClient: QueryClient
+  queryClient: QueryClient,
 ) {
   const queryFn = {
     username: getNames,

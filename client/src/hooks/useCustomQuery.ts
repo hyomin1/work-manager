@@ -16,6 +16,7 @@ import {
   IEtcNames,
 } from "../interfaces/interface";
 
+// 전체 데이터 조회용
 export const useCustomQueries = () => {
   const { data: names, isLoading: namesLoading } = useQuery<INames[]>({
     queryKey: ["names"],

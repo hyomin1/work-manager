@@ -7,6 +7,7 @@ import TableBody from "./components/TableBody";
 import { useAdminData } from "../../hooks/useAdminData";
 import ArrowBack from "../../components/common/ArrowBack";
 
+// 관리 페이지 전체 화면
 function AdminPage() {
   const queryClient = useQueryClient();
 

@@ -1,6 +1,7 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { ROUTES } from "./constants/constant";
 
+// 서버 통신 관련 로직
 const axiosIP = axios.create({
   baseURL: process.env.REACT_APP_IP,
   withCredentials: true,

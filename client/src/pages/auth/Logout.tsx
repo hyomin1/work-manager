@@ -3,6 +3,7 @@ import { LogOut } from "lucide-react";
 import { axiosReq } from "../../api";
 import { ROUTES } from "../../constants/constant";
 
+// 로그아웃 로직
 function Logout() {
   const navigate = useNavigate();
   const goLogin = async () => {

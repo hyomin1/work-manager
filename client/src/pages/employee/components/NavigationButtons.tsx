@@ -15,7 +15,7 @@ type Category = "STATISTICS" | "SETTINGS" | "MANAGE";
 interface NavProps {
   refetch: () => void;
 }
-
+// 근무 현황 버튼 그룹들
 function NavigationButtons({ refetch }: NavProps) {
   const navigate = useNavigate();
 

@@ -19,6 +19,7 @@ import EmployeeTableHeader from "./components/TableHeader";
 import DateInput from "./components/DateInput";
 import NavigationButtons from "./components/NavigationButtons";
 
+// 근무 현황 조회 전체 화면
 function EmployeePage() {
   const { setInform } = useEmployeeStore();
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);

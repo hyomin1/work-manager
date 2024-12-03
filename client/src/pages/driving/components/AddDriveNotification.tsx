@@ -20,7 +20,7 @@ interface IAddData {
   queryClient: QueryClient;
   notice: string;
 }
-
+// 차량 공지사항 등록
 function AddDriveNotification({
   setIsAdding,
   id,

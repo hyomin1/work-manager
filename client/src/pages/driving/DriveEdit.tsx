@@ -10,6 +10,7 @@ interface IEditInformProps {
   setEditingItemId: React.Dispatch<React.SetStateAction<string>>;
 }
 
+// 차량 운행일지 수정 폼
 function EditDrivingInform({ item, setEditingItemId }: IEditInformProps) {
   const { names, namesLoading, etcNames, etcNamesLoading } = useCustomQueries();
 

@@ -1,3 +1,5 @@
+// 테이블 헤더에 쓰는 변수들
+
 export const drivingHeaders = [
   "날짜",
   "운전자",

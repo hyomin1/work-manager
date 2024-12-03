@@ -11,7 +11,7 @@ interface IDriveMobileProps {
   indexOfFirstItem: number;
   indexOfLastItem: number;
 }
-
+// 차량 운행일지 모바일 화면
 function DriveMobile({
   drivingInform,
   totalDrivingKM,
@@ -40,9 +40,9 @@ function DriveMobile({
         .map((item, index) => (
           <div
             key={index}
-            className="grid grid-cols-3 gap-2 p-4 mb-1 space-x-0 text-sm bg-white border border-gray-300 rounded-lg shadow-md"
+            className="mb-1 grid grid-cols-3 gap-2 space-x-0 rounded-lg border border-gray-300 bg-white p-4 text-sm shadow-md"
           >
-            <div className="flex flex-col ">
+            <div className="flex flex-col">
               <span className="mb-1 font-bold">날짜</span>
               <span>{calCarDay(item.driveDay)}</span>
             </div>
@@ -52,7 +52,7 @@ function DriveMobile({
               <span>{item.username}</span>
             </div>
             <div className="flex flex-col">
-              <span className="mb-1 font-bold whitespace-nowrap">행선지</span>
+              <span className="mb-1 whitespace-nowrap font-bold">행선지</span>
               <p>{item.drivingDestination}</p>
             </div>
             <div className="flex flex-col">
@@ -87,7 +87,7 @@ function DriveMobile({
             </div>
           </div>
         ))}
-      <div className="grid w-full grid-cols-3 gap-2 p-4 mb-1 space-x-0 text-sm print:text-[9px] bg-white border border-gray-300 rounded-lg shadow-md">
+      <div className="mb-1 grid w-full grid-cols-3 gap-2 space-x-0 rounded-lg border border-gray-300 bg-white p-4 text-sm shadow-md print:text-[9px]">
         <div className="flex flex-col">
           <span className="font-bold">주행거리</span>
           <span>{totalDrivingKM.toLocaleString()} km</span>

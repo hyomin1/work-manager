@@ -16,6 +16,7 @@ const SchedulePage = lazy(() => import("./pages/schedule/SchedulePage"));
 const AdminPage = lazy(() => import("./pages/admin/AdminPage"));
 const UserManagePage = lazy(() => import("./pages/userManage/UserManagePage"));
 
+// 라우팅 관리, 라우팅 path명, path에 해당할때 보여지는 화면 컴포넌트
 const router = createBrowserRouter([
   {
     path: ROUTES.AUTH.LOGIN,

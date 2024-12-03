@@ -11,6 +11,7 @@ interface SelectionCardProps {
   onClick: () => void;
 }
 
+// 로그인 후 근무 현황, 차량 운행일지 선택 화면
 const SelectPages = () => {
   const navigate = useNavigate();
 
