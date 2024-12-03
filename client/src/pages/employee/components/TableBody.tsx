@@ -29,7 +29,13 @@ function EmployeeTableBody({ refetch }: EmployeeTableBodyProps) {
   const sortEmployeeInform = () => {
     return inform.sort((a, b) => {
       if (a.destination === b.destination) {
-        return a.username.localeCompare(b.username);
+        if (a.business === b.business) {
+          if (a.work === b.work) {
+            return a.username.localeCompare(b.username);
+          }
+          return a.work.localeCompare(b.work);
+        }
+        return a.business.localeCompare(b.business);
       }
       return a.destination.localeCompare(b.destination);
     });
