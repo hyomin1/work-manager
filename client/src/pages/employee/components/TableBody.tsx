@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button, TableBody, TableCell, TableRow, Tooltip } from "@mui/material";
 import EmployeeEdit from "../EmployeeEdit";
-import { Edit, Trash2 } from "lucide-react";
+import { Edit, FileText, Trash2 } from "lucide-react";
 import { axiosReq } from "../../../api";
 import useEmployeeStore from "../../../stores/employeeStore";
 
@@ -39,82 +39,169 @@ function EmployeeTableBody({ refetch }: EmployeeTableBodyProps) {
 
   const sortEmployeeInform = () => {
     return [...inform].sort((a, b) => {
-      // 먼저 방문지로 정렬
       const destinationCompare = a.destination.localeCompare(b.destination);
       if (destinationCompare !== 0) return destinationCompare;
 
-      // 같은 방문지 내에서 사업명으로 정렬
       const businessCompare = a.business.localeCompare(b.business);
       if (businessCompare !== 0) return businessCompare;
 
-      // 같은 방문지, 같은 사업명 내에서 업무로 정렬
       const workCompare = a.work.localeCompare(b.work);
       if (workCompare !== 0) return workCompare;
 
-      // 마지막으로 사용자 이름으로 정렬
+      const carCompare = a.car.localeCompare(b.car);
+      if (carCompare !== 0) return carCompare;
+
       return a.username.localeCompare(b.username);
     });
   };
 
   const getRowSpans = (items: IEmployee[]) => {
     const spans = new Map<string, number>();
-    let currentDestination: string | null = null;
-    let currentBusiness: string | null = null;
-    // let currentWork: string | null = null;
+    let prevDestination: string | null = null;
+    let prevBusiness: string | null = null;
+    let prevWork: string | null = null;
+    let prevCar: string | null = null;
 
     let destSpan = 1;
     let businessSpan = 1;
-    //let workSpan = 1;
+    let workSpan = 1;
+    let carSpan = 1;
 
-    items.forEach((item: IEmployee, index: number) => {
-      if (item.destination === currentDestination) {
+    for (let i = 0; i < items.length; i++) {
+      const item = items[i];
+
+      if (i > 0 && item.destination === prevDestination) {
         destSpan++;
-        spans.set(`${index}-destination`, 0);
+        spans.set(`${i}-destination`, 0);
       } else {
-        if (currentDestination !== null) {
-          spans.set(`${index - destSpan}-destination`, destSpan);
+        if (i > 0) {
+          spans.set(`${i - destSpan}-destination`, destSpan);
         }
-        currentDestination = item.destination;
         destSpan = 1;
       }
 
       if (
-        item.business === currentBusiness &&
-        item.destination === currentDestination
+        i > 0 &&
+        item.business === prevBusiness &&
+        item.destination === prevDestination
       ) {
         businessSpan++;
-        spans.set(`${index}-business`, 0);
+        spans.set(`${i}-business`, 0);
       } else {
-        if (currentBusiness !== null) {
-          spans.set(`${index - businessSpan}-business`, businessSpan);
+        if (i > 0) {
+          spans.set(`${i - businessSpan}-business`, businessSpan);
         }
-        currentBusiness = item.business;
         businessSpan = 1;
       }
 
-      // if (
-      //   item.destination === currentDestination &&
-      //   item.business === currentBusiness &&
-      //   item.work === currentWork
-      // ) {
-      //   workSpan++;
-      //   spans.set(`${index}-work`, 0);
-      // } else {
-      //   if (currentWork !== null) {
-      //     spans.set(`${index - workSpan}-work`, workSpan);
-      //   }
-      //   currentWork = item.work;
-      //   workSpan = 1;
-      // }
-
-      if (index === items.length - 1) {
-        spans.set(`${index - destSpan + 1}-destination`, destSpan);
-        spans.set(`${index - businessSpan + 1}-business`, businessSpan);
-        // spans.set(`${index - workSpan + 1}-work`, workSpan);
+      if (
+        i > 0 &&
+        item.work === prevWork &&
+        item.business === prevBusiness &&
+        item.destination === prevDestination
+      ) {
+        workSpan++;
+        spans.set(`${i}-work`, 0);
+      } else {
+        if (i > 0) {
+          spans.set(`${i - workSpan}-work`, workSpan);
+        }
+        workSpan = 1;
       }
-    });
+
+      if (
+        i > 0 &&
+        item.work === prevWork &&
+        item.business === prevBusiness &&
+        item.destination === prevDestination &&
+        (item.car === prevCar || item.car === "" || prevCar === "")
+      ) {
+        carSpan++;
+        spans.set(`${i}-car`, 0);
+        if (item.car !== "" && prevCar === "") {
+          const prevCarIndex = i - carSpan + 1;
+          sortedData[prevCarIndex].car = item.car;
+        }
+      } else {
+        if (i > 0) {
+          spans.set(`${i - carSpan}-car`, carSpan);
+        }
+        carSpan = 1;
+      }
+
+      if (i === items.length - 1) {
+        if (item.destination === prevDestination) {
+          spans.set(`${i - destSpan + 1}-destination`, destSpan);
+        } else {
+          spans.set(`${i}-destination`, 1);
+        }
+
+        if (
+          item.business === prevBusiness &&
+          item.destination === prevDestination
+        ) {
+          spans.set(`${i - businessSpan + 1}-business`, businessSpan);
+        } else {
+          spans.set(`${i}-business`, 1);
+        }
+
+        if (
+          item.work === prevWork &&
+          item.business === prevBusiness &&
+          item.destination === prevDestination
+        ) {
+          spans.set(`${i - workSpan + 1}-work`, workSpan);
+        } else {
+          spans.set(`${i}-work`, 1);
+        }
+
+        if (
+          (item.car === prevCar || item.car === "" || prevCar === "") &&
+          item.work === prevWork &&
+          item.business === prevBusiness &&
+          item.destination === prevDestination
+        ) {
+          spans.set(`${i - carSpan + 1}-car`, carSpan);
+        } else {
+          spans.set(`${i}-car`, 1);
+        }
+      }
+
+      prevDestination = item.destination;
+      prevBusiness = item.business;
+      prevWork = item.work;
+      prevCar = item.car;
+    }
 
     return spans;
+  };
+
+  const findNonEmptyCarInGroup = (data: IEmployee[], currentIndex: number) => {
+    const currentItem = data[currentIndex];
+
+    for (let i = currentIndex; i < data.length; i++) {
+      if (
+        data[i].destination === currentItem.destination &&
+        data[i].business === currentItem.business &&
+        data[i].work === currentItem.work &&
+        data[i].car !== ""
+      ) {
+        return data[i].car;
+      }
+    }
+
+    for (let i = currentIndex; i >= 0; i--) {
+      if (
+        data[i].destination === currentItem.destination &&
+        data[i].business === currentItem.business &&
+        data[i].work === currentItem.work &&
+        data[i].car !== ""
+      ) {
+        return data[i].car;
+      }
+    }
+
+    return "";
   };
 
   const destinations = Array.from(
@@ -162,6 +249,16 @@ function EmployeeTableBody({ refetch }: EmployeeTableBodyProps) {
   const sortedData = sortEmployeeInform();
   const rowSpans = getRowSpans(sortedData);
 
+  const cellStyle = {
+    fontSize: "large",
+    borderRight: "1px solid #e5e7eb",
+  };
+
+  const lastCellStyle = {
+    fontSize: "large",
+    borderRight: "none",
+  };
+
   return (
     <TableBody>
       {sortedData.map((item, index) => (
@@ -170,14 +267,14 @@ function EmployeeTableBody({ refetch }: EmployeeTableBodyProps) {
           className="w-[100%] sm:text-sm"
           sx={styleMap.get(`${item.destination}-${item.business}`)}
         >
-          <TableCell sx={{ fontSize: "large", whiteSpace: "nowrap" }}>
+          <TableCell sx={{ ...cellStyle, whiteSpace: "nowrap" }}>
             {item.username}
           </TableCell>
 
           {rowSpans.get(`${index}-destination`) !== 0 && (
             <TableCell
               rowSpan={rowSpans.get(`${index}-destination`)}
-              sx={{ fontSize: "large" }}
+              sx={{ ...cellStyle, whiteSpace: "nowrap" }}
             >
               {item.destination}
             </TableCell>
@@ -186,22 +283,32 @@ function EmployeeTableBody({ refetch }: EmployeeTableBodyProps) {
           {rowSpans.get(`${index}-business`) !== 0 && (
             <TableCell
               rowSpan={rowSpans.get(`${index}-business`)}
-              sx={{ fontSize: "large" }}
+              sx={cellStyle}
             >
               {item.business}
             </TableCell>
           )}
-          <TableCell sx={{ fontSize: "large" }}>{item.work}</TableCell>
-          {/* {rowSpans.get(`${index}-work`) !== 0 && (
+
+          {rowSpans.get(`${index}-work`) !== 0 && (
             <TableCell
               rowSpan={rowSpans.get(`${index}-work`)}
-              sx={{ fontSize: "large" }}
+              sx={{ ...cellStyle, whiteSpace: "nowrap" }}
             >
               {item.work}
             </TableCell>
-          )} */}
-          <TableCell sx={{ fontSize: "large" }}>{item.car}</TableCell>
-          <TableCell sx={{ fontSize: "large" }}>
+          )}
+
+          {rowSpans.get(`${index}-car`) !== 0 && (
+            <TableCell rowSpan={rowSpans.get(`${index}-car`)} sx={cellStyle}>
+              {item.car !== ""
+                ? item.car
+                : findNonEmptyCarInGroup(sortedData, index)}
+            </TableCell>
+          )}
+
+          {/* <TableCell sx={cellStyle}>{item.car}</TableCell> */}
+
+          <TableCell sx={cellStyle}>
             {item.remarks && (
               <Tooltip
                 title={item.remarks}
@@ -209,10 +316,23 @@ function EmployeeTableBody({ refetch }: EmployeeTableBodyProps) {
                 placement="left"
                 componentsProps={{
                   tooltip: {
+                    onClick: (e) => e.stopPropagation(),
                     sx: {
+                      bgcolor: "#374151",
+                      color: "#ffffff",
+                      boxShadow: "0 2px 8px rgba(0, 0, 0, 0.12)",
+                      borderRadius: "6px",
                       maxWidth: "500px",
-                      fontSize: "16px",
-                      padding: "8px 16px",
+                      fontSize: "14px",
+                      lineHeight: "1.5",
+                      padding: "12px 16px",
+                      "& .MuiTooltip-arrow": {
+                        color: "#374151",
+                      },
+                      "&:focus": {
+                        outline: "2px solid #2563eb",
+                        outlineOffset: "2px",
+                      },
                     },
                   },
                 }}
@@ -220,25 +340,33 @@ function EmployeeTableBody({ refetch }: EmployeeTableBodyProps) {
                 <Button
                   sx={{
                     minWidth: "auto",
-                    justifyContent: "flex-start",
-                    padding: "0px",
+                    padding: "4px",
+                    borderRadius: "6px",
+                    transition: "all 0.2s ease",
+                    "&:hover": {
+                      backgroundColor: "rgba(37, 99, 235, 0.04)",
+                      transform: "scale(1.05)",
+                    },
+                    "&:active": {
+                      backgroundColor: "rgba(37, 99, 235, 0.08)",
+                    },
                   }}
                 >
-                  확인
+                  <FileText size={22} color="#2563eb" />
                 </Button>
               </Tooltip>
             )}
           </TableCell>
 
-          <TableCell>
+          <TableCell sx={lastCellStyle}>
             {item.isOwner && (
               <div className="flex items-center justify-evenly gap-2">
                 <button
                   className="flex items-center hover:opacity-60"
                   onClick={() => setEditingItemId(item._id)}
                 >
-                  <Edit strokeWidth={2.2} />
-                  <span className="ml-1 whitespace-nowrap font-semibold">
+                  <Edit className="md:h-4 md:w-4" strokeWidth={2.2} />
+                  <span className="ml-1 whitespace-nowrap font-semibold md:text-sm">
                     수정
                   </span>
                 </button>
@@ -246,8 +374,8 @@ function EmployeeTableBody({ refetch }: EmployeeTableBodyProps) {
                   className="flex items-center hover:opacity-60"
                   onClick={() => deleteInform(item._id)}
                 >
-                  <Trash2 strokeWidth={2.2} />
-                  <span className="ml-1 whitespace-nowrap font-semibold">
+                  <Trash2 className="md:h-4 md:w-4" strokeWidth={2.2} />
+                  <span className="ml-1 whitespace-nowrap font-semibold md:text-sm">
                     삭제
                   </span>
                 </button>

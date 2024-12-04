@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { ROUTES } from "../../../constants/constant";
 import { SlRefresh } from "react-icons/sl";
 import { checkAdminSession } from "../../../api";
+import { useState } from "react";
 type Category = "STATISTICS" | "SETTINGS" | "MANAGE";
 interface NavProps {
   refetch: () => void;
@@ -19,14 +20,29 @@ interface NavProps {
 function NavigationButtons({ refetch }: NavProps) {
   const navigate = useNavigate();
 
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
   const handleAdminAction = async (category: Category) => {
     const status = await checkAdminSession();
     if (status === 200) {
       navigate(`${ROUTES.ADMIN[category]}`);
     }
   };
+  const handleRefresh = () => {
+    setIsRefreshing(true);
+    setTimeout(() => {
+      refetch();
+      setIsRefreshing(false);
+    }, 110);
+  };
   return (
-    <div className="flex w-[100%] items-center justify-between rounded-t-2xl border border-t-gray-300 bg-[#f8fafd]">
+    <div
+      className={`flex w-[100%] items-center justify-between rounded-t-2xl border border-t-gray-300 bg-[#f8fafd] ${
+        isRefreshing
+          ? "opacity-0 transition-opacity duration-500"
+          : "opacity-100"
+      }`}
+    >
       <div className="w-full p-4 sm:p-3">
         <div className="flex items-center justify-between sm:flex-col">
           <div className="flex sm:mb-2 sm:w-full sm:gap-2">
@@ -76,7 +92,8 @@ function NavigationButtons({ refetch }: NavProps) {
               <span className="ml-1 sm:text-xs">통계</span>
             </button>
             <div className="flex items-center sm:hidden sm:w-full sm:flex-1 sm:justify-center">
-              <button onClick={() => refetch()}>
+              <div className="mx-4 border border-gray-300 md:h-10" />
+              <button onClick={handleRefresh}>
                 <SlRefresh className="hover:opacity-60 sm:h-6 sm:w-6 md:h-7 md:w-7" />
               </button>
             </div>
