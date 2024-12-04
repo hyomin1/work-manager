@@ -6,6 +6,7 @@ import TableHeader from "./components/TableHeader";
 import TableBody from "./components/TableBody";
 import { useAdminData } from "../../hooks/useAdminData";
 import ArrowBack from "../../components/common/ArrowBack";
+import Blank from "../../components/common/Blank";
 
 // 관리 페이지 전체 화면
 function AdminPage() {
@@ -49,12 +50,10 @@ function AdminPage() {
         <div className="mb-20 mt-4 flex w-full items-center sm:mb-10 md:justify-center">
           <div className="flex w-full items-center justify-between">
             <ArrowBack type="not home" />
-            <div className="flex items-center justify-center">
-              <span className="whitespace-nowrap font-bold sm:mx-2 md:mx-8 md:text-3xl">
-                {formDate}
-              </span>
-            </div>
-            <div className="w-[11%]" />
+            <span className="whitespace-nowrap font-bold sm:mx-1 sm:block sm:w-[33%] sm:text-lg md:mx-8 md:text-3xl">
+              {formDate}
+            </span>
+            <Blank />
           </div>
         </div>
 

@@ -23,7 +23,7 @@ function DriveMobile({
   indexOfLastItem,
 }: IDriveMobileProps) {
   return (
-    <div className="sm:w-full">
+    <div className="h-full sm:w-full">
       {drivingInform
         ?.sort((a, b) => {
           if (

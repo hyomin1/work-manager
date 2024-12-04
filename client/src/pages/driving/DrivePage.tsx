@@ -362,7 +362,7 @@ function DrivePage() {
                 <InputLabel id="car">차량 선택</InputLabel>
 
                 <Select
-                  className="h-10 w-[80%] rounded-lg border border-gray-300 p-2 text-sm font-bold hover:opacity-60 sm:mb-3 md:mr-16"
+                  className="h-10 w-[80%] rounded-lg border border-gray-300 p-2 text-sm font-bold hover:opacity-60 sm:mb-3 sm:w-full md:mr-16"
                   onChange={onChangeCarNum}
                   id="car"
                   label="차량 선택"
@@ -381,11 +381,11 @@ function DrivePage() {
               </FormControl>
             </div>
 
-            <div className="flex flex-1 items-center justify-between p-4 sm:w-full sm:flex-col sm:gap-2 md:w-[50%]">
-              <div className="flex w-full items-center justify-between sm:mb-2 sm:w-full sm:gap-2">
-                <div className="flex">
+            <div className="flex flex-1 items-center justify-between sm:w-full sm:flex-col sm:gap-2 sm:p-2 md:w-[50%] md:p-4">
+              <div className="flex w-full items-center justify-between sm:mb-2 sm:w-full sm:flex-col sm:gap-2">
+                <div className="flex sm:w-full">
                   <button
-                    className="button-effect flex items-center justify-center whitespace-nowrap rounded-lg bg-[#10B981] px-4 py-2 text-white sm:flex-1 sm:text-lg md:mr-4"
+                    className="button-effect flex items-center justify-center whitespace-nowrap rounded-lg bg-[#10B981] px-4 py-2 text-white sm:mr-1 sm:flex-1 sm:text-lg md:mr-4"
                     onClick={checkUserInput}
                   >
                     <Pencil className="sm:h-4 sm:w-4" />
@@ -393,17 +393,17 @@ function DrivePage() {
                   </button>
                   <button
                     onClick={checkUser}
-                    className="button-effect flex items-center justify-center whitespace-nowrap rounded-lg bg-[#0EA5E9] px-4 py-2 text-white hover:opacity-60 sm:flex-1 md:mr-4"
+                    className="button-effect ] flex items-center justify-center whitespace-nowrap rounded-lg bg-[#0EA5E9] px-4 py-2 text-white hover:opacity-60 sm:ml-1 sm:flex-1 md:mr-4"
                   >
                     <Users className="sm:h-4 sm:w-4" />
                     <span className="ml-1 sm:text-xs">근무</span>
                   </button>
                 </div>
-                <div className="flex">
+                <div className="flex sm:w-full">
                   {carId.length > 0 && (
                     <button
                       onClick={downloadExcel}
-                      className="button-effect flex items-center justify-center whitespace-nowrap rounded-lg bg-[#10B981] px-4 py-2 text-white hover:opacity-60 sm:flex-1 md:mr-4"
+                      className="button-effect flex items-center justify-center whitespace-nowrap rounded-lg bg-[#10B981] px-4 py-2 text-white hover:opacity-60 sm:mr-1 sm:flex-1 md:mr-4"
                     >
                       <Sheet className="sm:h-4 sm:w-4" />
                       <span className="ml-1 sm:text-xs">엑셀</span>
@@ -412,14 +412,14 @@ function DrivePage() {
 
                   <button
                     onClick={checkCarService}
-                    className="button-effect flex items-center justify-center whitespace-nowrap rounded-lg bg-[#0EA5E9] px-4 py-2 text-white hover:opacity-60 sm:flex-1 md:mr-4"
+                    className="button-effect flex items-center justify-center whitespace-nowrap rounded-lg bg-[#0EA5E9] px-4 py-2 text-white hover:opacity-60 sm:mx-1 sm:flex-1 md:mr-4"
                   >
                     <Wrench className="sm:h-4 sm:w-4" />
                     <span className="ml-1 sm:text-xs">점검</span>
                   </button>
 
                   <button
-                    className="button-effect flex items-center justify-center whitespace-nowrap rounded-lg bg-[#10B981] px-4 py-2 text-white hover:opacity-60 sm:flex-1"
+                    className="button-effect flex items-center justify-center whitespace-nowrap rounded-lg bg-[#10B981] px-4 py-2 text-white hover:opacity-60 sm:ml-1 sm:flex-1"
                     onClick={onClickAdmin}
                   >
                     <Settings className="sm:h-4 sm:w-4" />
@@ -436,7 +436,7 @@ function DrivePage() {
               </div>
             </div>
           </div>
-          <div className="print-hidden">
+          <div className="print-hidden border">
             {carId.length > 0 && (
               <Alert
                 onClick={checkNotification}
@@ -470,16 +470,18 @@ function DrivePage() {
           </div>
 
           {isMobile ? (
-            <DriveMobile
-              drivingInform={drivingInform || []}
-              grandTotal={grandTotal}
-              totalDrivingKM={totalDrivingKM}
-              totalEtcCost={totalEtcCost}
-              totalFuelCost={totalFuelCost}
-              totalToll={totalToll}
-              indexOfFirstItem={indexOfFirstItem}
-              indexOfLastItem={indexOfLastItem}
-            />
+            <div className="overflow-y-auto sm:h-[60%]">
+              <DriveMobile
+                drivingInform={drivingInform || []}
+                grandTotal={grandTotal}
+                totalDrivingKM={totalDrivingKM}
+                totalEtcCost={totalEtcCost}
+                totalFuelCost={totalFuelCost}
+                totalToll={totalToll}
+                indexOfFirstItem={indexOfFirstItem}
+                indexOfLastItem={indexOfLastItem}
+              />
+            </div>
           ) : (
             <div className="h-[75%] overflow-y-auto">
               <DrivePC
@@ -497,11 +499,13 @@ function DrivePage() {
           )}
         </div>
       </div>
-      {/* <Page
-        totalPage={totalPages}
-        page={currentPage}
-        onPageChange={handleClick}
-      /> */}
+      {isMobile && (
+        <Page
+          totalPage={totalPages}
+          page={currentPage}
+          onPageChange={handleClick}
+        />
+      )}
     </div>
   );
 }

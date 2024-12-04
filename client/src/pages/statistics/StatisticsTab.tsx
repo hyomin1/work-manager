@@ -129,12 +129,19 @@ function StatisticsTab({
           }}
         >
           <Tab
+            sx={{
+              whiteSpace: "nowrap",
+            }}
             icon={<User className="h-4 w-4" />}
             iconPosition="start"
             label="이름 검색"
             {...a11yProps(0)}
           />
           <Tab
+            sx={{
+              whiteSpace: "nowrap",
+            }}
+            className="border border-black"
             icon={<MapPin className="h-4 w-4" />}
             iconPosition="start"
             label="방문지 검색"
@@ -145,36 +152,24 @@ function StatisticsTab({
 
       {/* Search Forms */}
       {value === 0 ? (
-        <div className="flex">
+        <div className="flex sm:w-full sm:flex-col">
           <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ko">
             <MobileDatePicker
               label="시작일"
               onChange={handleChangeStartDate}
               defaultValue={dayjs(startDate)}
-              sx={{
-                width: "15%",
-
-                "& .MuiOutlinedInput-root": {
-                  backgroundColor: "white",
-                },
-              }}
+              className="bg-white sm:block sm:w-full md:block md:w-[15%]"
             />
 
             <MobileDatePicker
+              className="bg-white sm:w-full md:block md:w-[15%]"
               label="종료일"
               onChange={handleChangeEndDate}
               defaultValue={dayjs(endDate)}
-              sx={{
-                width: "15%",
-                marginLeft: 4,
-                "& .MuiOutlinedInput-root": {
-                  backgroundColor: "white",
-                },
-              }}
             />
           </LocalizationProvider>
 
-          <FormControl sx={{ width: "15%", marginLeft: 4 }}>
+          <FormControl className="bg-white sm:w-full md:block md:w-[15%]">
             <Autocomplete
               options={
                 names
@@ -189,6 +184,7 @@ function StatisticsTab({
           <Button
             onClick={onClickUserStatistics}
             variant="contained"
+            className="whitespace-nowrap"
             startIcon={<Search className="h-4 w-4" />}
             sx={{
               marginLeft: 4,
@@ -210,35 +206,23 @@ function StatisticsTab({
           </Button>
         </div>
       ) : (
-        <div className="flex">
+        <div className="flex sm:flex-col">
           <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ko">
             <MobileDatePicker
               label="시작일"
               onChange={handleChangeStartDate}
               defaultValue={dayjs(startDate)}
-              sx={{
-                width: "15%",
-
-                "& .MuiOutlinedInput-root": {
-                  backgroundColor: "white",
-                },
-              }}
+              className="bg-white sm:block sm:w-full md:block md:w-[15%]"
             />
 
             <MobileDatePicker
               label="종료일"
               onChange={handleChangeEndDate}
               defaultValue={dayjs(endDate)}
-              sx={{
-                width: "15%",
-                marginLeft: 4,
-                "& .MuiOutlinedInput-root": {
-                  backgroundColor: "white",
-                },
-              }}
+              className="bg-white sm:block sm:w-full md:block md:w-[15%]"
             />
           </LocalizationProvider>
-          <FormControl sx={{ width: "30%", marginLeft: 4 }}>
+          <FormControl className="bg-white sm:block sm:w-full md:block md:w-[15%]">
             <Autocomplete
               options={
                 destinationsData
@@ -252,28 +236,29 @@ function StatisticsTab({
               value={destination}
             />
           </FormControl>
-          <Button
-            onClick={onClickDestinationStatistics}
-            variant="contained"
-            startIcon={<Search className="h-4 w-4" />}
-            sx={{
-              marginLeft: 4,
-              backgroundColor: "#2563eb",
-              textTransform: "none",
-              fontWeight: 600,
-              fontSize: "large",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              borderRadius: "0.5rem",
-              padding: "0.75rem 1.5rem",
-              "&:hover": {
-                backgroundColor: "#1d4ed8",
-              },
-            }}
-          >
-            검색
-          </Button>
+          <div>
+            <Button
+              onClick={onClickDestinationStatistics}
+              variant="contained"
+              startIcon={<Search className="h-4 w-4" />}
+              sx={{
+                marginLeft: 4,
+                backgroundColor: "#2563eb",
+                textTransform: "none",
+                fontWeight: 600,
+                fontSize: "large",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                borderRadius: "0.5rem",
+                "&:hover": {
+                  backgroundColor: "#1d4ed8",
+                },
+              }}
+            >
+              검색
+            </Button>
+          </div>
         </div>
       )}
     </div>

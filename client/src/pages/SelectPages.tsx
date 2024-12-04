@@ -26,27 +26,23 @@ const SelectPages = () => {
 
   return (
     <div className="flex min-h-screen bg-gradient-to-br from-indigo-50 to-slate-100">
-      {/* 배경 장식 요소 */}
       <div className="absolute left-0 top-0 h-64 w-full bg-gradient-to-b from-blue-100/50 to-transparent" />
       <div className="absolute left-10 top-10 h-32 w-32 rounded-full bg-blue-200 opacity-20 blur-3xl" />
       <div className="absolute right-20 top-20 h-40 w-40 rounded-full bg-green-200 opacity-20 blur-3xl" />
 
       <div className="relative mx-auto flex w-full max-w-6xl flex-col gap-8 px-6 py-8">
-        {/* 상단 장식 패턴 */}
         <div className="mb-8 grid grid-cols-3 gap-4">
           <div className="h-2 rounded-full bg-blue-200/50" />
           <div className="h-2 rounded-full bg-green-200/50" />
           <div className="h-2 rounded-full bg-blue-200/50" />
         </div>
 
-        {/* 웰컴 메시지 또는 장식적 타이틀 */}
         <div className="mb-8 flex items-center justify-center">
           <div className="h-[1px] w-20 bg-gradient-to-r from-transparent to-blue-200" />
           <div className="px-6 text-3xl font-light text-gray-400">메뉴</div>
           <div className="h-[1px] w-20 bg-gradient-to-l from-transparent to-blue-200" />
         </div>
 
-        {/* 메인 메뉴 카드 */}
         <div className="grid w-full gap-6 md:grid-cols-2">
           <SelectionCard
             title="근무 현황"

@@ -8,7 +8,18 @@ import useEmployeeStore from "../../../stores/employeeStore";
 interface EmployeeTableBodyProps {
   refetch: () => void;
 }
-// 근무 현황 테이블 본문
+
+interface IEmployee {
+  _id: string;
+  username: string;
+  destination: string;
+  business: string;
+  work: string;
+  car: string;
+  remarks?: string;
+  isOwner: boolean;
+}
+
 function EmployeeTableBody({ refetch }: EmployeeTableBodyProps) {
   const { inform, currentDate } = useEmployeeStore();
   const [editingItemId, setEditingItemId] = useState("");
@@ -27,26 +38,90 @@ function EmployeeTableBody({ refetch }: EmployeeTableBodyProps) {
   };
 
   const sortEmployeeInform = () => {
-    return inform.sort((a, b) => {
-      if (a.destination === b.destination) {
-        if (a.business === b.business) {
-          if (a.work === b.work) {
-            return a.username.localeCompare(b.username);
-          }
-          return a.work.localeCompare(b.work);
-        }
-        return a.business.localeCompare(b.business);
-      }
-      return a.destination.localeCompare(b.destination);
+    return [...inform].sort((a, b) => {
+      // 먼저 방문지로 정렬
+      const destinationCompare = a.destination.localeCompare(b.destination);
+      if (destinationCompare !== 0) return destinationCompare;
+
+      // 같은 방문지 내에서 사업명으로 정렬
+      const businessCompare = a.business.localeCompare(b.business);
+      if (businessCompare !== 0) return businessCompare;
+
+      // 같은 방문지, 같은 사업명 내에서 업무로 정렬
+      const workCompare = a.work.localeCompare(b.work);
+      if (workCompare !== 0) return workCompare;
+
+      // 마지막으로 사용자 이름으로 정렬
+      return a.username.localeCompare(b.username);
     });
+  };
+
+  const getRowSpans = (items: IEmployee[]) => {
+    const spans = new Map<string, number>();
+    let currentDestination: string | null = null;
+    let currentBusiness: string | null = null;
+    // let currentWork: string | null = null;
+
+    let destSpan = 1;
+    let businessSpan = 1;
+    //let workSpan = 1;
+
+    items.forEach((item: IEmployee, index: number) => {
+      if (item.destination === currentDestination) {
+        destSpan++;
+        spans.set(`${index}-destination`, 0);
+      } else {
+        if (currentDestination !== null) {
+          spans.set(`${index - destSpan}-destination`, destSpan);
+        }
+        currentDestination = item.destination;
+        destSpan = 1;
+      }
+
+      if (
+        item.business === currentBusiness &&
+        item.destination === currentDestination
+      ) {
+        businessSpan++;
+        spans.set(`${index}-business`, 0);
+      } else {
+        if (currentBusiness !== null) {
+          spans.set(`${index - businessSpan}-business`, businessSpan);
+        }
+        currentBusiness = item.business;
+        businessSpan = 1;
+      }
+
+      // if (
+      //   item.destination === currentDestination &&
+      //   item.business === currentBusiness &&
+      //   item.work === currentWork
+      // ) {
+      //   workSpan++;
+      //   spans.set(`${index}-work`, 0);
+      // } else {
+      //   if (currentWork !== null) {
+      //     spans.set(`${index - workSpan}-work`, workSpan);
+      //   }
+      //   currentWork = item.work;
+      //   workSpan = 1;
+      // }
+
+      if (index === items.length - 1) {
+        spans.set(`${index - destSpan + 1}-destination`, destSpan);
+        spans.set(`${index - businessSpan + 1}-business`, businessSpan);
+        // spans.set(`${index - workSpan + 1}-work`, workSpan);
+      }
+    });
+
+    return spans;
   };
 
   const destinations = Array.from(
     new Set(inform.map((item) => item.destination)),
   ).sort((a, b) => a.localeCompare(b));
 
-  const styleMap = new Map();
-
+  const styleMap = new Map<string, { backgroundColor: string }>();
   const bgColors = ["#F8F9FC", "#EEF6FF", "#F2EEFF", "#E6FFEF", "#FFF4E8"];
 
   destinations.forEach((dest, index) => {
@@ -76,7 +151,7 @@ function EmployeeTableBody({ refetch }: EmployeeTableBodyProps) {
     return (
       <TableBody>
         <TableRow>
-          <TableCell colSpan={6} className="text-center text-gray-400">
+          <TableCell colSpan={7} className="text-center text-gray-400">
             등록된 정보가 없습니다.
           </TableCell>
         </TableRow>
@@ -84,9 +159,12 @@ function EmployeeTableBody({ refetch }: EmployeeTableBodyProps) {
     );
   }
 
+  const sortedData = sortEmployeeInform();
+  const rowSpans = getRowSpans(sortedData);
+
   return (
     <TableBody>
-      {sortEmployeeInform().map((item) => (
+      {sortedData.map((item, index) => (
         <TableRow
           key={item._id}
           className="w-[100%] sm:text-sm"
@@ -95,9 +173,33 @@ function EmployeeTableBody({ refetch }: EmployeeTableBodyProps) {
           <TableCell sx={{ fontSize: "large", whiteSpace: "nowrap" }}>
             {item.username}
           </TableCell>
-          <TableCell sx={{ fontSize: "large" }}>{item.destination}</TableCell>
-          <TableCell sx={{ fontSize: "large" }}>{item.business}</TableCell>
+
+          {rowSpans.get(`${index}-destination`) !== 0 && (
+            <TableCell
+              rowSpan={rowSpans.get(`${index}-destination`)}
+              sx={{ fontSize: "large" }}
+            >
+              {item.destination}
+            </TableCell>
+          )}
+
+          {rowSpans.get(`${index}-business`) !== 0 && (
+            <TableCell
+              rowSpan={rowSpans.get(`${index}-business`)}
+              sx={{ fontSize: "large" }}
+            >
+              {item.business}
+            </TableCell>
+          )}
           <TableCell sx={{ fontSize: "large" }}>{item.work}</TableCell>
+          {/* {rowSpans.get(`${index}-work`) !== 0 && (
+            <TableCell
+              rowSpan={rowSpans.get(`${index}-work`)}
+              sx={{ fontSize: "large" }}
+            >
+              {item.work}
+            </TableCell>
+          )} */}
           <TableCell sx={{ fontSize: "large" }}>{item.car}</TableCell>
           <TableCell sx={{ fontSize: "large" }}>
             {item.remarks && (
@@ -136,14 +238,18 @@ function EmployeeTableBody({ refetch }: EmployeeTableBodyProps) {
                   onClick={() => setEditingItemId(item._id)}
                 >
                   <Edit strokeWidth={2.2} />
-                  <span className="ml-1 font-semibold">수정</span>
+                  <span className="ml-1 whitespace-nowrap font-semibold">
+                    수정
+                  </span>
                 </button>
                 <button
                   className="flex items-center hover:opacity-60"
                   onClick={() => deleteInform(item._id)}
                 >
                   <Trash2 strokeWidth={2.2} />
-                  <span className="ml-1 font-semibold">삭제</span>
+                  <span className="ml-1 whitespace-nowrap font-semibold">
+                    삭제
+                  </span>
                 </button>
 
                 {editingItemId === item._id && (

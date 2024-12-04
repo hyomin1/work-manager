@@ -7,7 +7,7 @@ interface IPage {
 // 페이지 버튼 (사용 빈도 낮음)
 function Page({ totalPage, page, onPageChange }: IPage) {
   return (
-    <div className="mt-4">
+    <div className="sticky bottom-0 flex w-full justify-center">
       {Array.from({ length: totalPage }, (_, index) => (
         <button
           key={index + 1}

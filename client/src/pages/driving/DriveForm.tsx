@@ -204,7 +204,7 @@ function DriveInput() {
     >
       <div className="mb-8 mt-2 flex items-center justify-between sm:mt-4 sm:w-full md:w-[80%]">
         <ArrowBack type="not home" />
-        <span className="whitespace-nowrap font-bold sm:mx-1 sm:text-sm md:mx-8 md:text-3xl">
+        <span className="whitespace-nowrap font-bold sm:mx-1 sm:text-xl md:mx-8 md:text-3xl">
           {calculateDate(new Date())}
         </span>
         <Blank />

@@ -70,7 +70,7 @@ function StatisticsPage() {
       <div className="flex w-[85%] flex-col items-center sm:w-full">
         <div className="mb-8 mt-2 flex w-full items-center justify-between sm:mt-4">
           <ArrowBack type="not home" />
-          <span className="whitespace-nowrap font-bold sm:mx-1 sm:text-sm md:mx-8 md:text-3xl">
+          <span className="whitespace-nowrap font-bold sm:mx-1 sm:block sm:w-[33%] sm:text-sm md:mx-8 md:text-3xl">
             {calculateDate(new Date())}
           </span>
           <Blank />

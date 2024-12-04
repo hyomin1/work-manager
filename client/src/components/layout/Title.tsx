@@ -20,7 +20,6 @@ function Title({
 
   setShowInput,
 }: ITitleProps) {
-  //const { currentDate, setCurrentDate } = useEmployeeStore();
   const previous = () => {
     const prevDate = new Date(currentDate);
     if (category === "employee") {
