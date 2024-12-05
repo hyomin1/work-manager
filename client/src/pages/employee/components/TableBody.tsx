@@ -57,11 +57,13 @@ function EmployeeTableBody({ refetch }: EmployeeTableBodyProps) {
 
   const getRowSpans = (items: IEmployee[]) => {
     const spans = new Map<string, number>();
+    let prevName: string | null = null;
     let prevDestination: string | null = null;
     let prevBusiness: string | null = null;
     let prevWork: string | null = null;
     let prevCar: string | null = null;
 
+    let nameSpan = 1;
     let destSpan = 1;
     let businessSpan = 1;
     let workSpan = 1;
@@ -69,6 +71,20 @@ function EmployeeTableBody({ refetch }: EmployeeTableBodyProps) {
 
     for (let i = 0; i < items.length; i++) {
       const item = items[i];
+
+      if (
+        i > 0 &&
+        item.destination === prevDestination &&
+        item.username === prevName
+      ) {
+        nameSpan++;
+        spans.set(`${i}-name`, 0);
+      } else {
+        if (i > 0) {
+          spans.set(`${i - nameSpan}-name`, nameSpan);
+        }
+        nameSpan = 1;
+      }
 
       if (i > 0 && item.destination === prevDestination) {
         destSpan++;
@@ -97,7 +113,7 @@ function EmployeeTableBody({ refetch }: EmployeeTableBodyProps) {
       if (
         i > 0 &&
         item.work === prevWork &&
-        item.business === prevBusiness &&
+        //item.business === prevBusiness &&
         item.destination === prevDestination
       ) {
         workSpan++;
@@ -111,8 +127,8 @@ function EmployeeTableBody({ refetch }: EmployeeTableBodyProps) {
 
       if (
         i > 0 &&
-        item.work === prevWork &&
-        item.business === prevBusiness &&
+        //item.work === prevWork &&
+        //item.business === prevBusiness &&
         item.destination === prevDestination &&
         (item.car === prevCar || item.car === "" || prevCar === "")
       ) {
@@ -157,8 +173,8 @@ function EmployeeTableBody({ refetch }: EmployeeTableBodyProps) {
 
         if (
           (item.car === prevCar || item.car === "" || prevCar === "") &&
-          item.work === prevWork &&
-          item.business === prevBusiness &&
+          //item.work === prevWork &&
+          //item.business === prevBusiness &&
           item.destination === prevDestination
         ) {
           spans.set(`${i - carSpan + 1}-car`, carSpan);
@@ -167,6 +183,7 @@ function EmployeeTableBody({ refetch }: EmployeeTableBodyProps) {
         }
       }
 
+      prevName = item.username;
       prevDestination = item.destination;
       prevBusiness = item.business;
       prevWork = item.work;
@@ -267,9 +284,14 @@ function EmployeeTableBody({ refetch }: EmployeeTableBodyProps) {
           className="w-[100%] sm:text-sm"
           sx={styleMap.get(`${item.destination}-${item.business}`)}
         >
-          <TableCell sx={{ ...cellStyle, whiteSpace: "nowrap" }}>
-            {item.username}
-          </TableCell>
+          {rowSpans.get(`${index}-name`) !== 0 && (
+            <TableCell
+              rowSpan={rowSpans.get(`${index}-name`)}
+              sx={{ ...cellStyle, whiteSpace: "nowrap" }}
+            >
+              {item.username}
+            </TableCell>
+          )}
 
           {rowSpans.get(`${index}-destination`) !== 0 && (
             <TableCell
