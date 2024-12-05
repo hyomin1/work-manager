@@ -163,7 +163,7 @@ function EmployeeTableBody({ refetch }: EmployeeTableBodyProps) {
 
         if (
           item.work === prevWork &&
-          item.business === prevBusiness &&
+          //item.business === prevBusiness &&
           item.destination === prevDestination
         ) {
           spans.set(`${i - workSpan + 1}-work`, workSpan);
