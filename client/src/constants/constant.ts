@@ -12,6 +12,7 @@ export const ROUTES = {
   EMPLOYEES: {
     LIST: "/employees",
     CREATE: "/employees/create",
+    DAILY_WORK: "/employees/dailyWork",
   },
 
   VEHICLES: {

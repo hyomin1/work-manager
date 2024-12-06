@@ -46,6 +46,8 @@ export const employeeHeaders = [
   "",
 ];
 
+export const dailyWorkHeaders = ["이름", "파트", "내용", ""];
+
 export const employeeInputHeaders = [
   "이름",
   "방문지",

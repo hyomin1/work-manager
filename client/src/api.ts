@@ -52,10 +52,22 @@ export const getEtcNames = async () => {
   return res.data.allEtcNames || [];
 };
 
+// 파트 정보
+export const getDepartments = async () => {
+  const res = await axiosReq.get("/api/employee-inform/getDepartment");
+  return res.data.allDepartments || [];
+};
+
 // 입력된 인원 상태 정보
 export const getEmployeeInform = async (date: Date) => {
   const res = await axiosReq.get(`/api/employee-inform/getInform?date=${date}`);
   return res.data.allInforms || [];
+};
+
+// 일일 업무 현황 정보
+export const getDailyWorks = async (date: Date) => {
+  const res = await axiosReq.get(`/api/employee-inform/dailyWork?date=${date}`);
+  return res.data.allDailyWorks || [];
 };
 
 export const getDrivingInform = async (
@@ -215,4 +227,15 @@ export const serviceDay = (newDate: Date) => {
   const month = date.getMonth() + 1;
   const day = date.getDate();
   return `${year}.${month}.${day}`;
+};
+
+export const dailyWorkDay = (newDate: Date) => {
+  const date = new Date(newDate);
+  const year = date.getFullYear().toString();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  const daysOfWeek = ["일", "월", "화", "수", "목", "금", "토"];
+  const dayOfWeek = daysOfWeek[date.getDay()];
+
+  return `${year}. ${month}. ${day}. (${dayOfWeek})`;
 };

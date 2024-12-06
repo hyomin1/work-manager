@@ -1,6 +1,7 @@
 import {
   getBusinesses,
   getCars,
+  getDepartments,
   getDestinations,
   getEtcNames,
   getNames,
@@ -22,6 +23,7 @@ export function useAdminData(
     work: getWorks,
     car: getCars,
     etcName: getEtcNames,
+    department: getDepartments,
   }[activeTab];
 
   const { data } = useQuery({

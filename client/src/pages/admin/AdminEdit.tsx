@@ -42,6 +42,8 @@ function AdminEdit({
         return "차량";
       case "etcName":
         return "기타 비용";
+      case "department":
+        return "파트";
       default:
         return "";
     }
@@ -84,6 +86,10 @@ function AdminEdit({
       case "etcName":
         url = "/api/employee-inform/editEtcName";
         body = { etcName: inputValue, id: itemId };
+        break;
+      case "department":
+        url = "/api/employee-inform/editDepartment";
+        body = { department: inputValue, id: itemId };
         break;
       default:
         return;

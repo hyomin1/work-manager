@@ -30,6 +30,8 @@ function AdminAdd({ setIsAdding, type, queryClient, destination }: IAddData) {
         return "차량";
       case "etcName":
         return "기타 비용";
+      case "department":
+        return "파트";
       default:
         return "";
     }
@@ -72,6 +74,10 @@ function AdminAdd({ setIsAdding, type, queryClient, destination }: IAddData) {
       case "etcName":
         url += "addEtcName";
         body = { etcName: inputValue };
+        break;
+      case "department":
+        url += "addDepartment";
+        body = { department: inputValue };
         break;
       default:
         return;

@@ -10,6 +10,7 @@ import employeeInformRouter from './routes/employeeInformRouter';
 import drivingInformRouter from './routes/drivingInformRouter';
 import scheduleRouter from './routes/scheduleRouter';
 import userRouter from './routes/userRouter';
+import dailyWorkRouter from './routes/dailyWorkRouter';
 import path from 'path';
 
 const app: Express = express();
@@ -46,6 +47,7 @@ connectDB();
 
 app.use('/auth', authRouter);
 app.use('/api/employee-inform', employeeInformRouter);
+app.use('/api/employee-inform/dailyWork', dailyWorkRouter);
 app.use('/api/driving-inform', drivingInformRouter);
 app.use('/api/schedule', scheduleRouter);
 app.use('/api/users', userRouter);

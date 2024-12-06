@@ -6,6 +6,7 @@ import {
   getWorks,
   getCars,
   getEtcNames,
+  getDepartments,
 } from "../api";
 import {
   INames,
@@ -14,6 +15,7 @@ import {
   IWorks,
   ICars,
   IEtcNames,
+  IDepartments,
 } from "../interfaces/interface";
 
 // 전체 데이터 조회용
@@ -52,6 +54,13 @@ export const useCustomQueries = () => {
     queryFn: getEtcNames,
   });
 
+  const { data: departments, isLoading: departmentsLoading } = useQuery<
+    IDepartments[]
+  >({
+    queryKey: ["departments"],
+    queryFn: getDepartments,
+  });
+
   return {
     names,
     namesLoading,
@@ -65,5 +74,7 @@ export const useCustomQueries = () => {
     carsLoading,
     etcNames,
     etcNamesLoading,
+    departments,
+    departmentsLoading,
   };
 };

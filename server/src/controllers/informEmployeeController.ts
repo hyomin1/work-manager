@@ -7,6 +7,7 @@ import Car from '../models/Car';
 import Inform from '../models/employee/EmployeeInform';
 import Business from '../models/employee/Business';
 import User from '../models/employee/User';
+import Department from '../models/employee/Department';
 
 //이름
 
@@ -350,6 +351,70 @@ export const getCar = async (req: Request, res: Response) => {
   }
 };
 
+// 파트
+export const addDepartment = async (req: Request, res: Response) => {
+  const { department } = req.body;
+  if (!department) {
+    return res.status(400).json({ error: '파트를 입력하세요' });
+  }
+  checkAdmin(req, res);
+  try {
+    await Department.create({ department });
+    return res.status(200).json({ message: '파트 추가 완료' });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: '서버 에러' });
+  }
+};
+
+export const removeDepartment = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  checkAdmin(req, res);
+  try {
+    const deletedDepartment = await Department.deleteOne({ _id: id });
+    if (!deletedDepartment) {
+      return res.status(404).json({ error: '삭제할 파트가 존재하지 않습니다' });
+    }
+    return res.status(200).json({ message: '파트 삭제 완료' });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: '서버 에러' });
+  }
+};
+
+export const editDepartment = async (req: Request, res: Response) => {
+  const { id, department } = req.body;
+  checkAdmin(req, res);
+  try {
+    const editDepartment = await Department.findByIdAndUpdate(
+      id,
+      {
+        department,
+      },
+      { new: true }
+    );
+    if (!editDepartment) {
+      return res
+        .status(404)
+        .json({ error: '수정할 파트가 존재하지 않습니다.' });
+    }
+    return res.status(200).json({ message: '파트 수정 완료' });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: '서버 에러' });
+  }
+};
+
+export const getDepartment = async (req: Request, res: Response) => {
+  try {
+    const allDepartments = await Department.find({}, { department: 1 });
+    return res.status(200).json({ allDepartments });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: '서버 에러' });
+  }
+};
+
 export const addInform = async (req: Request, res: Response) => {
   if (!req.session.isUser || req.session.isCar) {
     return res
@@ -369,7 +434,7 @@ export const addInform = async (req: Request, res: Response) => {
       !startDate ||
       !endDate
     ) {
-      return res.status(400).json({ error: '정보를 입력해야 합니다.' });
+      return res.status(400).json({ error: '내용을 입력해주세요' });
     }
 
     const data = {

@@ -26,6 +26,11 @@ export interface IEtcNames {
   etcName: string;
 }
 
+export interface IDepartments {
+  _id: string;
+  department: string;
+}
+
 // 통계 방문지 검색 인터페이스스
 export interface IDestStat {
   startDate: Date;
@@ -97,5 +102,16 @@ export interface ICarServiceBase {
 }
 
 export interface ICarService extends ICarServiceBase {
+  isOwner: boolean;
+}
+
+// 일일 업무 현황
+export interface IDailyWork {
+  _id: string;
+  username: string;
+  department: string;
+  content: string;
+  writerId: string;
+  createdAt: Date;
   isOwner: boolean;
 }

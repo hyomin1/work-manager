@@ -1,5 +1,6 @@
 import {
   Calendar,
+  FileText,
   LineChart,
   Pencil,
   Settings,
@@ -66,6 +67,13 @@ function NavigationButtons({ refetch }: NavProps) {
             >
               <Calendar className="sm:h-4 sm:w-4" />
               <span className="ml-1 sm:text-xs">일정</span>
+            </button>
+            <button
+              className="button-effect flex items-center justify-center whitespace-nowrap rounded-lg bg-[#10B981] px-4 py-2 text-white sm:mr-0 sm:flex-1 md:mr-4"
+              onClick={() => navigate(ROUTES.EMPLOYEES.DAILY_WORK)}
+            >
+              <FileText className="sm:h-4 sm:w-4" />
+              <span className="ml-1 sm:text-xs">업무</span>
             </button>
           </div>
 

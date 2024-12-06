@@ -2,12 +2,14 @@ import express from 'express';
 import {
   addBusiness,
   addCar,
+  addDepartment,
   addDestination,
   addInform,
   addName,
   addWork,
   editBusiness,
   editCar,
+  editDepartment,
   editDestination,
   editInform,
   editName,
@@ -15,6 +17,7 @@ import {
   getBusiness,
   getBusinesses,
   getCar,
+  getDepartment,
   getDestination,
   getDestinationStatistics,
   getInform,
@@ -23,6 +26,7 @@ import {
   getWork,
   removeBusiness,
   removeCar,
+  removeDepartment,
   removeDestination,
   removeInform,
   removeName,
@@ -61,6 +65,12 @@ router.get('/getWork', getWork);
 router.post('/addWork', addWork);
 router.patch('/editWork', editWork);
 router.delete('/removeWork/:id', removeWork);
+
+//파트 관련
+router.get('/getDepartment', getDepartment);
+router.post('/addDepartment', addDepartment);
+router.patch('/editDepartment', editDepartment);
+router.delete('/removeDepartment/:id', removeDepartment);
 
 // 차량 관련
 router.get('/getCar', getCar);
