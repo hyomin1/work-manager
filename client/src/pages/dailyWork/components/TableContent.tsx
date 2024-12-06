@@ -102,7 +102,7 @@ function TableContent({
             </TableCell>
             <TableCell onClick={(e) => e.stopPropagation()}>
               {item.isOwner && (
-                <div className="flex items-center justify-evenly gap-2">
+                <div className="flex items-center justify-around">
                   <button
                     className="flex items-center hover:opacity-60"
                     onClick={(e) => handleEditClick(e, item._id)}

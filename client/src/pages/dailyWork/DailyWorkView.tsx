@@ -89,7 +89,7 @@ function DailyWorkView({ id, setViewId, currentDate }: IDailyWorkView) {
 
           <div className="flex flex-1 flex-col border-b">
             <h3 className="px-4 py-2 text-sm font-bold">• {username}</h3>
-            <div className="h-[calc(100vh-32rem)] overflow-y-auto whitespace-pre-line px-4 py-2">
+            <div className="h-80 overflow-y-auto whitespace-pre-line px-4 py-2">
               {content}
             </div>
           </div>
@@ -100,7 +100,7 @@ function DailyWorkView({ id, setViewId, currentDate }: IDailyWorkView) {
             </div>
             <div className="col-span-5">
               <h4 className="px-4 pt-2 text-sm font-bold">• {username}</h4>
-              <div className="h-[calc(100vh-50rem)] overflow-y-auto whitespace-pre-line px-4 pb-2">
+              <div className="h-36 overflow-y-auto whitespace-pre-line px-4 pb-2">
                 {nextContent}
               </div>
             </div>

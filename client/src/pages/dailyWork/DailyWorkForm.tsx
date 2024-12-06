@@ -57,7 +57,7 @@ function DailyWorkForm({ setIsOpen, currentDate, refetch }: IDailyWorkForm) {
   }
   return (
     <div className="fixed inset-0 z-50 flex h-screen w-full items-center justify-center bg-black bg-opacity-25">
-      <div className="h-full w-[60%] rounded-lg bg-white p-6">
+      <div className="h-full w-[60%] overflow-y-auto rounded-lg bg-white p-6">
         <div className="mb-4 flex items-center justify-between">
           <h2 className="text-xl font-bold">일일 업무 현황</h2>
           <button

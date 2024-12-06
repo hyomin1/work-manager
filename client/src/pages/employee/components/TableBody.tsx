@@ -95,7 +95,6 @@ function EmployeeTableBody({ refetch }: EmployeeTableBodyProps) {
         }
         destSpan = 1;
       }
-
       if (
         i > 0 &&
         item.business === prevBusiness &&
