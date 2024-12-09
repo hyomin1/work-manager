@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { axiosReq } from "../../../api";
 import useEmployeeStore from "../../../stores/employeeStore";
 import { TableBody, TableCell, TableRow } from "@mui/material";
@@ -23,6 +23,36 @@ function TableContent({
   const [viewId, setViewId] = useState("");
   const [editingItemId, setEditingItemId] = useState("");
 
+  // 부서별로 데이터 그룹화 및 정렬
+  const groupedData = useMemo(() => {
+    if (!dailyWork?.length) return [];
+
+    // 1. 부서별로 그룹화
+    const grouped = dailyWork.reduce(
+      (acc, item) => {
+        if (!acc[item.department]) {
+          acc[item.department] = [];
+        }
+        acc[item.department].push(item);
+        return acc;
+      },
+      {} as Record<string, typeof dailyWork>,
+    );
+
+    // 2. 각 부서 내에서 이름으로 정렬
+    Object.keys(grouped).forEach((dept) => {
+      grouped[dept].sort((a, b) => a.username.localeCompare(b.username));
+    });
+
+    // 3. 부서 이름으로 정렬하여 최종 배열 생성
+    return Object.entries(grouped)
+      .sort(([deptA], [deptB]) => deptA.localeCompare(deptB))
+      .map(([dept, items]) => ({
+        department: dept,
+        items,
+      }));
+  }, [dailyWork]);
+
   const deleteDailyWork = async (id: string) => {
     if (!window.confirm("삭제하시겠습니까?")) {
       return;
@@ -37,7 +67,7 @@ function TableContent({
 
   const handleEditClick = (e: React.MouseEvent, id: string) => {
     e.stopPropagation();
-    setViewId(""); // View 모달 닫기
+    setViewId("");
     setEditingItemId(id);
   };
 
@@ -67,65 +97,83 @@ function TableContent({
   return (
     <>
       <TableBody>
-        {dailyWork.map((item) => (
-          <TableRow
-            key={item._id}
-            className="w-[100%] cursor-pointer hover:bg-gray-200 sm:text-sm"
-          >
-            <TableCell
-              onClick={() => handleCellClick(item._id)}
-              sx={{
-                whiteSpace: "nowrap",
-                fontSize: "large",
-              }}
+        {groupedData.map(({ department, items }) =>
+          items.map((item, index) => (
+            <TableRow
+              key={item._id}
+              className="w-[100%] cursor-pointer hover:bg-gray-200 sm:text-sm"
             >
-              {item.username}
-            </TableCell>
-            <TableCell
-              onClick={() => handleCellClick(item._id)}
-              sx={{
-                whiteSpace: "nowrap",
-                fontSize: "large",
-              }}
-            >
-              {item.department}
-            </TableCell>
-            <TableCell
-              onClick={() => handleCellClick(item._id)}
-              className="truncate"
-              sx={{
-                fontSize: "large",
-              }}
-            >
-              {item.content.slice(0, 80)}
-              {item.content.length > 80 && "..."}
-            </TableCell>
-            <TableCell onClick={(e) => e.stopPropagation()}>
-              {item.isOwner && (
-                <div className="flex items-center justify-around">
-                  <button
-                    className="flex items-center hover:opacity-60"
-                    onClick={(e) => handleEditClick(e, item._id)}
-                  >
-                    <Edit className="md:h-4 md:w-4" strokeWidth={2.2} />
-                    <span className="ml-1 whitespace-nowrap font-semibold md:text-sm">
-                      수정
-                    </span>
-                  </button>
-                  <button
-                    className="flex items-center hover:opacity-60"
-                    onClick={(e) => handleDeleteClick(e, item._id)}
-                  >
-                    <Trash2 className="md:h-4 md:w-4" strokeWidth={2.2} />
-                    <span className="ml-1 whitespace-nowrap font-semibold md:text-sm">
-                      삭제
-                    </span>
-                  </button>
-                </div>
+              {index === 0 && (
+                <TableCell
+                  align="center"
+                  rowSpan={items.length}
+                  sx={{
+                    whiteSpace: "nowrap",
+                    fontSize: "large",
+                    width: "5%",
+                    backgroundColor: "rgb(243 244 246)",
+                    fontWeight: "bold",
+                  }}
+                >
+                  {department}
+                </TableCell>
               )}
-            </TableCell>
-          </TableRow>
-        ))}
+
+              <TableCell
+                align="center"
+                onClick={() => handleCellClick(item._id)}
+                sx={{
+                  whiteSpace: "nowrap",
+                  fontSize: "large",
+                  width: "5%",
+                }}
+              >
+                {item.username}
+              </TableCell>
+
+              <TableCell
+                align="left"
+                onClick={() => handleCellClick(item._id)}
+                className="truncate"
+                sx={{
+                  fontSize: "large",
+                }}
+              >
+                {item.content.slice(0, 140)}
+                {item.content.length > 140 && "..."}
+              </TableCell>
+
+              <TableCell
+                sx={{ width: "5%" }}
+                align="right"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {item.isOwner && (
+                  <div className="flex items-center justify-end">
+                    <button
+                      className="mr-2 flex items-center hover:opacity-60"
+                      onClick={(e) => handleEditClick(e, item._id)}
+                    >
+                      <Edit className="md:h-4 md:w-4" strokeWidth={2.2} />
+                      <span className="ml-1 whitespace-nowrap font-semibold md:text-sm">
+                        수정
+                      </span>
+                    </button>
+                    <button
+                      className="flex items-center hover:opacity-60"
+                      onClick={(e) => handleDeleteClick(e, item._id)}
+                    >
+                      <Trash2 className="md:h-4 md:w-4" strokeWidth={2.2} />
+                      <span className="ml-1 whitespace-nowrap font-semibold md:text-sm">
+                        삭제
+                      </span>
+                    </button>
+                  </div>
+                )}
+              </TableCell>
+            </TableRow>
+          )),
+        )}
       </TableBody>
 
       {viewId && !editingItemId && (

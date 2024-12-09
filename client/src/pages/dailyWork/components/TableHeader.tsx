@@ -4,9 +4,10 @@ import { dailyWorkHeaders } from "../../../constants/headers";
 function TableHeader() {
   return (
     <TableHead>
-      <TableRow className="bg-gray-200">
+      <TableRow>
         {dailyWorkHeaders.map((header, index) => (
           <TableCell
+            align="center"
             sx={{
               fontWeight: "600",
               whiteSpace: "nowrap",

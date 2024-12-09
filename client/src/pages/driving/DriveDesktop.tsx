@@ -67,6 +67,7 @@ function DrivePC({
             <TableRow>
               {drivingHeaders.map((item, index) => (
                 <TableCell
+                  className="border border-t-0 border-gray-300"
                   align="center"
                   key={index}
                   sx={{

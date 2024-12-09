@@ -1,4 +1,5 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
+import { createPortal } from "react-dom";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -17,23 +18,77 @@ import {
 import { useNavigate } from "react-router-dom";
 import "./Calendar.css";
 import EmployeeEdit from "../employee/EmployeeEdit";
+import { useCustomQueries } from "../../hooks/useCustomQuery";
+import { Autocomplete, TextField } from "@mui/material";
 
-// 일정(캘린더) 화면
+// Search Component
+const SearchComponent = ({
+  names,
+  username,
+  handleNameChange,
+}: {
+  names: any[];
+  username: string | null;
+  handleNameChange: (event: React.SyntheticEvent, value: string | null) => void;
+}) => {
+  return (
+    <div className="mr-4 w-[150px]">
+      <Autocomplete
+        size="small"
+        options={
+          names
+            ?.sort((a, b) => a.username.localeCompare(b.username))
+            ?.map((item) => item.username) || []
+        }
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            label="이름 검색"
+            size="small"
+            sx={{
+              "& .MuiInputBase-root": {
+                backgroundColor: "white",
+                borderRadius: "4px",
+                height: "36px",
+              },
+            }}
+          />
+        )}
+        onChange={handleNameChange}
+        value={username}
+      />
+    </div>
+  );
+};
+
 function SchedulePage() {
   const date = new Date();
-
+  const [username, setUsername] = useState<string | null>(null);
   const { data: scheduleData, refetch } = useQuery<IInform[]>({
     queryKey: ["employeeInform"],
-    queryFn: () => getSchedule(calYear(date), calMonth(date)),
+    queryFn: () => getSchedule(calYear(date), calMonth(date), username),
   });
   const [editingItemId, setEditingItemId] = useState("");
+  const [searchMounted, setSearchMounted] = useState(false);
 
+  const { names } = useCustomQueries();
   const navigate = useNavigate();
 
   const [tooltip, setTooltip] = useState<{
     event: any;
     position: { x: number; y: number };
   } | null>(null);
+
+  const handleNameChange = (
+    event: React.SyntheticEvent,
+    username: string | null,
+  ) => {
+    setUsername(username);
+  };
+
+  useEffect(() => {
+    refetch();
+  }, [username, refetch]);
 
   const handleEventClick = (clickInfo: any) => {
     clickInfo.jsEvent.preventDefault();
@@ -64,10 +119,10 @@ function SchedulePage() {
     );
     if (res.status === 200) {
       setTooltip(null);
-
       refetch();
     }
   };
+
   const events = useMemo(() => {
     if (!scheduleData) return [];
 
@@ -96,6 +151,45 @@ function SchedulePage() {
     });
   }, [scheduleData]);
 
+  useEffect(() => {
+    const searchButton = document.querySelector(".fc-search-button");
+    if (searchButton) {
+      searchButton.textContent = "";
+      searchButton.classList.remove("fc-button", "fc-button-primary");
+      setSearchMounted(true);
+    }
+    return () => setSearchMounted(false);
+  }, []);
+
+  useEffect(() => {
+    const style = document.createElement("style");
+    style.textContent = `
+      .fc .fc-toolbar.fc-header-toolbar {
+        display: grid;
+        grid-template-columns: minmax(auto, 1fr) minmax(auto, 2fr) minmax(auto, 1fr);
+      }
+      .fc .fc-toolbar-chunk {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+      }
+      .fc .fc-toolbar-chunk:nth-child(2) {
+        justify-content: center;
+      }
+      .fc .fc-toolbar-chunk:last-child {
+        justify-content: flex-end;
+        gap: 4px;
+      }
+    `;
+    document.head.appendChild(style);
+
+    return () => {
+      if (style.parentNode) {
+        style.parentNode.removeChild(style);
+      }
+    };
+  }, []);
+
   return (
     <div
       className="flex h-screen w-full flex-col bg-gradient-to-br from-blue-50 to-gray-100 p-5"
@@ -110,11 +204,14 @@ function SchedulePage() {
             text: "⬅ 뒤로가기",
             click: () => navigate(-1),
           },
+          search: {
+            text: "",
+          },
         }}
         headerToolbar={{
           left: "arrowBack",
           center: "title",
-          right: "prev,next",
+          right: "search,prev,next",
         }}
         selectable={true}
         selectMirror={true}
@@ -122,17 +219,28 @@ function SchedulePage() {
         locale="ko"
         height="100vh"
         eventClick={handleEventClick}
-        dayHeaderFormat={{ weekday: "short" }} // 요일 표시 형식
+        dayHeaderFormat={{ weekday: "short" }}
         dayHeaders={true}
       />
+
+      {searchMounted &&
+        createPortal(
+          <SearchComponent
+            names={names || []}
+            username={username}
+            handleNameChange={handleNameChange}
+          />,
+          document.querySelector(".fc-search-button")!,
+        )}
+
       {tooltip && (
         <div
           className="tooltip absolute z-10 rounded-3xl border border-gray-200 bg-[#f0f4f9] p-4 shadow-lg"
           style={{
             top: `${tooltip.position.y + 10}px`,
-            left: `${tooltip.position.x + 10}px`,
+            left: `${tooltip.position.x - 10}px`,
           }}
-          onClick={(e) => e.stopPropagation()} // 툴팁 클릭시 이벤트 전파 중지
+          onClick={(e) => e.stopPropagation()}
         >
           <div className="mb-2 flex w-full items-center justify-between">
             <h2 className="mr-2 whitespace-nowrap font-bold">

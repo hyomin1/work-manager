@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import EmployeeInform from '../models/employee/EmployeeInform';
-import { ObjectId } from 'mongodb'; // ObjectId 타입을 사용하기 위해 추가
+import { ObjectId } from 'mongodb';
 
 export const getSchedule = async (req: Request, res: Response) => {
   if (!req.session.isUser) {
@@ -9,7 +9,7 @@ export const getSchedule = async (req: Request, res: Response) => {
       .json({ type: 'not User', error: '다시 로그인 해주세요' });
   }
   const { userId } = req.session;
-  const { year, month } = req.query;
+  const { year, month, username } = req.query;
 
   try {
     const IYear: number = Number(year);
@@ -27,18 +27,36 @@ export const getSchedule = async (req: Request, res: Response) => {
     const endNextMonth = new Date(
       Date.UTC(nextYear, nextMonth - 1, 31, 23, 59, 59)
     );
+    if (username !== 'null') {
+      const schedules = await EmployeeInform.find({
+        username,
+        $or: [
+          {
+            startDate: {
+              $gte: startPrevMonth,
+              $lte: endNextMonth,
+            },
+          },
+          {
+            endDate: {
+              $gte: startPrevMonth,
+              $lte: endNextMonth,
+            },
+          },
+        ],
+      });
+      return res.status(200).json({ schedules });
+    }
 
     const schedules = await EmployeeInform.find({
       writerId: new ObjectId(userId),
       $or: [
-        // startDate가 해당 기간 내에 있는 경우
         {
           startDate: {
             $gte: startPrevMonth,
             $lte: endNextMonth,
           },
         },
-        // endDate가 해당 기간 내에 있는 경우
         {
           endDate: {
             $gte: startPrevMonth,

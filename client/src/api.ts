@@ -111,9 +111,13 @@ export const getDestinationStatistics = async (
 };
 
 // 일정 fetch
-export const getSchedule = async (year: number, month: number) => {
+export const getSchedule = async (
+  year: number,
+  month: number,
+  username: string | null,
+) => {
   const res = await axiosReq.get(
-    `/api/schedule/getSchedule?year=${year}&month=${month}`,
+    `/api/schedule/getSchedule?year=${year}&month=${month}&username=${username}`,
   );
 
   return res.data.schedules || [];

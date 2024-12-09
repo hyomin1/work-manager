@@ -37,8 +37,8 @@ function DailyWorkPage() {
   }, [currentDate, refetch]);
 
   return (
-    <div className="flex h-screen w-full flex-col items-center bg-gradient-to-br from-zinc-50 to-slate-100 p-10 sm:p-2">
-      <div className="flex h-full w-[90%] flex-col items-center sm:w-full">
+    <div className="flex min-h-screen w-full flex-col items-center bg-gradient-to-br from-zinc-50 to-slate-100 p-10 sm:p-2">
+      <div className="flex w-[90%] flex-col items-center sm:w-full">
         <div className="mb-8 mt-2 flex w-full items-center justify-between sm:mt-4">
           <ArrowBack type="not home" />
           <Title
@@ -75,7 +75,7 @@ function DailyWorkPage() {
           }}
           className="shadow-custom-shadow"
         >
-          <Table stickyHeader>
+          <Table>
             <TableHeader />
             <TableContent
               refetch={refetch}
