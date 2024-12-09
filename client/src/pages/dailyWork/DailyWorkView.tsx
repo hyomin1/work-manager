@@ -64,7 +64,7 @@ function DailyWorkView({ id, setViewId, currentDate }: IDailyWorkView) {
             <div className="col-span-1 flex items-center border-r bg-gray-100 p-2 font-semibold">
               파트
             </div>
-            <div className="col-span-5 p-2">
+            <div className="col-span-5 pl-2">
               <div className="flex h-10 w-[15%] items-center">{department}</div>
             </div>
           </div>
@@ -73,7 +73,7 @@ function DailyWorkView({ id, setViewId, currentDate }: IDailyWorkView) {
             <div className="col-span-1 flex items-center border-r bg-gray-100 p-2 font-semibold">
               작성자
             </div>
-            <div className="col-span-5 p-2">
+            <div className="col-span-5 pl-2">
               <div className="flex h-10 w-[15%] items-center">{username}</div>
             </div>
           </div>
@@ -82,7 +82,7 @@ function DailyWorkView({ id, setViewId, currentDate }: IDailyWorkView) {
             <div className="col-span-1 flex items-center border-r bg-gray-100 p-2 font-semibold">
               작성 일자
             </div>
-            <div className="col-span-5 flex items-center p-2">
+            <div className="col-span-5 flex items-center pl-2">
               {dailyWorkDay(currentDate || new Date())}
             </div>
           </div>
