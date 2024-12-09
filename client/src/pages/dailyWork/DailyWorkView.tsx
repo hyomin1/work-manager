@@ -47,7 +47,7 @@ function DailyWorkView({ id, setViewId, currentDate }: IDailyWorkView) {
   }, []);
 
   return (
-    <div className="fixed inset-0 z-50 flex h-screen w-full items-center justify-center bg-black bg-opacity-25">
+    <div className="fixed inset-0 z-50 flex min-h-screen w-full items-center justify-center bg-black bg-opacity-25">
       <div className="h-full w-[60%] rounded-lg bg-white p-6">
         <div className="mb-4 flex items-center justify-between">
           <h2 className="text-xl font-bold">일일 업무 현황</h2>
@@ -59,8 +59,8 @@ function DailyWorkView({ id, setViewId, currentDate }: IDailyWorkView) {
           </button>
         </div>
 
-        <div className="flex h-[calc(100%-6rem)] flex-col rounded border">
-          <div className="grid grid-cols-6 border-b">
+        <div className="flex h-full flex-col rounded">
+          <div className="grid h-[4%] grid-cols-6 border-b">
             <div className="col-span-1 flex items-center border-r bg-gray-100 p-2 font-semibold">
               파트
             </div>
@@ -69,7 +69,7 @@ function DailyWorkView({ id, setViewId, currentDate }: IDailyWorkView) {
             </div>
           </div>
 
-          <div className="grid grid-cols-6 border-b">
+          <div className="grid h-[4%] grid-cols-6 border-b">
             <div className="col-span-1 flex items-center border-r bg-gray-100 p-2 font-semibold">
               작성자
             </div>
@@ -78,7 +78,7 @@ function DailyWorkView({ id, setViewId, currentDate }: IDailyWorkView) {
             </div>
           </div>
 
-          <div className="grid grid-cols-6 border-b">
+          <div className="grid h-[4%] grid-cols-6 border-b">
             <div className="col-span-1 flex items-center border-r bg-gray-100 p-2 font-semibold">
               작성 일자
             </div>
@@ -87,14 +87,12 @@ function DailyWorkView({ id, setViewId, currentDate }: IDailyWorkView) {
             </div>
           </div>
 
-          <div className="flex flex-1 flex-col border-b">
+          <div className="flex h-[60%] flex-col overflow-y-auto border border-b">
             <h3 className="px-4 py-2 text-sm font-bold">• {username}</h3>
-            <div className="h-80 overflow-y-auto whitespace-pre-line px-4 py-2">
-              {content}
-            </div>
+            <div className="whitespace-pre-line px-4 py-2">{content}</div>
           </div>
 
-          <div className="grid grid-cols-6">
+          <div className="grid h-[20%] grid-cols-6">
             <div className="col-span-1 flex items-center border-r bg-gray-100 p-2 font-semibold">
               내일 일과
             </div>
