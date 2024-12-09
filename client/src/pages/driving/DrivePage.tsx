@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import {
-  axiosReq,
   calMonth,
   calYear,
   calYearMonth,
@@ -71,23 +70,23 @@ function DrivePage() {
     ? Math.ceil(drivingInform.length / itemsPerPage)
     : 0;
 
-  const checkSession = async () => {
-    const response = await axiosReq.get("/auth/checkSession");
-  };
+  // const checkSession = async () => {
+  //   const response = await axiosReq.get("/auth/checkSession");
+  // };
 
   useEffect(() => {
     refetch();
   }, [carId, refetch, currentDate]);
 
-  useEffect(() => {
-    //checkSession();
-  }, []);
+  // useEffect(() => {
+  //   checkSession();
+  // }, []);
 
   useEffect(() => {
     if (location.state) {
       setCarId(location.state.car);
     }
-  }, [location]);
+  }, [location, setCarId]);
 
   const [showInput, setShowInput] = useState(false);
 

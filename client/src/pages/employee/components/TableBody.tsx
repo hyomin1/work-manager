@@ -40,18 +40,12 @@ function EmployeeTableBody({ refetch }: EmployeeTableBodyProps) {
   const sortEmployeeInform = () => {
     return [...inform].sort((a, b) => {
       const destinationCompare = a.destination.localeCompare(b.destination);
-      if (destinationCompare !== 0) return destinationCompare;
 
-      const businessCompare = a.business.localeCompare(b.business);
-      if (businessCompare !== 0) return businessCompare;
+      if (destinationCompare === 0) {
+        return a.username.localeCompare(b.username);
+      }
 
-      const workCompare = a.work.localeCompare(b.work);
-      if (workCompare !== 0) return workCompare;
-
-      const carCompare = a.car.localeCompare(b.car);
-      if (carCompare !== 0) return carCompare;
-
-      return a.username.localeCompare(b.username);
+      return destinationCompare;
     });
   };
 
@@ -254,8 +248,12 @@ function EmployeeTableBody({ refetch }: EmployeeTableBodyProps) {
     return (
       <TableBody>
         <TableRow>
-          <TableCell colSpan={7} className="text-center text-gray-400">
-            등록된 정보가 없습니다.
+          <TableCell
+            align="center"
+            colSpan={7}
+            className="text-center text-gray-400"
+          >
+            등록된 정보가 없습니다
           </TableCell>
         </TableRow>
       </TableBody>
@@ -264,6 +262,7 @@ function EmployeeTableBody({ refetch }: EmployeeTableBodyProps) {
 
   const sortedData = sortEmployeeInform();
   const rowSpans = getRowSpans(sortedData);
+  console.log(sortedData);
 
   const cellStyle = {
     fontSize: "large",
