@@ -262,7 +262,6 @@ function EmployeeTableBody({ refetch }: EmployeeTableBodyProps) {
 
   const sortedData = sortEmployeeInform();
   const rowSpans = getRowSpans(sortedData);
-  console.log(sortedData);
 
   const cellStyle = {
     fontSize: "large",

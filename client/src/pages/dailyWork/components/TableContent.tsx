@@ -99,12 +99,10 @@ function TableContent({
       <TableBody>
         {groupedData.map(({ department, items }) =>
           items.map((item, index) => (
-            <TableRow
-              key={item._id}
-              className="w-[100%] cursor-pointer hover:bg-gray-200 sm:text-sm"
-            >
+            <TableRow key={item._id} className="w-[100%] sm:text-sm">
               {index === 0 && (
                 <TableCell
+                  className="border border-r-gray-200"
                   align="center"
                   rowSpan={items.length}
                   sx={{
@@ -120,6 +118,7 @@ function TableContent({
               )}
 
               <TableCell
+                className="border border-r-gray-200"
                 align="center"
                 onClick={() => handleCellClick(item._id)}
                 sx={{
@@ -134,7 +133,7 @@ function TableContent({
               <TableCell
                 align="left"
                 onClick={() => handleCellClick(item._id)}
-                className="truncate"
+                className="cursor-pointer truncate border border-r-gray-200 hover:bg-gray-200"
                 sx={{
                   fontSize: "large",
                 }}

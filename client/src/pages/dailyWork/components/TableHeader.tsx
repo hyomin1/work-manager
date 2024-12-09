@@ -7,6 +7,7 @@ function TableHeader() {
       <TableRow>
         {dailyWorkHeaders.map((header, index) => (
           <TableCell
+            className="border border-r-gray-200"
             align="center"
             sx={{
               fontWeight: "600",
