@@ -23,7 +23,7 @@ app.use(
     secret: process.env.SESSION_SECRET || '',
     resave: false,
     saveUninitialized: false,
-    //cookie: { secure: false }, // for HTTPS시 true로 설정
+
     cookie: {
       maxAge: 60 * 1000 * 60 * 12, // 로그인 세션 12시간 유지
     },

@@ -5,13 +5,14 @@ import { employeeHeaders } from "../../../constants/headers";
 function TableHeader() {
   return (
     <TableHead>
-      <TableRow className="bg-gray-200">
+      <TableRow>
         {employeeHeaders.map((item, index) => (
           <TableCell
             sx={{
               fontWeight: "600",
               whiteSpace: "nowrap",
               fontSize: "large",
+              textAlign: "center",
             }}
             key={index}
           >

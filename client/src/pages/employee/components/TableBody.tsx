@@ -268,6 +268,7 @@ function EmployeeTableBody({ refetch }: EmployeeTableBodyProps) {
   const cellStyle = {
     fontSize: "large",
     borderRight: "1px solid #e5e7eb",
+    textAlign: "center",
   };
 
   const lastCellStyle = {

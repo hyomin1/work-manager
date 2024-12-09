@@ -67,6 +67,7 @@ function DrivePC({
             <TableRow>
               {drivingHeaders.map((item, index) => (
                 <TableCell
+                  align="center"
                   key={index}
                   sx={{
                     fontWeight: "800",
@@ -100,31 +101,34 @@ function DrivePC({
                     index % 2 === 0 ? "bg-white" : "bg-gray-200"
                   }`}
                 >
-                  <TableCell className="border border-gray-300">
+                  <TableCell className="border border-gray-300" align="center">
                     {calCarDay(item.driveDay)}
                   </TableCell>
-                  <TableCell className="whitespace-nowrap border border-gray-300">
+                  <TableCell
+                    className="whitespace-nowrap border border-gray-300"
+                    align="center"
+                  >
                     {item.username}
                   </TableCell>
-                  <TableCell className="border border-gray-300">
+                  <TableCell className="border border-gray-300" align="center">
                     {item.drivingDestination}
                   </TableCell>
-                  <TableCell className="border border-gray-300">
+                  <TableCell className="border border-gray-300" align="center">
                     {item.startKM.toLocaleString()}km
                   </TableCell>
-                  <TableCell className="border border-gray-300">
+                  <TableCell className="border border-gray-300" align="center">
                     {item.endKM.toLocaleString()}km
                   </TableCell>
-                  <TableCell className="border border-gray-300">
+                  <TableCell className="border border-gray-300" align="center">
                     {item.totalKM.toLocaleString()}km
                   </TableCell>
-                  <TableCell className="border border-gray-300">
+                  <TableCell className="border border-gray-300" align="center">
                     {item.fuelCost ? item.fuelCost.toLocaleString() : ""}
                   </TableCell>
-                  <TableCell className="border border-gray-300">
+                  <TableCell className="border border-gray-300" align="center">
                     {item.toll ? item.toll.toLocaleString() : ""}
                   </TableCell>
-                  <TableCell className="border border-gray-300">
+                  <TableCell className="border border-gray-300" align="center">
                     {item.etc.cost > 0 &&
                       `${item.etc.cost.toLocaleString()}(${item.etc.name})`}
                   </TableCell>
@@ -171,20 +175,24 @@ function DrivePC({
                 },
               }}
             >
-              <TableCell className="border border-gray-300" colSpan={5} />
-              <TableCell className="border border-gray-300">
+              <TableCell
+                className="border border-gray-300"
+                colSpan={5}
+                align="center"
+              />
+              <TableCell className="border border-gray-300" align="center">
                 {totalDrivingKM.toLocaleString()}km
               </TableCell>
-              <TableCell className="border border-gray-300">
+              <TableCell className="border border-gray-300" align="center">
                 {totalFuelCost.toLocaleString()}
               </TableCell>
-              <TableCell className="border border-gray-300">
+              <TableCell className="border border-gray-300" align="center">
                 {totalToll.toLocaleString()}
               </TableCell>
-              <TableCell className="border border-gray-300">
+              <TableCell className="border border-gray-300" align="center">
                 {totalEtcCost.toLocaleString()}
               </TableCell>
-              <TableCell className="border border-gray-300" align="right">
+              <TableCell className="border border-gray-300" align="center">
                 총계: {grandTotal.toLocaleString()}
               </TableCell>
             </TableRow>

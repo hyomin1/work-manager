@@ -325,7 +325,7 @@ function DrivePage() {
   const grandTotal = totalFuelCost + totalToll + totalEtcCost;
 
   return (
-    <div className="flex h-screen w-full flex-col items-center justify-between overflow-hidden bg-gradient-to-br from-zinc-50 to-slate-100 p-4 sm:p-2">
+    <div className="flex h-full w-full flex-col items-center justify-between overflow-hidden bg-gradient-to-br from-zinc-50 to-slate-100 p-4 sm:p-2">
       <div className="flex h-full w-[90%] flex-col items-center sm:w-full">
         <div className="mb-4 mt-4 flex w-full items-center justify-between sm:mt-4 print:justify-center">
           <ArrowBack type="home" />
