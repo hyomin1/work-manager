@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { axiosReq, dailyWorkDay } from "../../api";
 import {
+  Autocomplete,
   Button,
   FormControl,
   MenuItem,
@@ -20,10 +21,38 @@ interface IDailyWorkForm {
 function DailyWorkForm({ setIsOpen, currentDate, refetch }: IDailyWorkForm) {
   const [department, setDepartment] = useState("");
   const [username, setUsername] = useState("");
-  const [content, setContent] = useState("");
-  const [nextContent, setNextContent] = useState("");
+  const [content, setContent] = useState("1. ");
+  const [nextContent, setNextContent] = useState("1. ");
   const { names, namesLoading, departments, departmentsLoading } =
     useCustomQueries();
+
+  // const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+  //   if (e.key === "Enter") {
+  //     e.preventDefault();
+
+  //     // target을 HTMLTextAreaElement로 타입 단언
+  //     const target = e.target as HTMLTextAreaElement;
+  //     const cursorPosition = target.selectionStart;
+  //     const textBeforeCursor = content.substring(0, cursorPosition);
+  //     const textAfterCursor = content.substring(cursorPosition);
+
+  //     const lines = textBeforeCursor.split("\n");
+  //     const currentLineNumber = lines.length;
+
+  //     const newText =
+  //       textBeforeCursor +
+  //       "\n" +
+  //       (currentLineNumber + 1) +
+  //       ". " +
+  //       textAfterCursor;
+  //     setContent(newText);
+
+  //     setTimeout(() => {
+  //       const newPosition = cursorPosition + 4;
+  //       target.setSelectionRange(newPosition, newPosition);
+  //     }, 0);
+  //   }
+  // };
 
   const onSubmit = async () => {
     const response = await axiosReq.post("/api/employee-inform/dailyWork/add", {
@@ -53,12 +82,22 @@ function DailyWorkForm({ setIsOpen, currentDate, refetch }: IDailyWorkForm) {
       window.removeEventListener("keydown", handleEsc);
     };
   }, [setIsOpen]);
+
+  const handleNameChange = (
+    event: React.SyntheticEvent,
+    username: string | null,
+  ) => {
+    if (username) {
+      setUsername(username);
+    }
+  };
+
   if (namesLoading || departmentsLoading) {
     return <div>Loading...</div>;
   }
   return (
     <div className="fixed inset-0 z-50 flex h-screen w-full items-center justify-center bg-black bg-opacity-25">
-      <div className="h-full w-[60%] overflow-y-auto rounded-lg bg-white p-6">
+      <div className="h-full w-[60%] overflow-y-auto rounded-lg bg-white p-6 sm:w-[90%]">
         <div className="mb-4 flex items-center justify-between">
           <h2 className="text-xl font-bold">일일 업무 현황</h2>
           <button
@@ -71,13 +110,13 @@ function DailyWorkForm({ setIsOpen, currentDate, refetch }: IDailyWorkForm) {
 
         <div className="rounded border">
           <div className="grid grid-cols-6 border-b">
-            <div className="col-span-1 flex items-center border-r bg-gray-100 p-2 font-semibold">
+            <div className="col-span-1 flex items-center whitespace-nowrap border-r bg-gray-100 p-2 font-semibold sm:text-xs">
               파트
             </div>
             <div className="col-span-5 p-2">
               <FormControl fullWidth>
                 <Select
-                  className="h-10 w-[15%]"
+                  className="h-10 w-[15%] sm:w-full"
                   value={department}
                   onChange={(e) => setDepartment(e.target.value)}
                 >
@@ -94,30 +133,28 @@ function DailyWorkForm({ setIsOpen, currentDate, refetch }: IDailyWorkForm) {
           </div>
 
           <div className="grid grid-cols-6 border-b">
-            <div className="col-span-1 flex items-center border-r bg-gray-100 p-2 font-semibold">
+            <div className="col-span-1 flex items-center whitespace-nowrap border-r bg-gray-100 p-2 font-semibold sm:text-xs">
               작성자
             </div>
             <div className="col-span-5 p-2">
               <FormControl fullWidth>
-                <Select
-                  className="h-10 w-[15%]"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                >
-                  {names
-                    ?.sort((a, b) => a.username.localeCompare(b.username))
-                    .map((item) => (
-                      <MenuItem key={item._id} value={item.username}>
-                        {item.username}
-                      </MenuItem>
-                    ))}
-                </Select>
+                <Autocomplete
+                  className="w-[15%] sm:w-full"
+                  size="small"
+                  options={
+                    names
+                      ?.sort((a, b) => a.username.localeCompare(b.username))
+                      ?.map((item) => item.username) || []
+                  }
+                  renderInput={(params) => <TextField {...params} />}
+                  onChange={handleNameChange}
+                />
               </FormControl>
             </div>
           </div>
 
           <div className="grid grid-cols-6 border-b">
-            <div className="col-span-1 flex items-center border-r bg-gray-100 p-2 font-semibold">
+            <div className="col-span-1 flex items-center whitespace-nowrap border-r bg-gray-100 p-2 font-semibold sm:text-xs">
               작성 일자
             </div>
             <div className="col-span-5 p-2">
@@ -127,13 +164,13 @@ function DailyWorkForm({ setIsOpen, currentDate, refetch }: IDailyWorkForm) {
 
           <div className="space-y-4">
             <div>
-              <h3 className="mb-2 p-1 font-bold">• {username}</h3>
               <TextField
                 fullWidth
                 multiline
-                rows={16}
+                rows={18}
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
+                // onKeyDown={handleKeyDown}
                 sx={{
                   "& .MuiOutlinedInput-root": {
                     borderRadius: 0,

@@ -2,13 +2,7 @@ import { useEffect, useState } from "react";
 import { axiosReq, dailyWorkDay } from "../../api";
 import { Edit, X } from "lucide-react";
 import { useCustomQueries } from "../../hooks/useCustomQuery";
-import {
-  Button,
-  FormControl,
-  MenuItem,
-  Select,
-  TextField,
-} from "@mui/material";
+import { Button, MenuItem, Select, TextField } from "@mui/material";
 
 interface IDailyWorkView {
   id: string;
@@ -29,24 +23,7 @@ function DailyWorkView({
   const [nextContent, setNextContent] = useState("");
   const [isOwner, setIsOwner] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const { names, namesLoading, departments, departmentsLoading } =
-    useCustomQueries();
-
-  const fetchDailyWork = async () => {
-    const response = await axiosReq.get(`/api/employee-inform/dailyWork/${id}`);
-    if (response.status !== 200) {
-      return;
-    }
-
-    const { username, department, content, nextContent, isOwner } =
-      response.data.dailyWork;
-
-    setUsername(username);
-    setDepartment(department);
-    setContent(content);
-    setNextContent(nextContent);
-    setIsOwner(isOwner);
-  };
+  const { names, departments } = useCustomQueries();
 
   const onSubmit = async () => {
     const response = await axiosReq.put("/api/employee-inform/dailyWork/edit", {
@@ -77,13 +54,30 @@ function DailyWorkView({
   }, [setViewId]);
 
   useEffect(() => {
+    const fetchDailyWork = async () => {
+      const response = await axiosReq.get(
+        `/api/employee-inform/dailyWork/${id}`,
+      );
+      if (response.status !== 200) {
+        return;
+      }
+
+      const { username, department, content, nextContent, isOwner } =
+        response.data.dailyWork;
+
+      setUsername(username);
+      setDepartment(department);
+      setContent(content);
+      setNextContent(nextContent);
+      setIsOwner(isOwner);
+    };
     fetchDailyWork();
-  }, []);
+  }, [id]);
 
   return (
     <div className="fixed inset-0 z-50 flex min-h-screen w-full items-center justify-center bg-black bg-opacity-25">
       <div
-        className={`h-full w-[60%] ${isEditing && "overflow-y-auto"} rounded-lg bg-white p-6`}
+        className={`h-full w-[60%] sm:w-[90%] ${isEditing && "overflow-y-auto"} rounded-lg bg-white p-6 sm:overflow-y-auto`}
       >
         <div className="mb-4 flex items-center justify-between">
           <h2 className="text-xl font-bold">일일 업무 현황</h2>
@@ -105,13 +99,13 @@ function DailyWorkView({
 
         <div className="flex h-full flex-col rounded">
           <div className="grid h-[4%] grid-cols-6 border-b border-r border-t">
-            <div className="col-span-1 flex items-center bg-gray-100 pl-2 font-semibold">
+            <div className="col-span-1 flex items-center bg-gray-100 pl-2 font-semibold sm:text-xs">
               파트
             </div>
             {isEditing ? (
               <div className="col-span-5 pl-2">
                 <Select
-                  className="h-8 w-[15%]"
+                  className="h-8 w-[15%] sm:w-full"
                   value={department}
                   onChange={(e) => setDepartment(e.target.value)}
                 >
@@ -134,13 +128,13 @@ function DailyWorkView({
           </div>
 
           <div className="grid h-[4%] grid-cols-6 border-b border-r">
-            <div className="col-span-1 flex items-center border-r bg-gray-100 pl-2 font-semibold">
+            <div className="col-span-1 flex items-center whitespace-nowrap border-r bg-gray-100 pl-2 font-semibold sm:text-xs">
               작성자
             </div>
             {isEditing ? (
               <div className="col-span-5 pl-2">
                 <Select
-                  className="h-8 w-[15%]"
+                  className="h-8 w-[15%] whitespace-nowrap sm:w-full"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                 >
@@ -155,13 +149,15 @@ function DailyWorkView({
               </div>
             ) : (
               <div className="col-span-5 pl-2">
-                <div className="flex h-8 w-[15%] items-center">{username}</div>
+                <div className="flex h-8 w-[15%] items-center whitespace-nowrap">
+                  {username}
+                </div>
               </div>
             )}
           </div>
 
           <div className="grid h-[4%] grid-cols-6 border-b border-r">
-            <div className="col-span-1 flex items-center border-r bg-gray-100 pl-2 font-semibold">
+            <div className="col-span-1 flex items-center whitespace-nowrap border-r bg-gray-100 pl-2 font-semibold sm:text-xs">
               작성 일자
             </div>
             <div className="col-span-5 flex items-center pl-2">
@@ -169,13 +165,15 @@ function DailyWorkView({
             </div>
           </div>
 
-          <div className="flex h-[60%] flex-col overflow-y-auto border-l border-r pl-3 pt-1">
-            <h3 className="mt-1 text-sm font-bold">• {username}</h3>
+          <div
+            className={`flex flex-col border-l border-r ${!isEditing && "h-[60%] pl-3 pt-1"}`}
+          >
+            <h3 className="ml-1 mt-1 text-sm font-bold">• {username}</h3>
             {isEditing ? (
               <TextField
                 fullWidth
                 multiline
-                rows={19}
+                rows={20}
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
                 sx={{
@@ -189,14 +187,15 @@ function DailyWorkView({
             )}
           </div>
 
-          <div className="grid h-[25%] grid-cols-6 border">
+          <div className={`grid grid-cols-6 border ${!isEditing && "h-[25%]"}`}>
             <div className="col-span-1 flex items-center border-r bg-gray-100 pl-2 font-semibold">
               내일 일과
             </div>
-            <div className="col-span-5 overflow-y-auto pl-3 pt-1">
-              <h4 className="mt-1 text-sm font-bold">• {username}</h4>
+            <div className={`col-span-5 ${!isEditing && "pl-3 pt-1"}`}>
+              <h4 className="ml-1 mt-1 text-sm font-bold">• {username}</h4>
               {isEditing ? (
                 <TextField
+                  className="overflow-y-auto"
                   fullWidth
                   multiline
                   rows={7}

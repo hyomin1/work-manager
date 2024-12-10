@@ -86,8 +86,12 @@ function TableContent({
     return (
       <TableBody>
         <TableRow>
-          <TableCell colSpan={7} className="text-center text-gray-400">
-            등록된 정보가 없습니다.
+          <TableCell
+            align="left"
+            colSpan={7}
+            className="text-center text-gray-400"
+          >
+            등록된 정보가 없습니다
           </TableCell>
         </TableRow>
       </TableBody>
@@ -118,7 +122,7 @@ function TableContent({
               )}
 
               <TableCell
-                className="border border-r-gray-200"
+                className="cursor-pointer border border-r-gray-200 group-hover:bg-gray-200"
                 align="center"
                 onClick={() => handleCellClick(item._id)}
                 sx={{
@@ -133,13 +137,13 @@ function TableContent({
               <TableCell
                 align="left"
                 onClick={() => handleCellClick(item._id)}
-                className="cursor-pointer truncate border border-r-gray-200 hover:bg-gray-200"
+                className="cursor-pointer truncate border border-r-gray-200 hover:bg-gray-200 group-hover:bg-gray-200"
                 sx={{
                   fontSize: "large",
                 }}
               >
-                {item.content.slice(0, 100)}
-                {item.content.length > 100 && "..."}
+                {item.content.slice(0, 115)}
+                {item.content.length > 115 && "..."}
               </TableCell>
 
               <TableCell

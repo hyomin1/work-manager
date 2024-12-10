@@ -27,22 +27,7 @@ function DailyWorkEdit({
   const [content, setContent] = useState("");
   const [nextContent, setNextContent] = useState("");
 
-  const { names, namesLoading, departments, departmentsLoading } =
-    useCustomQueries();
-
-  const fetchDailyWork = async () => {
-    const response = await axiosReq.get(`/api/employee-inform/dailyWork/${id}`);
-    if (response.status !== 200) {
-      return;
-    }
-
-    const { username, department, content, nextContent } =
-      response.data.dailyWork;
-    setUsername(username);
-    setDepartment(department);
-    setContent(content);
-    setNextContent(nextContent);
-  };
+  const { names, departments } = useCustomQueries();
 
   useEffect(() => {
     const handleEsc = (event: KeyboardEvent) => {
@@ -58,8 +43,23 @@ function DailyWorkEdit({
     };
   }, [setEditingItemId]);
   useEffect(() => {
+    const fetchDailyWork = async () => {
+      const response = await axiosReq.get(
+        `/api/employee-inform/dailyWork/${id}`,
+      );
+      if (response.status !== 200) {
+        return;
+      }
+
+      const { username, department, content, nextContent } =
+        response.data.dailyWork;
+      setUsername(username);
+      setDepartment(department);
+      setContent(content);
+      setNextContent(nextContent);
+    };
     fetchDailyWork();
-  }, []);
+  }, [id]);
 
   const onSubmit = async () => {
     const response = await axiosReq.put("/api/employee-inform/dailyWork/edit", {
@@ -77,7 +77,7 @@ function DailyWorkEdit({
 
   return (
     <div className="fixed inset-0 z-50 flex h-screen w-full items-center justify-center bg-black bg-opacity-25">
-      <div className="h-full w-[60%] overflow-y-auto rounded-lg bg-white p-6">
+      <div className="h-full w-[60%] overflow-y-auto rounded-lg bg-white p-6 sm:w-[90%]">
         <div className="mb-4 flex items-center justify-between">
           <h2 className="text-xl font-bold">일일 업무 현황</h2>
           <button
@@ -93,13 +93,13 @@ function DailyWorkEdit({
 
         <div className="rounded border">
           <div className="grid grid-cols-6 border-b">
-            <div className="col-span-1 flex items-center border-r bg-gray-100 p-2 font-semibold">
+            <div className="col-span-1 flex items-center whitespace-nowrap border-r bg-gray-100 p-2 font-semibold sm:text-xs">
               파트
             </div>
             <div className="col-span-5 p-2">
               <FormControl fullWidth>
                 <Select
-                  className="h-10 w-[15%]"
+                  className="h-10 w-[15%] sm:w-full"
                   value={department}
                   onChange={(e) => setDepartment(e.target.value)}
                 >
@@ -116,13 +116,13 @@ function DailyWorkEdit({
           </div>
 
           <div className="grid grid-cols-6 border-b">
-            <div className="col-span-1 flex items-center border-r bg-gray-100 p-2 font-semibold">
+            <div className="col-span-1 flex items-center whitespace-nowrap border-r bg-gray-100 p-2 font-semibold sm:text-xs">
               작성자
             </div>
             <div className="col-span-5 p-2">
               <FormControl fullWidth>
                 <Select
-                  className="h-10 w-[15%]"
+                  className="h-10 w-[15%] sm:w-full"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                 >
@@ -139,7 +139,7 @@ function DailyWorkEdit({
           </div>
 
           <div className="grid grid-cols-6 border-b">
-            <div className="col-span-1 flex items-center border-r bg-gray-100 p-2 font-semibold">
+            <div className="col-span-1 flex items-center whitespace-nowrap border-r bg-gray-100 p-2 font-semibold sm:text-xs">
               작성 일자
             </div>
             <div className="col-span-5 p-2">

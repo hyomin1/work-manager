@@ -263,14 +263,14 @@ function SchedulePage() {
               >
                 <Trash2 strokeWidth={2.2} />
               </button>
-              {editingItemId && (
-                <EmployeeEdit
-                  currentDate={tooltip.event.extendedProps.startDate}
-                  item={tooltip.event.extendedProps}
-                  setEditingItemId={setEditingItemId}
-                />
-              )}
             </div>
+            {editingItemId && (
+              <EmployeeEdit
+                currentDate={tooltip.event.extendedProps.startDate}
+                item={tooltip.event.extendedProps}
+                setEditingItemId={setEditingItemId}
+              />
+            )}
           </div>
           <p className="mb-2 text-xs">
             {calMonth(new Date(tooltip.event.extendedProps.startDate))}월{" "}

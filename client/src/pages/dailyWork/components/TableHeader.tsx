@@ -7,9 +7,10 @@ function TableHeader() {
       <TableRow>
         {dailyWorkHeaders.map((header, index) => (
           <TableCell
-            className="border border-r-gray-200"
+            className="border border-r"
             align="center"
             sx={{
+              width: `${header === "내용" ? "80%" : "5%"}`,
               fontWeight: "600",
               whiteSpace: "nowrap",
               fontSize: "large",
