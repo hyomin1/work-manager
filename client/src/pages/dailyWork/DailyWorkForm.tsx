@@ -27,6 +27,7 @@ function DailyWorkForm({ setIsOpen, currentDate, refetch }: IDailyWorkForm) {
 
   const onSubmit = async () => {
     const response = await axiosReq.post("/api/employee-inform/dailyWork/add", {
+      writingDate: currentDate,
       username,
       department,
       content,

@@ -6,6 +6,7 @@ interface IDailyWork {
   content: string;
   nextContent: string;
   writerId: ObjectId;
+  writingDate: Date;
 }
 
 const dailyWorkSchema = new Schema<IDailyWork>(
@@ -19,6 +20,7 @@ const dailyWorkSchema = new Schema<IDailyWork>(
       ref: 'User',
       required: true,
     },
+    writingDate: { type: Date, required: true },
   },
   {
     timestamps: true,

@@ -42,7 +42,7 @@ export const getDailyWorks = async (req: Request, res: Response) => {
 
     const dailyWorks = await DailyWork.find(
       {
-        createdAt: { $gte: startOfDay, $lte: endOfDay },
+        writingDate: { $gte: startOfDay, $lte: endOfDay },
       },
       {
         username: 1,
@@ -77,7 +77,7 @@ export const addDailyWork = async (req: Request, res: Response) => {
       .status(403)
       .json({ type: 'not User', error: '다시 로그인 해주세요' });
   }
-  const { username, department, content, nextContent } = req.body;
+  const { writingDate, username, department, content, nextContent } = req.body;
   try {
     if (!username || !department || !content || !nextContent) {
       return res.status(400).json({ error: '내용을 입력해주세요' });

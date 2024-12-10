@@ -180,6 +180,7 @@ function TableContent({
           id={viewId}
           setViewId={setViewId}
           currentDate={currentDate}
+          refetch={refetch}
         />
       )}
       {editingItemId && (
