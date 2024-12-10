@@ -11,13 +11,24 @@ export const getDailyWork = async (req: Request, res: Response) => {
   const { id } = req.params;
 
   try {
-    const dailyWork = await DailyWork.findById(id);
+    const data = await DailyWork.findById(id);
 
-    if (!dailyWork) {
+    if (!data) {
       return res
         .status(400)
         .json({ error: '일일업무 현황이 올바르지 않습니다.' });
     }
+    const user = await User.findById(req.session.userId);
+    if (!user) {
+      return res.status(400).json({ error: '유저 정보가 올바르지 않습니다.' });
+    }
+    const dailyWorkDoc = data.toObject();
+    const dailyWork = {
+      ...dailyWorkDoc,
+      isOwner:
+        dailyWorkDoc.writerId.toString() === req.session.userId ||
+        user.role === 3,
+    };
     return res.status(200).json({ dailyWork });
   } catch (error) {
     console.error(error);

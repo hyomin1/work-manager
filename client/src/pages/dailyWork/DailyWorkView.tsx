@@ -27,7 +27,7 @@ function DailyWorkView({
   const [department, setDepartment] = useState("");
   const [content, setContent] = useState("");
   const [nextContent, setNextContent] = useState("");
-
+  const [isOwner, setIsOwner] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const { names, namesLoading, departments, departmentsLoading } =
     useCustomQueries();
@@ -38,12 +38,14 @@ function DailyWorkView({
       return;
     }
 
-    const { username, department, content, nextContent } =
+    const { username, department, content, nextContent, isOwner } =
       response.data.dailyWork;
+
     setUsername(username);
     setDepartment(department);
     setContent(content);
     setNextContent(nextContent);
+    setIsOwner(isOwner);
   };
 
   const onSubmit = async () => {
@@ -86,12 +88,15 @@ function DailyWorkView({
         <div className="mb-4 flex items-center justify-between">
           <h2 className="text-xl font-bold">일일 업무 현황</h2>
           <div className="flex items-center">
-            <button
-              onClick={() => setIsEditing((prev) => !prev)}
-              className="hover:opacity-60"
-            >
-              <Edit className="mr-2 md:h-6 md:w-6" strokeWidth={2.2} />
-            </button>
+            {isOwner && (
+              <button
+                onClick={() => setIsEditing((prev) => !prev)}
+                className="hover:opacity-60"
+              >
+                <Edit className="mr-2 md:h-6 md:w-6" strokeWidth={2.2} />
+              </button>
+            )}
+
             <button onClick={() => setViewId("")} className="hover:opacity-60">
               <X className="md:h-7 md:w-7" strokeWidth={2.2} />
             </button>

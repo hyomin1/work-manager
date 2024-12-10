@@ -40,12 +40,14 @@ function EmployeeTableBody({ refetch }: EmployeeTableBodyProps) {
   const sortEmployeeInform = () => {
     return [...inform].sort((a, b) => {
       const destinationCompare = a.destination.localeCompare(b.destination);
-
-      if (destinationCompare === 0) {
-        return a.username.localeCompare(b.username);
-      }
-
-      return destinationCompare;
+      if (destinationCompare !== 0) return destinationCompare;
+      const businessCompare = a.business.localeCompare(b.business);
+      if (businessCompare !== 0) return businessCompare;
+      const workCompare = a.work.localeCompare(b.work);
+      if (workCompare !== 0) return workCompare;
+      const carCompare = a.car.localeCompare(b.car);
+      if (carCompare !== 0) return carCompare;
+      return a.username.localeCompare(b.username);
     });
   };
 
