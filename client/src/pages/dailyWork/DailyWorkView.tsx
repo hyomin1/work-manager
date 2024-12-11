@@ -98,12 +98,12 @@ function DailyWorkView({
         </div>
 
         <div className="flex h-full flex-col rounded">
-          <div className="grid h-[4%] grid-cols-6 border-b border-r border-t">
-            <div className="col-span-1 flex items-center bg-gray-100 pl-2 font-semibold sm:text-xs">
+          <div className="grid h-[4%] grid-cols-9 border-b border-r border-t">
+            <div className="col-span-1 flex items-center justify-center bg-gray-100 font-semibold sm:text-xs">
               파트
             </div>
             {isEditing ? (
-              <div className="col-span-5 pl-2">
+              <div className="col-span-8 flex justify-center">
                 <Select
                   className="h-8 w-[15%] sm:w-full"
                   value={department}
@@ -119,20 +119,20 @@ function DailyWorkView({
                 </Select>
               </div>
             ) : (
-              <div className="col-span-5 pl-2">
-                <div className="flex h-8 w-[15%] items-center">
+              <div className="col-span-8">
+                <div className="flex h-8 items-center justify-center">
                   {department}
                 </div>
               </div>
             )}
           </div>
 
-          <div className="grid h-[4%] grid-cols-6 border-b border-r">
-            <div className="col-span-1 flex items-center whitespace-nowrap border-r bg-gray-100 pl-2 font-semibold sm:text-xs">
+          <div className="grid h-[4%] grid-cols-9 border-b border-r">
+            <div className="col-span-1 flex items-center justify-center whitespace-nowrap border-r bg-gray-100 font-semibold sm:text-xs">
               작성자
             </div>
             {isEditing ? (
-              <div className="col-span-5 pl-2">
+              <div className="col-span-8 flex justify-center">
                 <Select
                   className="h-8 w-[15%] whitespace-nowrap sm:w-full"
                   value={username}
@@ -148,19 +148,19 @@ function DailyWorkView({
                 </Select>
               </div>
             ) : (
-              <div className="col-span-5 pl-2">
-                <div className="flex h-8 w-[15%] items-center whitespace-nowrap">
+              <div className="col-span-8">
+                <div className="flex h-8 items-center justify-center whitespace-nowrap">
                   {username}
                 </div>
               </div>
             )}
           </div>
 
-          <div className="grid h-[4%] grid-cols-6 border-b border-r">
-            <div className="col-span-1 flex items-center whitespace-nowrap border-r bg-gray-100 pl-2 font-semibold sm:text-xs">
+          <div className="grid h-[4%] grid-cols-9 border-b border-r">
+            <div className="col-span-1 flex items-center justify-center whitespace-nowrap border-r bg-gray-100 pl-2 font-semibold sm:text-xs">
               작성 일자
             </div>
-            <div className="col-span-5 flex items-center pl-2">
+            <div className="col-span-8 flex items-center justify-center">
               {dailyWorkDay(currentDate || new Date())}
             </div>
           </div>
@@ -183,15 +183,17 @@ function DailyWorkView({
                 }}
               />
             ) : (
-              <div className="mt-1 whitespace-pre-line">{content}</div>
+              <div className="mt-1 overflow-y-auto whitespace-pre-line">
+                {content}
+              </div>
             )}
           </div>
 
-          <div className={`grid grid-cols-6 border ${!isEditing && "h-[25%]"}`}>
-            <div className="col-span-1 flex items-center border-r bg-gray-100 pl-2 font-semibold">
+          <div className={`grid grid-cols-9 border ${!isEditing && "h-[25%]"}`}>
+            <div className="col-span-1 flex items-center justify-center border-r bg-gray-100 pl-2 font-semibold">
               내일 일과
             </div>
-            <div className={`col-span-5 ${!isEditing && "pl-3 pt-1"}`}>
+            <div className={`col-span-8 h-full ${!isEditing && "pl-3 pt-1"}`}>
               <h4 className="ml-1 mt-1 text-sm font-bold">• {username}</h4>
               {isEditing ? (
                 <TextField
@@ -208,7 +210,7 @@ function DailyWorkView({
                   }}
                 />
               ) : (
-                <div className="overflow-y-auto whitespace-pre-line">
+                <div className="h-full max-h-[20vh] overflow-y-auto whitespace-pre-line">
                   {nextContent}
                 </div>
               )}

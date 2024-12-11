@@ -109,14 +109,14 @@ function DailyWorkForm({ setIsOpen, currentDate, refetch }: IDailyWorkForm) {
         </div>
 
         <div className="rounded border">
-          <div className="grid grid-cols-6 border-b">
-            <div className="col-span-1 flex items-center whitespace-nowrap border-r bg-gray-100 p-2 font-semibold sm:text-xs">
+          <div className="grid grid-cols-9 border-b">
+            <div className="col-span-1 flex items-center justify-center whitespace-nowrap border-r bg-gray-100 font-semibold sm:text-xs">
               파트
             </div>
-            <div className="col-span-5 p-2">
+            <div className="col-span-8 pl-2">
               <FormControl fullWidth>
                 <Select
-                  className="h-10 w-[15%] sm:w-full"
+                  className="h-8 w-[15%] whitespace-nowrap sm:w-full"
                   value={department}
                   onChange={(e) => setDepartment(e.target.value)}
                 >
@@ -132,11 +132,11 @@ function DailyWorkForm({ setIsOpen, currentDate, refetch }: IDailyWorkForm) {
             </div>
           </div>
 
-          <div className="grid grid-cols-6 border-b">
-            <div className="col-span-1 flex items-center whitespace-nowrap border-r bg-gray-100 p-2 font-semibold sm:text-xs">
+          <div className="grid grid-cols-9 border-b">
+            <div className="col-span-1 flex items-center justify-center whitespace-nowrap border-r bg-gray-100 font-semibold sm:text-xs">
               작성자
             </div>
-            <div className="col-span-5 p-2">
+            <div className="col-span-8 pl-2">
               <FormControl fullWidth>
                 <Autocomplete
                   className="w-[15%] sm:w-full"
@@ -153,11 +153,11 @@ function DailyWorkForm({ setIsOpen, currentDate, refetch }: IDailyWorkForm) {
             </div>
           </div>
 
-          <div className="grid grid-cols-6 border-b">
-            <div className="col-span-1 flex items-center whitespace-nowrap border-r bg-gray-100 p-2 font-semibold sm:text-xs">
+          <div className="grid grid-cols-9 border-b">
+            <div className="col-span-1 flex items-center justify-center whitespace-nowrap border-r bg-gray-100 font-semibold sm:text-xs">
               작성 일자
             </div>
-            <div className="col-span-5 p-2">
+            <div className="col-span-8 pl-2">
               {dailyWorkDay(currentDate || new Date())}
             </div>
           </div>
@@ -180,11 +180,11 @@ function DailyWorkForm({ setIsOpen, currentDate, refetch }: IDailyWorkForm) {
             </div>
           </div>
 
-          <div className="grid grid-cols-6 border-b">
-            <div className="col-span-1 flex items-center border-r bg-gray-100 p-2 font-semibold">
+          <div className="grid grid-cols-9 border-b">
+            <div className="col-span-1 flex items-center justify-center border-r bg-gray-100 p-2 font-semibold">
               내일 일과
             </div>
-            <div className="col-span-5">
+            <div className="col-span-8">
               <TextField
                 fullWidth
                 multiline

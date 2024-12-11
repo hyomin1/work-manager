@@ -1,30 +1,29 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
+import { SetStateAction } from "react";
 import { useCustomQueries } from "../../hooks/useCustomQuery";
-import { IInform, FormData } from "../../interfaces/interface";
-import { useQueryClient } from "@tanstack/react-query";
-import { axiosReq } from "../../api";
+import { Autocomplete, TextField } from "@mui/material";
 import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker";
-import dayjs, { Dayjs } from "dayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-
+import dayjs, { Dayjs } from "dayjs";
 import "dayjs/locale/ko";
-import { Autocomplete, TextField } from "@mui/material";
+import { axiosReq } from "../../api";
+
 dayjs.locale("ko");
 
-interface IEditInformProps {
-  item: IInform;
-  currentDate: Date;
-  setEditingItemId: React.Dispatch<React.SetStateAction<string>>;
-  onUpdate?: (updatedData: any) => void;
+interface IScheduleAdd {
+  showAddForm: boolean;
+  setShowAddForm: React.Dispatch<SetStateAction<boolean>>;
+  refetch: () => void;
+  date: Date | null;
 }
 
-function EmployeeEdit({
-  item,
-  setEditingItemId,
-  currentDate,
-  onUpdate,
-}: IEditInformProps) {
+export default function ScheduleAdd({
+  showAddForm,
+  setShowAddForm,
+  refetch,
+  date,
+}: IScheduleAdd) {
   const {
     names,
     namesLoading,
@@ -38,7 +37,16 @@ function EmployeeEdit({
     carsLoading,
   } = useCustomQueries();
 
-  const queryClient = useQueryClient();
+  const [formData, setFormData] = useState({
+    startDate: date,
+    endDate: date,
+    username: "",
+    destination: "",
+    business: "",
+    work: "",
+    car: "",
+    remarks: "",
+  });
 
   const isLoading =
     namesLoading ||
@@ -47,31 +55,29 @@ function EmployeeEdit({
     worksLoading ||
     carsLoading;
 
-  const [formData, setFormData] = useState<FormData>({
-    date: currentDate,
-    username: item.username,
-    destination: item.destination,
-    business: item.business,
-    work: item.work,
-    car: item.car,
-    startDate: item.startDate,
-    endDate: item.endDate,
-    remarks: item.remarks,
-  });
-
-  const updateField = (field: string, value: any) => {
-    setFormData((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
-  };
-
   const carOptions = [
     "선택 안함",
     ...(cars
       ? cars.sort((a, b) => a.car.localeCompare(b.car)).map((item) => item.car)
       : []),
   ];
+
+  const handleClick = async () => {
+    const res = await axiosReq.post("/api/employee-inform/addInform", {
+      username: formData.username,
+      destination: formData.destination,
+      business: formData.business,
+      work: formData.work,
+      car: formData.car,
+      startDate: formData.startDate,
+      endDate: formData.endDate,
+      remarks: formData.remarks,
+    });
+    if (res.status === 200) {
+      refetch();
+      setShowAddForm(false);
+    }
+  };
 
   useEffect(() => {
     if (formData.business && businessesData && destinationsData) {
@@ -86,112 +92,66 @@ function EmployeeEdit({
           matchingDestination &&
           matchingDestination.destination !== formData.destination
         ) {
-          updateField("destination", matchingDestination.destination);
+          setFormData((prev) => ({
+            ...prev,
+            destination: matchingDestination.destination,
+          }));
         }
       }
     }
-  }, [formData, businessesData, destinationsData]);
+  }, [
+    formData.business,
+    businessesData,
+    destinationsData,
+    formData.destination,
+  ]);
 
-  const validateForm = () => {
-    if (!formData.username) {
-      return alert("이름을 선택해주세요");
-    }
-    if (!formData.destination) {
-      return alert("방문지를 선택해주세요");
-    }
-    if (!formData.business) {
-      return alert("사업명을 선택해주세요");
-    }
-    if (!formData.work) {
-      return alert("업무를 선택해주세요");
-    }
-  };
-
-  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    validateForm();
-
-    const updatedData = {
-      _id: item._id,
-      ...formData,
-      startDate: formData.startDate,
-      endDate: formData.endDate,
-    };
-
-    const response = await axiosReq.put(
-      "/api/employee-inform/editInform",
-      updatedData,
-    );
-
-    if (response.status !== 200) {
-      return;
-    }
-
-    alert(response.data.message);
-    queryClient.invalidateQueries({ queryKey: ["employeeInform"] });
-
-    // 성공적으로 수정되면 onUpdate 호출
-    if (onUpdate) {
-      onUpdate(updatedData);
-    }
-
-    setEditingItemId("");
-  };
+  //   const datePickerStyles = {
+  //     width: "100%",
+  //     "& .MuiOutlinedInput-root": {
+  //       backgroundColor: "white",
+  //     },
+  //   };
 
   if (isLoading) {
     return <div>Loading...</div>;
   }
 
-  const datePickerStyles = {
-    width: "100%",
-    "& .MuiOutlinedInput-root": {
-      backgroundColor: "white",
-    },
-  };
-
   return (
     <div className="fixed inset-0 top-0 z-10 flex w-full items-center justify-center bg-black bg-opacity-65 px-4">
-      <form
-        onSubmit={onSubmit}
-        className="flex w-[40%] flex-col rounded-lg bg-white p-6 shadow-lg"
-      >
-        <h2 className="mb-4 text-center text-xl font-bold">정보 수정</h2>
+      <div className="flex w-[40%] flex-col rounded-lg bg-white p-6 shadow-lg">
+        <h2 className="mb-4 text-center text-xl font-bold">일정 추가</h2>
         <div className="flex flex-col">
-          <div className="my-2">
+          {/* <div className="my-2">
             <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ko">
-              {item.isDaily === 3 ? (
-                <div className="mt-4 flex">
-                  <MobileDatePicker
-                    label="시작일"
-                    onChange={(newDate: Dayjs | null) =>
-                      newDate && updateField("startDate", newDate.toDate())
-                    }
-                    value={dayjs(formData.startDate)}
-                    sx={datePickerStyles}
-                  />
-                  <MobileDatePicker
-                    label="종료일"
-                    onChange={(newDate: Dayjs | null) =>
-                      newDate && updateField("endDate", newDate.toDate())
-                    }
-                    value={dayjs(formData.endDate)}
-                    sx={datePickerStyles}
-                  />
-                </div>
-              ) : (
+              <div className="flex gap-2 mt-4">
                 <MobileDatePicker
                   label="시작일"
-                  onChange={(newDate: Dayjs | null) => {
-                    if (newDate) updateField("startDate", newDate.toDate());
-                    if (newDate) updateField("endDate", newDate.toDate());
-                  }}
                   value={dayjs(formData.startDate)}
+                  onChange={(newDate: Dayjs | null) =>
+                    newDate &&
+                    setFormData((prev) => ({
+                      ...prev,
+                      startDate: newDate.toDate(),
+                    }))
+                  }
                   sx={datePickerStyles}
                 />
-              )}
+                <MobileDatePicker
+                  label="종료일"
+                  value={dayjs(formData.endDate)}
+                  onChange={(newDate: Dayjs | null) =>
+                    newDate &&
+                    setFormData((prev) => ({
+                      ...prev,
+                      endDate: newDate.toDate(),
+                    }))
+                  }
+                  sx={datePickerStyles}
+                />
+              </div>
             </LocalizationProvider>
-          </div>
+          </div> */}
 
           <div className="my-2">
             <Autocomplete
@@ -202,9 +162,15 @@ function EmployeeEdit({
                   .map((item) => item.username) || []
               }
               renderInput={(params) => <TextField {...params} label="이름" />}
-              onChange={(_, value) => value && updateField("username", value)}
+              onChange={(_, value) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  username: value || "",
+                }))
+              }
             />
           </div>
+
           <div className="my-2">
             <Autocomplete
               value={formData.destination}
@@ -215,13 +181,15 @@ function EmployeeEdit({
               }
               renderInput={(params) => <TextField {...params} label="방문지" />}
               onChange={(_, value) => {
-                if (value) {
-                  updateField("destination", value);
-                  updateField("business", "");
-                }
+                setFormData((prev) => ({
+                  ...prev,
+                  destination: value || "",
+                  business: "", // Reset business when destination changes
+                }));
               }}
             />
           </div>
+
           <div className="my-2">
             <Autocomplete
               value={formData.business}
@@ -237,9 +205,15 @@ function EmployeeEdit({
                   .map((item) => item.business) || []
               }
               renderInput={(params) => <TextField {...params} label="사업명" />}
-              onChange={(_, value) => value && updateField("business", value)}
+              onChange={(_, value) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  business: value || "",
+                }))
+              }
             />
           </div>
+
           <div className="my-2">
             <Autocomplete
               value={formData.work}
@@ -249,17 +223,29 @@ function EmployeeEdit({
                   .map((item) => item.work) || []
               }
               renderInput={(params) => <TextField {...params} label="업무" />}
-              onChange={(_, value) => value && updateField("work", value)}
+              onChange={(_, value) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  work: value || "",
+                }))
+              }
             />
           </div>
+
           <div className="my-2">
             <Autocomplete
               value={formData.car}
               options={carOptions}
               renderInput={(params) => <TextField {...params} label="차량" />}
-              onChange={(_, value) => value && updateField("car", value)}
+              onChange={(_, value) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  car: value || "",
+                }))
+              }
             />
           </div>
+
           <div className="my-2">
             <TextField
               fullWidth
@@ -267,29 +253,33 @@ function EmployeeEdit({
               rows={2}
               label="비고"
               value={formData.remarks}
-              onChange={(e) => updateField("remarks", e.target.value)}
+              onChange={(e) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  remarks: e.target.value,
+                }))
+              }
             />
           </div>
         </div>
 
         <div className="mt-2 flex justify-between">
           <button
-            type="submit"
+            onClick={handleClick}
+            type="button"
             className="rounded bg-blue-500 px-4 py-2 text-white hover:opacity-80"
           >
-            변경
+            추가
           </button>
           <button
             type="button"
-            onClick={() => setEditingItemId("")}
+            onClick={() => setShowAddForm(false)}
             className="rounded bg-gray-300 px-4 py-2 hover:opacity-80"
           >
             취소
           </button>
         </div>
-      </form>
+      </div>
     </div>
   );
 }
-
-export default EmployeeEdit;

@@ -2,14 +2,16 @@
   display: flex;
   flex-direction: column;
   height: 100vh;
-  padding: 20px;
+  width: 100vw;
   background-color: #f8fafc;
 }
 
 .fc {
+  height: 100vh;
   background: white;
-  padding: 20px;
-  border-radius: 24px;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  padding: 0px;
   box-shadow:
     0 4px 6px -1px rgba(0, 0, 0, 0.1),
     0 2px 4px -1px rgba(0, 0, 0, 0.06);
@@ -20,20 +22,31 @@
   border: none !important;
 }
 
+.fc-scrollgrid-sync-inner {
+  /*border-left: 1px solid lightgray;*/
+}
+
 .fc-scrollgrid-section-header {
   background-color: #fff;
 }
 
 .fc-col-header-cell {
-  padding: 12px 0 !important;
-  background-color: #f8fafc !important;
+  background-color: #f5f5f5 !important;
   border: none !important;
+}
+
+.fc-col-header-cell-cushion {
+  font-size: 0.9rem;
+}
+.fc-daygrid-day-frame {
+  border-left: 1px solid #f5f5f5;
+  border-bottom: 1px solid #f5f5f5;
 }
 
 .fc-daygrid-day {
   transition: all 0.2s ease;
   border: 1px solid #f1f5f9 !important;
-  min-height: 120px !important; /* 셀 높이 증가 */
+  min-height: 100px !important; /* 셀 높이 증가 */
 }
 
 .fc-daygrid-day:hover {
@@ -42,31 +55,51 @@
 
 /* 날짜 셀 스타일링 */
 .fc-daygrid-day-frame {
-  padding: 8px !important;
+  padding: 0px !important;
+  height: 120px;
 }
 
 .fc-daygrid-day-top {
   justify-content: center !important;
+  padding: 0px;
 }
 
 .fc-daygrid-day-number {
-  font-size: 0.9rem;
+  font-size: 1rem;
   font-weight: 500;
   padding: 4px 8px !important;
   border-radius: 20px;
 }
 
-/* 이벤트 스타일링 - 더 선명하게 수정 */
+.fc-col-header-cell {
+  padding: 0px;
+  font-size: 1rem;
+}
+.fc-highlight-day {
+  background-color: black !important;
+}
+
+/* 이벤트 스타일링  */
 .fc-event {
+  cursor: pointer;
   border: none !important;
   border-radius: 8px !important;
-  padding: 0px 10px !important;
+  padding: 0px 8px !important;
   margin-bottom: 4px !important;
-  font-size: 0.875rem !important; /* 폰트 크기 증가 */
-  background-color: #0ea5e9 !important; /* 더 진한 파란색 */
-  color: white !important; /* 흰색 텍스트로 변경 */
+  font-size: 0.875rem !important;
+  background-color: #fce4d6 !important;
+  color: #dbe9f6 !important;
   font-weight: 500 !important;
+  text-align: center;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* 이벤트 제목 */
+.fc-event-title {
+  text-align: center;
+  color: #784212;
+  font-size: 1.1rem;
+  font-weight: 600;
 }
 
 .fc-event:hover {
@@ -76,13 +109,14 @@
 
 /* 이벤트 더보기 버튼 스타일링 */
 .fc-daygrid-more-link {
-  color: #0ea5e9 !important;
+  color: #e95420 !important;
   font-weight: 500 !important;
 }
 
 /* 헤더 툴바 스타일링 */
 .fc-header-toolbar {
-  margin-bottom: 2rem !important;
+  margin-top: 1rem;
+  margin-bottom: 1rem !important;
   padding: 0 1rem;
 }
 
@@ -131,13 +165,24 @@
 }
 
 .fc-day-today .fc-daygrid-day-number {
-  background-color: #0077b6;
+  background-color: #f37547;
+
   color: white !important;
 }
 
 /* 이전/다음 달 날짜 스타일링 */
 .fc-day-other .fc-daygrid-day-number {
   color: #cbd5e1 !important;
+}
+
+.fc-day {
+  font-size: 1rem;
+}
+.fc-day-today {
+  background-color: transparent !important;
+}
+.fc-daygrid-day.fc-day-today:hover {
+  background-color: #f8fafc !important; /* Hover 효과 추가 */
 }
 
 /* 모바일 대응 */
@@ -153,5 +198,8 @@
   .fc-button {
     padding: 6px 12px !important;
     font-size: 0.75rem !important;
+  }
+  .fc-toolbar-title {
+    white-space: nowrap;
   }
 }

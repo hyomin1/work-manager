@@ -142,8 +142,8 @@ function TableContent({
                   fontSize: "large",
                 }}
               >
-                {item.content.slice(0, 115)}
-                {item.content.length > 115 && "..."}
+                {item.content.slice(0, 100)}
+                {item.content.length > 100 && "..."}
               </TableCell>
 
               <TableCell
