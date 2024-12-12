@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { QueryClient } from "@tanstack/react-query";
 import { axiosReq } from "../../api";
 
@@ -36,6 +36,17 @@ function AdminAdd({ setIsAdding, type, queryClient, destination }: IAddData) {
         return "";
     }
   };
+  useEffect(() => {
+    const handleEsc = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setIsAdding(false);
+      }
+    };
+    window.addEventListener("keydown", handleEsc);
+    return () => {
+      window.removeEventListener("keydown", handleEsc);
+    };
+  }, [setIsAdding]);
 
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);

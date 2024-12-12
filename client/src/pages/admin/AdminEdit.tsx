@@ -1,5 +1,5 @@
 import { QueryClient } from "@tanstack/react-query";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { axiosReq } from "../../api";
 interface IEditData {
@@ -23,6 +23,18 @@ function AdminEdit({
   const [inputValue, setInputValue] = useState(
     item && item[type] ? item[type] : "",
   );
+
+  useEffect(() => {
+    const handleEsc = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setIsEditing(false);
+      }
+    };
+    window.addEventListener("keydown", handleEsc);
+    return () => {
+      window.removeEventListener("keydown", handleEsc);
+    };
+  }, [setIsEditing]);
 
   const handleCancel = () => {
     setIsEditing(false);

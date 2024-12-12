@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ICarServiceBase } from "../../../interfaces/interface";
 import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker";
 import dayjs, { Dayjs } from "dayjs";
@@ -29,6 +29,18 @@ function ServiceEdit({ item, setEditingItemId }: IServiceEdit) {
     mileage: item.mileage,
     note: item.note,
   });
+
+  useEffect(() => {
+    const handleEsc = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setEditingItemId("");
+      }
+    };
+    window.addEventListener("keydown", handleEsc);
+    return () => {
+      window.removeEventListener("keydown", handleEsc);
+    };
+  }, [setEditingItemId]);
 
   const updateField = (field: string, value: any) => {
     setFormData((prev) => ({

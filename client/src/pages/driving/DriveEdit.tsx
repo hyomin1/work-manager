@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IDrivingInform } from "../../interfaces/interface";
 import { useCustomQueries } from "../../hooks/useCustomQuery";
 
@@ -26,6 +26,18 @@ function EditDrivingInform({ item, setEditingItemId }: IEditInformProps) {
 
   const queryClient = useQueryClient();
   const [drivers, setDrivers] = useState(item.username.split(", "));
+
+  useEffect(() => {
+    const handleEsc = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setEditingItemId("");
+      }
+    };
+    window.addEventListener("keydown", handleEsc);
+    return () => {
+      window.removeEventListener("keydown", handleEsc);
+    };
+  }, [setEditingItemId]);
 
   const handleDriveDayChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDriveDay(new Date(e.target.value));
@@ -250,17 +262,17 @@ function EditDrivingInform({ item, setEditingItemId }: IEditInformProps) {
           </div>
         </div>
 
-        <div className="mt-6 flex justify-end gap-4">
+        <div className="mt-6 flex justify-between gap-4">
           <button
             type="submit"
-            className="rounded bg-blue-500 px-6 py-2 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="w-[20%] rounded bg-blue-500 px-6 py-2 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
           >
             변경
           </button>
           <button
             type="button"
             onClick={() => setEditingItemId("")}
-            className="rounded bg-gray-200 px-6 py-2 text-gray-700 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400"
+            className="w-[20%] rounded bg-gray-200 px-6 py-2 text-gray-700 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400"
           >
             취소
           </button>

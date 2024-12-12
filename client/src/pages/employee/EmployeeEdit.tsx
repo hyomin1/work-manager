@@ -59,6 +59,18 @@ function EmployeeEdit({
     remarks: item.remarks,
   });
 
+  useEffect(() => {
+    const handleEsc = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setEditingItemId("");
+      }
+    };
+    window.addEventListener("keydown", handleEsc);
+    return () => {
+      window.removeEventListener("keydown", handleEsc);
+    };
+  }, [setEditingItemId]);
+
   const updateField = (field: string, value: any) => {
     setFormData((prev) => ({
       ...prev,
