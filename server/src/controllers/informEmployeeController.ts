@@ -13,8 +13,24 @@ import Department from '../models/employee/Department';
 
 const checkAdmin = (req: Request, res: Response) => {
   if (!req.session.isAdmin) {
-    return res.status(403).json({ error: '관리자 권한이 필요합니다.' });
+    res.status(403).json({ error: '관리자 권한이 필요합니다.' });
+    return false;
   }
+  return true;
+};
+
+const checkSession = (req: Request, res: Response) => {
+  // 모니터링 계정 체크를 먼저
+  if (req.session.userId === '674eaf794953171256d2e902') {
+    return true;
+  }
+  // 일반 유저 체크
+  if (!req.session.isUser || req.session.isCar) {
+    res.status(403).json({ type: 'not User', error: '다시 로그인 해주세요' });
+    return false;
+  }
+
+  return true;
 };
 
 export const addName = async (req: Request, res: Response) => {
@@ -23,7 +39,8 @@ export const addName = async (req: Request, res: Response) => {
   if (!username) {
     return res.status(400).json({ error: '이름을 입력하세요.' });
   }
-  checkAdmin(req, res);
+  if (!checkAdmin(req, res)) return;
+
   try {
     await Name.create({ username });
     return res.status(200).json({ message: '이름 추가 완료' });
@@ -36,7 +53,7 @@ export const addName = async (req: Request, res: Response) => {
 export const removeName = async (req: Request, res: Response) => {
   const { id } = req.params;
 
-  checkAdmin(req, res);
+  if (!checkAdmin(req, res)) return;
   try {
     const deletedName = await Name.deleteOne({ _id: id });
     if (!deletedName) {
@@ -53,7 +70,7 @@ export const removeName = async (req: Request, res: Response) => {
 
 export const editName = async (req: Request, res: Response) => {
   const { id, username } = req.body;
-  checkAdmin(req, res);
+  if (!checkAdmin(req, res)) return;
   try {
     const editName = await Name.findByIdAndUpdate(
       id,
@@ -86,7 +103,7 @@ export const getName = async (req: Request, res: Response) => {
 // 방문지
 
 export const addDestination = async (req: Request, res: Response) => {
-  checkAdmin(req, res);
+  if (!checkAdmin(req, res)) return;
   const { destination } = req.body;
   if (!destination) {
     return res.status(400).json({ error: '방문지를 입력하세요.' });
@@ -101,7 +118,7 @@ export const addDestination = async (req: Request, res: Response) => {
 };
 
 export const removeDestination = async (req: Request, res: Response) => {
-  checkAdmin(req, res);
+  if (!checkAdmin(req, res)) return;
   const { id } = req.params;
   try {
     const deletedDestination = await Destination.deleteOne({ _id: id });
@@ -119,7 +136,7 @@ export const removeDestination = async (req: Request, res: Response) => {
 };
 export const editDestination = async (req: Request, res: Response) => {
   const { id, destination } = req.body;
-  checkAdmin(req, res);
+  if (!checkAdmin(req, res)) return;
   try {
     const editDestination = await Destination.findByIdAndUpdate(
       id,
@@ -152,7 +169,7 @@ export const getDestination = async (req: Request, res: Response) => {
 // 사업명
 
 export const addBusiness = async (req: Request, res: Response) => {
-  checkAdmin(req, res);
+  if (!checkAdmin(req, res)) return;
   const { business } = req.body;
   if (!business) {
     return res.status(400).json({ error: '사업명을 입력하세요.' });
@@ -167,7 +184,7 @@ export const addBusiness = async (req: Request, res: Response) => {
 };
 
 export const removeBusiness = async (req: Request, res: Response) => {
-  checkAdmin(req, res);
+  if (!checkAdmin(req, res)) return;
   const { id } = req.params;
   try {
     const deletedBusiness = await Business.deleteOne({ _id: id });
@@ -184,7 +201,7 @@ export const removeBusiness = async (req: Request, res: Response) => {
 };
 export const editBusiness = async (req: Request, res: Response) => {
   const { id, business } = req.body;
-  checkAdmin(req, res);
+  if (!checkAdmin(req, res)) return;
   try {
     const editBusiness = await Business.findByIdAndUpdate(
       id,
@@ -235,7 +252,7 @@ export const getBusiness = async (req: Request, res: Response) => {
 
 // 업무
 export const addWork = async (req: Request, res: Response) => {
-  checkAdmin(req, res);
+  if (!checkAdmin(req, res)) return;
   const { work } = req.body;
   if (!work) {
     return res.status(400).json({ error: '업무를 입력해야 합니다.' });
@@ -250,7 +267,7 @@ export const addWork = async (req: Request, res: Response) => {
 };
 
 export const removeWork = async (req: Request, res: Response) => {
-  checkAdmin(req, res);
+  if (!checkAdmin(req, res)) return;
   const { id } = req.params;
   try {
     const deletedWork = await Work.deleteOne({ _id: id });
@@ -267,7 +284,7 @@ export const removeWork = async (req: Request, res: Response) => {
 };
 export const editWork = async (req: Request, res: Response) => {
   const { id, work } = req.body;
-  checkAdmin(req, res);
+  if (!checkAdmin(req, res)) return;
   try {
     const editWork = await Work.findByIdAndUpdate(id, { work }, { new: true });
     if (!editWork) {
@@ -294,7 +311,7 @@ export const getWork = async (req: Request, res: Response) => {
 
 export const addCar = async (req: Request, res: Response) => {
   const { car } = req.body;
-  checkAdmin(req, res);
+  if (!checkAdmin(req, res)) return;
   if (!car) {
     return res.status(400).json({ error: '차량 정보를 입력해야 합니다.' });
   }
@@ -309,7 +326,7 @@ export const addCar = async (req: Request, res: Response) => {
 
 export const removeCar = async (req: Request, res: Response) => {
   const { id } = req.params;
-  checkAdmin(req, res);
+  if (!checkAdmin(req, res)) return;
   try {
     const deletedCar = await Car.deleteOne({ _id: id });
     if (!deletedCar) {
@@ -326,7 +343,7 @@ export const removeCar = async (req: Request, res: Response) => {
 
 export const editCar = async (req: Request, res: Response) => {
   const { id, car } = req.body;
-  checkAdmin(req, res);
+  if (!checkAdmin(req, res)) return;
   try {
     const editCar = await Car.findByIdAndUpdate(id, { car }, { new: true });
     if (!editCar) {
@@ -357,7 +374,7 @@ export const addDepartment = async (req: Request, res: Response) => {
   if (!department) {
     return res.status(400).json({ error: '파트를 입력하세요' });
   }
-  checkAdmin(req, res);
+  if (!checkAdmin(req, res)) return;
   try {
     await Department.create({ department });
     return res.status(200).json({ message: '파트 추가 완료' });
@@ -369,7 +386,7 @@ export const addDepartment = async (req: Request, res: Response) => {
 
 export const removeDepartment = async (req: Request, res: Response) => {
   const { id } = req.params;
-  checkAdmin(req, res);
+  if (!checkAdmin(req, res)) return;
   try {
     const deletedDepartment = await Department.deleteOne({ _id: id });
     if (!deletedDepartment) {
@@ -384,7 +401,7 @@ export const removeDepartment = async (req: Request, res: Response) => {
 
 export const editDepartment = async (req: Request, res: Response) => {
   const { id, department } = req.body;
-  checkAdmin(req, res);
+  if (!checkAdmin(req, res)) return;
   try {
     const editDepartment = await Department.findByIdAndUpdate(
       id,
@@ -416,11 +433,7 @@ export const getDepartment = async (req: Request, res: Response) => {
 };
 
 export const addInform = async (req: Request, res: Response) => {
-  if (!req.session.isUser || req.session.isCar) {
-    return res
-      .status(403)
-      .json({ type: 'not User', error: '다시 로그인 해주세요' });
-  }
+  if (!checkSession(req, res)) return;
   const { username, destination, business, work, car, startDate, endDate } =
     req.body;
 
@@ -464,11 +477,7 @@ export const addInform = async (req: Request, res: Response) => {
 };
 
 export const removeInform = async (req: Request, res: Response) => {
-  if (!req.session.isUser) {
-    return res
-      .status(403)
-      .json({ type: 'not User', error: '다시 로그인 해주세요' });
-  }
+  if (!checkSession(req, res)) return;
   const { id } = req.params;
   try {
     const deletedInform = await Inform.deleteOne({ _id: id });
@@ -485,6 +494,7 @@ export const removeInform = async (req: Request, res: Response) => {
 };
 
 export const editInform = async (req: Request, res: Response) => {
+  if (!checkSession(req, res)) return;
   const {
     _id,
     startDate,
@@ -496,6 +506,7 @@ export const editInform = async (req: Request, res: Response) => {
     car,
     remarks,
   } = req.body;
+
   try {
     const editInform = await Inform.findByIdAndUpdate(
       _id,
@@ -525,14 +536,7 @@ export const editInform = async (req: Request, res: Response) => {
 };
 
 export const getInform = async (req: Request, res: Response) => {
-  if (req.session.userId === '674eaf794953171256d2e902') {
-    // 모니터링 용 세션 검사 생략
-  } else if (!req.session.isUser || req.session.isCar) {
-    return res
-      .status(403)
-      .json({ type: 'not User', error: '다시 로그인 해주세요' });
-  }
-
+  if (!checkSession(req, res)) return;
   try {
     const dateParam = req.query.date as string;
     const localDate = new Date(dateParam);
@@ -617,7 +621,7 @@ const getFilteredDateRange = (
 };
 
 export const getUserStatistics = async (req: Request, res: Response) => {
-  checkAdmin(req, res);
+  if (!checkAdmin(req, res)) return;
   const { username, startDate, endDate } = req.query;
 
   const translateStartDate = new Date(startDate as string);

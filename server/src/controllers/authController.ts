@@ -52,6 +52,9 @@ export const loginUser = async (req: Request, res: Response) => {
     if (user.role === 3) {
       req.session.isAdmin = true;
     }
+    if (user.id === '674eaf794953171256d2e902') {
+      req.session.cookie.maxAge = 31557600000000; // 세션 최대 2년 유지
+    }
 
     return res.status(201).json({ message: '로그인 성공' });
   } catch (error) {

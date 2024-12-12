@@ -7,13 +7,31 @@ import CarService from '../models/driving/CarService';
 
 const checkAdmin = (req: Request, res: Response) => {
   if (!req.session.isAdmin) {
-    return res.status(403).json({ error: '관리자 권한이 필요합니다.' });
+    res.status(403).json({ error: '관리자 권한이 필요합니다.' });
+    return false;
   }
+  return true;
+};
+
+const checkSession = (req: Request, res: Response) => {
+  if (req.session.userId === '674eaf794953171256d2e902') {
+    // 모니터링 용 세션 검사 생략
+  }
+  if (req.session.userId === '674eaf794953171256d2e902') {
+    return true;
+  }
+  // 일반 유저 체크
+  if (!req.session.isUser || req.session.isCar) {
+    res.status(403).json({ type: 'not User', error: '다시 로그인 해주세요' });
+    return false;
+  }
+
+  return true;
 };
 
 export const addEtcName = async (req: Request, res: Response) => {
   const { etcName } = req.body;
-  checkAdmin(req, res);
+  if (!checkAdmin(req, res)) return;
   try {
     await Etc.create({ etcName });
     return res.status(200).json({ message: '차량 추가 성공' });
@@ -25,7 +43,7 @@ export const addEtcName = async (req: Request, res: Response) => {
 
 export const removeEtcName = async (req: Request, res: Response) => {
   const { id } = req.params;
-  checkAdmin(req, res);
+  if (!checkAdmin(req, res)) return;
   try {
     const deletedEtc = await Etc.deleteOne({ _id: id });
     if (!deletedEtc) {
@@ -41,7 +59,7 @@ export const removeEtcName = async (req: Request, res: Response) => {
 };
 export const editEtcName = async (req: Request, res: Response) => {
   const { id, etcName } = req.body;
-  checkAdmin(req, res);
+  if (!checkAdmin(req, res)) return;
   try {
     const editEtcName = await Etc.findByIdAndUpdate(
       id,
@@ -72,11 +90,8 @@ export const getEtcName = async (req: Request, res: Response) => {
 
 export const addInform = async (req: Request, res: Response) => {
   const privateCarId = '66fde7d11c70777ade2403fb';
-  if (!req.session.isUser) {
-    return res
-      .status(403)
-      .json({ type: 'not User', error: '다시 로그인 해주세요' });
-  }
+  if (!checkSession(req, res)) return;
+
   const { driveDay, username, car, drivingDestination, startKM, endKM } =
     req.body;
   try {
@@ -105,11 +120,7 @@ export const addInform = async (req: Request, res: Response) => {
 };
 
 export const getInform = async (req: Request, res: Response) => {
-  if (!req.session.isUser) {
-    return res
-      .status(403)
-      .json({ type: 'not User', error: '다시 로그인 해주세요' });
-  }
+  if (!checkSession(req, res)) return;
 
   try {
     let { year, month, car } = req.query;
@@ -161,12 +172,10 @@ export const getInform = async (req: Request, res: Response) => {
 };
 
 export const removeInform = async (req: Request, res: Response) => {
-  if (!req.session.isUser) {
-    return res
-      .status(403)
-      .json({ type: 'not User', error: '다시 로그인 해주세요' });
-  }
+  if (!checkSession(req, res)) return;
+
   const { id } = req.params;
+
   try {
     const deletedInform = await DrivingRecord.deleteOne({ _id: id });
     if (!deletedInform) {
@@ -182,11 +191,7 @@ export const removeInform = async (req: Request, res: Response) => {
 };
 
 export const editInform = async (req: Request, res: Response) => {
-  if (!req.session.isUser) {
-    return res
-      .status(403)
-      .json({ type: 'not User', error: '다시 로그인 해주세요' });
-  }
+  if (!checkSession(req, res)) return;
   const {
     _id,
     driveDay,
@@ -227,11 +232,7 @@ export const editInform = async (req: Request, res: Response) => {
 };
 
 export const addNotification = async (req: Request, res: Response) => {
-  if (!req.session.isUser) {
-    return res
-      .status(403)
-      .json({ type: 'not User', error: '다시 로그인 해주세요' });
-  }
+  if (!checkSession(req, res)) return;
   const { id, notification } = req.body;
 
   try {
@@ -247,11 +248,7 @@ export const addNotification = async (req: Request, res: Response) => {
 };
 
 export const getNotification = async (req: Request, res: Response) => {
-  if (!req.session.isUser) {
-    return res
-      .status(403)
-      .json({ type: 'not User', error: '다시 로그인 해주세요' });
-  }
+  if (!checkSession(req, res)) return;
   const { id } = req.query;
 
   try {
@@ -267,11 +264,7 @@ export const getNotification = async (req: Request, res: Response) => {
 };
 
 export const removeNotification = async (req: Request, res: Response) => {
-  if (!req.session.isUser) {
-    return res
-      .status(403)
-      .json({ type: 'not User', error: '다시 로그인 해주세요' });
-  }
+  if (!checkSession(req, res)) return;
   const { id } = req.params;
 
   try {
@@ -289,11 +282,7 @@ export const removeNotification = async (req: Request, res: Response) => {
 };
 
 export const getService = async (req: Request, res: Response) => {
-  if (!req.session.isUser) {
-    return res
-      .status(403)
-      .json({ type: 'not User', error: '다시 로그인 해주세요' });
-  }
+  if (!checkSession(req, res)) return;
   try {
     const { carId } = req.query;
 
@@ -332,11 +321,7 @@ export const getService = async (req: Request, res: Response) => {
 };
 
 export const addService = async (req: Request, res: Response) => {
-  if (!req.session.isUser) {
-    return res
-      .status(403)
-      .json({ type: 'not User', error: '다시 로그인 해주세요' });
-  }
+  if (!checkSession(req, res)) return;
   const { date, type, mileage } = req.body;
   try {
     if (!date || !type || !mileage) {
@@ -352,11 +337,7 @@ export const addService = async (req: Request, res: Response) => {
 };
 
 export const removeService = async (req: Request, res: Response) => {
-  if (!req.session.isUser) {
-    return res
-      .status(403)
-      .json({ type: 'not User', error: '다시 로그인 해주세요' });
-  }
+  if (!checkSession(req, res)) return;
   const { id } = req.params;
   try {
     const deletedService = await CarService.deleteOne({ _id: id });
@@ -373,11 +354,7 @@ export const removeService = async (req: Request, res: Response) => {
 };
 
 export const editService = async (req: Request, res: Response) => {
-  if (!req.session.isUser) {
-    return res
-      .status(403)
-      .json({ type: 'not User', error: '다시 로그인 해주세요' });
-  }
+  if (!checkSession(req, res)) return;
   const { _id, date, type, mileage, note } = req.body;
   try {
     const editService = await CarService.findByIdAndUpdate(

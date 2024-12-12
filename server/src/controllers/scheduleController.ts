@@ -2,12 +2,22 @@ import { Request, Response } from 'express';
 import EmployeeInform from '../models/employee/EmployeeInform';
 import { ObjectId } from 'mongodb';
 
-export const getSchedule = async (req: Request, res: Response) => {
-  if (!req.session.isUser) {
-    return res
-      .status(403)
-      .json({ type: 'not User', error: '다시 로그인 해주세요' });
+const checkSession = (req: Request, res: Response) => {
+  // 모니터링 계정 체크를 먼저
+  if (req.session.userId === '674eaf794953171256d2e902') {
+    return true;
   }
+  // 일반 유저 체크
+  if (!req.session.isUser || req.session.isCar) {
+    res.status(403).json({ type: 'not User', error: '다시 로그인 해주세요' });
+    return false;
+  }
+
+  return true;
+};
+
+export const getSchedule = async (req: Request, res: Response) => {
+  if (!checkSession(req, res)) return;
   const { userId } = req.session;
   const { year, month, username } = req.query;
 

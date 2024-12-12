@@ -3,12 +3,14 @@ import User from '../models/employee/User';
 
 const checkAdmin = (req: Request, res: Response) => {
   if (!req.session.isAdmin) {
-    return res.status(403).json({ error: '관리자 권한이 필요합니다.' });
+    res.status(403).json({ error: '관리자 권한이 필요합니다.' });
+    return false;
   }
+  return true;
 };
 
 export const getUsers = async (req: Request, res: Response) => {
-  checkAdmin(req, res);
+  if (!checkAdmin(req, res)) return;
   try {
     const users = await User.find(
       {},
@@ -27,7 +29,7 @@ export const getUsers = async (req: Request, res: Response) => {
 
 export const approveUser = async (req: Request, res: Response) => {
   const { id } = req.params;
-  checkAdmin(req, res);
+  if (!checkAdmin(req, res)) return;
   try {
     const updatedUser = await User.findByIdAndUpdate(
       { _id: id },
@@ -46,7 +48,7 @@ export const approveUser = async (req: Request, res: Response) => {
 
 export const rejectUser = async (req: Request, res: Response) => {
   const { id } = req.params;
-  checkAdmin(req, res);
+  if (!checkAdmin(req, res)) return;
   try {
     const deletedUser = await User.deleteOne({ _id: id });
     if (!deletedUser) {
@@ -62,7 +64,7 @@ export const rejectUser = async (req: Request, res: Response) => {
 export const deleteUser = async (req: Request, res: Response) => {
   const { id } = req.params;
 
-  checkAdmin(req, res);
+  if (!checkAdmin(req, res)) return;
 
   try {
     const deletedUser = await User.deleteOne({ _id: id });
@@ -81,7 +83,7 @@ export const deleteUser = async (req: Request, res: Response) => {
 export const updateRoleUser = async (req: Request, res: Response) => {
   const { id } = req.params;
   const { role } = req.body;
-  checkAdmin(req, res);
+  if (!checkAdmin(req, res)) return;
   try {
     const updatedUser = await User.findByIdAndUpdate(
       { _id: id },

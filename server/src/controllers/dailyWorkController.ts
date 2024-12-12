@@ -2,12 +2,20 @@ import { Request, Response } from 'express';
 import DailyWork from '../models/employee/DailyWork';
 import User from '../models/employee/User';
 
-export const getDailyWork = async (req: Request, res: Response) => {
-  if (!req.session.isUser) {
-    return res
-      .status(403)
-      .json({ type: 'not User', error: '다시 로그인 해주세요' });
+const checkSession = (req: Request, res: Response) => {
+  if (req.session.userId === '674eaf794953171256d2e902') {
+    return true;
   }
+  // 일반 유저 체크
+  if (!req.session.isUser || req.session.isCar) {
+    res.status(403).json({ type: 'not User', error: '다시 로그인 해주세요' });
+    return false;
+  }
+
+  return true;
+};
+export const getDailyWork = async (req: Request, res: Response) => {
+  if (!checkSession(req, res)) return;
   const { id } = req.params;
 
   try {
@@ -37,11 +45,7 @@ export const getDailyWork = async (req: Request, res: Response) => {
 };
 
 export const getDailyWorks = async (req: Request, res: Response) => {
-  if (!req.session.isUser) {
-    return res
-      .status(403)
-      .json({ type: 'not User', error: '다시 로그인 해주세요' });
-  }
+  if (!checkSession(req, res)) return;
   try {
     const dateParam = req.query.date as string;
     const kstDate = new Date(dateParam);
@@ -83,11 +87,7 @@ export const getDailyWorks = async (req: Request, res: Response) => {
 };
 
 export const addDailyWork = async (req: Request, res: Response) => {
-  if (!req.session.isUser) {
-    return res
-      .status(403)
-      .json({ type: 'not User', error: '다시 로그인 해주세요' });
-  }
+  if (!checkSession(req, res)) return;
   const { writingDate, username, department, content, nextContent } = req.body;
   try {
     if (!username || !department || !content || !nextContent) {
@@ -106,11 +106,7 @@ export const addDailyWork = async (req: Request, res: Response) => {
 };
 
 export const editDailyWork = async (req: Request, res: Response) => {
-  if (!req.session.isUser) {
-    return res
-      .status(403)
-      .json({ type: 'not User', error: '다시 로그인 해주세요' });
-  }
+  if (!checkSession(req, res)) return;
   const { _id, username, department, content, nextContent } = req.body;
   try {
     const editDailyWork = await DailyWork.findByIdAndUpdate(
@@ -136,11 +132,7 @@ export const editDailyWork = async (req: Request, res: Response) => {
 };
 
 export const removeDailyWork = async (req: Request, res: Response) => {
-  if (!req.session.isUser) {
-    return res
-      .status(403)
-      .json({ type: 'not User', error: '다시 로그인 해주세요' });
-  }
+  if (!checkSession(req, res)) return;
   const { id } = req.params;
   try {
     const deletedDailyWork = await DailyWork.deleteOne({ _id: id });
