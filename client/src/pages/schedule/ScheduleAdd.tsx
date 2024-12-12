@@ -106,12 +106,12 @@ export default function ScheduleAdd({
     formData.destination,
   ]);
 
-  //   const datePickerStyles = {
-  //     width: "100%",
-  //     "& .MuiOutlinedInput-root": {
-  //       backgroundColor: "white",
-  //     },
-  //   };
+  const datePickerStyles = {
+    width: "100%",
+    "& .MuiOutlinedInput-root": {
+      backgroundColor: "white",
+    },
+  };
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -122,9 +122,9 @@ export default function ScheduleAdd({
       <div className="flex w-[40%] flex-col rounded-lg bg-white p-6 shadow-lg">
         <h2 className="mb-4 text-center text-xl font-bold">일정 추가</h2>
         <div className="flex flex-col">
-          {/* <div className="my-2">
+          <div className="my-2">
             <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ko">
-              <div className="flex gap-2 mt-4">
+              <div className="mt-4 flex gap-2">
                 <MobileDatePicker
                   label="시작일"
                   value={dayjs(formData.startDate)}
@@ -137,21 +137,9 @@ export default function ScheduleAdd({
                   }
                   sx={datePickerStyles}
                 />
-                <MobileDatePicker
-                  label="종료일"
-                  value={dayjs(formData.endDate)}
-                  onChange={(newDate: Dayjs | null) =>
-                    newDate &&
-                    setFormData((prev) => ({
-                      ...prev,
-                      endDate: newDate.toDate(),
-                    }))
-                  }
-                  sx={datePickerStyles}
-                />
               </div>
             </LocalizationProvider>
-          </div> */}
+          </div>
 
           <div className="my-2">
             <Autocomplete

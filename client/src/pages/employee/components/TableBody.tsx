@@ -39,18 +39,30 @@ function EmployeeTableBody({ refetch }: EmployeeTableBodyProps) {
 
   const sortEmployeeInform = () => {
     return [...inform].sort((a, b) => {
+      // 먼저 destination으로 정렬
       const destinationCompare = a.destination.localeCompare(b.destination);
       if (destinationCompare !== 0) return destinationCompare;
+
+      // 같은 destination 내에서는 username으로 정렬
+      const usernameCompare = a.username.localeCompare(b.username);
+      if (usernameCompare !== 0) return usernameCompare;
+
+      // 그 다음 business로 정렬
       const businessCompare = a.business.localeCompare(b.business);
       if (businessCompare !== 0) return businessCompare;
+
+      // 그 다음 work로 정렬
       const workCompare = a.work.localeCompare(b.work);
       if (workCompare !== 0) return workCompare;
+
+      // 마지막으로 car로 정렬
       const carCompare = a.car.localeCompare(b.car);
       if (carCompare !== 0) return carCompare;
-      return a.username.localeCompare(b.username);
+
+      // 모든 값이 같은 경우
+      return 0;
     });
   };
-
   const getRowSpans = (items: IEmployee[]) => {
     const spans = new Map<string, number>();
     let prevName: string | null = null;

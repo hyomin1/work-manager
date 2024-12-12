@@ -1,9 +1,8 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Users, Truck, ChevronRight } from "lucide-react";
 import { ROUTES } from "../constants/constant";
 import { checkCarSession } from "../api";
-import axios from "axios";
 
 interface SelectionCardProps {
   title: string;
