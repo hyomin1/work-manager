@@ -1,17 +1,30 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { Users, Truck, ChevronRight } from "lucide-react";
+import {
+  Users,
+  Truck,
+  Activity,
+  ClipboardList,
+  CalendarRange,
+  Wrench,
+} from "lucide-react";
 import { ROUTES } from "../constants/constant";
 import { checkCarSession } from "../api";
 
-interface SelectionCardProps {
+interface SubMenu {
+  icon: React.ReactNode;
+  title: string;
+  onClick: () => void; // 클릭 핸들러 추가
+}
+
+interface MenuCardProps {
   title: string;
   description: string;
   icon: React.ReactNode;
   onClick: () => void;
+  subMenus: SubMenu[];
 }
 
-// 로그인 후 근무 현황, 차량 운행일지 선택 화면
 const SelectPages = () => {
   const navigate = useNavigate();
 
@@ -25,75 +38,119 @@ const SelectPages = () => {
   };
 
   return (
-    <div className="flex min-h-screen bg-gradient-to-br from-indigo-50 to-slate-100">
-      <div className="absolute left-0 top-0 h-64 w-full bg-gradient-to-b from-blue-100/50 to-transparent" />
-      <div className="absolute left-10 top-10 h-32 w-32 rounded-full bg-blue-200 opacity-20 blur-3xl" />
-      <div className="absolute right-20 top-20 h-40 w-40 rounded-full bg-green-200 opacity-20 blur-3xl" />
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50">
+      <div className="fixed inset-0 -z-10">
+        <div className="animate-blob absolute -left-4 top-0 h-72 w-72 rounded-full bg-blue-100 opacity-30 mix-blend-multiply blur-xl filter" />
+        <div className="animation-delay-2000 absolute -right-4 top-0 h-72 w-72 rounded-full bg-blue-100 opacity-30 mix-blend-multiply blur-xl filter" />
+        <div className="animation-delay-4000 absolute -bottom-8 left-20 h-72 w-72 rounded-full bg-blue-100 opacity-30 mix-blend-multiply blur-xl filter" />
+      </div>
 
-      <div className="relative mx-auto flex w-full max-w-6xl flex-col gap-8 px-6 py-8">
-        <div className="mb-8 grid grid-cols-3 gap-4">
-          <div className="h-2 rounded-full bg-blue-200/50" />
-          <div className="h-2 rounded-full bg-green-200/50" />
-          <div className="h-2 rounded-full bg-blue-200/50" />
+      <div className="mx-auto max-w-6xl px-4 py-16">
+        <div className="mb-16 text-center">
+          <div className="mb-4 inline-flex items-center rounded-full bg-white/80 px-5 py-2 shadow-sm backdrop-blur-sm">
+            <Activity className="mr-2 h-5 w-5 text-blue-600" />
+            <span className="text-sm font-medium text-gray-800">메뉴 선택</span>
+          </div>
+          <h1 className="text-3xl font-bold text-gray-900">
+            원하시는 메뉴를 선택해주세요
+          </h1>
         </div>
 
-        <div className="mb-8 flex items-center justify-center">
-          <div className="h-[1px] w-20 bg-gradient-to-r from-transparent to-blue-200" />
-          <div className="px-6 text-3xl font-light text-gray-400">메뉴</div>
-          <div className="h-[1px] w-20 bg-gradient-to-l from-transparent to-blue-200" />
-        </div>
-
-        <div className="grid w-full gap-6 md:grid-cols-2">
-          <SelectionCard
+        <div className="grid gap-6 md:grid-cols-2">
+          <MenuCard
             title="근무 현황"
-            description="근무 현황 확인"
-            icon={<Users className="text-blue-600" size={32} />}
+            description="근무 현황 기록 및 관리"
+            icon={<Users size={24} strokeWidth={2} />}
             onClick={checkUser}
+            subMenus={[
+              {
+                icon: <ClipboardList className="h-5 w-5" />,
+                title: "일일 업무 작성",
+                onClick: () => navigate(ROUTES.EMPLOYEES.DAILY_WORK),
+              },
+              {
+                icon: <CalendarRange className="h-5 w-5" />,
+                title: "일정 관리",
+                onClick: () => navigate(ROUTES.SCHEDULE),
+              },
+            ]}
           />
-          <SelectionCard
+          <MenuCard
             title="차량 운행 일지"
             description="차량 운행 기록 및 관리"
-            icon={<Truck className="text-blue-600" size={32} />}
+            icon={<Truck size={24} strokeWidth={2} />}
             onClick={() => navigate(ROUTES.VEHICLES.LIST)}
+            subMenus={[
+              {
+                icon: <Wrench className="h-5 w-5" />,
+                title: "차량 정비내역",
+                onClick: () => navigate(ROUTES.VEHICLES.SERVICE),
+              },
+              {
+                icon: <div className="h-5 w-5" />,
+                title: "",
+                onClick: () => navigate(ROUTES.VEHICLES.LIST),
+              },
+            ]}
           />
-        </div>
-
-        {/* 하단 장식 패턴 */}
-        <div className="mt-8 grid grid-cols-5 gap-2">
-          {[...Array(5)].map((_, i) => (
-            <div
-              key={i}
-              className="h-1 rounded-full bg-gradient-to-r from-blue-100 to-green-100"
-            />
-          ))}
         </div>
       </div>
     </div>
   );
 };
 
-const SelectionCard = ({
+const MenuCard = ({
   title,
   description,
   icon,
   onClick,
-}: SelectionCardProps) => (
-  <button
-    className="group relative flex w-full flex-col items-center rounded-2xl border-2 border-transparent bg-white p-8 text-center shadow-lg transition-all duration-300 hover:border-blue-500 hover:shadow-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-    onClick={onClick}
-  >
-    <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-blue-50 transition-transform duration-300 group-hover:scale-110">
-      {icon}
-    </div>
-    <h2 className="mb-3 text-2xl font-bold text-gray-800 transition-colors duration-300 group-hover:text-blue-600">
-      {title}
-    </h2>
-    <p className="text-gray-600">{description}</p>
-    <ChevronRight
-      className="absolute right-6 top-1/2 -translate-y-1/2 text-blue-600 opacity-0 transition-all duration-300 group-hover:translate-x-2 group-hover:opacity-100"
-      size={24}
-    />
-  </button>
-);
+  subMenus,
+}: MenuCardProps) => {
+  return (
+    <button
+      onClick={onClick}
+      className="group relative flex flex-col overflow-hidden rounded-2xl bg-white/80 p-8 shadow-lg backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+    >
+      <div className="relative w-full flex-1">
+        <div className="flex items-center gap-6">
+          <div className="relative flex h-16 w-16 items-center justify-center rounded-2xl bg-blue-600 text-white shadow-md transition-transform duration-300 group-hover:scale-110 group-hover:bg-gradient-to-br group-hover:from-blue-400 group-hover:to-blue-600">
+            {icon}
+          </div>
+
+          <div className="flex-1">
+            <h2 className="text-lg font-semibold text-gray-900">{title}</h2>
+            <p className="mt-1 text-sm text-gray-600">{description}</p>
+          </div>
+
+          <div className="rounded-full p-2 text-gray-400 transition-colors duration-300 group-hover:bg-blue-50 group-hover:text-blue-600">
+            →
+          </div>
+        </div>
+
+        <div className="mt-6 grid grid-cols-1 gap-3 border-t pt-6">
+          {subMenus
+            .filter((menu) => menu.title)
+            .map((menu, index) => (
+              <div
+                key={index}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  menu.onClick();
+                }}
+                className="flex items-center gap-3 rounded-xl p-3 transition-colors duration-200 hover:bg-blue-50/50"
+              >
+                <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-100/50 text-blue-600">
+                  {menu.icon}
+                </div>
+                <span className="text-sm font-medium text-gray-600">
+                  {menu.title}
+                </span>
+              </div>
+            ))}
+        </div>
+      </div>
+    </button>
+  );
+};
 
 export default SelectPages;
