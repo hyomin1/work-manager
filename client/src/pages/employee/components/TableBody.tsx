@@ -268,7 +268,6 @@ function EmployeeTableBody({ refetch }: EmployeeTableBodyProps) {
   const cellStyle = {
     fontSize: "large",
     borderRight: "1px solid #e5e7eb",
-    textAlign: "center",
   };
 
   const lastCellStyle = {
@@ -286,6 +285,7 @@ function EmployeeTableBody({ refetch }: EmployeeTableBodyProps) {
         >
           {rowSpans.get(`${index}-name`) !== 0 && (
             <TableCell
+              align="center"
               rowSpan={rowSpans.get(`${index}-name`)}
               sx={{ ...cellStyle, whiteSpace: "nowrap" }}
             >
@@ -295,6 +295,7 @@ function EmployeeTableBody({ refetch }: EmployeeTableBodyProps) {
 
           {rowSpans.get(`${index}-destination`) !== 0 && (
             <TableCell
+              align="center"
               rowSpan={rowSpans.get(`${index}-destination`)}
               sx={{ ...cellStyle, whiteSpace: "nowrap" }}
             >
@@ -304,6 +305,7 @@ function EmployeeTableBody({ refetch }: EmployeeTableBodyProps) {
 
           {rowSpans.get(`${index}-business`) !== 0 && (
             <TableCell
+              align="left"
               rowSpan={rowSpans.get(`${index}-business`)}
               sx={cellStyle}
             >
@@ -313,6 +315,7 @@ function EmployeeTableBody({ refetch }: EmployeeTableBodyProps) {
 
           {rowSpans.get(`${index}-work`) !== 0 && (
             <TableCell
+              align="center"
               rowSpan={rowSpans.get(`${index}-work`)}
               sx={{ ...cellStyle, whiteSpace: "nowrap" }}
             >
@@ -321,7 +324,11 @@ function EmployeeTableBody({ refetch }: EmployeeTableBodyProps) {
           )}
 
           {rowSpans.get(`${index}-car`) !== 0 && (
-            <TableCell rowSpan={rowSpans.get(`${index}-car`)} sx={cellStyle}>
+            <TableCell
+              align="center"
+              rowSpan={rowSpans.get(`${index}-car`)}
+              sx={cellStyle}
+            >
               {item.car !== ""
                 ? item.car
                 : findNonEmptyCarInGroup(sortedData, index)}
@@ -330,7 +337,7 @@ function EmployeeTableBody({ refetch }: EmployeeTableBodyProps) {
 
           {/* <TableCell sx={cellStyle}>{item.car}</TableCell> */}
 
-          <TableCell sx={cellStyle}>
+          <TableCell align="center" sx={cellStyle}>
             {item.remarks && (
               <Tooltip
                 title={item.remarks}
