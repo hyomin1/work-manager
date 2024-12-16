@@ -23,6 +23,8 @@ function TableContent({
   const [viewId, setViewId] = useState("");
   const [editingItemId, setEditingItemId] = useState("");
 
+  const contentLength = 100;
+
   // 부서별로 데이터 그룹화 및 정렬
   const groupedData = useMemo(() => {
     if (!dailyWork?.length) return [];
@@ -142,8 +144,8 @@ function TableContent({
                   fontSize: "large",
                 }}
               >
-                {item.content.slice(0, 100)}
-                {item.content.length > 100 && "..."}
+                {item.content.slice(0, contentLength)}
+                {item.content.length > contentLength && "..."}
               </TableCell>
 
               <TableCell

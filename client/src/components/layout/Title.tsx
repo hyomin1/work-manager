@@ -1,5 +1,5 @@
 import React from "react";
-import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import { Calendar, ChevronLeft, ChevronRight } from "lucide-react";
 
 interface ITitleProps {
   currentDate: Date;
@@ -10,14 +10,12 @@ interface ITitleProps {
   calYearMonth?: (arg0: Date) => string;
 }
 
-// 날짜 타이틀
 function Title({
   calDate,
   calYearMonth,
   category,
   currentDate,
   setCurrentDate,
-
   setShowInput,
 }: ITitleProps) {
   const previous = () => {
@@ -28,7 +26,6 @@ function Title({
       prevDate.setMonth(prevDate.getMonth() - 1);
     }
     setCurrentDate(prevDate);
-
     setShowInput(false);
   };
 
@@ -47,26 +44,36 @@ function Title({
   };
 
   return (
-    <div>
-      <div className="flex w-[100%] items-center justify-center">
-        <button onClick={previous} className="print-hidden hover:opacity-60">
-          <IoIosArrowBack className="h-8 w-8 sm:h-4 sm:w-4" />
+    <div className="rounded-2xl bg-white p-3 shadow-lg ring-1 ring-black/5">
+      <div className="flex items-center justify-center gap-1">
+        <button
+          onClick={previous}
+          className="rounded-lg text-gray-600 transition-all hover:bg-gray-100 active:scale-95 md:p-2 print:hidden"
+        >
+          <ChevronLeft className="h-6 w-6" />
         </button>
-        <button>
-          <span
-            onClick={selectDate}
-            className="whitespace-nowrap font-bold hover:opacity-70 sm:mx-1 md:mx-8 md:text-3xl"
-          >
-            {category === "driving" &&
-              calYearMonth &&
-              calYearMonth(currentDate)}
-            {category === "driving" && " 차량운행일지"}
+
+        <button
+          onClick={selectDate}
+          className="group flex w-full items-center gap-3 rounded-lg transition-all hover:bg-gray-100 md:px-4 md:py-2"
+        >
+          <Calendar className="h-5 w-5 text-blue-600 transition-colors group-hover:text-blue-700 sm:hidden" />
+          <span className="whitespace-nowrap text-xl font-semibold text-gray-700 transition-colors group-hover:text-blue-600 sm:text-xs">
+            {category === "driving" && (
+              <>
+                {calYearMonth && calYearMonth(currentDate)}
+                <span className="ml-2 text-gray-500">차량운행일지</span>
+              </>
+            )}
             {category === "employee" && calDate && calDate(currentDate)}
           </span>
         </button>
 
-        <button onClick={next} className="print-hidden hover:opacity-60">
-          <IoIosArrowForward className="h-8 w-8 sm:h-4 sm:w-4" />
+        <button
+          onClick={next}
+          className="rounded-lg text-gray-600 transition-all hover:bg-gray-100 active:scale-95 md:p-2 print:hidden"
+        >
+          <ChevronRight className="h-6 w-6" />
         </button>
       </div>
     </div>

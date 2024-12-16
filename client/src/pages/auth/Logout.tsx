@@ -3,9 +3,9 @@ import { LogOut } from "lucide-react";
 import { axiosReq } from "../../api";
 import { ROUTES } from "../../constants/constant";
 
-// 로그아웃 로직
 function Logout() {
   const navigate = useNavigate();
+
   const goLogin = async () => {
     const isConfirm = window.confirm("로그아웃 하시겠습니까?");
     if (isConfirm) {
@@ -15,13 +15,16 @@ function Logout() {
       }
     }
   };
+
   return (
     <button
       onClick={goLogin}
-      className="print-hidden button-effect flex items-center justify-center whitespace-nowrap rounded-lg bg-[#0EA5E9] text-white hover:opacity-60 sm:ml-1 sm:flex-1 sm:px-2 sm:py-1 md:mr-2 md:px-4 md:py-2"
+      className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-blue-500 to-blue-600 text-white transition-all hover:from-blue-600 hover:to-blue-700 active:scale-95 sm:px-2 sm:py-2 md:px-4 md:py-2.5 print:hidden"
     >
-      <LogOut className="sm:hidden md:h-6 md:w-6" />
-      <span className="sm:text-xs md:ml-1">로그아웃</span>
+      <LogOut className="h-5 w-5 sm:hidden" />
+      <span className="whitespace-nowrap text-sm font-medium sm:text-[0.8rem]">
+        로그아웃
+      </span>
     </button>
   );
 }

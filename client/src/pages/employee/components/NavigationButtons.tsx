@@ -1,3 +1,5 @@
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Calendar,
   FileText,
@@ -6,21 +8,19 @@ import {
   Settings,
   Truck,
   Users,
+  RefreshCw,
 } from "lucide-react";
-import { useNavigate } from "react-router-dom";
-
 import { ROUTES } from "../../../constants/constant";
-import { SlRefresh } from "react-icons/sl";
 import { checkAdminSession } from "../../../api";
-import { useState } from "react";
+
 type Category = "STATISTICS" | "SETTINGS" | "MANAGE";
+
 interface NavProps {
   refetch: () => void;
 }
-// 근무 현황 버튼 그룹들
-function NavigationButtons({ refetch }: NavProps) {
-  const navigate = useNavigate();
 
+const NavigationButtons = ({ refetch }: NavProps) => {
+  const navigate = useNavigate();
   const [isRefreshing, setIsRefreshing] = useState(false);
 
   const handleAdminAction = async (category: Category) => {
@@ -29,6 +29,7 @@ function NavigationButtons({ refetch }: NavProps) {
       navigate(`${ROUTES.ADMIN[category]}`);
     }
   };
+
   const handleRefresh = () => {
     setIsRefreshing(true);
     setTimeout(() => {
@@ -36,80 +37,103 @@ function NavigationButtons({ refetch }: NavProps) {
       setIsRefreshing(false);
     }, 110);
   };
+
+  const NavButton = ({
+    icon: Icon,
+    label,
+    onClick,
+    variant = "blue",
+  }: {
+    icon: any;
+    label: string;
+    onClick: () => void;
+    variant?: "blue" | "green";
+  }) => (
+    <button
+      onClick={onClick}
+      className={`group relative flex items-center justify-center rounded-lg border py-2 md:gap-3 md:px-4 ${
+        variant === "blue"
+          ? "border-blue-100 bg-gradient-to-b from-blue-50/50 to-blue-100/50 hover:border-blue-200"
+          : "border-emerald-100 bg-gradient-to-b from-emerald-50/50 to-emerald-100/50 hover:border-emerald-200"
+      } transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md sm:mr-0 sm:flex-1 md:mr-4`}
+    >
+      <div className="relative flex items-center justify-center md:gap-3">
+        <Icon
+          className={`transition-all duration-200 group-hover:scale-105 sm:mr-1 sm:h-3 sm:w-3 md:h-5 md:w-5 ${variant === "blue" ? "text-blue-600" : "text-emerald-600"} group-hover:${variant === "blue" ? "text-blue-700" : "text-emerald-700"}`}
+        />
+        <span
+          className={`relative whitespace-nowrap font-medium transition-all duration-200 ${variant === "blue" ? "text-blue-700" : "text-emerald-700"} sm:text-xs`}
+        >
+          {label}
+        </span>
+      </div>
+    </button>
+  );
+
   return (
     <div
-      className={`flex w-[100%] items-center justify-between rounded-t-2xl border border-t-gray-300 bg-[#f8fafd] ${
-        isRefreshing
-          ? "opacity-0 transition-opacity duration-500"
-          : "opacity-100"
-      }`}
+      className={`mb-8 w-full rounded-lg border-0 bg-white/90 p-4 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.1)] backdrop-blur-sm transition-all duration-500 ${isRefreshing ? "opacity-0" : "opacity-100"} sm:p-3`}
     >
-      <div className="w-full p-4 sm:p-3">
-        <div className="flex items-center justify-between sm:flex-col">
-          <div className="flex sm:mb-2 sm:w-full sm:gap-2">
-            <button
+      <div className="w-full">
+        <div className="flex items-center justify-between gap-6 sm:flex-col sm:gap-3">
+          <div className="flex flex-1 sm:mb-2 sm:w-full sm:gap-2">
+            <NavButton
+              icon={Truck}
+              label="차량"
               onClick={() => navigate(ROUTES.VEHICLES.LIST)}
-              className="button-effect flex items-center justify-center whitespace-nowrap rounded-lg bg-[#0EA5E9] px-4 py-2 text-white hover:opacity-60 sm:mr-0 sm:flex-1 md:mr-4"
-            >
-              <Truck className="sm:h-4 sm:w-4" />
-              <span className="ml-1 sm:text-xs">차량</span>
-            </button>
-            <button
-              className="button-effect flex items-center justify-center whitespace-nowrap rounded-lg bg-[#10B981] px-4 py-2 text-white sm:mr-0 sm:flex-1 md:mr-4"
+              variant="blue"
+            />
+            <NavButton
+              icon={Pencil}
+              label="입력"
               onClick={() => navigate(ROUTES.EMPLOYEES.CREATE)}
-            >
-              <Pencil className="sm:h-4 sm:w-4" />
-              <span className="ml-1 sm:text-xs">입력</span>
-            </button>
-            <button
-              className="button-effect flex items-center justify-center whitespace-nowrap rounded-lg bg-[#0EA5E9] px-4 py-2 text-white sm:mr-0 sm:flex-1 md:mr-4"
+              variant="green"
+            />
+            <NavButton
+              icon={Calendar}
+              label="일정"
               onClick={() => navigate(ROUTES.SCHEDULE)}
-            >
-              <Calendar className="sm:h-4 sm:w-4" />
-              <span className="ml-1 sm:text-xs">일정</span>
-            </button>
-            <button
-              className="button-effect flex items-center justify-center whitespace-nowrap rounded-lg bg-[#10B981] px-4 py-2 text-white sm:mr-0 sm:flex-1 md:mr-4"
+              variant="blue"
+            />
+            <NavButton
+              icon={FileText}
+              label="업무"
               onClick={() => navigate(ROUTES.EMPLOYEES.DAILY_WORK)}
-            >
-              <FileText className="sm:h-4 sm:w-4" />
-              <span className="ml-1 sm:text-xs">업무</span>
-            </button>
+              variant="green"
+            />
           </div>
 
-          <div className="flex sm:w-full sm:gap-2">
-            <button
-              className="button-effect flex items-center justify-center whitespace-nowrap rounded-lg bg-[#0EA5E9] px-4 py-2 text-white hover:opacity-60 sm:mr-0 sm:flex-1 md:mr-4"
+          <div className="flex justify-end sm:w-full sm:gap-2">
+            <NavButton
+              icon={Users}
+              label="관리"
               onClick={() => handleAdminAction("MANAGE")}
-            >
-              <Users className="sm:h-4 sm:w-4" />
-              <span className="ml-1 sm:text-xs">관리</span>
-            </button>
-            <button
-              className="button-effect flex items-center justify-center whitespace-nowrap rounded-lg bg-[#10B981] px-4 py-2 text-white hover:opacity-60 sm:mr-0 sm:flex-1 md:mr-4"
+              variant="blue"
+            />
+            <NavButton
+              icon={Settings}
+              label="설정"
               onClick={() => handleAdminAction("SETTINGS")}
-            >
-              <Settings className="sm:h-4 sm:w-4" />
-              <span className="ml-1 sm:text-xs">설정</span>
-            </button>
-            <button
-              className="button-effect flex items-center justify-center whitespace-nowrap rounded-lg bg-[#0EA5E9] px-4 py-2 text-white sm:mr-0 sm:flex-1 md:mr-4"
+              variant="green"
+            />
+            <NavButton
+              icon={LineChart}
+              label="통계"
               onClick={() => handleAdminAction("STATISTICS")}
-            >
-              <LineChart className="sm:h-4 sm:w-4" />
-              <span className="ml-1 sm:text-xs">통계</span>
+              variant="blue"
+            />
+            <button className="flex items-center">
+              <div className="mx-4 h-10 w-px bg-slate-200" />
+              <RefreshCw
+                onClick={handleRefresh}
+                className={`text-slate-600 transition-all duration-200 hover:text-slate-800 sm:h-4 sm:w-4 md:h-6 md:w-6 ${isRefreshing ? "animate-spin" : ""} hover:opacity-80`}
+              />
             </button>
-            <div className="flex items-center sm:hidden sm:w-full sm:flex-1 sm:justify-center">
-              <div className="mx-4 border border-gray-300 md:h-10" />
-              <button onClick={handleRefresh}>
-                <SlRefresh className="hover:opacity-60 sm:h-6 sm:w-6 md:h-7 md:w-7" />
-              </button>
-            </div>
           </div>
         </div>
       </div>
     </div>
   );
-}
+};
 
 export default NavigationButtons;

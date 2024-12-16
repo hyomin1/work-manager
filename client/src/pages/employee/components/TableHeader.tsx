@@ -1,20 +1,34 @@
 import { TableCell, TableHead, TableRow } from "@mui/material";
 import { employeeHeaders } from "../../../constants/headers";
 
-// 근무 현황 테이블 헤더
 function TableHeader() {
   return (
     <TableHead>
       <TableRow>
         {employeeHeaders.map((item, index) => (
           <TableCell
-            sx={{
-              fontWeight: "600",
-              whiteSpace: "nowrap",
-              fontSize: "large",
-              textAlign: "center",
-            }}
             key={index}
+            sx={{
+              padding: "16px 20px",
+              background: "white",
+              borderBottom: "2px solid #E2E8F0",
+              fontWeight: 600,
+              fontSize: {
+                xs: "14px",
+                sm: "15px",
+                md: "16px",
+              },
+              letterSpacing: "0.025em",
+              color: "#334155",
+              textAlign: "center",
+              whiteSpace: "nowrap",
+              "&:first-of-type": {
+                borderTopLeftRadius: "12px",
+              },
+              "&:last-child": {
+                borderTopRightRadius: "12px",
+              },
+            }}
           >
             {item}
           </TableCell>
