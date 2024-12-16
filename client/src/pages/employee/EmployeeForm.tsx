@@ -8,11 +8,8 @@ import dayjs, { Dayjs } from "dayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import {
-  Paper,
   TextField,
   FormControl,
-  Button,
-  Box,
   Container,
   Divider,
   Autocomplete,
@@ -21,9 +18,7 @@ import {
   Grid,
   Radio,
 } from "@mui/material";
-import { styled } from "@mui/material/styles";
 import "dayjs/locale/ko";
-import Blank from "../../components/common/Blank";
 import { ROUTES } from "../../constants/constant";
 import {
   Briefcase,
@@ -34,23 +29,8 @@ import {
   MessageSquare,
   User,
 } from "lucide-react";
+import Logout from "../auth/Logout";
 dayjs.locale("ko");
-
-const StyledPaper = styled(Paper)(({ theme }) => ({
-  padding: theme.spacing(3),
-  borderRadius: "12px",
-  boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
-  "& .MuiTextField-root, & .MuiFormControl-root": {
-    marginBottom: theme.spacing(2),
-  },
-}));
-
-const StyledFormSection = styled(Box)(({ theme }) => ({
-  padding: theme.spacing(2),
-  border: `1px dashed ${theme.palette.divider}`,
-  borderRadius: "8px",
-  marginBottom: theme.spacing(2),
-}));
 
 // 근무 현황 데이터 입력 폼
 function EmployeeForm() {
@@ -314,316 +294,389 @@ function EmployeeForm() {
     }
   };
 
-  return (
-    <Container
-      maxWidth={false}
-      sx={{ py: 4 }}
-      className="flex h-full w-full flex-col items-center bg-gradient-to-br from-zinc-50 to-slate-100"
-    >
-      <div className="mb-8 flex items-center justify-between sm:mt-4 sm:w-full md:w-[80%]">
-        <ArrowBack type="not home" />
-        <span className="whitespace-nowrap font-bold sm:mx-1 sm:block sm:w-[33%] sm:text-xl md:mx-8 md:text-3xl">
-          {formDate}
-        </span>
-        <Blank />
+  const inputStyles = {
+    "& .MuiOutlinedInput-root": {
+      backgroundColor: "white",
+      borderRadius: "0.75rem",
+      transition: "all 0.2s ease-in-out",
+      "& fieldset": {
+        borderColor: "#E5E7EB",
+      },
+      "&:hover fieldset": {
+        borderColor: "#3B82F6",
+      },
+      "&.Mui-focused fieldset": {
+        borderColor: "#3B82F6",
+      },
+    },
+    "& .MuiInputLabel-root": {
+      color: "#6B7280",
+      "&.Mui-focused": {
+        color: "#3B82F6",
+      },
+    },
+  };
+
+  const SectionTitle = ({
+    icon: Icon,
+    title,
+  }: {
+    icon: any;
+    title: string;
+  }) => (
+    <div className="mb-4 flex items-center space-x-2">
+      <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-50 text-blue-500">
+        <Icon className="h-4 w-4" />
       </div>
+      <h2 className="text-lg font-semibold text-gray-700">{title}</h2>
+    </div>
+  );
 
-      <StyledPaper
-        elevation={3}
-        sx={{
-          boxShadow:
-            "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)",
-        }}
-        className="sm:w-full md:w-[80%]"
-      >
-        <Grid container spacing={3}>
-          {/* 기본 정보 섹션 */}
-          <Grid item xs={12}>
-            <Grid container spacing={2}>
-              {/* 날짜 선택 섹션 */}
-              <Grid item xs={12} sm={6} md={4}>
-                <StyledFormSection>
-                  <div className="mb-4 flex items-center space-x-2 text-slate-700">
-                    <Calendar className="h-5 w-5" />
-                    <h2 className="text-lg font-semibold">날짜</h2>
-                  </div>
-                  <FormControl component="fieldset" fullWidth>
-                    {isDaily === 2 ? (
-                      <LocalizationProvider
-                        dateAdapter={AdapterDayjs}
-                        adapterLocale="ko"
-                      >
-                        <MobileDatePicker
-                          onChange={handleDiffDateChange}
-                          sx={{
-                            width: "100%",
-                            "& .MuiOutlinedInput-root": {
-                              backgroundColor: "white",
-                            },
-                          }}
-                          label="날짜 *"
-                        />
-                      </LocalizationProvider>
-                    ) : (
-                      isDaily === 3 && (
-                        <div className="flex space-x-2">
-                          <LocalizationProvider
-                            dateAdapter={AdapterDayjs}
-                            adapterLocale="ko"
+  return (
+    <div className="flex min-h-screen w-full flex-col items-center bg-gradient-to-br from-gray-50 to-blue-50 p-10 sm:p-4">
+      <Container className="py-6" maxWidth="xl">
+        <div className="w-full">
+          <div className="mb-8 flex items-center justify-between">
+            <ArrowBack type="not home" />
+            <div className="rounded-2xl bg-white shadow-lg ring-1 ring-black/5 sm:px-6 sm:py-2 md:px-16 md:py-4">
+              <span className="whitespace-nowrap text-xl font-semibold text-gray-700 transition-colors sm:text-xs">
+                {formDate}
+              </span>
+            </div>
+
+            <Logout />
+          </div>
+
+          <div className="w-full rounded-2xl bg-white p-6 shadow-xl ring-1 ring-gray-100">
+            <Grid container spacing={4}>
+              {/* Basic Info Section */}
+              <Grid item xs={12}>
+                <Grid container spacing={3}>
+                  {/* Date Selection */}
+                  <Grid item xs={12} md={4}>
+                    <div className="rounded-xl bg-gray-50/50 p-4 ring-1 ring-gray-100">
+                      <SectionTitle icon={Calendar} title="날짜" />
+                      <FormControl component="fieldset" fullWidth>
+                        <div className="mb-4 rounded-lg bg-white shadow-sm ring-1 ring-gray-200 sm:px-2 sm:py-1.5 sm:text-xs md:py-1.5">
+                          <RadioGroup
+                            row
+                            value={isDaily}
+                            onChange={handleDateChange}
+                            className="flex flex-nowrap sm:space-x-1"
                           >
-                            <MobileDatePicker
-                              onChange={handleStartDateChange}
+                            <FormControlLabel
+                              value={1}
+                              control={
+                                <Radio
+                                  sx={{
+                                    "&.Mui-checked": {
+                                      color: "#3B82F6",
+                                    },
+                                  }}
+                                />
+                              }
+                              label="오늘"
+                              className="m-0 flex flex-1 items-center justify-center whitespace-nowrap rounded-md transition-colors hover:bg-gray-50 md:px-2"
                               sx={{
-                                width: "100%",
-                                "& .MuiOutlinedInput-root": {
-                                  backgroundColor: "white",
-                                },
+                                margin: "1px",
+                                backgroundColor:
+                                  isDaily === 1
+                                    ? "rgb(239 246 255)"
+                                    : "transparent",
+                                borderRadius: "0.375rem",
                               }}
-                              label="시작일 *"
                             />
-                            <MobileDatePicker
-                              onChange={handleEndDateChange}
+                            <FormControlLabel
+                              value={2}
+                              control={
+                                <Radio
+                                  sx={{
+                                    "&.Mui-checked": {
+                                      color: "#3B82F6",
+                                    },
+                                  }}
+                                />
+                              }
+                              label="다른날"
+                              className="m-0 flex flex-1 items-center justify-center whitespace-nowrap rounded-md transition-colors hover:bg-gray-50 md:px-2"
                               sx={{
-                                width: "100%",
-                                "& .MuiOutlinedInput-root": {
-                                  backgroundColor: "white",
-                                },
+                                margin: "1px",
+                                backgroundColor:
+                                  isDaily === 2
+                                    ? "rgb(239 246 255)"
+                                    : "transparent",
+                                borderRadius: "0.375rem",
                               }}
-                              label="종료일 *"
                             />
-                          </LocalizationProvider>
+                            <FormControlLabel
+                              value={3}
+                              control={
+                                <Radio
+                                  sx={{
+                                    "&.Mui-checked": {
+                                      color: "#3B82F6",
+                                    },
+                                  }}
+                                />
+                              }
+                              label="기간"
+                              className="m-0 flex flex-1 items-center justify-center whitespace-nowrap rounded-md transition-colors hover:bg-gray-50 md:px-2"
+                              sx={{
+                                margin: "1px",
+                                backgroundColor:
+                                  isDaily === 3
+                                    ? "rgb(239 246 255)"
+                                    : "transparent",
+                                borderRadius: "0.375rem",
+                              }}
+                            />
+                          </RadioGroup>
                         </div>
-                      )
-                    )}
-                    <RadioGroup
-                      sx={{ display: "flex" }}
-                      className="flex"
-                      row
-                      value={isDaily}
-                      onChange={handleDateChange}
+                        <div className="mt-4">
+                          {isDaily === 2 ? (
+                            <LocalizationProvider
+                              dateAdapter={AdapterDayjs}
+                              adapterLocale="ko"
+                            >
+                              <MobileDatePicker
+                                onChange={handleDiffDateChange}
+                                sx={{
+                                  ...inputStyles,
+                                  width: "100%",
+                                }}
+                                label="날짜 선택"
+                                slotProps={{
+                                  textField: {
+                                    sx: {
+                                      ...inputStyles,
+                                      width: "100%",
+                                    },
+                                  },
+                                }}
+                              />
+                            </LocalizationProvider>
+                          ) : (
+                            isDaily === 3 && (
+                              <div className="grid grid-cols-2 gap-3">
+                                <LocalizationProvider
+                                  dateAdapter={AdapterDayjs}
+                                  adapterLocale="ko"
+                                >
+                                  <MobileDatePicker
+                                    onChange={handleStartDateChange}
+                                    sx={inputStyles}
+                                    label="시작일"
+                                    slotProps={{
+                                      textField: {
+                                        sx: inputStyles,
+                                      },
+                                    }}
+                                  />
+                                  <MobileDatePicker
+                                    onChange={handleEndDateChange}
+                                    sx={inputStyles}
+                                    label="종료일"
+                                    slotProps={{
+                                      textField: {
+                                        sx: inputStyles,
+                                      },
+                                    }}
+                                  />
+                                </LocalizationProvider>
+                              </div>
+                            )
+                          )}
+                        </div>
+                      </FormControl>
+                    </div>
+                  </Grid>
+
+                  <Grid item xs={12} md={4}>
+                    <div className="rounded-xl bg-gray-50/50 p-4 ring-1 ring-gray-100">
+                      <SectionTitle icon={User} title="이름" />
+                      <Autocomplete
+                        options={
+                          names
+                            ?.sort((a, b) =>
+                              a.username.localeCompare(b.username),
+                            )
+                            ?.map((item) => item.username) || []
+                        }
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            label="이름 선택 *"
+                            sx={inputStyles}
+                          />
+                        )}
+                        onChange={handleNameChange}
+                        className="bg-white"
+                      />
+                    </div>
+                  </Grid>
+
+                  <Grid item xs={12} md={4}>
+                    <div className="rounded-xl bg-gray-50/50 p-4 ring-1 ring-gray-100">
+                      <SectionTitle icon={Car} title="차량" />
+                      <Autocomplete
+                        options={carOptions}
+                        getOptionLabel={(option) => option.car}
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            label="차량 선택 *"
+                            sx={inputStyles}
+                          />
+                        )}
+                        onChange={handleCarChange}
+                        className="bg-white"
+                      />
+                    </div>
+                  </Grid>
+                </Grid>
+              </Grid>
+
+              <Grid item xs={12}>
+                <Divider className="my-4" />
+              </Grid>
+
+              <Grid item xs={12}>
+                <Grid container spacing={3}>
+                  <Grid item xs={12} md={4}>
+                    <div className="rounded-xl bg-gray-50/50 p-4 ring-1 ring-gray-100">
+                      <SectionTitle icon={MapPin} title="방문지" />
+                      <div className="space-y-3">
+                        {[0, 1, 2].map((index) => (
+                          <Autocomplete
+                            key={index}
+                            options={destinationOptions}
+                            getOptionLabel={(option) => option.destination}
+                            renderInput={(params) => (
+                              <TextField
+                                {...params}
+                                label={`방문지 ${index + 1}${index === 0 ? " *" : ""}`}
+                                sx={inputStyles}
+                              />
+                            )}
+                            onChange={handleDestinationChange(index)}
+                            value={selectedDestinations[index]}
+                            className="bg-white"
+                          />
+                        ))}
+                        <TextField
+                          fullWidth
+                          label="방문지 직접 입력"
+                          value={inputDestination}
+                          onChange={(e) => setInputDestination(e.target.value)}
+                          sx={inputStyles}
+                          className="bg-white"
+                        />
+                      </div>
+                    </div>
+                  </Grid>
+
+                  <Grid item xs={12} md={5}>
+                    <div className="rounded-xl bg-gray-50/50 p-4 ring-1 ring-gray-100">
+                      <SectionTitle icon={Briefcase} title="사업명" />
+                      <div className="space-y-3">
+                        {[0, 1, 2].map((index) => (
+                          <Autocomplete
+                            key={index}
+                            options={getBusinessOptions(
+                              selectedDestinations[index]?.id || "none",
+                            )}
+                            getOptionLabel={(option) => option.business}
+                            renderInput={(params) => (
+                              <TextField
+                                {...params}
+                                label={`사업명 ${index + 1}${index === 0 ? " *" : ""}`}
+                                sx={inputStyles}
+                              />
+                            )}
+                            onChange={handleBusinessChange(index)}
+                            value={selectedBusinesses[index]}
+                            disabled={!selectedDestinations[index]}
+                            className="bg-white"
+                          />
+                        ))}
+                        <TextField
+                          fullWidth
+                          label="사업명 직접 입력"
+                          value={inputBusiness}
+                          onChange={(e) => setInputBusiness(e.target.value)}
+                          sx={inputStyles}
+                          className="bg-white"
+                        />
+                      </div>
+                    </div>
+                  </Grid>
+
+                  <Grid item xs={12} md={3}>
+                    <div className="rounded-xl bg-gray-50/50 p-4 ring-1 ring-gray-100">
+                      <SectionTitle icon={ClipboardList} title="업무" />
+                      <div className="space-y-3">
+                        {[0, 1, 2].map((index) => (
+                          <Autocomplete
+                            key={index}
+                            options={workOptions}
+                            getOptionLabel={(option) => option.work}
+                            renderInput={(params) => (
+                              <TextField
+                                {...params}
+                                label={`업무 ${index + 1}${index === 0 ? " *" : ""}`}
+                                sx={inputStyles}
+                              />
+                            )}
+                            onChange={handleWorkChange(index)}
+                            value={selectedWorks[index]}
+                            className="bg-white"
+                          />
+                        ))}
+                        <TextField
+                          fullWidth
+                          label="업무 직접 입력"
+                          value={inputWork}
+                          onChange={(e) => setInputWork(e.target.value)}
+                          sx={inputStyles}
+                          className="bg-white"
+                        />
+                      </div>
+                    </div>
+                  </Grid>
+                </Grid>
+              </Grid>
+
+              <Grid item xs={12}>
+                <div className="lg:flex-row lg:items-end lg:justify-between lg:space-x-6 lg:space-y-0 mt-4 flex flex-col space-y-6">
+                  <div className="lg:w-2/3 w-full">
+                    <div className="rounded-xl bg-gray-50/50 p-4 ring-1 ring-gray-100">
+                      <SectionTitle icon={MessageSquare} title="비고" />
+                      <TextField
+                        fullWidth
+                        multiline
+                        rows={3}
+                        value={remarks}
+                        onChange={(e) => setRemarks(e.target.value)}
+                        sx={inputStyles}
+                        className="bg-white"
+                      />
+                    </div>
+                  </div>
+                  <div className="lg:justify-end lg:flex-1 flex justify-center">
+                    <button
+                      onClick={onClickComplete}
+                      className="min-w-[160px] rounded-xl bg-gradient-to-r from-blue-500 to-blue-600 px-8 py-4 text-lg font-semibold text-white shadow-lg transition-all hover:scale-[1.02] hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                     >
-                      <FormControlLabel
-                        value={1}
-                        control={<Radio />}
-                        label="오늘"
-                      />
-                      <FormControlLabel
-                        value={2}
-                        control={<Radio />}
-                        label="다른날"
-                      />
-                      <FormControlLabel
-                        value={3}
-                        control={<Radio />}
-                        label="기간 선택"
-                      />
-                    </RadioGroup>
-                  </FormControl>
-                </StyledFormSection>
-              </Grid>
-
-              <Grid item xs={12} sm={6} md={4}>
-                <StyledFormSection>
-                  <div className="mb-4 flex items-center space-x-2 text-slate-700">
-                    <User className="h-5 w-5" />
-                    <h2 className="text-lg font-semibold">이름</h2>
+                      입력 완료
+                    </button>
                   </div>
-                  <Autocomplete
-                    options={
-                      names
-                        ?.sort((a, b) => a.username.localeCompare(b.username))
-                        ?.map((item) => item.username) || []
-                    }
-                    renderInput={(params) => (
-                      <TextField {...params} label="이름 *" />
-                    )}
-                    onChange={handleNameChange}
-                  />
-                </StyledFormSection>
-              </Grid>
-              <Grid item xs={12} sm={6} md={4}>
-                <StyledFormSection>
-                  <div className="mb-4 flex items-center space-x-2 text-slate-700">
-                    <Car className="h-5 w-5" />
-                    <h2 className="text-lg font-semibold">차량</h2>
-                  </div>
-                  <Autocomplete
-                    options={carOptions}
-                    getOptionLabel={(options) => options.car}
-                    renderInput={(params) => (
-                      <TextField {...params} label="차량 *" />
-                    )}
-                    onChange={handleCarChange}
-                  />
-                </StyledFormSection>
-              </Grid>
-            </Grid>
-          </Grid>
-
-          <Grid item xs={12}>
-            <Divider />
-          </Grid>
-
-          {/* 상세 정보 섹션 */}
-          <Grid item xs={12} sx={{ width: "100%" }}>
-            <Grid container spacing={3}>
-              {/* 방문지 섹션 */}
-              <Grid item xs={12} md={4}>
-                <StyledFormSection>
-                  <div className="mb-4 flex items-center space-x-2 text-slate-700">
-                    <MapPin className="h-5 w-5" />
-                    <h2 className="text-lg font-semibold">방문지</h2>
-                  </div>
-                  {[0, 1, 2].map((index) => (
-                    <Autocomplete
-                      key={index}
-                      options={destinationOptions}
-                      getOptionLabel={(option) => option.destination}
-                      renderInput={(params) => (
-                        <TextField
-                          {...params}
-                          label={`방문지${index + 1} ${index === 0 ? "*" : ""}`}
-                          sx={{ mb: 2 }}
-                        />
-                      )}
-                      onChange={handleDestinationChange(index)}
-                      value={selectedDestinations[index]}
-                    />
-                  ))}
-                  <TextField
-                    fullWidth
-                    label="방문지 직접 입력"
-                    value={inputDestination}
-                    onChange={(e) => setInputDestination(e.target.value)}
-                  />
-                </StyledFormSection>
-              </Grid>
-
-              {/* 사업명 섹션 */}
-              <Grid item xs={12} md={6}>
-                <StyledFormSection>
-                  <div className="mb-4 flex items-center space-x-2 text-slate-700">
-                    <Briefcase className="h-5 w-5" />
-                    <h2 className="text-lg font-semibold">사업명</h2>
-                  </div>
-                  {[0, 1, 2].map((index) => (
-                    <Autocomplete
-                      key={index}
-                      options={getBusinessOptions(
-                        selectedDestinations[index]?.id || "none",
-                      )}
-                      getOptionLabel={(option) => option.business}
-                      renderInput={(params) => (
-                        <TextField
-                          {...params}
-                          label={`사업명${index + 1} ${index === 0 ? "*" : ""}`}
-                          sx={{ mb: 2 }}
-                        />
-                      )}
-                      onChange={handleBusinessChange(index)}
-                      value={selectedBusinesses[index]}
-                      disabled={!selectedDestinations[index]}
-                      isOptionEqualToValue={(option, value) =>
-                        option.business === value?.business
-                      }
-                    />
-                  ))}
-                  <TextField
-                    fullWidth
-                    label="사업명 직접 입력"
-                    value={inputBusiness}
-                    onChange={(e) => setInputBusiness(e.target.value)}
-                  />
-                </StyledFormSection>
-              </Grid>
-
-              {/* 업무 섹션 */}
-              <Grid item xs={12} md={2}>
-                <StyledFormSection>
-                  <div className="mb-4 flex items-center space-x-2 text-slate-700">
-                    <ClipboardList className="h-5 w-5" />
-                    <h2 className="text-lg font-semibold">업무</h2>
-                  </div>
-                  {[0, 1, 2].map((index) => (
-                    <Autocomplete
-                      key={index}
-                      options={workOptions}
-                      getOptionLabel={(option) => option.work}
-                      renderInput={(params) => (
-                        <TextField
-                          {...params}
-                          label={`업무${index + 1} ${index === 0 ? "*" : ""}`}
-                          sx={{ mb: 2 }}
-                        />
-                      )}
-                      onChange={handleWorkChange(index)}
-                      value={selectedWorks[index]}
-                      isOptionEqualToValue={(option, value) =>
-                        option?.work === value?.work
-                      }
-                    />
-                  ))}
-                  <TextField
-                    fullWidth
-                    label="업무 직접 입력"
-                    value={inputWork}
-                    onChange={(e) => setInputWork(e.target.value)}
-                  />
-                </StyledFormSection>
-              </Grid>
-            </Grid>
-          </Grid>
-
-          <Grid item xs={12}>
-            <Divider />
-          </Grid>
-
-          <Grid item xs={12}>
-            <Grid container spacing={1}>
-              <Grid item xs={12} md={4}>
-                <div className="mb-4 flex items-center space-x-2 text-slate-700">
-                  <MessageSquare className="h-5 w-5" />
-                  <h2 className="text-lg font-semibold">비고</h2>
                 </div>
-                <TextField
-                  fullWidth
-                  multiline
-                  rows={2}
-                  value={remarks}
-                  onChange={(e) => setRemarks(e.target.value)}
-                />
-              </Grid>
-              <Grid item xs={12} md={4}>
-                <Box
-                  sx={{
-                    textAlign: "center",
-                    width: "100%",
-                    whiteSpace: "nowrap",
-                  }}
-                  className="md:mt-16"
-                >
-                  <Button
-                    variant="contained"
-                    onClick={onClickComplete}
-                    className="sm:w-[100%] md:w-[40%]"
-                    sx={{
-                      height: "48px",
-                      fontSize: "1.1rem",
-                      bgcolor: "#00ab39",
-                      "&:hover": {
-                        bgcolor: "#009933",
-                      },
-                    }}
-                  >
-                    입력 완료
-                  </Button>
-                </Box>
               </Grid>
             </Grid>
-          </Grid>
-        </Grid>
-      </StyledPaper>
-    </Container>
+          </div>
+        </div>
+      </Container>
+    </div>
   );
 }
 

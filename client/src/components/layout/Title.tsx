@@ -61,7 +61,7 @@ function Title({
           <span className="whitespace-nowrap text-xl font-semibold text-gray-700 transition-colors group-hover:text-blue-600 sm:text-xs">
             {category === "driving" && (
               <>
-                {calYearMonth && calYearMonth(currentDate)}
+                {calYearMonth?.(currentDate)}
                 <span className="ml-2 text-gray-500">차량운행일지</span>
               </>
             )}

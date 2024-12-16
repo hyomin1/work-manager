@@ -4,7 +4,6 @@ import EmployeeEdit from "../EmployeeEdit";
 import { Edit, FileText, Trash2 } from "lucide-react";
 import { axiosReq } from "../../../api";
 import useEmployeeStore from "../../../stores/employeeStore";
-import { width } from "@mui/system";
 
 interface EmployeeTableBodyProps {
   refetch: () => void;
