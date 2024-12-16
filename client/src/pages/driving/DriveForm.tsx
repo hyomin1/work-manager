@@ -253,7 +253,6 @@ const DriveInput = () => {
 
               <Grid item xs={12}>
                 <Grid container spacing={3}>
-                  {/* Distance */}
                   <Grid item xs={12} md={6}>
                     <div className="h-full rounded-xl bg-gray-50/50 p-4 ring-1 ring-gray-100">
                       <SectionTitle icon={Navigation} title="주행거리" />

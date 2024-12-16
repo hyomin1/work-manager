@@ -172,7 +172,6 @@ function EmployeeEdit({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-gray-900/40 px-4 backdrop-blur-[2px]">
       <div className="relative w-full max-w-2xl transform rounded-2xl bg-gradient-to-b from-white to-gray-50 shadow-[0_0_50px_rgba(0,0,0,0.15)] transition-all">
-        {/* Close button */}
         <button
           onClick={() => setEditingItemId("")}
           className="absolute right-4 top-4 rounded-full p-1 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600"
@@ -180,14 +179,12 @@ function EmployeeEdit({
           <X size={20} />
         </button>
 
-        {/* Header */}
         <div className="border-b border-gray-200 px-6 py-4">
           <h2 className="text-center text-xl font-semibold text-gray-800">
             정보 수정
           </h2>
         </div>
 
-        {/* Form */}
         <form onSubmit={onSubmit} className="px-6 py-6">
           <div className="space-y-5">
             <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ko">
@@ -304,7 +301,6 @@ function EmployeeEdit({
             />
           </div>
 
-          {/* Footer */}
           <div className="mt-8 flex justify-end space-x-3">
             <button
               type="button"
