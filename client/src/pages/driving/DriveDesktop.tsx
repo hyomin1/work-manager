@@ -27,6 +27,13 @@ interface IDrivePCProps {
   grandTotal: number;
   refetch: () => void;
 }
+
+const cellStyle = {
+  padding: "12px 16px",
+  fontSize: "0.875rem",
+  color: "#334155",
+  borderBottom: "1px solid #e2e8f0",
+};
 // 차량운행일지 PC 화면
 function DrivePC({
   drivingInform,
@@ -67,12 +74,28 @@ function DrivePC({
             <TableRow>
               {drivingHeaders.map((item, index) => (
                 <TableCell
-                  className="border border-t-0 border-gray-300"
                   align="center"
                   key={index}
                   sx={{
-                    fontWeight: "800",
+                    padding: "0.5rem 1.5rem",
+                    background: "white",
+                    borderBottom: "2px solid #E2E8F0",
+                    fontWeight: 600,
+                    fontSize: {
+                      xs: "14px",
+                      sm: "15px",
+                      md: "16px",
+                    },
+                    letterSpacing: "0.025em",
+                    color: "#334155",
+                    textAlign: "center",
                     whiteSpace: "nowrap",
+                    "&:first-of-type": {
+                      borderTopLeftRadius: "12px",
+                    },
+                    "&:last-child": {
+                      borderTopRightRadius: "12px",
+                    },
                   }}
                 >
                   {item}
@@ -98,59 +121,68 @@ function DrivePC({
               .map((item, index) => (
                 <TableRow
                   key={index}
-                  className={`w-[100%] sm:text-sm ${
-                    index % 2 === 0 ? "bg-white" : "bg-gray-200"
+                  className={`w-full border-b ${
+                    index % 2 === 0 ? "bg-white" : "bg-slate-50"
                   }`}
                 >
-                  <TableCell className="border border-gray-300" align="center">
+                  <TableCell sx={cellStyle} align="center">
                     {calCarDay(item.driveDay)}
                   </TableCell>
-                  <TableCell
-                    className="whitespace-nowrap border border-gray-300"
-                    align="center"
-                  >
+                  <TableCell sx={cellStyle} align="center">
                     {item.username}
                   </TableCell>
-                  <TableCell className="border border-gray-300" align="center">
+                  <TableCell sx={cellStyle} align="center">
                     {item.drivingDestination}
                   </TableCell>
-                  <TableCell className="border border-gray-300" align="center">
+                  <TableCell sx={cellStyle} align="center">
                     {item.startKM.toLocaleString()}km
                   </TableCell>
-                  <TableCell className="border border-gray-300" align="center">
+                  <TableCell sx={cellStyle} align="center">
                     {item.endKM.toLocaleString()}km
                   </TableCell>
-                  <TableCell className="border border-gray-300" align="center">
+                  <TableCell sx={cellStyle} align="center">
                     {item.totalKM.toLocaleString()}km
                   </TableCell>
-                  <TableCell className="border border-gray-300" align="center">
-                    {item.fuelCost ? item.fuelCost.toLocaleString() : ""}
+                  <TableCell sx={cellStyle} align="center">
+                    {item.fuelCost ? item.fuelCost.toLocaleString() : "-"}
                   </TableCell>
-                  <TableCell className="border border-gray-300" align="center">
-                    {item.toll ? item.toll.toLocaleString() : ""}
+                  <TableCell sx={cellStyle} align="center">
+                    {item.toll ? item.toll.toLocaleString() : "-"}
                   </TableCell>
-                  <TableCell className="border border-gray-300" align="center">
-                    {item.etc.cost > 0 &&
-                      `${item.etc.cost.toLocaleString()}(${item.etc.name})`}
+                  <TableCell sx={cellStyle} align="center">
+                    {item.etc.cost > 0 ? (
+                      <span>
+                        {item.etc.cost.toLocaleString()}
+                        <span className="ml-1 text-slate-500">
+                          ({item.etc.name})
+                        </span>
+                      </span>
+                    ) : (
+                      "-"
+                    )}
                   </TableCell>
-                  <TableCell align="right" className="border border-gray-300">
+                  <TableCell
+                    sx={{
+                      padding: "8px 16px",
+                      borderBottom: "1px solid #e2e8f0",
+                    }}
+                    align="right"
+                  >
                     {item.isOwner && (
-                      <div className="flex justify-end">
+                      <div className="flex justify-end gap-2">
                         <button
-                          className="mr-4 flex items-center hover:opacity-60"
                           onClick={() => setEditingItemId(item._id)}
+                          className="flex items-center rounded-md px-2 py-1 text-sm font-medium text-blue-600 transition-all hover:bg-slate-100"
                         >
-                          <Edit strokeWidth={2.2} size={15} />
-                          <span className="ml-1 whitespace-nowrap font-semibold">
-                            수정
-                          </span>
+                          <Edit strokeWidth={2} size={14} className="mr-1" />
+                          수정
                         </button>
                         <button
-                          className="flex items-center whitespace-nowrap hover:opacity-60"
                           onClick={() => deleteInform(item._id)}
+                          className="flex items-center rounded-md px-2 py-1 text-sm font-medium text-red-600 transition-all hover:bg-red-50"
                         >
-                          <Trash2 strokeWidth={2.2} size={15} />
-                          <span className="ml-1 font-semibold">삭제</span>
+                          <Trash2 strokeWidth={2} size={14} className="mr-1" />
+                          삭제
                         </button>
                         {editingItemId === item._id && (
                           <EditDrivingInform
@@ -168,33 +200,70 @@ function DrivePC({
             <TableRow
               sx={{
                 position: "sticky",
-                background: "#f5f5f5",
+                bottom: 0,
+                backgroundColor: "#f8fafc !important",
+                transition: "all 0.2s ease-in-out",
+                boxShadow: "0 -2px 6px rgba(0,0,0,0.03)",
+
                 "& .MuiTableCell-root": {
+                  padding: "14px 16px",
+                  fontSize: "0.875rem",
                   fontWeight: 600,
-                  backgroundColor: "#f5f5f5",
-                  fontSize: "0.85rem",
+                  color: "#334155",
+                  backgroundColor: "inherit",
+                  borderTop: "2px solid #e2e8f0",
+                  borderBottom: "none",
+                },
+                "& .total-value": {
+                  color: "#4A4A4A  ",
+                  fontFamily: "monospace",
+                  fontSize: "0.9rem",
+                },
+                "& .total-label": {
+                  fontWeight: 700,
+                  color: "#1e293b",
                 },
               }}
             >
               <TableCell
-                className="border border-gray-300"
                 colSpan={5}
                 align="center"
-              />
-              <TableCell className="border border-gray-300" align="center">
-                {totalDrivingKM.toLocaleString()}km
+                sx={{ fontStyle: "italic" }}
+              >
+                합계
               </TableCell>
-              <TableCell className="border border-gray-300" align="center">
-                {totalFuelCost.toLocaleString()}
+              <TableCell align="center">
+                <span className="total-value">
+                  {totalDrivingKM.toLocaleString()}
+                </span>
+                <span className="ml-1 text-slate-600">km</span>
               </TableCell>
-              <TableCell className="border border-gray-300" align="center">
-                {totalToll.toLocaleString()}
+              <TableCell align="center">
+                <span className="total-value">
+                  {totalFuelCost.toLocaleString()}
+                </span>
+                <span className="ml-1 text-slate-600">원</span>
               </TableCell>
-              <TableCell className="border border-gray-300" align="center">
-                {totalEtcCost.toLocaleString()}
+              <TableCell align="center">
+                <span className="total-value">
+                  {totalToll.toLocaleString()}
+                </span>
+                <span className="ml-1 text-slate-600">원</span>
               </TableCell>
-              <TableCell className="border border-gray-300" align="center">
-                총계: {grandTotal.toLocaleString()}
+              <TableCell align="center">
+                <span className="total-value">
+                  {totalEtcCost.toLocaleString()}
+                </span>
+                <span className="ml-1 text-slate-600">원</span>
+              </TableCell>
+              <TableCell align="center">
+                <div className="flex items-center justify-center gap-2">
+                  <span className="total-label">총계:</span>
+                  <span className="total-value text-base">
+                    {grandTotal.toLocaleString()}
+                    <span className="ml-1 text-slate-600">원</span>
+                  </span>
+                </div>
               </TableCell>
             </TableRow>
           </TableFooter>

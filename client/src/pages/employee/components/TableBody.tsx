@@ -253,7 +253,10 @@ function EmployeeTableBody({ refetch }: EmployeeTableBodyProps) {
           <TableCell
             align="center"
             colSpan={7}
-            className="text-center text-gray-400"
+            className="text-center"
+            sx={{
+              color: "#334155",
+            }}
           >
             등록된 정보가 없습니다
           </TableCell>
@@ -268,6 +271,7 @@ function EmployeeTableBody({ refetch }: EmployeeTableBodyProps) {
   const cellStyle = {
     fontSize: "large",
     borderRight: "1px solid #e5e7eb",
+    color: "slate",
   };
 
   const lastCellStyle = {

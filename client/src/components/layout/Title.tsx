@@ -62,7 +62,10 @@ function Title({
             {category === "driving" && (
               <>
                 {calYearMonth?.(currentDate)}
-                <span className="ml-2 text-gray-500">차량운행일지</span>
+                <span className="whitespace-nowrap text-xl font-semibold text-gray-700 transition-colors group-hover:text-blue-600 sm:text-xs">
+                  {" "}
+                  차량운행일지
+                </span>
               </>
             )}
             {category === "employee" && calDate && calDate(currentDate)}

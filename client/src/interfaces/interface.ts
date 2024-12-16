@@ -66,6 +66,17 @@ export interface FormData {
   endDate: Date;
   remarks: string;
 }
+
+export interface DriveFormData {
+  driveDay: Date;
+  username: string;
+  drivingDestination: string;
+  startKM: number;
+  endKM: number;
+  fuelCost: number;
+  toll: number;
+  etc: { name: string; cost: number };
+}
 export interface IDrivingInform {
   _id: string;
   isOwner: boolean;

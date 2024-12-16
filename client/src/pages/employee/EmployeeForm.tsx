@@ -338,7 +338,9 @@ function EmployeeForm() {
         <div className="w-full">
           <div className="mb-8 flex items-center justify-between">
             <ArrowBack type="not home" />
-            <div className="rounded-2xl bg-white shadow-lg ring-1 ring-black/5 sm:px-6 sm:py-2 md:px-16 md:py-4">
+            <div className="flex items-center rounded-2xl bg-white shadow-lg ring-1 ring-black/5 sm:px-6 sm:py-2 md:px-16 md:py-4">
+              <Calendar className="mr-2 h-5 w-5 text-blue-600 transition-colors group-hover:text-blue-700 sm:hidden" />
+
               <span className="whitespace-nowrap text-xl font-semibold text-gray-700 transition-colors sm:text-xs">
                 {formDate}
               </span>
@@ -349,10 +351,8 @@ function EmployeeForm() {
 
           <div className="w-full rounded-2xl bg-white p-6 shadow-xl ring-1 ring-gray-100">
             <Grid container spacing={4}>
-              {/* Basic Info Section */}
               <Grid item xs={12}>
                 <Grid container spacing={3}>
-                  {/* Date Selection */}
                   <Grid item xs={12} md={4}>
                     <div className="rounded-xl bg-gray-50/50 p-4 ring-1 ring-gray-100">
                       <SectionTitle icon={Calendar} title="날짜" />
