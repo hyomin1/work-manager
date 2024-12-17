@@ -1,21 +1,26 @@
 import { useEffect, useState } from "react";
-import AdminAdd from "../AdminAdd";
-import { TABS } from "../../../constants/adminTabs";
 import { QueryClient, useQuery } from "@tanstack/react-query";
+import { Edit, Trash2, ListPlus } from "lucide-react";
+import {
+  Autocomplete,
+  TextField,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+} from "@mui/material";
+import AdminAdd from "../AdminAdd";
+import AdminEdit from "../AdminEdit";
+import { TABS } from "../../../constants/adminTabs";
 import { IDestinations } from "../../../interfaces/interface";
 import { getDestinations } from "../../../api";
-import { Edit, Trash2 } from "lucide-react";
-import AdminEdit from "../AdminEdit";
-import { Autocomplete, TextField } from "@mui/material";
-import { ListPlus } from "lucide-react";
 
-// 관리 페이지 테이블 본문
 interface TabContentProps {
   activeTab: string;
   data: any[];
   removeItem: (id: string) => void;
   queryClient: QueryClient;
-
   destination: string;
   setDestination: React.Dispatch<React.SetStateAction<string>>;
 }
@@ -30,10 +35,11 @@ const TableBody = ({
 }: TabContentProps) => {
   const [isAdding, setIsAdding] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [selectedId, setSelectedId] = useState("");
   const activeTabConfig = TABS.find((tab) => tab.key === activeTab);
-
-  const [item, setItem] = useState<{ [key: string]: string } | null>(null); // 수정할 아이템
-  const [itemId, setItemId] = useState(""); //수정할 아이템 _id
+  const [item, setItem] = useState<{ [key: string]: string } | null>(null);
+  const [itemId, setItemId] = useState("");
 
   const { data: destinations } = useQuery<IDestinations[]>({
     queryKey: ["destinations"],
@@ -55,14 +61,40 @@ const TableBody = ({
     setItem({ [activeTab]: item[activeTab] });
     setIsEditing(true);
   };
+
+  const handleDeleteClick = (id: string) => {
+    setSelectedId(id);
+    setDeleteDialogOpen(true);
+  };
+
+  const handleConfirmDelete = () => {
+    removeItem(selectedId);
+    setDeleteDialogOpen(false);
+  };
+
   useEffect(() => {
     if (activeTab !== "business") {
-      setDestination(""); // 다른 탭으로 변경 시 destination을 초기화
+      setDestination("");
     }
   }, [activeTab, setDestination]);
 
+  useEffect(() => {
+    const handleEnter = (event: KeyboardEvent) => {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        event.stopPropagation();
+        setDeleteDialogOpen(false);
+        removeItem(selectedId);
+      }
+    };
+    window.addEventListener("keydown", handleEnter);
+    return () => {
+      window.removeEventListener("keydown", handleEnter);
+    };
+  }, [selectedId, removeItem]);
+
   return (
-    <div>
+    <div className="bg-white">
       {isAdding && (
         <AdminAdd
           setIsAdding={setIsAdding}
@@ -81,72 +113,104 @@ const TableBody = ({
           item={item}
         />
       )}
-      <div className="flex w-full items-center justify-between border-b border-gray-200 bg-white">
-        <div className="whitespace-nowrap bg-white p-4 font-bold sm:text-sm md:w-[35%] md:text-lg">
+
+      <div className="flex items-center justify-between border-b border-gray-200 px-4 py-2">
+        <div className="w-1/3">
           {activeTab === "business" ? (
             <Autocomplete
-              value={destination || ""} // null 체크 추가
+              value={destination || ""}
               options={
                 destinations
                   ?.sort((a, b) => a.destination.localeCompare(b.destination))
                   .map((item) => `${item._id},${item.destination}`) || []
               }
-              getOptionLabel={(option) => option.split(",")[1] || ""} // 표시되는 텍스트는 destination 부분만
-              onChange={(e, newValue) => {
-                setDestination(newValue || "");
-              }}
+              getOptionLabel={(option) => option.split(",")[1] || ""}
+              onChange={(e, newValue) => setDestination(newValue || "")}
               renderInput={(params) => (
-                <TextField {...params} label="방문지 선택" />
+                <TextField
+                  {...params}
+                  label="방문지 선택"
+                  variant="outlined"
+                  size="small"
+                  fullWidth
+                />
               )}
+              size="small"
             />
           ) : (
-            <span>목록</span>
+            <div className="text-lg font-semibold text-gray-700">목록</div>
           )}
         </div>
 
-        <div className="mr-1">
-          <button
-            onClick={handleAddData}
-            className="flex items-center gap-2 rounded-lg bg-blue-50 px-6 py-3 text-blue-600 transition-all hover:bg-blue-100"
-          >
-            <ListPlus className="h-6 w-6" />
-            <div className="bg-white">
-              <span className="text-lg font-semibold">등록</span>
-            </div>
-          </button>
-        </div>
-      </div>
-      {data.map((item, index) => (
-        <div
-          key={item._id}
-          className={`flex items-center justify-between border-b border-gray-200 p-4 ${
-            index % 2 === 0 ? "bg-white" : "bg-gray-50"
-          }`}
+        <Button
+          variant="contained"
+          color="primary"
+          startIcon={<ListPlus className="h-5 w-5" />}
+          onClick={handleAddData}
+          className="bg-blue-600 hover:bg-blue-700"
         >
-          <div className="overflow-hidden overflow-ellipsis whitespace-nowrap sm:text-lg">
-            {activeTab === "business" && <span>{item.business}</span>}
-            {activeTab !== "business" && (
-              <span>{item[activeTabConfig?.dataKey || ""]}</span>
-            )}
+          등록
+        </Button>
+      </div>
+
+      <div>
+        {data.map((item, index) => (
+          <div
+            key={item._id}
+            className={`flex items-center justify-between px-4 py-4 text-lg ${
+              index % 2 === 0 ? "bg-white" : "bg-gray-50"
+            }`}
+          >
+            <div className="flex-1 truncate pr-4 text-gray-900">
+              {activeTab === "business"
+                ? item.business
+                : item[activeTabConfig?.dataKey || ""]}
+            </div>
+            <div className="flex justify-end gap-2">
+              <button
+                className="flex items-center rounded-md px-2 py-1 text-sm font-medium text-blue-600 transition-all hover:bg-slate-100"
+                onClick={() => editItem(item._id, item)}
+              >
+                <Edit className="h-5 w-5" />
+                수정
+              </button>
+              <button
+                className="flex items-center rounded-md px-2 py-1 text-sm font-medium text-red-600 transition-all hover:bg-red-50"
+                onClick={() => handleDeleteClick(item._id)}
+              >
+                <Trash2 className="h-5 w-5" />
+                삭제
+              </button>
+            </div>
           </div>
-          <div className="flex items-center justify-evenly gap-2">
-            <button
-              className="flex items-center hover:opacity-60"
-              onClick={() => editItem(item._id, item)}
-            >
-              <Edit strokeWidth={2.2} />
-              <span className="ml-1 font-semibold">수정</span>
-            </button>
-            <button
-              className="flex items-center hover:opacity-60"
-              onClick={() => removeItem(item._id)}
-            >
-              <Trash2 strokeWidth={2.2} />
-              <span className="ml-1 font-semibold">삭제</span>
-            </button>
-          </div>
-        </div>
-      ))}
+        ))}
+      </div>
+
+      <Dialog
+        open={deleteDialogOpen}
+        onClose={() => setDeleteDialogOpen(false)}
+      >
+        <DialogTitle className="text-red-600">삭제 확인</DialogTitle>
+        <DialogContent>
+          <p className="text-gray-600">정말로 이 항목을 삭제하시겠습니까?</p>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={handleConfirmDelete}
+            color="error"
+            variant="contained"
+            className="hover:opacity-35"
+          >
+            삭제
+          </Button>
+          <Button
+            className="hover:opacity-35"
+            onClick={() => setDeleteDialogOpen(false)}
+          >
+            취소
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };

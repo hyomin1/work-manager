@@ -263,7 +263,7 @@ export default function NavigationButtons({
             />
             <NavButton
               icon={Settings}
-              label="관리"
+              label="설정"
               onClick={onClickAdmin}
               variant="green"
             />

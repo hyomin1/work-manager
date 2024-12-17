@@ -1,33 +1,48 @@
 import { TABS } from "../../../constants/adminTabs";
+import { Tab, Tabs } from "@mui/material";
 
 interface TabHeaderProps {
   activeTab: string;
   onTabClick: (tab: string) => void;
 }
 
-// 관리 페이지 테이블 헤더
-function TableHeader({ activeTab, onTabClick }: TabHeaderProps) {
+const TableHeader = ({ activeTab, onTabClick }: TabHeaderProps) => {
   return (
-    <div className="w-[100%]">
-      <div className="flex w-[100%] whitespace-nowrap text-left sm:text-sm">
-        {TABS.map((tab) => (
-          <div
-            key={tab.key}
-            className={`w-[16.666667%] cursor-pointer p-4 font-bold sm:flex sm:items-center sm:justify-center ${
-              tab.key === TABS[0].key ? "rounded-tl-xl" : ""
-            } ${
-              tab.key === TABS[TABS.length - 1].key ? "rounded-tr-xl" : ""
-            } hover:opacity-60 ${
-              activeTab === tab.key ? "bg-blue-500 text-white" : "bg-gray-200"
-            }`}
-            onClick={() => onTabClick(tab.key)}
-          >
-            <span>{tab.label}</span>
-          </div>
-        ))}
+    <div className="border-b border-gray-200 bg-white">
+      <div className="overflow-x-auto">
+        <Tabs
+          value={activeTab}
+          onChange={(_, newValue) => onTabClick(newValue)}
+          variant="scrollable"
+          scrollButtons={false}
+          textColor="primary"
+          indicatorColor="primary"
+          className="min-h-[48px]"
+          sx={{
+            "& .MuiTabs-scroller": {
+              overflowX: "auto",
+              "&::-webkit-scrollbar": {
+                display: "none",
+              },
+              scrollbarWidth: "none",
+            },
+          }}
+        >
+          {TABS.map((tab) => (
+            <Tab
+              key={tab.key}
+              value={tab.key}
+              label={tab.label}
+              className="min-h-[48px] font-semibold transition-colors hover:bg-blue-50"
+              sx={{
+                minWidth: { xs: "120px", sm: "160px" },
+              }}
+            />
+          ))}
+        </Tabs>
       </div>
     </div>
   );
-}
+};
 
 export default TableHeader;
