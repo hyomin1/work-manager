@@ -6,6 +6,11 @@ import { Edit, Trash2 } from "lucide-react";
 import DailyWorkEdit from "../DailyWorkEdit";
 import DailyWorkView from "../DailyWorkView";
 
+const cellStyle = {
+  fontSize: "1rem",
+  whiteSpace: "nowrap",
+};
+
 interface EmployeeTableBodyProps {
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -25,11 +30,9 @@ function TableContent({
 
   const contentLength = 100;
 
-  // 부서별로 데이터 그룹화 및 정렬
   const groupedData = useMemo(() => {
     if (!dailyWork?.length) return [];
 
-    // 1. 부서별로 그룹화
     const grouped = dailyWork.reduce(
       (acc, item) => {
         if (!acc[item.department]) {
@@ -41,12 +44,10 @@ function TableContent({
       {} as Record<string, typeof dailyWork>,
     );
 
-    // 2. 각 부서 내에서 이름으로 정렬
     Object.keys(grouped).forEach((dept) => {
       grouped[dept].sort((a, b) => a.username.localeCompare(b.username));
     });
 
-    // 3. 부서 이름으로 정렬하여 최종 배열 생성
     return Object.entries(grouped)
       .sort(([deptA], [deptB]) => deptA.localeCompare(deptB))
       .map(([dept, items]) => ({
@@ -91,7 +92,7 @@ function TableContent({
           <TableCell
             align="left"
             colSpan={7}
-            className="text-center text-gray-400"
+            className="text-center text-base text-gray-400"
           >
             등록된 정보가 없습니다
           </TableCell>
@@ -105,73 +106,68 @@ function TableContent({
       <TableBody>
         {groupedData.map(({ department, items }) =>
           items.map((item, index) => (
-            <TableRow key={item._id} className="w-[100%] sm:text-sm">
+            <TableRow
+              key={item._id}
+              className="group w-[100%] border-b border-gray-200"
+            >
               {index === 0 && (
                 <TableCell
-                  className="border border-r-gray-200"
                   align="center"
                   rowSpan={items.length}
-                  sx={{
-                    whiteSpace: "nowrap",
-                    fontSize: "large",
-                    width: "5%",
-                    backgroundColor: "rgb(243 244 246)",
-                    fontWeight: "bold",
-                  }}
+                  className="border-r border-gray-200 bg-gray-50 text-base font-medium text-gray-700"
+                  sx={{ ...cellStyle, width: "5%" }}
                 >
                   {department}
                 </TableCell>
               )}
 
               <TableCell
-                className="cursor-pointer border border-r-gray-200 group-hover:bg-gray-200"
                 align="center"
                 onClick={() => handleCellClick(item._id)}
-                sx={{
-                  whiteSpace: "nowrap",
-                  fontSize: "large",
-                  width: "5%",
-                }}
+                className="peer cursor-pointer border-r border-gray-200 text-base font-medium text-gray-900 transition-colors hover:bg-gray-100 group-hover:[&:not(:hover)]:bg-gray-100"
+                sx={{ ...cellStyle, width: "5%" }}
               >
                 {item.username}
               </TableCell>
 
               <TableCell
+                sx={cellStyle}
                 align="left"
                 onClick={() => handleCellClick(item._id)}
-                className="cursor-pointer truncate border border-r-gray-200 hover:bg-gray-200 group-hover:bg-gray-200"
-                sx={{
-                  fontSize: "large",
-                }}
+                className="peer cursor-pointer border-r border-gray-200 text-base text-gray-700 transition-colors hover:bg-gray-100 peer-hover:bg-gray-100"
               >
-                {item.content.slice(0, contentLength)}
-                {item.content.length > contentLength && "..."}
+                <div className="truncate">
+                  {item.content.slice(0, contentLength)}
+                  {item.content.length > contentLength && "..."}
+                </div>
               </TableCell>
 
               <TableCell
-                sx={{ width: "5%" }}
                 align="right"
                 onClick={(e) => e.stopPropagation()}
+                sx={{ width: "5%" }}
               >
                 {item.isOwner && (
-                  <div className="flex items-center justify-end">
+                  <div className="flex items-center justify-between gap-2 whitespace-nowrap">
                     <button
-                      className="mr-2 flex items-center hover:opacity-60"
+                      className="flex items-center rounded px-2 py-1 text-base font-medium text-blue-600 transition-colors hover:bg-blue-50"
                       onClick={(e) => handleEditClick(e, item._id)}
                     >
-                      <Edit className="md:h-4 md:w-4" strokeWidth={2.2} />
-                      <span className="ml-1 whitespace-nowrap font-semibold md:text-sm">
-                        수정
-                      </span>
+                      <Edit
+                        className="mr-1 sm:h-4 sm:w-4 md:h-5 md:w-5"
+                        strokeWidth={2}
+                      />
+                      수정
                     </button>
                     <button
-                      className="flex items-center hover:opacity-60"
+                      className="flex items-center rounded px-2 py-1 text-base font-medium text-red-600 transition-colors hover:bg-red-50"
                       onClick={(e) => handleDeleteClick(e, item._id)}
                     >
-                      <Trash2 className="md:h-4 md:w-4" strokeWidth={2.2} />
-                      <span className="ml-1 whitespace-nowrap font-semibold md:text-sm">
-                        삭제
-                      </span>
+                      <Trash2
+                        className="mr-1 sm:h-4 sm:w-4 md:h-5 md:w-5"
+                        strokeWidth={2}
+                      />
+                      삭제
                     </button>
                   </div>
                 )}
