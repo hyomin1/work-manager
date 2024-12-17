@@ -1,20 +1,13 @@
 import { useEffect, useState } from "react";
 import { QueryClient, useQuery } from "@tanstack/react-query";
 import { Edit, Trash2, ListPlus } from "lucide-react";
-import {
-  Autocomplete,
-  TextField,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Button,
-} from "@mui/material";
+import { Autocomplete, TextField, Button } from "@mui/material";
 import AdminAdd from "../AdminAdd";
 import AdminEdit from "../AdminEdit";
 import { TABS } from "../../../constants/adminTabs";
 import { IDestinations } from "../../../interfaces/interface";
 import { getDestinations } from "../../../api";
+import DeleteBox from "../../../components/common/DeleteBox";
 
 interface TabContentProps {
   activeTab: string;
@@ -185,32 +178,11 @@ const TableBody = ({
           </div>
         ))}
       </div>
-
-      <Dialog
+      <DeleteBox
         open={deleteDialogOpen}
-        onClose={() => setDeleteDialogOpen(false)}
-      >
-        <DialogTitle className="text-red-600">삭제 확인</DialogTitle>
-        <DialogContent>
-          <p className="text-gray-600">정말로 이 항목을 삭제하시겠습니까?</p>
-        </DialogContent>
-        <DialogActions>
-          <Button
-            onClick={handleConfirmDelete}
-            color="error"
-            variant="contained"
-            className="hover:opacity-35"
-          >
-            삭제
-          </Button>
-          <Button
-            className="hover:opacity-35"
-            onClick={() => setDeleteDialogOpen(false)}
-          >
-            취소
-          </Button>
-        </DialogActions>
-      </Dialog>
+        setOpen={setDeleteDialogOpen}
+        handleDelete={handleConfirmDelete}
+      />
     </div>
   );
 };

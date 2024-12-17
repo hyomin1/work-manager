@@ -4,6 +4,7 @@ import EmployeeEdit from "../EmployeeEdit";
 import { Edit, FileText, Trash2 } from "lucide-react";
 import { axiosReq } from "../../../api";
 import useEmployeeStore from "../../../stores/employeeStore";
+import DeleteBox from "../../../components/common/DeleteBox";
 
 interface EmployeeTableBodyProps {
   refetch: () => void;
@@ -23,18 +24,18 @@ interface IEmployee {
 function EmployeeTableBody({ refetch }: EmployeeTableBodyProps) {
   const { inform, currentDate } = useEmployeeStore();
   const [editingItemId, setEditingItemId] = useState("");
+  const [open, setOpen] = useState(false);
+  const [deletedId, setDeletedId] = useState("");
 
   const deleteInform = async (id: string) => {
-    if (!window.confirm("삭제하시겠습니까?")) {
-      return;
-    }
-
     const response = await axiosReq.delete(
       `/api/employee-inform/removeInform/${id}`,
     );
     if (response.status === 200) {
       refetch();
     }
+    setOpen(false);
+    setDeletedId("");
   };
 
   const sortEmployeeInform = () => {
@@ -281,158 +282,168 @@ function EmployeeTableBody({ refetch }: EmployeeTableBodyProps) {
   };
 
   return (
-    <TableBody>
-      {sortedData.map((item, index) => (
-        <TableRow
-          key={item._id}
-          className="w-[100%] sm:text-sm"
-          sx={styleMap.get(`${item.destination}-${item.business}`)}
-        >
-          {rowSpans.get(`${index}-name`) !== 0 && (
-            <TableCell
-              align="center"
-              rowSpan={rowSpans.get(`${index}-name`)}
-              sx={{ ...cellStyle, whiteSpace: "nowrap" }}
-            >
-              {item.username}
-            </TableCell>
-          )}
-
-          {rowSpans.get(`${index}-destination`) !== 0 && (
-            <TableCell
-              align="center"
-              rowSpan={rowSpans.get(`${index}-destination`)}
-              sx={{ ...cellStyle, whiteSpace: "nowrap" }}
-            >
-              {item.destination}
-            </TableCell>
-          )}
-
-          {rowSpans.get(`${index}-business`) !== 0 && (
-            <TableCell
-              align="left"
-              rowSpan={rowSpans.get(`${index}-business`)}
-              sx={cellStyle}
-            >
-              {item.business}
-            </TableCell>
-          )}
-
-          {rowSpans.get(`${index}-work`) !== 0 && (
-            <TableCell
-              align="center"
-              rowSpan={rowSpans.get(`${index}-work`)}
-              sx={{ ...cellStyle, whiteSpace: "nowrap" }}
-            >
-              {item.work}
-            </TableCell>
-          )}
-
-          {rowSpans.get(`${index}-car`) !== 0 && (
-            <TableCell
-              align="center"
-              rowSpan={rowSpans.get(`${index}-car`)}
-              sx={cellStyle}
-            >
-              {item.car !== ""
-                ? item.car
-                : findNonEmptyCarInGroup(sortedData, index)}
-            </TableCell>
-          )}
-
-          {/* <TableCell sx={cellStyle}>{item.car}</TableCell> */}
-
-          <TableCell align="center" sx={cellStyle}>
-            {item.remarks && (
-              <Tooltip
-                title={item.remarks}
-                arrow
-                placement="left"
-                componentsProps={{
-                  tooltip: {
-                    onClick: (e) => e.stopPropagation(),
-                    sx: {
-                      bgcolor: "#374151",
-                      color: "#ffffff",
-                      boxShadow: "0 2px 8px rgba(0, 0, 0, 0.12)",
-                      borderRadius: "6px",
-                      maxWidth: "500px",
-                      fontSize: "14px",
-                      lineHeight: "1.5",
-                      padding: "12px 16px",
-                      "& .MuiTooltip-arrow": {
-                        color: "#374151",
-                      },
-                      "&:focus": {
-                        outline: "2px solid #2563eb",
-                        outlineOffset: "2px",
-                      },
-                    },
-                  },
-                }}
+    <>
+      <TableBody>
+        {sortedData.map((item, index) => (
+          <TableRow
+            key={item._id}
+            className="w-[100%] sm:text-sm"
+            sx={styleMap.get(`${item.destination}-${item.business}`)}
+          >
+            {rowSpans.get(`${index}-name`) !== 0 && (
+              <TableCell
+                align="center"
+                rowSpan={rowSpans.get(`${index}-name`)}
+                sx={{ ...cellStyle, whiteSpace: "nowrap" }}
               >
-                <Button
-                  sx={{
-                    minWidth: "auto",
-                    padding: "4px",
-                    borderRadius: "6px",
-                    transition: "all 0.2s ease",
-                    "&:hover": {
-                      backgroundColor: "rgba(37, 99, 235, 0.04)",
-                      transform: "scale(1.05)",
-                    },
-                    "&:active": {
-                      backgroundColor: "rgba(37, 99, 235, 0.08)",
+                {item.username}
+              </TableCell>
+            )}
+
+            {rowSpans.get(`${index}-destination`) !== 0 && (
+              <TableCell
+                align="center"
+                rowSpan={rowSpans.get(`${index}-destination`)}
+                sx={{ ...cellStyle, whiteSpace: "nowrap" }}
+              >
+                {item.destination}
+              </TableCell>
+            )}
+
+            {rowSpans.get(`${index}-business`) !== 0 && (
+              <TableCell
+                align="left"
+                rowSpan={rowSpans.get(`${index}-business`)}
+                sx={cellStyle}
+              >
+                {item.business}
+              </TableCell>
+            )}
+
+            {rowSpans.get(`${index}-work`) !== 0 && (
+              <TableCell
+                align="center"
+                rowSpan={rowSpans.get(`${index}-work`)}
+                sx={{ ...cellStyle, whiteSpace: "nowrap" }}
+              >
+                {item.work}
+              </TableCell>
+            )}
+
+            {rowSpans.get(`${index}-car`) !== 0 && (
+              <TableCell
+                align="center"
+                rowSpan={rowSpans.get(`${index}-car`)}
+                sx={cellStyle}
+              >
+                {item.car !== ""
+                  ? item.car
+                  : findNonEmptyCarInGroup(sortedData, index)}
+              </TableCell>
+            )}
+
+            {/* <TableCell sx={cellStyle}>{item.car}</TableCell> */}
+
+            <TableCell align="center" sx={cellStyle}>
+              {item.remarks && (
+                <Tooltip
+                  title={item.remarks}
+                  arrow
+                  placement="left"
+                  componentsProps={{
+                    tooltip: {
+                      onClick: (e) => e.stopPropagation(),
+                      sx: {
+                        bgcolor: "#374151",
+                        color: "#ffffff",
+                        boxShadow: "0 2px 8px rgba(0, 0, 0, 0.12)",
+                        borderRadius: "6px",
+                        maxWidth: "500px",
+                        fontSize: "14px",
+                        lineHeight: "1.5",
+                        padding: "12px 16px",
+                        "& .MuiTooltip-arrow": {
+                          color: "#374151",
+                        },
+                        "&:focus": {
+                          outline: "2px solid #2563eb",
+                          outlineOffset: "2px",
+                        },
+                      },
                     },
                   }}
                 >
-                  <FileText size={22} color="#0D9488  " />
-                </Button>
-              </Tooltip>
-            )}
-          </TableCell>
+                  <Button
+                    sx={{
+                      minWidth: "auto",
+                      padding: "4px",
+                      borderRadius: "6px",
+                      transition: "all 0.2s ease",
+                      "&:hover": {
+                        backgroundColor: "rgba(37, 99, 235, 0.04)",
+                        transform: "scale(1.05)",
+                      },
+                      "&:active": {
+                        backgroundColor: "rgba(37, 99, 235, 0.08)",
+                      },
+                    }}
+                  >
+                    <FileText size={22} color="#0D9488  " />
+                  </Button>
+                </Tooltip>
+              )}
+            </TableCell>
 
-          <TableCell sx={lastCellStyle}>
-            {item.isOwner && (
-              <div className="flex items-center justify-between gap-2">
-                <button
-                  className="flex items-center rounded px-1 py-1 text-blue-600 transition-colors hover:bg-blue-50"
-                  onClick={() => setEditingItemId(item._id)}
-                >
-                  <Edit
-                    className="sm:h-3 sm:w-3 md:h-4 md:w-4"
-                    strokeWidth={2.2}
-                  />
-                  <span className="ml-1 whitespace-nowrap text-sm font-semibold">
-                    수정
-                  </span>
-                </button>
-                <button
-                  className="flex items-center rounded px-1 py-1 text-red-600 transition-colors hover:bg-red-50"
-                  onClick={() => deleteInform(item._id)}
-                >
-                  <Trash2
-                    className="sm:h-3 sm:w-3 md:h-4 md:w-4"
-                    strokeWidth={2.2}
-                  />
-                  <span className="ml-1 whitespace-nowrap text-sm font-semibold">
-                    삭제
-                  </span>
-                </button>
+            <TableCell sx={lastCellStyle}>
+              {item.isOwner && (
+                <div className="flex items-center justify-between gap-2">
+                  <button
+                    className="flex items-center rounded px-1 py-1 text-blue-600 transition-colors hover:bg-blue-50"
+                    onClick={() => setEditingItemId(item._id)}
+                  >
+                    <Edit
+                      className="sm:h-3 sm:w-3 md:h-4 md:w-4"
+                      strokeWidth={2.2}
+                    />
+                    <span className="ml-1 whitespace-nowrap text-sm font-semibold">
+                      수정
+                    </span>
+                  </button>
+                  <button
+                    className="flex items-center rounded px-1 py-1 text-red-600 transition-colors hover:bg-red-50"
+                    onClick={() => {
+                      setOpen(true);
+                      setDeletedId(item._id);
+                    }}
+                  >
+                    <Trash2
+                      className="sm:h-3 sm:w-3 md:h-4 md:w-4"
+                      strokeWidth={2.2}
+                    />
+                    <span className="ml-1 whitespace-nowrap text-sm font-semibold">
+                      삭제
+                    </span>
+                  </button>
 
-                {editingItemId === item._id && (
-                  <EmployeeEdit
-                    currentDate={currentDate}
-                    item={item}
-                    setEditingItemId={setEditingItemId}
-                  />
-                )}
-              </div>
-            )}
-          </TableCell>
-        </TableRow>
-      ))}
-    </TableBody>
+                  {editingItemId === item._id && (
+                    <EmployeeEdit
+                      currentDate={currentDate}
+                      item={item}
+                      setEditingItemId={setEditingItemId}
+                    />
+                  )}
+                </div>
+              )}
+            </TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+      <DeleteBox
+        open={open}
+        setOpen={setOpen}
+        handleDelete={() => deleteInform(deletedId)}
+      />
+    </>
   );
 }
 

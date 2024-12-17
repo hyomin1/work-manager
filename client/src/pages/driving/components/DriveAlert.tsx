@@ -1,14 +1,23 @@
-import React from "react";
+import React, { SetStateAction, useEffect } from "react";
 
 interface IDriveAlert {
   notification: string;
-  onClick: () => void;
+  onClick?: () => void;
+  setIsAdding?: React.Dispatch<SetStateAction<boolean>>;
+  type: string;
 }
 
-const DriveAlert = ({ notification, onClick }: IDriveAlert) => {
+const DriveAlert = ({
+  notification,
+  onClick,
+  type,
+  setIsAdding,
+}: IDriveAlert) => {
   return (
     <div
-      onClick={onClick}
+      onClick={
+        type === "carService" && setIsAdding ? () => setIsAdding(true) : onClick
+      }
       className="group relative mb-4 cursor-pointer overflow-hidden rounded-lg bg-gradient-to-r from-blue-50 to-indigo-50 p-4 shadow-sm transition-all duration-300 hover:shadow-md"
     >
       <div className="flex items-center gap-3">

@@ -6,15 +6,17 @@ import {
   Button,
   Autocomplete,
   TextField,
+  Paper,
 } from "@mui/material";
 import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker";
 import { Search, MapPin, User } from "lucide-react";
-import dayjs, { Dayjs } from "dayjs";
-import { useCustomQueries } from "../../hooks/useCustomQuery";
+import dayjs from "dayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import "dayjs/locale/ko";
 import React from "react";
+import { useCustomQueries } from "../../hooks/useCustomQuery";
+
 dayjs.locale("ko");
 
 interface ITabs {
@@ -32,14 +34,6 @@ interface ITabs {
   destinationRefetch: () => void;
 }
 
-function a11yProps(index: number) {
-  return {
-    id: `statistics-tab-${index}`,
-    "aria-controls": `statistics-tabpanel-${index}`,
-  };
-}
-
-// 통계 페이지 탭(이름, 방문지 검색), 날짜 선택 및 검색
 function StatisticsTab({
   value,
   setValue,
@@ -54,6 +48,8 @@ function StatisticsTab({
   nameRefetch,
   destinationRefetch,
 }: ITabs) {
+  const { names, destinationsData } = useCustomQueries();
+
   const handleChangeValue = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
@@ -62,206 +58,148 @@ function StatisticsTab({
     event: React.SyntheticEvent,
     name: string | null,
   ) => {
-    if (name) {
-      setUserName(name);
-    }
+    if (name) setUserName(name);
   };
 
   const handleChangeDestination = (
     event: React.SyntheticEvent,
     dest: string | null,
   ) => {
-    if (dest) {
-      setDestination(dest);
-    }
+    if (dest) setDestination(dest);
   };
 
-  const handleChangeStartDate = (newDate: Dayjs | null) => {
-    if (newDate) {
-      setStartDate(newDate.toDate());
+  const handleSearch = () => {
+    if (value === 0) {
+      if (!username) {
+        alert("이름을 선택해주세요");
+        return;
+      }
+      nameRefetch();
+    } else {
+      if (!destination) {
+        alert("방문지를 선택해주세요");
+        return;
+      }
+      destinationRefetch();
     }
-  };
-  const handleChangeEndDate = (newDate: Dayjs | null) => {
-    if (newDate) {
-      setEndDate(newDate.toDate());
-    }
-  };
-
-  const { names, destinationsData } = useCustomQueries();
-
-  const onClickUserStatistics = () => {
-    if (!username) {
-      alert("이름을 선택해주세요");
-      return;
-    }
-    nameRefetch();
-  };
-
-  const onClickDestinationStatistics = () => {
-    if (!destination) {
-      alert("방문지를 선택해주세요");
-      return;
-    }
-    destinationRefetch();
   };
 
   return (
-    <div className="space-y-6 md:w-[85%]">
-      {/* Tabs */}
-      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+    <Paper elevation={2} className="w-[90%] bg-white p-6">
+      <Box className="space-y-6">
+        {/* Tabs */}
         <Tabs
           value={value}
           onChange={handleChangeValue}
           variant="fullWidth"
+          className="border-b border-gray-200"
+          TabIndicatorProps={{
+            style: {
+              backgroundColor: "#2563eb",
+            },
+          }}
           sx={{
             "& .MuiTab-root": {
               fontSize: "0.95rem",
               fontWeight: 600,
               textTransform: "none",
               minHeight: 48,
+              color: "#64748b",
             },
             "& .Mui-selected": {
               color: "#2563eb",
             },
-            "& .MuiTabs-indicator": {
-              backgroundColor: "#2563eb",
-            },
           }}
         >
           <Tab
-            sx={{
-              whiteSpace: "nowrap",
-            }}
             icon={<User className="h-4 w-4" />}
             iconPosition="start"
             label="이름 검색"
-            {...a11yProps(0)}
+            className="transition-colors duration-200"
           />
           <Tab
-            sx={{
-              whiteSpace: "nowrap",
-            }}
-            className="border border-black"
             icon={<MapPin className="h-4 w-4" />}
             iconPosition="start"
             label="방문지 검색"
-            {...a11yProps(1)}
+            className="transition-colors duration-200"
           />
         </Tabs>
-      </Box>
 
-      {/* Search Forms */}
-      {value === 0 ? (
-        <div className="flex sm:w-full sm:flex-col">
+        {/* Search Forms */}
+        <div className="flex w-full flex-col gap-4 md:flex-row md:items-center">
           <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ko">
             <MobileDatePicker
               label="시작일"
-              onChange={handleChangeStartDate}
+              onChange={(newDate) => newDate && setStartDate(newDate.toDate())}
               defaultValue={dayjs(startDate)}
-              className="bg-white sm:block sm:w-full md:block md:w-[15%]"
+              slotProps={{
+                textField: {
+                  className: "bg-white w-full md:w-48",
+                  size: "small",
+                },
+              }}
             />
 
             <MobileDatePicker
-              className="bg-white sm:w-full md:block md:w-[15%]"
               label="종료일"
-              onChange={handleChangeEndDate}
+              onChange={(newDate) => newDate && setEndDate(newDate.toDate())}
               defaultValue={dayjs(endDate)}
+              slotProps={{
+                textField: {
+                  className: "bg-white w-full md:w-48",
+                  size: "small",
+                },
+              }}
             />
           </LocalizationProvider>
 
-          <FormControl className="bg-white sm:w-full md:block md:w-[15%]">
-            <Autocomplete
-              options={
-                names
-                  ?.sort((a, b) => a.username.localeCompare(b.username))
-                  .map((item) => item.username) || []
-              }
-              renderInput={(params) => <TextField {...params} label="이름 *" />}
-              onChange={handleChangeName}
-              value={username}
-            />
+          <FormControl
+            className={`w-full ${value === 0 ? "md:w-48" : "md:w-80"}`}
+          >
+            {value === 0 ? (
+              <Autocomplete
+                size="small"
+                options={
+                  names
+                    ?.sort((a, b) => a.username.localeCompare(b.username))
+                    .map((item) => item.username) || []
+                }
+                renderInput={(params) => (
+                  <TextField {...params} label="이름" size="small" />
+                )}
+                onChange={handleChangeName}
+                value={username}
+                className="bg-white"
+              />
+            ) : (
+              <Autocomplete
+                size="small"
+                options={
+                  destinationsData
+                    ?.sort((a, b) => a.destination.localeCompare(b.destination))
+                    .map((item) => item.destination) || []
+                }
+                renderInput={(params) => (
+                  <TextField {...params} label="방문지" size="small" />
+                )}
+                onChange={handleChangeDestination}
+                value={destination}
+                className="bg-white"
+              />
+            )}
           </FormControl>
+
           <Button
-            onClick={onClickUserStatistics}
+            onClick={handleSearch}
             variant="contained"
-            className="whitespace-nowrap"
+            className="h-10 whitespace-nowrap bg-blue-600 px-6 text-sm font-semibold normal-case transition-colors duration-200 hover:bg-blue-700"
             startIcon={<Search className="h-4 w-4" />}
-            sx={{
-              marginLeft: 4,
-              backgroundColor: "#2563eb",
-              textTransform: "none",
-              fontWeight: 600,
-              fontSize: "large",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              borderRadius: "0.5rem",
-              padding: "0.75rem 1.5rem",
-              "&:hover": {
-                backgroundColor: "#1d4ed8",
-              },
-            }}
           >
             검색
           </Button>
         </div>
-      ) : (
-        <div className="flex sm:flex-col">
-          <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ko">
-            <MobileDatePicker
-              label="시작일"
-              onChange={handleChangeStartDate}
-              defaultValue={dayjs(startDate)}
-              className="bg-white sm:block sm:w-full md:block md:w-[15%]"
-            />
-
-            <MobileDatePicker
-              label="종료일"
-              onChange={handleChangeEndDate}
-              defaultValue={dayjs(endDate)}
-              className="bg-white sm:block sm:w-full md:block md:w-[15%]"
-            />
-          </LocalizationProvider>
-          <FormControl className="bg-white sm:block sm:w-full md:block md:w-[15%]">
-            <Autocomplete
-              options={
-                destinationsData
-                  ?.sort((a, b) => a.destination.localeCompare(b.destination))
-                  .map((item) => item.destination) || []
-              }
-              renderInput={(params) => (
-                <TextField {...params} label="방문지 *" />
-              )}
-              onChange={handleChangeDestination}
-              value={destination}
-            />
-          </FormControl>
-          <div>
-            <Button
-              onClick={onClickDestinationStatistics}
-              variant="contained"
-              startIcon={<Search className="h-4 w-4" />}
-              sx={{
-                marginLeft: 4,
-                backgroundColor: "#2563eb",
-                textTransform: "none",
-                fontWeight: 600,
-                fontSize: "large",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                borderRadius: "0.5rem",
-                "&:hover": {
-                  backgroundColor: "#1d4ed8",
-                },
-              }}
-            >
-              검색
-            </Button>
-          </div>
-        </div>
-      )}
-    </div>
+      </Box>
+    </Paper>
   );
 }
 

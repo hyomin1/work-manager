@@ -334,7 +334,7 @@ function EmployeeForm() {
 
   return (
     <div className="flex min-h-screen w-full flex-col items-center bg-gradient-to-br from-gray-50 to-blue-50 p-10 sm:p-4">
-      <Container className="py-6" maxWidth="xl">
+      <Container className="" maxWidth="xl">
         <div className="w-full">
           <div className="mb-8 flex items-center justify-between">
             <ArrowBack type="not home" />

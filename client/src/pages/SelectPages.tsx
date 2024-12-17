@@ -38,7 +38,7 @@ const SelectPages = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50">
       <div className="fixed inset-0 -z-10">
         <div className="animate-blob absolute -left-4 top-0 h-72 w-72 rounded-full bg-blue-100 opacity-30 mix-blend-multiply blur-xl filter" />
         <div className="animation-delay-2000 absolute -right-4 top-0 h-72 w-72 rounded-full bg-blue-100 opacity-30 mix-blend-multiply blur-xl filter" />

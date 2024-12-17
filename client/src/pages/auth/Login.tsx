@@ -62,7 +62,7 @@ function Login() {
   }, [checkSession, cookies.rememberUserId, setValue]);
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-50 via-white to-indigo-50 p-4">
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-gray-50 to-blue-50 p-4">
       <div className="fixed inset-0 -z-10">
         <div className="animate-blob absolute -left-4 top-0 h-72 w-72 rounded-full bg-purple-300 opacity-20 mix-blend-multiply blur-xl filter" />
         <div className="animate-blob animation-delay-2000 absolute -right-4 top-0 h-72 w-72 rounded-full bg-blue-300 opacity-20 mix-blend-multiply blur-xl filter" />

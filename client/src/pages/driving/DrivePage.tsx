@@ -130,7 +130,7 @@ function DrivePage() {
   const grandTotal = totalFuelCost + totalToll + totalEtcCost;
 
   return (
-    <div className="flex min-h-screen w-full flex-col items-center justify-between bg-gradient-to-br from-zinc-50 to-slate-100 p-4 sm:p-2">
+    <div className="flex min-h-screen w-full flex-col items-center justify-between bg-gradient-to-br from-gray-50 to-blue-50 p-4 sm:p-2">
       <div className="flex w-[90%] flex-col items-center sm:w-full">
         <div className="mb-4 mt-4 flex w-full items-center justify-between sm:mt-4 print:justify-center">
           <ArrowBack type="home" />
@@ -180,6 +180,7 @@ function DrivePage() {
               <DriveAlert
                 notification={notification?.notification || ""}
                 onClick={checkNotification}
+                type=""
               />
             )}
           </div>

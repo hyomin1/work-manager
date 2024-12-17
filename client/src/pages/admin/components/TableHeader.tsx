@@ -35,7 +35,7 @@ const TableHeader = ({ activeTab, onTabClick }: TabHeaderProps) => {
               label={tab.label}
               className="min-h-[48px] font-semibold transition-colors hover:bg-blue-50"
               sx={{
-                minWidth: { xs: "120px", sm: "160px" },
+                minWidth: "14.285%",
               }}
             />
           ))}

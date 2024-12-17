@@ -15,6 +15,7 @@ import {
   TableRow,
 } from "@mui/material";
 import DrivePrint from "./DrivePrint";
+import DeleteBox from "../../components/common/DeleteBox";
 
 interface IDrivePCProps {
   drivingInform: IDrivingInform[];
@@ -34,7 +35,7 @@ const cellStyle = {
   color: "#334155",
   borderBottom: "1px solid #e2e8f0",
 };
-// 차량운행일지 PC 화면
+
 function DrivePC({
   drivingInform,
   indexOfFirstItem,
@@ -47,17 +48,16 @@ function DrivePC({
   refetch,
 }: IDrivePCProps) {
   const [editingItemId, setEditingItemId] = useState("");
+  const [deleteId, setDeleteId] = useState<string>("");
+  const [open, setOpen] = useState(false);
 
   const deleteInform = async (id: string) => {
-    const isConfirm = window.confirm("삭제하시겠습니까?");
-    if (isConfirm) {
-      const res = await axiosReq.delete(
-        `/api/driving-inform/removeInform/${id}`,
-      );
-      if (res.status === 200) {
-        refetch();
-      }
+    const res = await axiosReq.delete(`/api/driving-inform/removeInform/${id}`);
+    if (res.status === 200) {
+      refetch();
     }
+    setOpen(false);
+    setDeleteId("");
   };
 
   return (
@@ -178,7 +178,10 @@ function DrivePC({
                           수정
                         </button>
                         <button
-                          onClick={() => deleteInform(item._id)}
+                          onClick={() => {
+                            setDeleteId(item._id);
+                            setOpen(true);
+                          }}
                           className="flex items-center rounded-md px-2 py-1 text-sm font-medium text-red-600 transition-all hover:bg-red-50"
                         >
                           <Trash2 strokeWidth={2} size={14} className="mr-1" />
@@ -201,7 +204,7 @@ function DrivePC({
               sx={{
                 position: "sticky",
                 bottom: 0,
-                backgroundColor: "#f8fafc !important",
+                backgroundColor: "white !important",
                 transition: "all 0.2s ease-in-out",
                 boxShadow: "0 -2px 6px rgba(0,0,0,0.03)",
 
@@ -274,6 +277,12 @@ function DrivePC({
         drivingInform={drivingInform}
         indexOfFirstItem={indexOfFirstItem}
         indexOfLastItem={indexOfLastItem}
+      />
+
+      <DeleteBox
+        open={open}
+        setOpen={setOpen}
+        handleDelete={() => deleteInform(deleteId)}
       />
     </>
   );
