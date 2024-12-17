@@ -120,7 +120,7 @@ export const addInform = async (req: Request, res: Response) => {
 };
 
 export const getInform = async (req: Request, res: Response) => {
-  if (!checkSession(req, res)) return;
+  //if (!checkSession(req, res)) return;
 
   try {
     let { year, month, car } = req.query;
@@ -248,7 +248,7 @@ export const addNotification = async (req: Request, res: Response) => {
 };
 
 export const getNotification = async (req: Request, res: Response) => {
-  if (!checkSession(req, res)) return;
+  //if (!checkSession(req, res)) return;
   const { id } = req.query;
 
   try {

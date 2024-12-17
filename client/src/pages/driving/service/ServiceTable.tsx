@@ -157,9 +157,6 @@ function ServiceTable({ services, refetch }: ITableBody) {
                       {item.mileage.next &&
                         Number(item.mileage.next).toLocaleString()}
                       {item.mileage.next && "km"}
-                      {recentByType[item.type]?.date === item.date && (
-                        <AlertCircle className="ml-1 inline h-4 w-4" />
-                      )}
                     </TableCell>
                     <TableCell align="center" sx={tableStyles.cell}>
                       {item.note}

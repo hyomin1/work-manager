@@ -5,6 +5,7 @@ import { TableBody, TableCell, TableRow } from "@mui/material";
 import { Edit, Trash2 } from "lucide-react";
 import DailyWorkEdit from "../DailyWorkEdit";
 import DailyWorkView from "../DailyWorkView";
+import DeleteBox from "../../../components/common/DeleteBox";
 
 const cellStyle = {
   fontSize: "1rem",
@@ -27,6 +28,8 @@ function TableContent({
   const { dailyWork } = useEmployeeStore();
   const [viewId, setViewId] = useState("");
   const [editingItemId, setEditingItemId] = useState("");
+  const [open, setOpen] = useState(false);
+  const [deletedId, setDeletedId] = useState("");
 
   const contentLength = 100;
 
@@ -57,14 +60,12 @@ function TableContent({
   }, [dailyWork]);
 
   const deleteDailyWork = async (id: string) => {
-    if (!window.confirm("삭제하시겠습니까?")) {
-      return;
-    }
     const response = await axiosReq.delete(
       `/api/employee-inform/dailyWork/remove/${id}`,
     );
     if (response.status === 200) {
       refetch();
+      setOpen(false);
     }
   };
 
@@ -76,7 +77,8 @@ function TableContent({
 
   const handleDeleteClick = (e: React.MouseEvent, id: string) => {
     e.stopPropagation();
-    deleteDailyWork(id);
+    setOpen(true);
+    setDeletedId(id);
   };
 
   const handleCellClick = (id: string) => {
@@ -193,6 +195,11 @@ function TableContent({
           id={editingItemId}
         />
       )}
+      <DeleteBox
+        open={open}
+        setOpen={setOpen}
+        handleDelete={() => deleteDailyWork(deletedId)}
+      />
     </>
   );
 }

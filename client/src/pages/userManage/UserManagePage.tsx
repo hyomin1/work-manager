@@ -6,6 +6,8 @@ import UserManageTab from "./UserManageTab";
 import { useQuery } from "@tanstack/react-query";
 import { Users } from "../../interfaces/interface";
 import UserManageTable from "./UserManageTable";
+import { Calendar } from "lucide-react";
+import Logout from "../auth/Logout";
 
 function UserManagePage() {
   const [value, setValue] = useState(0);
@@ -32,10 +34,13 @@ function UserManagePage() {
       <div className="flex w-[90%] flex-col items-center sm:w-full">
         <div className="mb-8 mt-2 flex w-full items-center justify-between sm:mt-4">
           <ArrowBack type="not home" />
-          <span className="whitespace-nowrap font-bold sm:mx-1 sm:text-sm md:mx-8 md:text-3xl">
-            {calculateDate(new Date())}
-          </span>
-          <Blank />
+          <div className="flex items-center rounded-2xl bg-white shadow-lg ring-1 ring-black/5 sm:px-6 sm:py-2 md:px-16 md:py-4">
+            <Calendar className="mr-2 h-5 w-5 text-blue-600 transition-colors group-hover:text-blue-700 sm:hidden" />
+            <span className="whitespace-nowrap text-xl font-semibold text-gray-700 transition-colors sm:text-xs">
+              {calculateDate(new Date())}
+            </span>
+          </div>
+          <Logout />
         </div>
       </div>
 
