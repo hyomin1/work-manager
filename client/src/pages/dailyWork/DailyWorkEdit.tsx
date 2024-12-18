@@ -228,7 +228,7 @@ function DailyWorkEdit({
               sx={{
                 "& .MuiOutlinedInput-root": {
                   borderRadius: 0,
-                  fontSize: "0.875rem",
+                  fontSize: "0.92rem",
                 },
                 "& .MuiOutlinedInput-notchedOutline": {
                   border: "none",
