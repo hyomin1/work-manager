@@ -1,5 +1,6 @@
 import { Tab, Tabs, Box } from "@mui/material";
 import { User, UserCog } from "lucide-react";
+
 interface ITabs {
   value: number;
   setValue: React.Dispatch<React.SetStateAction<number>>;
@@ -8,7 +9,6 @@ interface ITabs {
 function a11yProps(index: number) {
   return {
     id: `statistics-tab-${index}`,
-    "aria-controls": `statistics-tabpanel-${index}`,
   };
 }
 
@@ -16,8 +16,9 @@ function UserManageTab({ value, setValue }: ITabs) {
   const handleChangeValue = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
+
   return (
-    <div className="w-[90%] space-y-6">
+    <Box className="w-[90%] space-y-6">
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
           value={value}
@@ -52,7 +53,7 @@ function UserManageTab({ value, setValue }: ITabs) {
           />
         </Tabs>
       </Box>
-    </div>
+    </Box>
   );
 }
 

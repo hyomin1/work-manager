@@ -22,6 +22,7 @@ function EmployeePage() {
     queryKey: ["employeeInform"],
     queryFn: () => getEmployeeInform(currentDate || new Date()),
     refetchInterval: REFETCH_INTERVAL,
+    //staleTime: REFETCH_INTERVAL,
   });
 
   useEffect(() => {
