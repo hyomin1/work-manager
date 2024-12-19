@@ -43,7 +43,7 @@ export const addName = async (req: Request, res: Response) => {
 
   try {
     await Name.create({ username });
-    return res.status(200).json({ message: '이름 추가 완료' });
+    return res.status(201).json({ message: '이름 추가 완료' });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: '서버 에러' });
@@ -110,7 +110,7 @@ export const addDestination = async (req: Request, res: Response) => {
   }
   try {
     await Destination.create({ destination });
-    return res.status(200).json({ message: '방문지 추가 완료' });
+    return res.status(201).json({ message: '방문지 추가 완료' });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: '서버 에러' });
@@ -126,7 +126,7 @@ export const removeDestination = async (req: Request, res: Response) => {
     if (!deletedDestination) {
       return res
         .status(404)
-        .json({ error: '삭제할 행선지가 존재하지 않습니다.' });
+        .json({ error: '삭제할 방문지가 존재하지 않습니다.' });
     }
     return res.status(200).json({ message: '방문지 삭제 완료' });
   } catch (error) {
@@ -176,7 +176,7 @@ export const addBusiness = async (req: Request, res: Response) => {
   }
   try {
     await Business.create(req.body);
-    return res.status(200).json({ message: '사업명 추가 완료' });
+    return res.status(201).json({ message: '사업명 추가 완료' });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: '서버 에러' });
@@ -255,11 +255,11 @@ export const addWork = async (req: Request, res: Response) => {
   if (!checkAdmin(req, res)) return;
   const { work } = req.body;
   if (!work) {
-    return res.status(400).json({ error: '업무를 입력해야 합니다.' });
+    return res.status(400).json({ error: '업무명을 입력하세요.' });
   }
   try {
     await Work.create({ work });
-    return res.status(200).json({ message: '상태 추가 완료' });
+    return res.status(201).json({ message: '상태 추가 완료' });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: '서버 에러' });
@@ -313,11 +313,11 @@ export const addCar = async (req: Request, res: Response) => {
   const { car } = req.body;
   if (!checkAdmin(req, res)) return;
   if (!car) {
-    return res.status(400).json({ error: '차량 정보를 입력해야 합니다.' });
+    return res.status(400).json({ error: '차량을 입력하세요.' });
   }
   try {
     await Car.create({ car });
-    return res.status(200).json({ message: '차량 추가 완료' });
+    return res.status(201).json({ message: '차량 추가 완료' });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: '서버 에러' });
@@ -377,7 +377,7 @@ export const addDepartment = async (req: Request, res: Response) => {
   if (!checkAdmin(req, res)) return;
   try {
     await Department.create({ department });
-    return res.status(200).json({ message: '파트 추가 완료' });
+    return res.status(201).json({ message: '파트 추가 완료' });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: '서버 에러' });
@@ -469,7 +469,7 @@ export const addInform = async (req: Request, res: Response) => {
 
     await Inform.create(data);
 
-    return res.status(200).json({ message: '정보 입력 완료' });
+    return res.status(201).json({ message: '정보 입력 완료' });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: '서버 에러' });

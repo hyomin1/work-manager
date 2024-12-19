@@ -12,6 +12,8 @@ import scheduleRouter from './routes/scheduleRouter';
 import userRouter from './routes/userRouter';
 import dailyWorkRouter from './routes/dailyWorkRouter';
 import path from 'path';
+import swaggerUi from 'swagger-ui-express';
+import { specs } from './swagger/swagger';
 
 const app: Express = express();
 const port = 8080;
@@ -45,6 +47,7 @@ app.use(express.json());
 
 connectDB();
 
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 app.use('/auth', authRouter);
 app.use('/api/employee-inform', employeeInformRouter);
 app.use('/api/employee-inform/dailyWork', dailyWorkRouter);

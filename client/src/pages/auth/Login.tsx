@@ -31,7 +31,7 @@ function Login() {
 
   const handleLogin = async (data: LoginFormData) => {
     const res = await axiosReq.post("/auth/login", data);
-    if (res.status !== 201) return;
+    if (res.status !== 200) return;
 
     if (isRemember) {
       setCookie("rememberUserId", data.userId, {

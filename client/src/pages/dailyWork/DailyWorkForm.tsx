@@ -33,7 +33,7 @@ function DailyWorkForm({ setIsOpen, currentDate, refetch }: IDailyWorkForm) {
       content,
       nextContent,
     });
-    if (response.status !== 200) {
+    if (response.status !== 201) {
       return;
     }
     setIsOpen(false);

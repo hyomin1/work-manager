@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import DailyWork from '../models/employee/DailyWork';
 import User from '../models/employee/User';
+import { Types } from 'mongoose';
 
 const checkSession = (req: Request, res: Response) => {
   if (req.session.userId === '674eaf794953171256d2e902') {
@@ -88,7 +89,7 @@ export const getDailyWorks = async (req: Request, res: Response) => {
 
 export const addDailyWork = async (req: Request, res: Response) => {
   if (!checkSession(req, res)) return;
-  const { writingDate, username, department, content, nextContent } = req.body;
+  const {  username, department, content, nextContent } = req.body;
   try {
     if (!username || !department || !content || !nextContent) {
       return res.status(400).json({ error: '내용을 입력해주세요' });
@@ -98,7 +99,7 @@ export const addDailyWork = async (req: Request, res: Response) => {
       writerId: req.session.userId,
     };
     await DailyWork.create(data);
-    return res.status(200).json({ message: '작성 완료' });
+    return res.status(201).json({ message: '작성 완료' });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: '서버 에러' });
@@ -108,7 +109,11 @@ export const addDailyWork = async (req: Request, res: Response) => {
 export const editDailyWork = async (req: Request, res: Response) => {
   if (!checkSession(req, res)) return;
   const { _id, username, department, content, nextContent } = req.body;
+
   try {
+    if (!username || !department || !content || !nextContent) {
+      return res.status(400).json({ error: '필수 입력값이 누락되었습니다' });
+    }
     const editDailyWork = await DailyWork.findByIdAndUpdate(
       _id,
       {
@@ -134,6 +139,9 @@ export const editDailyWork = async (req: Request, res: Response) => {
 export const removeDailyWork = async (req: Request, res: Response) => {
   if (!checkSession(req, res)) return;
   const { id } = req.params;
+  //if (!Types.ObjectId.isValid(id)) {
+  //  return res.status(400).json({ error: '올바르지 않은 ID 형식입니다.' });
+  // }
   try {
     const deletedDailyWork = await DailyWork.deleteOne({ _id: id });
     if (!deletedDailyWork) {

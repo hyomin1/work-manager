@@ -87,7 +87,7 @@ export default function AddService({
         note,
       });
 
-      if (response.status === 200) {
+      if (response.status === 201) {
         alert(response.data.message);
         setOpen(false);
         refetch();

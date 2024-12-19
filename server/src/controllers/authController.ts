@@ -10,7 +10,7 @@ export const joinUser = async (req: Request, res: Response) => {
   try {
     const existingUser = await User.findOne({ userId });
     if (existingUser) {
-      return res.status(400).json({ error: '이미 존재하는 아이디입니다.' });
+      return res.status(409).json({ error: '이미 존재하는 아이디입니다.' });
     }
 
     const hashedPassword = await bcrypt.hash(password, 12);
@@ -56,7 +56,7 @@ export const loginUser = async (req: Request, res: Response) => {
       req.session.cookie.maxAge = 31557600000000; // 세션 최대 2년 유지
     }
 
-    return res.status(201).json({ message: '로그인 성공' });
+    return res.status(200).json({ message: '로그인 성공' });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: '서버 에러' });
@@ -65,6 +65,9 @@ export const loginUser = async (req: Request, res: Response) => {
 
 export const logoutUser = async (req: Request, res: Response) => {
   try {
+    if (!req.session) {
+      return res.status(400).json({ error: '세션이 존재하지 않습니다' });
+    }
     req.session.destroy((err) => {
       if (err) {
         console.error(err);

@@ -4,6 +4,7 @@ import Etc from '../models/driving/Etc';
 import User from '../models/employee/User';
 import Car from '../models/Car';
 import CarService from '../models/driving/CarService';
+import { Types } from 'mongoose';
 
 const checkAdmin = (req: Request, res: Response) => {
   if (!req.session.isAdmin) {
@@ -34,7 +35,7 @@ export const addEtcName = async (req: Request, res: Response) => {
   if (!checkAdmin(req, res)) return;
   try {
     await Etc.create({ etcName });
-    return res.status(200).json({ message: '차량 추가 성공' });
+    return res.status(201).json({ message: '기타 비용 추가 성공' });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: '서버 에러' });
@@ -103,7 +104,7 @@ export const addInform = async (req: Request, res: Response) => {
       (car !== privateCarId && !startKM) ||
       (car !== privateCarId && !endKM)
     ) {
-      return res.status(400).json({ error: '정보를 입력해야 합니다..' });
+      return res.status(400).json({ error: '정보를 입력해야 합니다.' });
     }
     const data = {
       ...req.body,
@@ -112,12 +113,14 @@ export const addInform = async (req: Request, res: Response) => {
     data.driveDay =
       new Date(driveDay).setHours(0, 0, 0, 0) + 9 * 60 * 60 * 1000;
     await DrivingRecord.create(data);
-    return res.status(200).json({ message: '정보 입력 완료' });
+    return res.status(201).json({ message: '정보 입력 완료' });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: '서버 에러' });
   }
 };
+
+
 
 export const getInform = async (req: Request, res: Response) => {
   //if (!checkSession(req, res)) return;
@@ -175,6 +178,9 @@ export const removeInform = async (req: Request, res: Response) => {
   if (!checkSession(req, res)) return;
 
   const { id } = req.params;
+  //if (!Types.ObjectId.isValid(id)) {
+  //      return res.status(400).json({ error: '올바르지 않은 ID 형식입니다.' });
+  //    }
 
   try {
     const deletedInform = await DrivingRecord.deleteOne({ _id: id });
@@ -243,7 +249,7 @@ export const addNotification = async (req: Request, res: Response) => {
 
     car.notification = notification;
     await car?.save();
-    return res.status(200).json({ message: '공지 입력 완료' });
+    return res.status(201).json({ message: '공지 입력 완료' });
   } catch (error) {}
 };
 
@@ -332,8 +338,11 @@ export const addService = async (req: Request, res: Response) => {
       writerId: req.session.userId,
     };
     await CarService.create(data);
-    return res.status(200).json({ message: '정보 입력 완료' });
-  } catch (error) {}
+    return res.status(201).json({ message: '정보 입력 완료' });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: '서버 에러' });
+  }
 };
 
 export const removeService = async (req: Request, res: Response) => {

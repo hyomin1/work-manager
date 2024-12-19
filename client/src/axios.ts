@@ -42,7 +42,12 @@ const handleResponseInterceptor = async (
   } else if (error.response?.status === 404) {
     const errMsg = error.response.data as { error: string };
     alert(errMsg.error);
-  } else if (error.response?.status === 500) {
+  } else if (error.response?.status === 409) {
+    const errMsg = error.response.data as { error: string };
+    alert(errMsg.error);
+  }
+  
+  else if (error.response?.status === 500) {
     const errMsg = error.response.data as { error: string };
     alert(errMsg.error);
     return new Promise(() => {});

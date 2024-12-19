@@ -58,7 +58,7 @@ function AddDriveNotification({
           notification,
         },
       );
-      if (response.status === 200) {
+      if (response.status === 201) {
         setIsAdding(false);
         queryClient.invalidateQueries({ queryKey: ["car", 1] });
       }

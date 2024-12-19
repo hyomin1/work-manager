@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { calculateDate, checkAdminSession, getUsers } from "../../api";
 import ArrowBack from "../../components/common/ArrowBack";
-import Blank from "../../components/common/Blank";
 import UserManageTab from "./UserManageTab";
 import { useQuery } from "@tanstack/react-query";
 import { Users } from "../../interfaces/interface";

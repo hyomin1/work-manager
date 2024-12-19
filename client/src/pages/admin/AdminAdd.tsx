@@ -96,7 +96,7 @@ function AdminAdd({ setIsAdding, type, queryClient, destination }: IAddData) {
     }
 
     const res = await axiosReq.post(url, body);
-    if (res.status === 200) {
+    if (res.status === 201) {
       alert("성공적으로 등록하였습니다.");
       queryClient.invalidateQueries({ queryKey: [type] });
       setIsAdding(false);

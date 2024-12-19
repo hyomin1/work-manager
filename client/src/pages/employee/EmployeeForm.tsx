@@ -288,7 +288,7 @@ function EmployeeForm() {
 
     const responses = await Promise.all(requests);
 
-    if (responses.every((res) => res.status === 200)) {
+    if (responses.every((res) => res.status === 201)) {
       alert("정보 입력 완료");
       navigate(ROUTES.EMPLOYEES.LIST);
     }

@@ -128,7 +128,7 @@ const DriveInput = () => {
       etc,
     });
 
-    if (res.status === 200) {
+    if (res.status === 201) {
       alert(res.data.message);
       navigate(ROUTES.VEHICLES.LIST, {
         state: { car: carId },
