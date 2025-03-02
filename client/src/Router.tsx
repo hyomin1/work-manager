@@ -5,10 +5,8 @@ import { lazy } from "react";
 import { ROUTES } from "./constants/constant";
 import DrivingService from "./pages/driving/service/DrivingService";
 import EmployeePage from "./pages/employee/EmployeePage";
-import Register from "./pages/auth/Register";
 import SelectPages from "./pages/SelectPages";
 import DrivePage from "./pages/driving/DrivePage";
-import StatisticsPage from "./pages/statistics/StatisticsPage";
 import EmployeeForm from "./pages/employee/EmployeeForm";
 import DriveForm from "./pages/driving/DriveForm";
 import SchedulePage from "./pages/schedule/SchedulePage";
@@ -16,6 +14,8 @@ import DailyWorkPage from "./pages/dailyWork/DailyWorkPage";
 
 const AdminPage = lazy(() => import("./pages/admin/AdminPage"));
 const UserManagePage = lazy(() => import("./pages/userManage/UserManagePage"));
+const StatisticsPage = lazy(() => import("./pages/statistics/StatisticsPage"));
+const Register = lazy(() => import("./pages/auth/Register"));
 
 // 라우팅 관리, 라우팅 path명, path에 해당할때 보여지는 화면 컴포넌트
 const router = createBrowserRouter([

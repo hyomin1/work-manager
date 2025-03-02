@@ -6,7 +6,7 @@ import {
   Select,
   SelectChangeEvent,
 } from "@mui/material";
-import downloadExcel from "../DriveExcel";
+//import downloadExcel from "../DriveExcel";
 import { SetStateAction, useState } from "react";
 import { ICars, IDrivingInform } from "../../../interfaces/interface";
 import useDrivingStore from "../../../stores/drivingStore";
@@ -100,6 +100,27 @@ export default function NavigationButtons({
       return;
     }
     alert("권한이 없습니다.");
+  };
+
+  const handleExcelDownload = async () => {
+    try {
+      // 필요한 시점에 동적으로 import
+      const module = await import("../DriveExcel");
+      const downloadExcel = module.default;
+
+      downloadExcel(
+        drivingInform || [],
+        currentDate || null,
+        car,
+        totalFuelCost,
+        totalToll,
+        totalEtcCost,
+        totalDrivingKM,
+        grandTotal,
+      );
+    } catch (error) {
+      console.error("엑셀 다운로드 모듈 로딩 중 오류 발생:", error);
+    }
   };
 
   return (
@@ -240,18 +261,7 @@ export default function NavigationButtons({
               <NavButton
                 icon={Sheet}
                 label="엑셀"
-                onClick={() =>
-                  downloadExcel(
-                    drivingInform || [],
-                    currentDate || null,
-                    car,
-                    totalFuelCost,
-                    totalToll,
-                    totalEtcCost,
-                    totalDrivingKM,
-                    grandTotal,
-                  )
-                }
+                onClick={handleExcelDownload}
                 variant="green"
               />
             )}
