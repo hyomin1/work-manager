@@ -8,25 +8,31 @@
 ![Express](https://img.shields.io/badge/Express-000000?style=for-the-badge&logo=express&logoColor=white)
 ![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white)
 ![React Query](https://img.shields.io/badge/React_Query-FF4154?style=for-the-badge&logo=react-query&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
 
-<h3>사내 근무 현황과 차량 운행 데이터를 체계적으로 관리하는 웹 애플리케이션</h3>
+<h3>사내 근무 현황 및 차량 운행일지 관리 시스템</h3>
 
 </div>
 
 ## 📌 프로젝트 개요
 
-**Work Manager**는 사내 근무 현황과 차량 운행 데이터를 체계적으로 관리할 수 있는 종합적인 웹 애플리케이션입니다.
-
-- **개발 기간**: 2024.09 - 2024.11
-- **개발 인원**: 1명
+- **개발 기간**: 2024.09 - 2024.12 (4개월)
+- **개발 인원**: 1명 (단독 개발)
 - **프로젝트 배경**: 
   - 인턴십 초기 회사의 업무 흐름을 파악하던 중, 사내 근무 현황을 수기로 작성하고 관리하는 비효율성을 발견
   - 웹 기반 근무 현황 관리 시스템 개발을 제안 받은 후 추진
+- **목표**: 
+  - 사내 업무 프로세스 디지털화를 통한 업무 효율성 증대
+- **역할**: 
+  - 프론트엔드/백엔드 개발
+  - 데이터베이스 구축
+  - UI/UX 설계
 - **주요 성과**:
   - 업무 관리 효율성 대폭 증대
   - 차량 운행 통계 분석 자동화
   - 데이터 입력 오류 최소화
   - 업무 프로세스 간소화
+  - **개발 완료 후 1개월 간의 테스트 기간을 거쳐 기술 본부 내 시스템으로 성공적으로 도입**
 
 ## 🛠️ 기술 스택
 
@@ -41,6 +47,7 @@
       <img src="https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=react&logoColor=black" alt="React" />
       <img src="https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white" alt="TypeScript" />
       <img src="https://img.shields.io/badge/Material--UI-0081CB?style=flat-square&logo=material-ui&logoColor=white" alt="Material-UI" />
+      <img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=flat-square&logo=tailwind-css&logoColor=white" alt="Tailwind CSS" />
     </td>
   </tr>
   <tr>
@@ -101,6 +108,7 @@
         <li>직원들의 일일 업무 작성 및 관리로 업무 진행 상황 추적</li>
         <li>기존 한글 파일 양식과 동일한 UI로 구현</li>
         <li>파트별 셀 구분으로 정보 확인 용이</li>
+        <li>업무 내역을 확인하고 즉각적인 피드백을 제공할 수 있는 환경 조성</li>
       </ul>
       <div align="center">
         <img src="./docs/images/일일%20업무%20현황%20화면.png" width="100%" style="border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);" />
@@ -114,6 +122,7 @@
         <li>FullCalendar 라이브러리를 활용한 직관적인 캘린더 인터페이스</li>
         <li>사용자가 등록한 일정을 달력 형태로 확인 가능</li>
         <li>일정 클릭 시 상세 정보 확인 및 수정 기능</li>
+        <li>월 별 근무 현황을 직관적으로 확인할 수 있는 캘린더 뷰 제공</li>
       </ul>
       <div align="center">
         <img src="./docs/images/일정%20화면.png" width="100%" style="border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);" />
@@ -160,6 +169,16 @@
       </div>
     </td>
   </tr>
+  <tr>
+    <td colspan="2">
+      <h4>📑 문서 자동화</h4>
+      <ul>
+        <li>ExcelJS 라이브러리를 활용하여 차량 운행 일지를 자동으로 <b>엑셀 파일로 변환 및 다운로드 기능</b> 구현</li>
+        <li>문서 작업의 자동화로 수작업 부담 감소 및 입력 오류 대폭 감소</li>
+        <li>수기로 차량 운행 일지를 작성하고 이를 바탕으로 엑셀 파일을 별도로 작성하던 이중 작업을 시스템에 한 번만 입력하면 <b>자동으로 엑셀 파일이 생성</b>되는 방식으로 개선</li>
+      </ul>
+    </td>
+  </tr>
 </table>
 
 ### 💼 데이터 입력 화면
@@ -202,13 +221,49 @@
   <li>시스템 설정 변경 및 맞춤 구성</li>
 </ul>
 
+## 🛠️ 기술적 도전과 해결
+
+<table>
+  <tr>
+    <td width="50%">
+      <h4>🚀 웹 성능 최적화</h4>
+      <ul>
+        <li><b>문제:</b> 초기 로드시 사용 빈도가 낮은 컴포넌트와 라이브러리가 한꺼번에 로드되어 불필요한 JS 번들 크기 증가</li>
+        <li><b>해결:</b> <b>React.lazy와 코드 스플리팅</b>을 활용해 관리자 페이지, 회원가입 페이지 등 일반 사용자가 자주 접근하지 않는 페이지 컴포넌트 분리 및 엑셀 다운로드 라이브러리(ExcelJS) 동적 import 적용</li>
+        <li><b>결과:</b>
+          <ul>
+            <li><b>JS 번들 크기: 2.2MB → 1.2MB (45.5% 감소)</b></li>
+            <li><b>페이지 로드 시간: 3.49초 → 2.47초 (29.2% 감소)</b></li>
+            <li><b>Lighthouse 성능 점수: 82점 → 96점 (17.1% 향상)</b></li>
+            <li><b>LCP(Largest Contentful Paint): 2.8초 → 1.4초 (50.0% 개선)</b></li>
+            <li><b>FCP(First Contentful Paint): 1.1초 → 0.5초 (54.5% 개선)</b></li>
+          </ul>
+        </li>
+      </ul>
+    </td>
+    <td width="50%">
+      <h4>📱 모바일 환경 최적화</h4>
+      <ul>
+        <li><b>문제:</b> 초기 프로젝트 제안 시 사내에서만 사용할 예정이라 데스크톱 환경에 맞춰 개발했으나, 기능이 안정적으로 구현되면서 외부에서도 활용 범위를 확대하기로 결정. 이에 따라 다양한 디바이스에서의 접근성 강화 필요.</li>
+        <li><b>해결:</b> Tailwind CSS를 활용해 모바일·태블릿에서도 최적화된 화면을 제공하도록 <b>반응형 디자인</b> 적용.</li>
+        <li><b>결과:</b> 직원들이 PC뿐만 아니라 외부에서도 모바일을 통해 근무 현황을 편리하게 확인·수정할 수 있게 되어 <b>접근성과 업무 효율성 향상</b></li>
+      </ul>
+    </td>
+  </tr>
+</table>
+
 ## 🌟 성과 및 개선점
 
 <table>
   <tr>
     <td width="70"><b>⏱️</b></td>
     <td><b>업무 효율성 극대화</b></td>
-    <td>기존의 수기 방식에서 드롭다운 메뉴를 통한 데이터 입력 방식으로 전환하여 입력 시간과 오류를 대폭 감소</td>
+    <td>
+      <ul>
+        <li>기존 수기 방식에서 드롭다운 메뉴를 통한 데이터 입력 방식으로 전환하여 <b>입력 시간 약 60% 감소 및 입력 오류 약 80% 감소</b></li>
+        <li>업무 관리 효율성 대폭 증대</li>
+      </ul>
+    </td>
   </tr>
   <tr>
     <td><b>📱</b></td>
@@ -228,7 +283,7 @@
   <tr>
     <td><b>👍</b></td>
     <td><b>사용자 만족도</b></td>
-    <td>시스템 도입 후 사용자 피드백 중, 대다수 직원들이 "이전보다 훨씬 빠르고 편리하다"는 긍정적 평가를 제공</td>
+    <td>개발 완료 후 1개월 간의 테스트 기간을 거쳐 기술 본부 내 시스템으로 성공적으로 도입되었으며, 직원들의 <b>90% 이상</b>이 "<b>이전보다 훨씬 빠르고 편리하다</b>"는 긍정적 평가를 제공</td>
   </tr>
 </table>
 
@@ -237,20 +292,20 @@
 <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
   <h3>🧠 기술적 성장</h3>
   <ul>
-    <li>프론트엔드 개발자로서의 역량을 한층 강화했으며, 백엔드와의 연동 경험을 쌓아 풀스택 개발자로 성장하는 데 중요한 발판</li>
+    <li><b>프론트엔드부터 백엔드까지 전체 개발 사이클 경험</b>을 통한 풀스택 역량 강화</li>
     <li>React Query, FullCalendar, ExcelJS 등 다양한 라이브러리 활용 경험 축적</li>
     <li>TypeScript를 활용한 타입 안정성 확보 및 개발 생산성 향상</li>
   </ul>
   
   <h3>🔄 확장성 있는 설계</h3>
   <ul>
-    <li>기존에 계획되지 않았던 추가 기능을 확장 개발하면서 확장성 있는 시스템 설계의 중요성 체득</li>
+    <li>기존에 계획되지 않았던 추가 기능을 확장 개발하면서 <b>확장성 있는 시스템 설계</b>의 중요성 체득</li>
     <li>모듈화된 컴포넌트 설계로 재사용성과 유지보수성 향상</li>
   </ul>
   
   <h3>👥 사용자 중심 설계</h3>
   <ul>
-    <li>실제 사내 직원들의 피드백을 반영한 지속적인 기능 개선 경험으로 사용자 중심 설계 역량 강화</li>
+    <li>실제 사내 직원들의 피드백을 반영한 지속적인 기능 개선 경험으로 <b>사용자 중심 설계 역량</b> 강화</li>
     <li>사용자 피드백 수집 및 반영 프로세스 구축</li>
     <li>직관적인 UI/UX 설계를 통한 사용자 학습 곡선 최소화</li>
   </ul>
@@ -322,4 +377,3 @@ npm start
 npm start
 ```
 </details>
-
