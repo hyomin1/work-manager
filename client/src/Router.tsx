@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "./App";
-import Login from "./pages/auth/Login";
+import LoginPage from "./pages/auth/LoginPage";
 import { lazy } from "react";
 import { ROUTES } from "./constants/constant";
 import DrivingService from "./pages/driving/service/DrivingService";
@@ -15,7 +15,7 @@ import DailyWorkPage from "./pages/dailyWork/DailyWorkPage";
 const AdminPage = lazy(() => import("./pages/admin/AdminPage"));
 const UserManagePage = lazy(() => import("./pages/userManage/UserManagePage"));
 const StatisticsPage = lazy(() => import("./pages/statistics/StatisticsPage"));
-const Register = lazy(() => import("./pages/auth/Register"));
+const RegisterPage = lazy(() => import("./pages/auth/RegisterPage"));
 
 // 라우팅 관리, 라우팅 path명, path에 해당할때 보여지는 화면 컴포넌트
 const router = createBrowserRouter([
@@ -25,11 +25,11 @@ const router = createBrowserRouter([
     children: [
       {
         path: "",
-        element: <Login />,
+        element: <LoginPage />,
       },
       {
         path: ROUTES.AUTH.REGISTER,
-        element: <Register />,
+        element: <RegisterPage />,
       },
       {
         path: ROUTES.DASHBOARD,
