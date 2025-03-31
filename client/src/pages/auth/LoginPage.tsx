@@ -1,8 +1,7 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
-import { axiosReq } from "../../api";
 import { VALIDATION_MESSAGES } from "../../constants/message";
 import { ROUTES } from "../../constants/constant";
 import { KeyRound, User, Loader2 } from "lucide-react";
@@ -10,6 +9,7 @@ import AuthLayout from "./AuthLayout";
 import FormInput from "./components/FormInput";
 import AuthButton from "./components/AuthButton";
 import AuthCheckBox from "./components/AuthCheckBox";
+import { useAuth } from "../../hooks/useAuth";
 
 interface LoginFormData {
   userId: string;
@@ -24,7 +24,7 @@ export default function LoginPage() {
     formState: { errors, isSubmitting },
   } = useForm<LoginFormData>();
 
-  const [cookies, setCookie, removeCookie] = useCookies(["rememberUserId"]);
+  const [cookies] = useCookies(["rememberUserId"]);
   const [isRemember, setIsRemember] = useState(false);
   const navigate = useNavigate();
 
@@ -33,37 +33,24 @@ export default function LoginPage() {
     setValue("password", "");
   };
 
+  const { loginMutation, redirectIfAuthenticated } = useAuth();
+
   const handleLogin = async (data: LoginFormData) => {
-    const res = await axiosReq.post("/auth/login", data);
-    if (res.status !== 200) return;
+    const { userId, password } = data;
+    loginMutation.mutate({ userId, password, isRemember });
 
-    if (isRemember) {
-      setCookie("rememberUserId", data.userId, {
-        path: "/",
-        maxAge: 365 * 24 * 60 * 60,
-      });
-    } else {
-      removeCookie("rememberUserId");
+    if (loginMutation.isSuccess) {
+      clearInput();
     }
-
-    navigate(ROUTES.DASHBOARD);
-    clearInput();
   };
 
-  const checkSession = useCallback(async () => {
-    const response = await axiosReq.get("/auth/checkSession");
-    if (response.status === 200) {
-      navigate(ROUTES.DASHBOARD);
-    }
-  }, [navigate]);
-
   useEffect(() => {
-    checkSession();
+    redirectIfAuthenticated();
     if (cookies.rememberUserId) {
       setValue("userId", cookies.rememberUserId);
       setIsRemember(true);
     }
-  }, [checkSession, cookies.rememberUserId, setValue]);
+  }, [redirectIfAuthenticated, cookies.rememberUserId, setValue]);
 
   return (
     <AuthLayout
@@ -93,7 +80,6 @@ export default function LoginPage() {
             required: VALIDATION_MESSAGES.required.password,
           })}
           error={errors.password?.message}
-          autoFocus
         />
         <AuthCheckBox
           id="remember"

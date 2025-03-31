@@ -1,13 +1,13 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { axiosReq } from "../../api";
 import { VALIDATION_MESSAGES } from "../../constants/message";
 import { ROUTES } from "../../constants/constant";
 import { UserPlus, KeyRound, User, Loader2, Lock } from "lucide-react";
 import AuthLayout from "./AuthLayout";
 import FormInput from "./components/FormInput";
 import AuthButton from "./components/AuthButton";
+import { useAuth } from "../../hooks/useAuth";
 
 interface RegisterFormData {
   userId: string;
@@ -28,14 +28,13 @@ export default function RegisterPage() {
 
   const password = watch("password");
 
+  const { registerMutation } = useAuth();
+
   const handleRegister = async (data: RegisterFormData) => {
-    const res = await axiosReq.post("/auth/register", data);
-    if (res.status !== 201) {
-      return;
+    registerMutation.mutate(data);
+    if (registerMutation.isSuccess) {
+      reset();
     }
-    alert(res.data.message);
-    reset();
-    navigate(ROUTES.AUTH.LOGIN);
   };
 
   return (
@@ -66,7 +65,6 @@ export default function RegisterPage() {
             required: VALIDATION_MESSAGES.required.password,
           })}
           error={errors.password?.message}
-          autoFocus
         />
 
         <FormInput
@@ -82,7 +80,6 @@ export default function RegisterPage() {
               VALIDATION_MESSAGES.validate.passwordMismatch,
           })}
           error={errors.passwordConfirm?.message}
-          autoFocus
         />
 
         <div className="flex flex-col gap-4 sm:flex-row">
