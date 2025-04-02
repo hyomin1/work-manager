@@ -31,7 +31,7 @@ const SelectPages = () => {
   const checkUser = async () => {
     const response = await checkCarSession();
     if (response.isUser) {
-      navigate(ROUTES.EMPLOYEES.LIST);
+      navigate(ROUTES.WORKS.LIST);
       return;
     }
     alert("권한이 없습니다.");
@@ -66,7 +66,7 @@ const SelectPages = () => {
               {
                 icon: <ClipboardList className="h-5 w-5" />,
                 title: "일일 업무 작성",
-                onClick: () => navigate(ROUTES.EMPLOYEES.DAILY_WORK),
+                onClick: () => navigate(ROUTES.WORKS.DAILY_WORK),
               },
               {
                 icon: <CalendarRange className="h-5 w-5" />,

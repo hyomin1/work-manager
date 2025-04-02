@@ -9,10 +9,10 @@ export const ROUTES = {
   },
   DASHBOARD: "/dashboard",
 
-  EMPLOYEES: {
-    LIST: "/employees",
-    CREATE: "/employees/create",
-    DAILY_WORK: "/employees/dailyWork",
+  WORKS: {
+    LIST: "/works",
+    CREATE: "/works/create",
+    DAILY_WORK: "/works/dailyWork",
   },
 
   VEHICLES: {

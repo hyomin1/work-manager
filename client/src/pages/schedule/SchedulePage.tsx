@@ -17,7 +17,7 @@ import {
 } from "../../api";
 import { useNavigate } from "react-router-dom";
 import "./Calendar.css";
-import EmployeeEdit from "../employee/EmployeeEdit";
+import EmployeeEdit from "../workStatus/EmployeeEdit";
 import { useCustomQueries } from "../../hooks/useCustomQuery";
 import { Autocomplete, TextField } from "@mui/material";
 import ScheduleAdd from "./ScheduleAdd";

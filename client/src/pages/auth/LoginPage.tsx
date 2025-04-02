@@ -6,32 +6,24 @@ import { VALIDATION_MESSAGES } from "../../constants/message";
 import { ROUTES } from "../../constants/constant";
 import { KeyRound, User, Loader2 } from "lucide-react";
 import AuthLayout from "./AuthLayout";
-import FormInput from "./components/FormInput";
+import FormInput from "./components/AuthInput";
 import AuthButton from "./components/AuthButton";
 import AuthCheckBox from "./components/AuthCheckBox";
-import { useAuth } from "../../hooks/useAuth";
-
-interface LoginFormData {
-  userId: string;
-  password: string;
-}
+import { LoginFormData } from "../../types/auth";
+import useAuth from "../../hooks/useAuth";
 
 export default function LoginPage() {
   const {
     register,
     handleSubmit,
     setValue,
-    formState: { errors, isSubmitting },
+    formState: { errors },
+    reset,
   } = useForm<LoginFormData>();
 
   const [cookies] = useCookies(["rememberUserId"]);
   const [isRemember, setIsRemember] = useState(false);
   const navigate = useNavigate();
-
-  const clearInput = () => {
-    setValue("userId", "");
-    setValue("password", "");
-  };
 
   const { loginMutation, redirectIfAuthenticated } = useAuth();
 
@@ -40,7 +32,7 @@ export default function LoginPage() {
     loginMutation.mutate({ userId, password, isRemember });
 
     if (loginMutation.isSuccess) {
-      clearInput();
+      reset();
     }
   };
 
@@ -89,8 +81,12 @@ export default function LoginPage() {
         />
 
         <div className="flex flex-col gap-4 sm:flex-row">
-          <AuthButton type="submit" disabled={isSubmitting} variant="primary">
-            {isSubmitting ? (
+          <AuthButton
+            type="submit"
+            disabled={loginMutation.isPending}
+            variant="primary"
+          >
+            {loginMutation.isPending ? (
               <Loader2 className="mx-auto h-5 w-5 animate-spin" />
             ) : (
               "로그인"
@@ -99,7 +95,7 @@ export default function LoginPage() {
           <AuthButton
             type="button"
             onClick={() => navigate(ROUTES.AUTH.REGISTER)}
-            disabled={isSubmitting}
+            disabled={loginMutation.isPending}
             variant="secondary"
           >
             회원가입

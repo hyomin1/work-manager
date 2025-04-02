@@ -6,7 +6,6 @@ import {
   Select,
   SelectChangeEvent,
 } from "@mui/material";
-//import downloadExcel from "../DriveExcel";
 import { SetStateAction, useState } from "react";
 import { ICars, IDrivingInform } from "../../../interfaces/interface";
 import useDrivingStore from "../../../stores/drivingStore";
@@ -78,7 +77,7 @@ export default function NavigationButtons({
   const checkUser = async () => {
     const response = await checkCarSession();
     if (response.isUser) {
-      navigate(ROUTES.EMPLOYEES.LIST);
+      navigate(ROUTES.WORKS.LIST);
       return;
     }
     alert("권한이 없습니다.");

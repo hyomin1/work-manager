@@ -17,18 +17,15 @@ const axiosDomain = axios.create({
 const handleResponseInterceptor = async (
   error: AxiosError,
 ): Promise<AxiosResponse> => {
-  if (error.response?.status === 400) {
+  if (error.response?.status === 401) {
     const errMsg = error.response.data as { error: string };
-    alert(errMsg.error);
-  } else if (error.response?.status === 401) {
-    const errMsg = error.response.data as { error: string };
-    alert(errMsg.error);
-    return new Promise(() => {});
+    //alert(errMsg.error);
+    return Promise.reject(error);
   } else if (error.response?.status === 403) {
     const errMsg = error.response.data as { error: string };
     const errType = error.response.data as { type: string };
     //const url = error.response.data as { url: string };
-    alert(errMsg.error);
+    //alert(errMsg.error);
 
     // 유저 아닌 경우
     if (errType.type === "not User") {
@@ -37,19 +34,9 @@ const handleResponseInterceptor = async (
       window.location.href = ROUTES.AUTH.LOGIN;
     } else if (errType.type === "not granted admin") {
     }
-
     return new Promise(() => {});
-  } else if (error.response?.status === 404) {
+  } else if (error.response?.status === 500) {
     const errMsg = error.response.data as { error: string };
-    alert(errMsg.error);
-  } else if (error.response?.status === 409) {
-    const errMsg = error.response.data as { error: string };
-    alert(errMsg.error);
-  }
-  
-  else if (error.response?.status === 500) {
-    const errMsg = error.response.data as { error: string };
-    alert(errMsg.error);
     return new Promise(() => {});
   }
   return new Promise(() => {});

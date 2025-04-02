@@ -55,7 +55,7 @@ const NavigationButtons = ({ refetch }: NavProps) => {
             <NavButton
               icon={Pencil}
               label="입력"
-              onClick={() => navigate(ROUTES.EMPLOYEES.CREATE)}
+              onClick={() => navigate(ROUTES.WORKS.CREATE)}
               variant="green"
             />
             <NavButton
@@ -67,7 +67,7 @@ const NavigationButtons = ({ refetch }: NavProps) => {
             <NavButton
               icon={FileText}
               label="업무"
-              onClick={() => navigate(ROUTES.EMPLOYEES.DAILY_WORK)}
+              onClick={() => navigate(ROUTES.WORKS.DAILY_WORK)}
               variant="green"
             />
           </div>

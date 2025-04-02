@@ -290,7 +290,7 @@ function EmployeeForm() {
 
     if (responses.every((res) => res.status === 201)) {
       alert("정보 입력 완료");
-      navigate(ROUTES.EMPLOYEES.LIST);
+      navigate(ROUTES.WORKS.LIST);
     }
   };
 

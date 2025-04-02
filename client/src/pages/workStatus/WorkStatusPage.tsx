@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
 import { Paper, Table, TableContainer } from "@mui/material";
-import { REFETCH_INTERVAL } from "../../constants/constant";
-import { calculateDate, getEmployeeInform } from "../../api";
-import { IInform } from "../../interfaces/interface";
-import useEmployeeStore from "../../stores/employeeStore";
+import { calculateDate } from "../../api";
 import ArrowBack from "../../components/common/ArrowBack";
 import Title from "../../components/layout/Title";
 import Logout from "../auth/Logout";
@@ -12,24 +8,15 @@ import EmployeeTableBody from "./components/TableBody";
 import EmployeeTableHeader from "./components/TableHeader";
 import DateInput from "./components/DateInput";
 import NavigationButtons from "./components/NavigationButtons";
+import useWorks from "../../hooks/useWorks";
 
 function EmployeePage() {
-  const { setInform } = useEmployeeStore();
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
   const [currentDate, setCurrentDate] = useState<Date | null>(new Date());
 
-  const { data, refetch } = useQuery<IInform[]>({
-    queryKey: ["employeeInform"],
-    queryFn: () => getEmployeeInform(currentDate || new Date()),
-    refetchInterval: REFETCH_INTERVAL,
-    //staleTime: REFETCH_INTERVAL,
-  });
-
-  useEffect(() => {
-    if (data) {
-      setInform(data);
-    }
-  }, [data, setInform]);
+  const {
+    worksQuery: { data, refetch },
+  } = useWorks(currentDate || new Date());
 
   useEffect(() => {
     if (currentDate) {
@@ -84,7 +71,7 @@ function EmployeePage() {
         >
           <Table>
             <EmployeeTableHeader />
-            <EmployeeTableBody refetch={refetch} />
+            <EmployeeTableBody works={data || []} />
           </Table>
         </TableContainer>
       </div>

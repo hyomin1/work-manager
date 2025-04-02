@@ -6,9 +6,9 @@ import { LoginFormData, RegisterFormData } from "./../types/auth";
 import { ROUTES } from "../constants/constant";
 import { useCallback } from "react";
 
-export function useAuth() {
+export default function useAuth() {
   const navigate = useNavigate();
-  const [_, setCookie, removeCookie] = useCookies(["rememberUserId"]);
+  const [, setCookie, removeCookie] = useCookies(["rememberUserId"]);
 
   const loginMutation = useMutation({
     mutationFn: (data: LoginFormData & { isRemember?: boolean }) => login(data),
@@ -26,7 +26,7 @@ export function useAuth() {
       }
     },
     onError: (error) => {
-      alert("로그인에 실패했습니다.");
+      //alert("로그인에 실패했습니다.");
     },
   });
 

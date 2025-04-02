@@ -4,10 +4,10 @@ import LoginPage from "./pages/auth/LoginPage";
 import { lazy } from "react";
 import { ROUTES } from "./constants/constant";
 import DrivingService from "./pages/driving/service/DrivingService";
-import EmployeePage from "./pages/employee/EmployeePage";
+import WorkStatusPage from "./pages/workStatus/WorkStatusPage";
 import SelectPages from "./pages/SelectPages";
 import DrivePage from "./pages/driving/DrivePage";
-import EmployeeForm from "./pages/employee/EmployeeForm";
+import EmployeeForm from "./pages/workStatus/EmployeeForm";
 import DriveForm from "./pages/driving/DriveForm";
 import SchedulePage from "./pages/schedule/SchedulePage";
 import DailyWorkPage from "./pages/dailyWork/DailyWorkPage";
@@ -36,8 +36,8 @@ const router = createBrowserRouter([
         element: <SelectPages />,
       },
       {
-        path: ROUTES.EMPLOYEES.LIST,
-        element: <EmployeePage />,
+        path: ROUTES.WORKS.LIST,
+        element: <WorkStatusPage />,
       },
       {
         path: ROUTES.VEHICLES.LIST,
@@ -48,7 +48,7 @@ const router = createBrowserRouter([
         element: <StatisticsPage />,
       },
       {
-        path: ROUTES.EMPLOYEES.CREATE,
+        path: ROUTES.WORKS.CREATE,
         element: <EmployeeForm />,
       },
       {
@@ -72,7 +72,7 @@ const router = createBrowserRouter([
         element: <UserManagePage />,
       },
       {
-        path: ROUTES.EMPLOYEES.DAILY_WORK,
+        path: ROUTES.WORKS.DAILY_WORK,
         element: <DailyWorkPage />,
       },
     ],

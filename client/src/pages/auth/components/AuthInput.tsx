@@ -1,5 +1,4 @@
 import { UseFormRegisterReturn } from "react-hook-form";
-import { VALIDATION_MESSAGES } from "../../../constants/message";
 
 type Props = {
   id: string;

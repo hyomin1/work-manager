@@ -5,15 +5,10 @@ import { VALIDATION_MESSAGES } from "../../constants/message";
 import { ROUTES } from "../../constants/constant";
 import { UserPlus, KeyRound, User, Loader2, Lock } from "lucide-react";
 import AuthLayout from "./AuthLayout";
-import FormInput from "./components/FormInput";
+import FormInput from "./components/AuthInput";
 import AuthButton from "./components/AuthButton";
-import { useAuth } from "../../hooks/useAuth";
-
-interface RegisterFormData {
-  userId: string;
-  password: string;
-  passwordConfirm: string;
-}
+import { RegisterFormData } from "../../types/auth";
+import useAuth from "../../hooks/useAuth";
 
 export default function RegisterPage() {
   const navigate = useNavigate();
@@ -23,7 +18,7 @@ export default function RegisterPage() {
     handleSubmit,
     reset,
     watch,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<RegisterFormData>();
 
   const password = watch("password");
@@ -83,8 +78,12 @@ export default function RegisterPage() {
         />
 
         <div className="flex flex-col gap-4 sm:flex-row">
-          <AuthButton type="submit" disabled={isSubmitting} variant="primary">
-            {isSubmitting ? (
+          <AuthButton
+            type="submit"
+            disabled={registerMutation.isPending}
+            variant="primary"
+          >
+            {registerMutation.isPending ? (
               <Loader2 className="mx-auto h-5 w-5 animate-spin" />
             ) : (
               "회원가입"
@@ -92,7 +91,7 @@ export default function RegisterPage() {
           </AuthButton>
           <AuthButton
             type="button"
-            disabled={isSubmitting}
+            disabled={registerMutation.isPending}
             variant="secondary"
             onClick={() => navigate(ROUTES.AUTH.LOGIN)}
           >

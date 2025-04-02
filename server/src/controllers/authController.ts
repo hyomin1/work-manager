@@ -32,7 +32,7 @@ export const loginUser = async (req: Request, res: Response) => {
     const user = await User.findOne({ userId });
 
     if (!user) {
-      return res.status(404).json({ error: '존재하지 않는 아이디입니다.' });
+      return res.status(401).json({ error: '존재하지 않는 아이디입니다.' });
     }
     const isPasswordMatch = await bcrypt.compare(password, user.password);
     if (!isPasswordMatch) {

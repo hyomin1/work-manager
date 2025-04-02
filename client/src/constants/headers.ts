@@ -1,5 +1,3 @@
-// 테이블 헤더에 쓰는 변수들
-
 export const drivingHeaders = [
   "날짜",
   "운전자",
@@ -36,7 +34,19 @@ export const drivingInputHeadersBottom = [
   "하이패스",
   "기타비용",
 ];
+
+// 추후 리팩토리 후 제거
 export const employeeHeaders = [
+  "이름",
+  "방문지",
+  "사업명",
+  "업무",
+  "차량",
+  "비고",
+  "",
+];
+
+export const WORK_STATUS_HEADERS = [
   "이름",
   "방문지",
   "사업명",
