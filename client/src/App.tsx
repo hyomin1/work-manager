@@ -1,8 +1,7 @@
-import React, { Suspense } from "react";
-import { Outlet } from "react-router-dom";
-import LoadingSpinner from "./components/common/LoadingSpinner";
+import { Suspense } from 'react';
+import LoadingSpinner from './components/common/LoadingSpinner';
+import { Outlet } from 'react-router-dom';
 
-// 프로젝트 시작 화면
 function App() {
   return (
     <div>

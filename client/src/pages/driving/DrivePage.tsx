@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import {
   calMonth,
   calYear,
@@ -7,44 +7,44 @@ import {
   getCars,
   getDrivingInform,
   getNotification,
-} from "../../api";
-import { useQuery } from "@tanstack/react-query";
-import { ICars, IDrivingInform } from "../../interfaces/interface";
-import Title from "../../components/layout/Title";
-import { useLocation, useNavigate } from "react-router-dom";
-import Page from "../../components/common/Page";
-import { useMediaQuery } from "react-responsive";
-import ArrowBack from "./../../components/common/ArrowBack";
-import Logout from "../auth/Logout";
-import DriveMobile from "./DriveMobile";
-import DrivePC from "./DriveDesktop";
-import { ROUTES } from "../../constants/constant";
-import useDrivingStore from "../../stores/drivingStore";
-import NavigationButtons from "./components/NavigationButtons";
-import DriveAlert from "./components/DriveAlert";
+} from '../../api';
+import { useQuery } from '@tanstack/react-query';
+import type { ICars, IDrivingInform } from '../../interfaces/interface';
+import Title from '../../components/layout/Title';
+import { useLocation, useNavigate } from 'react-router-dom';
+import Page from '../../components/common/Page';
+import { useMediaQuery } from 'react-responsive';
+import ArrowBack from './../../components/common/ArrowBack';
+import Logout from '../auth/Logout';
+import DriveMobile from './DriveMobile';
+import DrivePC from './DriveDesktop';
+import { ROUTES } from '../../constants/constant';
+import useDrivingStore from '../../stores/drivingStore';
+import NavigationButtons from './components/NavigationButtons';
+import DriveAlert from './components/DriveAlert';
 
 function DrivePage() {
   const navigate = useNavigate();
-  const isMobile = useMediaQuery({ query: "(max-width: 540px)" });
+  const isMobile = useMediaQuery({ query: '(max-width: 540px)' });
   const location = useLocation();
   const [currentDate, setCurrentDate] = useState<Date | null>(null);
-  const [car, setCar] = useState("");
+  const [car, setCar] = useState('');
   const { carId, setCarId } = useDrivingStore();
 
   const { data: drivingInform, refetch } = useQuery<IDrivingInform[]>({
-    queryKey: ["drivingInform"],
+    queryKey: ['drivingInform'],
     queryFn: () =>
       getDrivingInform(
         calYear(currentDate || new Date()),
         calMonth(currentDate || new Date()),
-        carId,
+        carId
       ),
     refetchInterval: 300_000,
     enabled: carId.length > 0,
   });
 
   const { data: notification } = useQuery<ICars>({
-    queryKey: ["notification", carId],
+    queryKey: ['notification', carId],
     queryFn: () => getNotification(carId),
     enabled: carId.length > 0,
   });
@@ -78,7 +78,7 @@ function DrivePage() {
   const [showInput, setShowInput] = useState(false);
 
   const { data: cars } = useQuery<ICars[]>({
-    queryKey: ["car", 1],
+    queryKey: ['car', 1],
     queryFn: getCars,
   });
 
@@ -97,9 +97,9 @@ function DrivePage() {
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value;
 
-    const [year, month] = inputValue.split("-");
+    const [year, month] = inputValue.split('-');
     if (month && year) {
-      const formattedMonth = month.padStart(2, "0");
+      const formattedMonth = month.padStart(2, '0');
       setCurrentDate(new Date(`${year}-${formattedMonth}-01`));
     }
 
@@ -116,7 +116,7 @@ function DrivePage() {
       });
       return;
     }
-    alert("권한이 없습니다.");
+    alert('권한이 없습니다.');
   };
 
   const totalFuelCost =
@@ -130,34 +130,34 @@ function DrivePage() {
   const grandTotal = totalFuelCost + totalToll + totalEtcCost;
 
   return (
-    <div className="flex min-h-screen w-full flex-col items-center justify-between bg-gradient-to-br from-gray-50 to-blue-50 p-4 sm:p-2">
-      <div className="flex w-[90%] flex-col items-center sm:w-full">
-        <div className="mb-4 mt-4 flex w-full items-center justify-between sm:mt-4 print:justify-center">
-          <ArrowBack type="home" />
+    <div className='flex min-h-screen w-full flex-col items-center justify-between bg-gradient-to-br from-gray-50 to-blue-50 p-4 sm:p-2'>
+      <div className='flex w-[90%] flex-col items-center sm:w-full'>
+        <div className='mb-4 mt-4 flex w-full items-center justify-between sm:mt-4 print:justify-center'>
+          <ArrowBack type='home' />
           <Title
             currentDate={currentDate || new Date()}
             setCurrentDate={setCurrentDate}
             setShowInput={setShowInput}
             calYearMonth={calYearMonth}
-            category="driving"
+            category='driving'
           />
           <Logout />
         </div>
 
-        <div className="mb-2 flex w-full items-center justify-between">
+        <div className='mb-2 flex w-full items-center justify-between'>
           {showInput && (
-            <div className="flex w-full justify-center hover:opacity-60">
+            <div className='flex w-full justify-center hover:opacity-60'>
               <input
-                type="month"
+                type='month'
                 onChange={handleDateChange}
                 onBlur={() => setShowInput(false)}
-                className="my-4 w-[33%] rounded-lg border border-gray-300 p-2 shadow-sm transition duration-200 ease-in-out focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 sm:w-[70%]"
+                className='my-4 w-[33%] rounded-lg border border-gray-300 p-2 shadow-sm transition duration-200 ease-in-out focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 sm:w-[70%]'
               />
             </div>
           )}
         </div>
-        <div className="h-full w-full">
-          <div className="mb-4 hidden w-full font-bold print:flex">
+        <div className='h-full w-full'>
+          <div className='mb-4 hidden w-full font-bold print:flex'>
             <span>{car}</span>
           </div>
 
@@ -175,18 +175,18 @@ function DrivePage() {
             totalDrivingKM={totalDrivingKM}
             grandTotal={grandTotal}
           />
-          <div className="print-hidden border">
+          <div className='print-hidden border'>
             {carId.length > 0 && (
               <DriveAlert
-                notification={notification?.notification || ""}
+                notification={notification?.notification || ''}
                 onClick={checkNotification}
-                type=""
+                type=''
               />
             )}
           </div>
 
           {isMobile ? (
-            <div className="overflow-y-auto sm:h-[60%]">
+            <div className='overflow-y-auto sm:h-[60%]'>
               <DriveMobile
                 drivingInform={drivingInform || []}
                 grandTotal={grandTotal}
@@ -199,7 +199,7 @@ function DrivePage() {
               />
             </div>
           ) : (
-            <div className="h-[75%] overflow-y-auto">
+            <div className='h-[75%] overflow-y-auto'>
               <DrivePC
                 drivingInform={drivingInform || []}
                 totalDrivingKM={totalDrivingKM}

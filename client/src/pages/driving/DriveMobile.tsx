@@ -1,6 +1,6 @@
-import React from "react";
-import { IDrivingInform } from "../../interfaces/interface";
-import { calCarDay } from "../../api";
+import React from 'react';
+import type { IDrivingInform } from '../../interfaces/interface';
+import { calCarDay } from '../../api';
 interface IDriveMobileProps {
   drivingInform: IDrivingInform[];
   totalDrivingKM: number;
@@ -23,7 +23,7 @@ function DriveMobile({
   indexOfLastItem,
 }: IDriveMobileProps) {
   return (
-    <div className="h-full sm:w-full">
+    <div className='h-full sm:w-full'>
       {drivingInform
         ?.sort((a, b) => {
           if (
@@ -40,43 +40,43 @@ function DriveMobile({
         .map((item, index) => (
           <div
             key={index}
-            className="mb-1 grid grid-cols-3 gap-2 space-x-0 rounded-lg border border-gray-300 bg-white p-4 text-sm shadow-md"
+            className='mb-1 grid grid-cols-3 gap-2 space-x-0 rounded-lg border border-gray-300 bg-white p-4 text-sm shadow-md'
           >
-            <div className="flex flex-col">
-              <span className="mb-1 font-bold">날짜</span>
+            <div className='flex flex-col'>
+              <span className='mb-1 font-bold'>날짜</span>
               <span>{calCarDay(item.driveDay)}</span>
             </div>
 
-            <div className="flex flex-col">
-              <span className="mb-1 font-bold">운전자</span>
+            <div className='flex flex-col'>
+              <span className='mb-1 font-bold'>운전자</span>
               <span>{item.username}</span>
             </div>
-            <div className="flex flex-col">
-              <span className="mb-1 whitespace-nowrap font-bold">행선지</span>
+            <div className='flex flex-col'>
+              <span className='mb-1 whitespace-nowrap font-bold'>행선지</span>
               <p>{item.drivingDestination}</p>
             </div>
-            <div className="flex flex-col">
-              <span className="mb-1 font-bold">출발(km)</span>
+            <div className='flex flex-col'>
+              <span className='mb-1 font-bold'>출발(km)</span>
               <span>{item.startKM.toLocaleString()} km</span>
             </div>
-            <div className="flex flex-col">
-              <span className="mb-1 font-bold">도착(km)</span>
+            <div className='flex flex-col'>
+              <span className='mb-1 font-bold'>도착(km)</span>
               <span>{item.endKM.toLocaleString()} km</span>
             </div>
-            <div className="flex flex-col">
-              <span className="mb-1 font-bold">주행거리</span>
+            <div className='flex flex-col'>
+              <span className='mb-1 font-bold'>주행거리</span>
               <p>{item.totalKM.toLocaleString()} km</p>
             </div>
-            <div className="flex flex-col">
-              <span className="mb-1 font-bold">주유비</span>
+            <div className='flex flex-col'>
+              <span className='mb-1 font-bold'>주유비</span>
               <span>{item.fuelCost.toLocaleString()}</span>
             </div>
-            <div className="flex flex-col">
-              <span className="mb-1 font-bold">하이패스</span>
+            <div className='flex flex-col'>
+              <span className='mb-1 font-bold'>하이패스</span>
               <span> {item.toll.toLocaleString()}</span>
             </div>
-            <div className="flex flex-col">
-              <span className="mb-1 font-bold">기타</span>
+            <div className='flex flex-col'>
+              <span className='mb-1 font-bold'>기타</span>
               <span>
                 {item.etc.cost > 0 && (
                   <p>
@@ -87,27 +87,27 @@ function DriveMobile({
             </div>
           </div>
         ))}
-      <div className="mb-1 grid w-full grid-cols-3 gap-2 space-x-0 rounded-lg border border-gray-300 bg-white p-4 text-sm shadow-md print:text-[9px]">
-        <div className="flex flex-col">
-          <span className="font-bold">주행거리</span>
+      <div className='mb-1 grid w-full grid-cols-3 gap-2 space-x-0 rounded-lg border border-gray-300 bg-white p-4 text-sm shadow-md print:text-[9px]'>
+        <div className='flex flex-col'>
+          <span className='font-bold'>주행거리</span>
           <span>{totalDrivingKM.toLocaleString()} km</span>
         </div>
 
-        <div className="flex flex-col">
-          <span className="font-bold">주유비</span>
+        <div className='flex flex-col'>
+          <span className='font-bold'>주유비</span>
           <span>{totalFuelCost.toLocaleString()}</span>
         </div>
-        <div className="flex flex-col">
-          <span className="font-bold">하이패스</span>
+        <div className='flex flex-col'>
+          <span className='font-bold'>하이패스</span>
           <span>{totalToll.toLocaleString()}</span>
         </div>
-        <div className="flex flex-col">
-          <span className="font-bold">기타</span>
+        <div className='flex flex-col'>
+          <span className='font-bold'>기타</span>
           <span>{totalEtcCost.toLocaleString()}</span>
         </div>
         <div />
-        <div className="flex flex-col">
-          <span className="font-bold">총계</span>
+        <div className='flex flex-col'>
+          <span className='font-bold'>총계</span>
           <span>{grandTotal.toLocaleString()}</span>
         </div>
         <div />

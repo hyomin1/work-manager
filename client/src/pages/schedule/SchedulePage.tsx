@@ -1,12 +1,12 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { createPortal } from "react-dom";
-import FullCalendar from "@fullcalendar/react";
-import dayGridPlugin from "@fullcalendar/daygrid";
-import timeGridPlugin from "@fullcalendar/timegrid";
-import interactionPlugin from "@fullcalendar/interaction";
-import { useQuery } from "@tanstack/react-query";
-import { IInform } from "../../interfaces/interface";
-import { Edit, Trash2 } from "lucide-react";
+import React, { useEffect, useMemo, useState } from 'react';
+import { createPortal } from 'react-dom';
+import FullCalendar from '@fullcalendar/react';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import timeGridPlugin from '@fullcalendar/timegrid';
+import interactionPlugin from '@fullcalendar/interaction';
+import { useQuery } from '@tanstack/react-query';
+import type { IInform } from '../../interfaces/interface';
+import { Edit, Trash2 } from 'lucide-react';
 import {
   axiosReq,
   calDay,
@@ -14,13 +14,13 @@ import {
   calMonth,
   calYear,
   getSchedule,
-} from "../../api";
-import { useNavigate } from "react-router-dom";
-import "./Calendar.css";
-import EmployeeEdit from "../workStatus/EmployeeEdit";
-import { useCustomQueries } from "../../hooks/useCustomQuery";
-import { Autocomplete, TextField } from "@mui/material";
-import ScheduleAdd from "./ScheduleAdd";
+} from '../../api';
+import { useNavigate } from 'react-router-dom';
+import './Calendar.css';
+import EmployeeEdit from '../workStatus/EmployeeEdit';
+import { useCustomQueries } from '../../hooks/useCustomQuery';
+import { Autocomplete, TextField } from '@mui/material';
+import ScheduleAdd from './ScheduleAdd';
 
 const SearchComponent = ({
   names,
@@ -32,9 +32,9 @@ const SearchComponent = ({
   handleNameChange: (event: React.SyntheticEvent, value: string | null) => void;
 }) => {
   return (
-    <div className="mr-4 w-[150px]">
+    <div className='mr-4 w-[150px]'>
       <Autocomplete
-        size="small"
+        size='small'
         options={
           names
             ?.sort((a, b) => a.username.localeCompare(b.username))
@@ -43,13 +43,13 @@ const SearchComponent = ({
         renderInput={(params) => (
           <TextField
             {...params}
-            label="이름 검색"
-            size="small"
+            label='이름 검색'
+            size='small'
             sx={{
-              "& .MuiInputBase-root": {
-                backgroundColor: "white",
-                borderRadius: "4px",
-                height: "36px",
+              '& .MuiInputBase-root': {
+                backgroundColor: 'white',
+                borderRadius: '4px',
+                height: '36px',
               },
             }}
           />
@@ -65,10 +65,10 @@ function SchedulePage() {
   const date = new Date();
   const [username, setUsername] = useState<string | null>(null);
   const { data: scheduleData, refetch } = useQuery<IInform[]>({
-    queryKey: ["employeeInform"],
+    queryKey: ['employeeInform'],
     queryFn: () => getSchedule(calYear(date), calMonth(date), username),
   });
-  const [editingItemId, setEditingItemId] = useState("");
+  const [editingItemId, setEditingItemId] = useState('');
   const [showAddForm, setShowAddForm] = useState(false);
   const [searchMounted, setSearchMounted] = useState(false);
   const [clickDate, setClickDate] = useState<Date | null>(null);
@@ -85,7 +85,7 @@ function SchedulePage() {
 
   const handleNameChange = (
     event: React.SyntheticEvent,
-    username: string | null,
+    username: string | null
   ) => {
     setUsername(username);
   };
@@ -111,18 +111,18 @@ function SchedulePage() {
   };
 
   const handleBackgroundClick = (e: React.MouseEvent) => {
-    if (!(e.target as HTMLElement).closest(".tooltip")) {
+    if (!(e.target as HTMLElement).closest('.tooltip')) {
       setTooltip(null);
     }
   };
 
   const onDeleteSchedule = async (id: string) => {
-    if (!window.confirm("삭제하시겠습니까?")) {
+    if (!window.confirm('삭제하시겠습니까?')) {
       return;
     }
 
     const res = await axiosReq.delete(
-      `/api/employee-inform/removeInform/${id}`,
+      `/api/employee-inform/removeInform/${id}`
     );
     if (res.status === 200) {
       setTooltip(null);
@@ -139,8 +139,8 @@ function SchedulePage() {
 
       return {
         title: `${schedule.destination || schedule.work}`,
-        start: new Date(schedule.startDate).toISOString().split("T")[0],
-        end: endDate.toISOString().split("T")[0],
+        start: new Date(schedule.startDate).toISOString().split('T')[0],
+        end: endDate.toISOString().split('T')[0],
         extendedProps: {
           _id: schedule._id,
           startDate: schedule.startDate,
@@ -153,16 +153,16 @@ function SchedulePage() {
           username: schedule.username,
           remarks: schedule.remarks,
         },
-        backgroundColor: "#5B8FF9",
+        backgroundColor: '#5B8FF9',
       };
     });
   }, [scheduleData]);
 
   useEffect(() => {
-    const searchButton = document.querySelector(".fc-search-button");
+    const searchButton = document.querySelector('.fc-search-button');
     if (searchButton) {
-      searchButton.textContent = "";
-      searchButton.classList.remove("fc-button", "fc-button-primary");
+      searchButton.textContent = '';
+      searchButton.classList.remove('fc-button', 'fc-button-primary');
       setSearchButtonElement(searchButton);
       setSearchMounted(true);
     }
@@ -179,7 +179,7 @@ function SchedulePage() {
   };
 
   useEffect(() => {
-    const style = document.createElement("style");
+    const style = document.createElement('style');
     style.textContent = `
       .fc .fc-toolbar.fc-header-toolbar {
         display: grid;
@@ -210,34 +210,34 @@ function SchedulePage() {
 
   return (
     <div
-      className="flex h-screen w-full flex-col bg-gradient-to-br from-blue-50 to-gray-100 px-4 pt-2"
+      className='flex h-screen w-full flex-col bg-gradient-to-br from-blue-50 to-gray-100 px-4 pt-2'
       onClick={handleBackgroundClick}
     >
       <FullCalendar
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-        initialView="dayGridMonth"
+        initialView='dayGridMonth'
         events={events}
         customButtons={{
           arrowBack: {
-            text: "⬅ 뒤로가기",
+            text: '⬅ 뒤로가기',
             click: () => navigate(-1),
           },
           search: {
-            text: "",
+            text: '',
           },
         }}
         headerToolbar={{
-          left: "arrowBack",
-          center: "title",
-          right: "search,prev,next",
+          left: 'arrowBack',
+          center: 'title',
+          right: 'search,prev,next',
         }}
         selectable={true}
         selectMirror={true}
         dayMaxEvents={true}
-        locale="ko"
-        height="100vh"
+        locale='ko'
+        height='100vh'
         eventClick={handleEventClick}
-        dayHeaderFormat={{ weekday: "short" }}
+        dayHeaderFormat={{ weekday: 'short' }}
         dayHeaders={true}
         dateClick={handleDateClick}
       />
@@ -250,28 +250,28 @@ function SchedulePage() {
             username={username}
             handleNameChange={handleNameChange}
           />,
-          searchButtonElement,
+          searchButtonElement
         )}
 
       {tooltip && (
         <div
-          className="tooltip fixed z-10 rounded-lg border border-[#FFE4D6] bg-gradient-to-br from-[#FFF5F0] to-white p-5 shadow-lg"
+          className='tooltip fixed z-10 rounded-lg border border-[#FFE4D6] bg-gradient-to-br from-[#FFF5F0] to-white p-5 shadow-lg'
           style={{
             top: `${tooltip.position.y}px`,
             left: `${tooltip.position.x}px`,
           }}
           onClick={(e) => e.stopPropagation()}
         >
-          <div className="mb-3 flex w-full items-start justify-between">
-            <h2 className="mr-2 whitespace-nowrap text-lg font-bold text-[#E67547]">
+          <div className='mb-3 flex w-full items-start justify-between'>
+            <h2 className='mr-2 whitespace-nowrap text-lg font-bold text-[#E67547]'>
               {tooltip.event.title}
             </h2>
-            <div className="flex justify-start space-x-1">
+            <div className='flex justify-start space-x-1'>
               <button
                 onClick={() =>
                   setEditingItemId(tooltip.event.extendedProps._id)
                 }
-                className="rounded-full p-1.5 text-[#FF9671] transition-all hover:bg-[#FFE4D6] hover:text-[#E67547]"
+                className='rounded-full p-1.5 text-[#FF9671] transition-all hover:bg-[#FFE4D6] hover:text-[#E67547]'
               >
                 <Edit size={18} />
               </button>
@@ -279,16 +279,16 @@ function SchedulePage() {
                 onClick={() =>
                   onDeleteSchedule(tooltip.event.extendedProps._id)
                 }
-                className="rounded-full p-1.5 text-[#FF9671] transition-all hover:bg-[#FFE4D6] hover:text-[#E67547]"
+                className='rounded-full p-1.5 text-[#FF9671] transition-all hover:bg-[#FFE4D6] hover:text-[#E67547]'
               >
                 <Trash2 size={18} />
               </button>
             </div>
           </div>
 
-          <div className="mb-3 flex items-center space-x-2 rounded-md bg-white/80 px-3 py-2">
-            <div className="text-xs font-medium text-[#E67547]">
-              {calMonth(new Date(tooltip.event.extendedProps.startDate))}월{" "}
+          <div className='mb-3 flex items-center space-x-2 rounded-md bg-white/80 px-3 py-2'>
+            <div className='text-xs font-medium text-[#E67547]'>
+              {calMonth(new Date(tooltip.event.extendedProps.startDate))}월{' '}
               {calDay(new Date(tooltip.event.extendedProps.startDate))}일 (
               {calDayOfWeek(new Date(tooltip.event.extendedProps.startDate))}
               요일)
@@ -296,12 +296,12 @@ function SchedulePage() {
                 tooltip.event.extendedProps.startDate !==
                   tooltip.event.extendedProps.endDate && (
                   <>
-                    {" "}
+                    {' '}
                     - {calMonth(new Date(tooltip.event.extendedProps.endDate))}
                     월 {calDay(new Date(tooltip.event.extendedProps.endDate))}일
                     (
                     {calDayOfWeek(
-                      new Date(tooltip.event.extendedProps.endDate),
+                      new Date(tooltip.event.extendedProps.endDate)
                     )}
                     요일)
                   </>
@@ -309,11 +309,11 @@ function SchedulePage() {
             </div>
           </div>
 
-          <div className="space-y-2">
+          <div className='space-y-2'>
             {tooltip.event.extendedProps.business && (
-              <div className="rounded-md bg-white/80 px-3 py-2">
-                <p className="text-sm text-gray-600">
-                  <span className="mb-1 block whitespace-nowrap text-xs font-medium text-[#E67547]">
+              <div className='rounded-md bg-white/80 px-3 py-2'>
+                <p className='text-sm text-gray-600'>
+                  <span className='mb-1 block whitespace-nowrap text-xs font-medium text-[#E67547]'>
                     사업명
                   </span>
                   {tooltip.event.extendedProps.business}
@@ -322,9 +322,9 @@ function SchedulePage() {
             )}
 
             {tooltip.event.extendedProps.work && (
-              <div className="rounded-md bg-white/80 px-3 py-2">
-                <p className="text-sm text-gray-600">
-                  <span className="mb-1 block text-xs font-medium text-[#E67547]">
+              <div className='rounded-md bg-white/80 px-3 py-2'>
+                <p className='text-sm text-gray-600'>
+                  <span className='mb-1 block text-xs font-medium text-[#E67547]'>
                     업무
                   </span>
                   {tooltip.event.extendedProps.work}
@@ -333,9 +333,9 @@ function SchedulePage() {
             )}
 
             {tooltip.event.extendedProps.car && (
-              <div className="rounded-md bg-white/80 px-3 py-2">
-                <p className="text-sm text-gray-600">
-                  <span className="mb-1 block text-xs font-medium text-[#E67547]">
+              <div className='rounded-md bg-white/80 px-3 py-2'>
+                <p className='text-sm text-gray-600'>
+                  <span className='mb-1 block text-xs font-medium text-[#E67547]'>
                     차량
                   </span>
                   {tooltip.event.extendedProps.car}
@@ -344,9 +344,9 @@ function SchedulePage() {
             )}
 
             {tooltip.event.extendedProps.remarks && (
-              <div className="rounded-md bg-white/80 px-3 py-2">
-                <p className="text-sm text-gray-600">
-                  <span className="mb-1 block text-xs font-medium text-[#E67547]">
+              <div className='rounded-md bg-white/80 px-3 py-2'>
+                <p className='text-sm text-gray-600'>
+                  <span className='mb-1 block text-xs font-medium text-[#E67547]'>
                     비고
                   </span>
                   {tooltip.event.extendedProps.remarks}
@@ -374,7 +374,7 @@ function SchedulePage() {
                           },
                         },
                       }
-                    : null,
+                    : null
                 );
               }}
             />

@@ -1,31 +1,31 @@
-import { useState } from "react";
+import { useState } from 'react';
 import {
   Button,
   TableBody as MuiTableBody,
   TableCell,
   TableRow,
   Tooltip,
-} from "@mui/material";
-import EmployeeEdit from "../EmployeeEdit";
-import { FileText } from "lucide-react";
-import useEmployeeStore from "../../../stores/employeeStore";
-import DeleteBox from "../../../components/common/DeleteBox";
-import { WorkStatus } from "../../../types/work";
+} from '@mui/material';
+import EmployeeEdit from '../EmployeeEdit';
+import { FileText } from 'lucide-react';
+import useEmployeeStore from '../../../stores/employeeStore';
+import DeleteBox from '../../../components/common/DeleteBox';
+import type { WorkStatus } from '../../../types/work';
 import {
   sortWorkStatus,
   getRowSpans,
   findNonEmptyCarInGroup,
   createStyleMap,
-} from "../../../utils/work-status";
-import useWorks from "../../../hooks/useWorks";
+} from '../../../utils/work-status';
+import useWorks from '../../../hooks/useWorks';
 import {
   CELL_STYLE,
   EMPTY_TABLE_CELL_STYLE,
   LAST_CELL_STYLE,
   REMARK_BUTTON_STYLE,
   TOOLTIP_STYLE,
-} from "../../../styles/workStatusTableStyles";
-import ActionButtons from "../../../components/common/ActionButtons";
+} from '../../../styles/workStatusTableStyles';
+import ActionButtons from '../../../components/common/ActionButtons';
 
 type Props = {
   works: WorkStatus[];
@@ -33,9 +33,9 @@ type Props = {
 
 export default function TableBody({ works }: Props) {
   const { currentDate } = useEmployeeStore();
-  const [editingItemId, setEditingItemId] = useState("");
+  const [editingItemId, setEditingItemId] = useState('');
   const [open, setOpen] = useState(false);
-  const [deletedId, setDeletedId] = useState("");
+  const [deletedId, setDeletedId] = useState('');
   const { deleteMutation } = useWorks();
 
   const handleDelete = (id: string) => {
@@ -47,7 +47,7 @@ export default function TableBody({ works }: Props) {
     deleteMutation.mutate(deletedId, {
       onSuccess: () => {
         setOpen(false);
-        setDeletedId("");
+        setDeletedId('');
       },
     });
   };
@@ -56,9 +56,9 @@ export default function TableBody({ works }: Props) {
     <MuiTableBody>
       <TableRow>
         <TableCell
-          align="center"
+          align='center'
           colSpan={7}
-          className="text-center"
+          className='text-center'
           sx={EMPTY_TABLE_CELL_STYLE}
         >
           등록된 정보가 없습니다
@@ -81,14 +81,14 @@ export default function TableBody({ works }: Props) {
         {sortedData.map((item, index) => (
           <TableRow
             key={item._id}
-            className="w-[100%] sm:text-sm"
+            className='w-[100%] sm:text-sm'
             sx={styleMap.get(`${item.destination}-${item.business}`)}
           >
             {rowSpans.get(`${index}-name`) !== 0 && (
               <TableCell
-                align="center"
+                align='center'
                 rowSpan={rowSpans.get(`${index}-name`)}
-                sx={{ ...CELL_STYLE, whiteSpace: "nowrap" }}
+                sx={{ ...CELL_STYLE, whiteSpace: 'nowrap' }}
               >
                 {item.username}
               </TableCell>
@@ -96,9 +96,9 @@ export default function TableBody({ works }: Props) {
 
             {rowSpans.get(`${index}-destination`) !== 0 && (
               <TableCell
-                align="center"
+                align='center'
                 rowSpan={rowSpans.get(`${index}-destination`)}
-                sx={{ ...CELL_STYLE, whiteSpace: "nowrap" }}
+                sx={{ ...CELL_STYLE, whiteSpace: 'nowrap' }}
               >
                 {item.destination}
               </TableCell>
@@ -106,7 +106,7 @@ export default function TableBody({ works }: Props) {
 
             {rowSpans.get(`${index}-business`) !== 0 && (
               <TableCell
-                align="left"
+                align='left'
                 rowSpan={rowSpans.get(`${index}-business`)}
                 sx={CELL_STYLE}
               >
@@ -116,9 +116,9 @@ export default function TableBody({ works }: Props) {
 
             {rowSpans.get(`${index}-work`) !== 0 && (
               <TableCell
-                align="center"
+                align='center'
                 rowSpan={rowSpans.get(`${index}-work`)}
-                sx={{ ...CELL_STYLE, whiteSpace: "nowrap" }}
+                sx={{ ...CELL_STYLE, whiteSpace: 'nowrap' }}
               >
                 {item.work}
               </TableCell>
@@ -126,22 +126,22 @@ export default function TableBody({ works }: Props) {
 
             {rowSpans.get(`${index}-car`) !== 0 && (
               <TableCell
-                align="center"
+                align='center'
                 rowSpan={rowSpans.get(`${index}-car`)}
                 sx={CELL_STYLE}
               >
-                {item.car !== ""
+                {item.car !== ''
                   ? item.car
                   : findNonEmptyCarInGroup(sortedData, index)}
               </TableCell>
             )}
 
-            <TableCell align="center" sx={CELL_STYLE}>
+            <TableCell align='center' sx={CELL_STYLE}>
               {item.remarks && (
                 <Tooltip
                   title={item.remarks}
                   arrow
-                  placement="left"
+                  placement='left'
                   componentsProps={{
                     tooltip: {
                       onClick: (e) => e.stopPropagation(),
@@ -150,7 +150,7 @@ export default function TableBody({ works }: Props) {
                   }}
                 >
                   <Button sx={REMARK_BUTTON_STYLE}>
-                    <FileText size={22} color="#0D9488" />
+                    <FileText size={22} color='#0D9488' />
                   </Button>
                 </Tooltip>
               )}

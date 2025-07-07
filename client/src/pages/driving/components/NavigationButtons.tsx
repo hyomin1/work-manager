@@ -1,18 +1,18 @@
-import { Pencil, Settings, Sheet, Users, Wrench } from "lucide-react";
-import { SlRefresh } from "react-icons/sl";
+import { Pencil, Settings, Sheet, Users, Wrench } from 'lucide-react';
+import { SlRefresh } from 'react-icons/sl';
 import {
   FormControl,
   MenuItem,
   Select,
-  SelectChangeEvent,
-} from "@mui/material";
-import { SetStateAction, useState } from "react";
-import { ICars, IDrivingInform } from "../../../interfaces/interface";
-import useDrivingStore from "../../../stores/drivingStore";
-import { useNavigate } from "react-router-dom";
-import { checkAdminSession, checkCarSession } from "../../../api";
-import { ROUTES } from "../../../constants/constant";
-import NavButton from "../../../components/common/NavButton";
+  type SelectChangeEvent,
+} from '@mui/material';
+import { type SetStateAction, useState } from 'react';
+import type { ICars, IDrivingInform } from '../../../interfaces/interface';
+import useDrivingStore from '../../../stores/drivingStore';
+import { useNavigate } from 'react-router-dom';
+import { checkAdminSession, checkCarSession } from '../../../api';
+import { ROUTES } from '../../../constants/constant';
+import NavButton from '../../../components/common/NavButton';
 
 interface NavProps {
   refetch: () => void;
@@ -80,7 +80,7 @@ export default function NavigationButtons({
       navigate(ROUTES.WORKS.LIST);
       return;
     }
-    alert("권한이 없습니다.");
+    alert('권한이 없습니다.');
   };
 
   const checkCarService = async () => {
@@ -89,7 +89,7 @@ export default function NavigationButtons({
       navigate(ROUTES.VEHICLES.SERVICE);
       return;
     }
-    alert("권한이 없습니다.");
+    alert('권한이 없습니다.');
   };
 
   const checkUserInput = async () => {
@@ -98,13 +98,13 @@ export default function NavigationButtons({
       navigate(ROUTES.VEHICLES.CREATE);
       return;
     }
-    alert("권한이 없습니다.");
+    alert('권한이 없습니다.');
   };
 
   const handleExcelDownload = async () => {
     try {
       // 필요한 시점에 동적으로 import
-      const module = await import("../DriveExcel");
+      const module = await import('../DriveExcel');
       const downloadExcel = module.default;
 
       downloadExcel(
@@ -115,46 +115,46 @@ export default function NavigationButtons({
         totalToll,
         totalEtcCost,
         totalDrivingKM,
-        grandTotal,
+        grandTotal
       );
     } catch (error) {
-      console.error("엑셀 다운로드 모듈 로딩 중 오류 발생:", error);
+      console.error('엑셀 다운로드 모듈 로딩 중 오류 발생:', error);
     }
   };
 
   return (
-    <div className="print-hidden mb-8 flex w-full items-center rounded-lg bg-white/90 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.1)] backdrop-blur-sm transition-all duration-500 sm:h-auto sm:flex-col md:justify-between">
-      <div className="flex items-center sm:w-full sm:flex-col sm:p-3 md:ml-2 md:h-full md:justify-start">
+    <div className='print-hidden mb-8 flex w-full items-center rounded-lg bg-white/90 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.1)] backdrop-blur-sm transition-all duration-500 sm:h-auto sm:flex-col md:justify-between'>
+      <div className='flex items-center sm:w-full sm:flex-col sm:p-3 md:ml-2 md:h-full md:justify-start'>
         <FormControl
           fullWidth
-          size="small"
+          size='small'
           sx={{
-            width: "100%",
+            width: '100%',
             minWidth: 140,
 
-            "& .MuiOutlinedInput-root": {
-              height: "42px",
-              backgroundColor: "#ffffff",
-              borderRadius: "10px",
-              border: "1px solid #e2e8f0",
-              boxShadow: "0 1px 2px rgba(0, 0, 0, 0.05)",
+            '& .MuiOutlinedInput-root': {
+              height: '42px',
+              backgroundColor: '#ffffff',
+              borderRadius: '10px',
+              border: '1px solid #e2e8f0',
+              boxShadow: '0 1px 2px rgba(0, 0, 0, 0.05)',
 
-              "&:hover": {
-                borderColor: "#cbd5e1",
-                boxShadow: "0 2px 4px rgba(0, 0, 0, 0.05)",
-                backgroundColor: "#ffffff",
+              '&:hover': {
+                borderColor: '#cbd5e1',
+                boxShadow: '0 2px 4px rgba(0, 0, 0, 0.05)',
+                backgroundColor: '#ffffff',
               },
 
-              "&.Mui-focused": {
-                borderColor: "#3b82f6",
-                boxShadow: "0 0 0 3px rgba(59, 130, 246, 0.1)",
-                "& .MuiOutlinedInput-notchedOutline": {
-                  border: "none",
+              '&.Mui-focused': {
+                borderColor: '#3b82f6',
+                boxShadow: '0 0 0 3px rgba(59, 130, 246, 0.1)',
+                '& .MuiOutlinedInput-notchedOutline': {
+                  border: 'none',
                 },
               },
 
-              "& .MuiOutlinedInput-notchedOutline": {
-                border: "none",
+              '& .MuiOutlinedInput-notchedOutline': {
+                border: 'none',
               },
             },
           }}
@@ -164,28 +164,28 @@ export default function NavigationButtons({
             value={carId}
             displayEmpty
             sx={{
-              "& .MuiSelect-select": {
-                padding: "8px 14px",
-                display: "flex",
-                alignItems: "center",
-                fontSize: "0.875rem",
+              '& .MuiSelect-select': {
+                padding: '8px 14px',
+                display: 'flex',
+                alignItems: 'center',
+                fontSize: '0.875rem',
                 fontWeight: 500,
-                color: "#1e293b",
+                color: '#1e293b',
 
-                "&.MuiSelect-select": {
+                '&.MuiSelect-select': {
                   '&[aria-expanded="true"]': {
-                    backgroundColor: "transparent",
+                    backgroundColor: 'transparent',
                   },
                 },
               },
 
-              "& .MuiSelect-icon": {
-                right: "12px",
-                color: "#64748b",
-                transition: "transform 0.2s ease-in-out",
+              '& .MuiSelect-icon': {
+                right: '12px',
+                color: '#64748b',
+                transition: 'transform 0.2s ease-in-out',
 
                 '&[aria-expanded="true"]': {
-                  transform: "rotate(180deg)",
+                  transform: 'rotate(180deg)',
                 },
               },
             }}
@@ -193,27 +193,27 @@ export default function NavigationButtons({
               PaperProps: {
                 sx: {
                   mt: 1,
-                  borderRadius: "10px",
+                  borderRadius: '10px',
                   boxShadow:
-                    "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
-                  "& .MuiMenu-list": {
-                    padding: "6px",
+                    '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+                  '& .MuiMenu-list': {
+                    padding: '6px',
                   },
-                  "& .MuiMenuItem-root": {
-                    borderRadius: "6px",
-                    margin: "2px 0",
-                    padding: "10px 12px",
-                    fontSize: "0.875rem",
+                  '& .MuiMenuItem-root': {
+                    borderRadius: '6px',
+                    margin: '2px 0',
+                    padding: '10px 12px',
+                    fontSize: '0.875rem',
                     fontWeight: 500,
-                    color: "#1e293b",
+                    color: '#1e293b',
 
-                    "&:hover": {
-                      backgroundColor: "#f1f5f9",
+                    '&:hover': {
+                      backgroundColor: '#f1f5f9',
                     },
-                    "&.Mui-selected": {
-                      backgroundColor: "#e2e8f0",
-                      "&:hover": {
-                        backgroundColor: "#cbd5e1",
+                    '&.Mui-selected': {
+                      backgroundColor: '#e2e8f0',
+                      '&:hover': {
+                        backgroundColor: '#cbd5e1',
                       },
                     },
                   },
@@ -222,7 +222,7 @@ export default function NavigationButtons({
             }}
             renderValue={(value) => {
               if (!value) {
-                return <span style={{ color: "#94a3b8" }}>차량 선택</span>;
+                return <span style={{ color: '#94a3b8' }}>차량 선택</span>;
               }
               return cars.find((car) => car._id === value)?.car;
             }}
@@ -239,52 +239,54 @@ export default function NavigationButtons({
         </FormControl>
       </div>
 
-      <div className="flex flex-1 items-center justify-between sm:w-full sm:flex-col sm:gap-2 sm:p-2 md:w-[50%] md:p-4">
-        <div className="flex w-full items-center justify-between sm:mb-2 sm:w-full sm:flex-col sm:gap-2">
-          <div className="flex sm:w-full">
+      <div className='flex flex-1 items-center justify-between sm:w-full sm:flex-col sm:gap-2 sm:p-2 md:w-[50%] md:p-4'>
+        <div className='flex w-full items-center justify-between sm:mb-2 sm:w-full sm:flex-col sm:gap-2'>
+          <div className='flex sm:w-full'>
             <NavButton
               icon={Pencil}
-              label="입력"
+              label='입력'
               onClick={checkUserInput}
-              variant="blue"
+              variant='blue'
             />
             <NavButton
               icon={Users}
-              label="근무"
+              label='근무'
               onClick={checkUser}
-              variant="green"
+              variant='green'
             />
           </div>
-          <div className="flex sm:w-full">
+          <div className='flex sm:w-full'>
             {carId.length > 0 && (
               <NavButton
                 icon={Sheet}
-                label="엑셀"
+                label='엑셀'
                 onClick={handleExcelDownload}
-                variant="green"
+                variant='green'
               />
             )}
             <NavButton
               icon={Wrench}
-              label="점검"
+              label='점검'
               onClick={checkCarService}
-              variant="blue"
+              variant='blue'
             />
             <NavButton
               icon={Settings}
-              label="설정"
+              label='설정'
               onClick={onClickAdmin}
-              variant="green"
+              variant='green'
             />
           </div>
         </div>
 
-        <div className="flex items-center sm:hidden sm:w-full sm:justify-center">
-          <div className="mx-4 border border-gray-300 md:h-10" />
+        <div className='flex items-center sm:hidden sm:w-full sm:justify-center'>
+          <div className='mx-4 border border-gray-300 md:h-10' />
           <button>
             <SlRefresh
               onClickCapture={handleRefresh}
-              className={`text-slate-600 transition-all duration-200 hover:text-slate-800 sm:h-4 sm:w-4 md:h-6 md:w-6 ${isRefreshing ? "animate-spin" : ""} hover:opacity-80`}
+              className={`text-slate-600 transition-all duration-200 hover:text-slate-800 sm:h-4 sm:w-4 md:h-6 md:w-6 ${
+                isRefreshing ? 'animate-spin' : ''
+              } hover:opacity-80`}
             />
           </button>
         </div>

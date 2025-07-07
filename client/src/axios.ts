@@ -1,21 +1,21 @@
-import axios, { AxiosError, AxiosResponse } from "axios";
-import { ROUTES } from "./constants/constant";
+import axios, { AxiosError, type AxiosResponse } from 'axios';
+import { ROUTES } from './constants/constant';
 
 // 서버 통신 관련 로직
 const axiosIP = axios.create({
-  baseURL: process.env.REACT_APP_IP,
+  baseURL: import.meta.env.VITE_API_LOCAL,
   withCredentials: true,
   timeout: 5000,
 });
 
 const axiosDomain = axios.create({
-  baseURL: process.env.REACT_APP_DOMAIN,
+  baseURL: import.meta.env.VITE_API_PRODUCTION,
   withCredentials: true,
   timeout: 5000,
 });
 
 const handleResponseInterceptor = async (
-  error: AxiosError,
+  error: AxiosError
 ): Promise<AxiosResponse> => {
   if (error.response?.status === 401) {
     const errMsg = error.response.data as { error: string };
@@ -28,11 +28,11 @@ const handleResponseInterceptor = async (
     //alert(errMsg.error);
 
     // 유저 아닌 경우
-    if (errType.type === "not User") {
+    if (errType.type === 'not User') {
       window.location.href = ROUTES.AUTH.LOGIN;
-    } else if (errType.type === "not admin") {
+    } else if (errType.type === 'not admin') {
       window.location.href = ROUTES.AUTH.LOGIN;
-    } else if (errType.type === "not granted admin") {
+    } else if (errType.type === 'not granted admin') {
     }
     return new Promise(() => {});
   } else if (error.response?.status === 500) {
@@ -43,12 +43,12 @@ const handleResponseInterceptor = async (
 };
 axiosIP.interceptors.response.use(
   (response) => response,
-  (error: AxiosError) => handleResponseInterceptor(error),
+  (error: AxiosError) => handleResponseInterceptor(error)
 );
 
 axiosDomain.interceptors.response.use(
   (response) => response,
-  (error: AxiosError) => handleResponseInterceptor(error),
+  (error: AxiosError) => handleResponseInterceptor(error)
 );
 
 export { axiosIP, axiosDomain };

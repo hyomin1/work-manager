@@ -1,4 +1,4 @@
-import { WorkStatus } from "../types/work";
+import type { WorkStatus } from '../types/work';
 
 export const sortWorkStatus = (works: WorkStatus[]) => {
   return [...works].sort((a, b) => {
@@ -86,7 +86,7 @@ export const getRowSpans = (items: WorkStatus[]) => {
     if (
       i > 0 &&
       item.destination === prevDestination &&
-      (item.car === prevCar || item.car === "" || prevCar === "")
+      (item.car === prevCar || item.car === '' || prevCar === '')
     ) {
       carSpan++;
       spans.set(`${i}-car`, 0);
@@ -120,7 +120,7 @@ export const getRowSpans = (items: WorkStatus[]) => {
       }
 
       if (
-        (item.car === prevCar || item.car === "" || prevCar === "") &&
+        (item.car === prevCar || item.car === '' || prevCar === '') &&
         item.destination === prevDestination
       ) {
         spans.set(`${i - carSpan + 1}-car`, carSpan);
@@ -141,7 +141,7 @@ export const getRowSpans = (items: WorkStatus[]) => {
 
 export const findNonEmptyCarInGroup = (
   data: WorkStatus[],
-  currentIndex: number,
+  currentIndex: number
 ) => {
   const currentItem = data[currentIndex];
 
@@ -150,7 +150,7 @@ export const findNonEmptyCarInGroup = (
       data[i].destination === currentItem.destination &&
       data[i].business === currentItem.business &&
       data[i].work === currentItem.work &&
-      data[i].car !== ""
+      data[i].car !== ''
     ) {
       return data[i].car;
     }
@@ -161,37 +161,37 @@ export const findNonEmptyCarInGroup = (
       data[i].destination === currentItem.destination &&
       data[i].business === currentItem.business &&
       data[i].work === currentItem.work &&
-      data[i].car !== ""
+      data[i].car !== ''
     ) {
       return data[i].car;
     }
   }
 
-  return "";
+  return '';
 };
 
 export const getDestinations = (works: WorkStatus[]) => {
   return Array.from(new Set(works.map((item) => item.destination))).sort(
-    (a, b) => a.localeCompare(b),
+    (a, b) => a.localeCompare(b)
   );
 };
 
 export const getBusinessesByDestination = (
   works: WorkStatus[],
-  destination: string,
+  destination: string
 ) => {
   return Array.from(
     new Set(
       works
         .filter((item) => item.destination === destination)
-        .map((item) => item.business),
-    ),
+        .map((item) => item.business)
+    )
   );
 };
 
 export const createStyleMap = (works: WorkStatus[]) => {
   const styleMap = new Map<string, { backgroundColor: string }>();
-  const bgColors = ["#F8F9FC", "#EEF6FF", "#F2EEFF", "#E6FFEF", "#FFF4E8"];
+  const bgColors = ['#F8F9FC', '#EEF6FF', '#F2EEFF', '#E6FFEF', '#FFF4E8'];
   const destinations = getDestinations(works);
 
   destinations.forEach((dest, index) => {
@@ -204,7 +204,7 @@ export const createStyleMap = (works: WorkStatus[]) => {
       styleMap.set(`${dest}-${bus}`, {
         backgroundColor: `rgba(${parseInt(color.slice(1, 3), 16)}, ${parseInt(
           color.slice(3, 5),
-          16,
+          16
         )}, ${parseInt(color.slice(5, 7), 16)}, ${opacity})`,
       });
     });
@@ -216,7 +216,7 @@ export const createStyleMap = (works: WorkStatus[]) => {
 export const shouldRenderCell = (
   rowSpans: Map<string, number>,
   index: number,
-  field: string,
+  field: string
 ) => {
   return rowSpans.get(`${index}-${field}`) !== 0;
 };
@@ -225,22 +225,22 @@ export const getCellContent = (
   item: WorkStatus,
   field: string,
   sortedData: WorkStatus[],
-  index: number,
+  index: number
 ) => {
   switch (field) {
-    case "name":
+    case 'name':
       return item.username;
-    case "destination":
+    case 'destination':
       return item.destination;
-    case "business":
+    case 'business':
       return item.business;
-    case "work":
+    case 'work':
       return item.work;
-    case "car":
-      return item.car !== ""
+    case 'car':
+      return item.car !== ''
         ? item.car
         : findNonEmptyCarInGroup(sortedData, index);
     default:
-      return "";
+      return '';
   }
 };

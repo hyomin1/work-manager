@@ -1,14 +1,14 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { useCookies } from "react-cookie";
-import { useNavigate } from "react-router-dom";
-import { checkSession, login, logout, register } from "../api/auth";
-import { LoginFormData, RegisterFormData } from "./../types/auth";
-import { ROUTES } from "../constants/constant";
-import { useCallback } from "react";
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { useCookies } from 'react-cookie';
+import { useNavigate } from 'react-router-dom';
+import { checkSession, login, logout, register } from '../api/auth';
+import { ROUTES } from '../constants/constant';
+import { useCallback } from 'react';
+import type { LoginFormData, RegisterFormData } from '../types/auth';
 
 export default function useAuth() {
   const navigate = useNavigate();
-  const [, setCookie, removeCookie] = useCookies(["rememberUserId"]);
+  const [, setCookie, removeCookie] = useCookies(['rememberUserId']);
 
   const loginMutation = useMutation({
     mutationFn: (data: LoginFormData & { isRemember?: boolean }) => login(data),
@@ -17,15 +17,15 @@ export default function useAuth() {
         navigate(ROUTES.DASHBOARD);
       }
       if (data.isRemember) {
-        setCookie("rememberUserId", data.userId, {
-          path: "/",
+        setCookie('rememberUserId', data.userId, {
+          path: '/',
           maxAge: 365 * 24 * 60 * 60,
         });
       } else {
-        removeCookie("rememberUserId");
+        removeCookie('rememberUserId');
       }
     },
-    onError: (error) => {
+    onError: () => {
       //alert("로그인에 실패했습니다.");
     },
   });
@@ -38,8 +38,8 @@ export default function useAuth() {
         alert(message);
       }
     },
-    onError: (error) => {
-      alert("회원가입에 실패했습니다.");
+    onError: () => {
+      alert('회원가입에 실패했습니다.');
     },
   });
 
@@ -50,13 +50,13 @@ export default function useAuth() {
         navigate(ROUTES.AUTH.LOGIN);
       }
     },
-    onError: (error) => {
-      alert("로그아웃에 실패했습니다.");
+    onError: () => {
+      alert('로그아웃에 실패했습니다.');
     },
   });
 
   const sessionQuery = useQuery({
-    queryKey: ["session"],
+    queryKey: ['session'],
     queryFn: checkSession,
     retry: false,
     refetchOnWindowFocus: false,

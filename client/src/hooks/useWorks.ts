@@ -1,14 +1,14 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { deleteWork, getWorks } from "../api/work";
-import { REFETCH_INTERVAL } from "../constants/constant";
-import { WorkStatus } from "../types/work";
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { deleteWork, getWorks } from '../api/work';
+import { REFETCH_INTERVAL } from '../constants/constant';
+import type { WorkStatus } from '../types/work';
 
 export default function useWorks(date?: Date) {
   const worksQuery = useQuery<WorkStatus[]>({
     queryKey: [
-      "work",
-      date?.toISOString().split("T")[0] ||
-        new Date().toISOString().split("T")[0],
+      'work',
+      date?.toISOString().split('T')[0] ||
+        new Date().toISOString().split('T')[0],
     ],
     queryFn: () => getWorks(date),
     refetchInterval: REFETCH_INTERVAL,
