@@ -11,7 +11,7 @@ import {
 import ArrowBack from '../../components/common/ArrowBack';
 
 import { Calendar } from 'lucide-react';
-import Logout from '../../features/auth/components/Logout';
+import Logout from '../../features/auth/components/LogoutButton';
 import StatisticsTable from './StatisticsTable';
 
 // 통계 페이지

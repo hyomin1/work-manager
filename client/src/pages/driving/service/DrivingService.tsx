@@ -1,5 +1,5 @@
 import ArrowBack from '../../../components/common/ArrowBack';
-import Logout from '../../../features/auth/components/Logout';
+import Logout from '../../../features/auth/components/LogoutButton';
 import { calculateDate } from '../../../api';
 import ServiceTab from './ServiceTab';
 import { Calendar } from 'lucide-react';

@@ -29,7 +29,7 @@ import {
   MessageSquare,
   User,
 } from 'lucide-react';
-import Logout from '../../features/auth/components/Logout';
+import Logout from '../../features/auth/components/LogoutButton';
 dayjs.locale('ko');
 
 // 근무 현황 데이터 입력 폼

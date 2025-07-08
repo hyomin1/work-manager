@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 import { fireEvent, render, screen } from '@testing-library/react';
-import AuthButton from './AuthButton';
+import AuthButton from '../AuthButton';
 
 const renderAuthButton = (disabled: boolean = false, onClick?: () => void) => {
   return render(

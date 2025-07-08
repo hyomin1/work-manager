@@ -4,7 +4,7 @@ import AuthInput from './AuthInput';
 import useAuth from '../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 import { KeyRound, Loader2, Lock, User } from 'lucide-react';
-import { VALIDATION_MESSAGES } from '../../constants/auth';
+import { VALIDATION_MESSAGES } from '../constants/auth';
 import AuthButton from './AuthButton';
 import { ROUTES } from '../../../constants/constant';
 

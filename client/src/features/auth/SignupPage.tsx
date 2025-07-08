@@ -1,6 +1,6 @@
 import { UserPlus } from 'lucide-react';
-import AuthLayout from '../features/auth/components/AuthLayout';
-import SignupForm from '../features/auth/components/SignupForm';
+import AuthLayout from './components/AuthLayout';
+import SignupForm from './components/SignupForm';
 
 export default function SignupPage() {
   return (

@@ -15,7 +15,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import Page from '../../components/common/Page';
 import { useMediaQuery } from 'react-responsive';
 import ArrowBack from './../../components/common/ArrowBack';
-import Logout from '../../features/auth/components/Logout';
+import Logout from '../../features/auth/components/LogoutButton';
 import DriveMobile from './DriveMobile';
 import DrivePC from './DriveDesktop';
 import { ROUTES } from '../../constants/constant';

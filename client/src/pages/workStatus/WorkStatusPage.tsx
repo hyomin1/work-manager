@@ -3,7 +3,7 @@ import { Paper, Table, TableContainer } from '@mui/material';
 import { calculateDate } from '../../api';
 import ArrowBack from '../../components/common/ArrowBack';
 import Title from '../../components/layout/Title';
-import Logout from '../../features/auth/components/Logout';
+import Logout from '../../features/auth/components/LogoutButton';
 import EmployeeTableBody from './components/TableBody';
 import EmployeeTableHeader from './components/TableHeader';
 import DateInput from './components/DateInput';

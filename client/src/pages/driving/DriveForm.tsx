@@ -10,7 +10,7 @@ import { Container, Grid, TextField, Autocomplete } from '@mui/material';
 import { Calendar, Navigation, User, Car, MapPin, Wallet } from 'lucide-react';
 import useDrivingStore from '../../stores/drivingStore';
 import { ROUTES } from '../../constants/constant';
-import Logout from '../../features/auth/components/Logout';
+import Logout from '../../features/auth/components/LogoutButton';
 import 'dayjs/locale/ko';
 
 dayjs.locale('ko');

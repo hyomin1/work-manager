@@ -1,11 +1,11 @@
 import { createBrowserRouter } from 'react-router-dom';
 import App from './App';
-import LoginPage from './pages/LoginPage';
+import LoginPage from './features/auth/LoginPage';
 import { lazy } from 'react';
 import { ROUTES } from './constants/constant';
 import DrivingService from './pages/driving/service/DrivingService';
 import WorkStatusPage from './pages/workStatus/WorkStatusPage';
-import SelectPages from './pages/SelectPages';
+import MenuPage from './features/menu/MenuPage';
 import DrivePage from './pages/driving/DrivePage';
 import EmployeeForm from './pages/workStatus/EmployeeForm';
 import DriveForm from './pages/driving/DriveForm';
@@ -15,7 +15,7 @@ import DailyWorkPage from './pages/dailyWork/DailyWorkPage';
 const AdminPage = lazy(() => import('./pages/admin/AdminPage'));
 const UserManagePage = lazy(() => import('./pages/userManage/UserManagePage'));
 const StatisticsPage = lazy(() => import('./pages/statistics/StatisticsPage'));
-const SignupPage = lazy(() => import('./pages/SignupPage'));
+const SignupPage = lazy(() => import('./features/auth/SignupPage'));
 
 const router = createBrowserRouter([
   {
@@ -31,8 +31,8 @@ const router = createBrowserRouter([
         element: <SignupPage />,
       },
       {
-        path: ROUTES.DASHBOARD,
-        element: <SelectPages />,
+        path: ROUTES.MENU,
+        element: <MenuPage />,
       },
       {
         path: ROUTES.WORKS.LIST,

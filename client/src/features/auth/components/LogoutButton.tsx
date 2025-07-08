@@ -1,12 +1,11 @@
 import { LogOut } from 'lucide-react';
 import useAuth from '../hooks/useAuth';
 
-function Logout() {
+export default function LogoutButton() {
   const { logout } = useAuth();
-  const handleLogout = async () => {
-    if (window.confirm('로그아웃 하시겠습니까?')) {
-      logout.mutate();
-    }
+  const handleLogout = () => {
+    const confirmed = window.confirm('로그아웃 하시겠습니까?');
+    if (confirmed) logout.mutate();
   };
 
   return (
@@ -21,6 +20,3 @@ function Logout() {
     </button>
   );
 }
-
-export default Logout;
-//Todo: 나중에 버튼 따로 빼기 컴포넌트로

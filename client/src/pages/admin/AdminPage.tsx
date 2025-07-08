@@ -7,7 +7,7 @@ import { useAdminData } from '../../hooks/useAdminData';
 import TableHeader from './components/TableHeader';
 import TableBody from './components/TableBody';
 import ArrowBack from '../../components/common/ArrowBack';
-import Logout from '../../features/auth/components/Logout';
+import Logout from '../../features/auth/components/LogoutButton';
 
 const AdminPage = () => {
   const queryClient = useQueryClient();

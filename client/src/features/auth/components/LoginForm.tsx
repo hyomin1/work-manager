@@ -9,13 +9,13 @@ import type { LoginInput } from '../types/auth';
 import { useForm } from 'react-hook-form';
 import { useCookies } from 'react-cookie';
 import { useEffect, useState } from 'react';
-import { VALIDATION_MESSAGES } from './../../constants/auth';
+import { VALIDATION_MESSAGES } from '../constants/auth';
 export default function LoginForm() {
   const [isRemember, setIsRemember] = useState(false);
   const [cookies] = useCookies(['rememberUserId']);
 
   const navigate = useNavigate();
-  const { login, redirectIfAuthenticated } = useAuth();
+  const { login } = useAuth();
 
   const {
     handleSubmit,
@@ -36,13 +36,11 @@ export default function LoginForm() {
   };
 
   useEffect(() => {
-    // 사용자 아이디 저장 및 인증 상태 확인 용도?
-    redirectIfAuthenticated();
     if (cookies.rememberUserId) {
       setValue('userId', cookies.rememberUserId);
       setIsRemember(true);
     }
-  }, [redirectIfAuthenticated, cookies.rememberUserId, setValue]);
+  }, [cookies.rememberUserId, setValue]);
 
   return (
     <form onSubmit={handleSubmit(handleLogin)} className='p-8'>
