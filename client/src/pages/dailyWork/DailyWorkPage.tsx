@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import ArrowBack from '../../components/common/ArrowBack';
 import Title from '../../components/layout/Title';
-import Logout from '../auth/Logout';
+import Logout from '../../features/auth/components/Logout';
 import { calculateDate, getDailyWorks } from '../../api';
 import DateInput from '../workStatus/components/DateInput';
 import NavigationButtons from './components/NavigationButtons';

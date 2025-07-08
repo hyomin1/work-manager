@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from "react";
-import { SetStateAction } from "react";
-import { useCustomQueries } from "../../hooks/useCustomQuery";
-import { Autocomplete, TextField } from "@mui/material";
-import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker";
-import { LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import dayjs, { Dayjs } from "dayjs";
-import "dayjs/locale/ko";
-import { axiosReq } from "../../api";
+import React, { useState, useEffect } from 'react';
+import { type SetStateAction } from 'react';
+import { useCustomQueries } from '../../hooks/useCustomQuery';
+import { Autocomplete, TextField } from '@mui/material';
+import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import dayjs, { Dayjs } from 'dayjs';
+import 'dayjs/locale/ko';
+import { api } from '../../api';
 
-dayjs.locale("ko");
+dayjs.locale('ko');
 
 interface IScheduleAdd {
   showAddForm: boolean;
@@ -19,7 +19,6 @@ interface IScheduleAdd {
 }
 
 export default function ScheduleAdd({
-  showAddForm,
   setShowAddForm,
   refetch,
   date,
@@ -40,12 +39,12 @@ export default function ScheduleAdd({
   const [formData, setFormData] = useState({
     startDate: date,
     endDate: date,
-    username: "",
-    destination: "",
-    business: "",
-    work: "",
-    car: "",
-    remarks: "",
+    username: '',
+    destination: '',
+    business: '',
+    work: '',
+    car: '',
+    remarks: '',
   });
 
   const isLoading =
@@ -56,14 +55,14 @@ export default function ScheduleAdd({
     carsLoading;
 
   const carOptions = [
-    "선택 안함",
+    '선택 안함',
     ...(cars
       ? cars.sort((a, b) => a.car.localeCompare(b.car)).map((item) => item.car)
       : []),
   ];
 
   const handleClick = async () => {
-    const res = await axiosReq.post("/api/employee-inform/addInform", {
+    const res = await api.post('/api/employee-inform/addInform', {
       username: formData.username,
       destination: formData.destination,
       business: formData.business,
@@ -82,11 +81,11 @@ export default function ScheduleAdd({
   useEffect(() => {
     if (formData.business && businessesData && destinationsData) {
       const selectedBusiness = businessesData.find(
-        (b) => b.business === formData.business,
+        (b) => b.business === formData.business
       );
       if (selectedBusiness) {
         const matchingDestination = destinationsData.find(
-          (dest) => dest._id === selectedBusiness.destinationId,
+          (dest) => dest._id === selectedBusiness.destinationId
         );
         if (
           matchingDestination &&
@@ -107,9 +106,9 @@ export default function ScheduleAdd({
   ]);
 
   const datePickerStyles = {
-    width: "100%",
-    "& .MuiOutlinedInput-root": {
-      backgroundColor: "white",
+    width: '100%',
+    '& .MuiOutlinedInput-root': {
+      backgroundColor: 'white',
     },
   };
 
@@ -118,15 +117,15 @@ export default function ScheduleAdd({
   }
 
   return (
-    <div className="fixed inset-0 top-0 z-10 flex w-full items-center justify-center bg-black bg-opacity-65 px-4">
-      <div className="flex w-[40%] flex-col rounded-lg bg-white p-6 shadow-lg">
-        <h2 className="mb-4 text-center text-xl font-bold">일정 추가</h2>
-        <div className="flex flex-col">
-          <div className="my-2">
-            <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ko">
-              <div className="mt-4 flex gap-2">
+    <div className='fixed inset-0 top-0 z-10 flex w-full items-center justify-center bg-black bg-opacity-65 px-4'>
+      <div className='flex w-[40%] flex-col rounded-lg bg-white p-6 shadow-lg'>
+        <h2 className='mb-4 text-center text-xl font-bold'>일정 추가</h2>
+        <div className='flex flex-col'>
+          <div className='my-2'>
+            <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale='ko'>
+              <div className='mt-4 flex gap-2'>
                 <MobileDatePicker
-                  label="시작일"
+                  label='시작일'
                   value={dayjs(formData.startDate)}
                   onChange={(newDate: Dayjs | null) =>
                     newDate &&
@@ -141,7 +140,7 @@ export default function ScheduleAdd({
             </LocalizationProvider>
           </div>
 
-          <div className="my-2">
+          <div className='my-2'>
             <Autocomplete
               value={formData.username}
               options={
@@ -149,17 +148,17 @@ export default function ScheduleAdd({
                   ?.sort((a, b) => a.username.localeCompare(b.username))
                   .map((item) => item.username) || []
               }
-              renderInput={(params) => <TextField {...params} label="이름" />}
+              renderInput={(params) => <TextField {...params} label='이름' />}
               onChange={(_, value) =>
                 setFormData((prev) => ({
                   ...prev,
-                  username: value || "",
+                  username: value || '',
                 }))
               }
             />
           </div>
 
-          <div className="my-2">
+          <div className='my-2'>
             <Autocomplete
               value={formData.destination}
               options={
@@ -167,42 +166,42 @@ export default function ScheduleAdd({
                   ?.sort((a, b) => a.destination.localeCompare(b.destination))
                   .map((item) => item.destination) || []
               }
-              renderInput={(params) => <TextField {...params} label="방문지" />}
+              renderInput={(params) => <TextField {...params} label='방문지' />}
               onChange={(_, value) => {
                 setFormData((prev) => ({
                   ...prev,
-                  destination: value || "",
-                  business: "", // Reset business when destination changes
+                  destination: value || '',
+                  business: '', // Reset business when destination changes
                 }));
               }}
             />
           </div>
 
-          <div className="my-2">
+          <div className='my-2'>
             <Autocomplete
               value={formData.business}
               options={
                 businessesData
                   ?.filter((business) => {
                     const matchingDestination = destinationsData?.find(
-                      (dest) => dest.destination === formData.destination,
+                      (dest) => dest.destination === formData.destination
                     );
                     return business.destinationId === matchingDestination?._id;
                   })
                   ?.sort((a, b) => a.business.localeCompare(b.business))
                   .map((item) => item.business) || []
               }
-              renderInput={(params) => <TextField {...params} label="사업명" />}
+              renderInput={(params) => <TextField {...params} label='사업명' />}
               onChange={(_, value) =>
                 setFormData((prev) => ({
                   ...prev,
-                  business: value || "",
+                  business: value || '',
                 }))
               }
             />
           </div>
 
-          <div className="my-2">
+          <div className='my-2'>
             <Autocomplete
               value={formData.work}
               options={
@@ -210,36 +209,36 @@ export default function ScheduleAdd({
                   ?.sort((a, b) => a.work.localeCompare(b.work))
                   .map((item) => item.work) || []
               }
-              renderInput={(params) => <TextField {...params} label="업무" />}
+              renderInput={(params) => <TextField {...params} label='업무' />}
               onChange={(_, value) =>
                 setFormData((prev) => ({
                   ...prev,
-                  work: value || "",
+                  work: value || '',
                 }))
               }
             />
           </div>
 
-          <div className="my-2">
+          <div className='my-2'>
             <Autocomplete
               value={formData.car}
               options={carOptions}
-              renderInput={(params) => <TextField {...params} label="차량" />}
+              renderInput={(params) => <TextField {...params} label='차량' />}
               onChange={(_, value) =>
                 setFormData((prev) => ({
                   ...prev,
-                  car: value || "",
+                  car: value || '',
                 }))
               }
             />
           </div>
 
-          <div className="my-2">
+          <div className='my-2'>
             <TextField
               fullWidth
               multiline
               rows={2}
-              label="비고"
+              label='비고'
               value={formData.remarks}
               onChange={(e) =>
                 setFormData((prev) => ({
@@ -251,18 +250,18 @@ export default function ScheduleAdd({
           </div>
         </div>
 
-        <div className="mt-2 flex justify-between">
+        <div className='mt-2 flex justify-between'>
           <button
             onClick={handleClick}
-            type="button"
-            className="rounded bg-blue-500 px-4 py-2 text-white hover:opacity-80"
+            type='button'
+            className='rounded bg-blue-500 px-4 py-2 text-white hover:opacity-80'
           >
             추가
           </button>
           <button
-            type="button"
+            type='button'
             onClick={() => setShowAddForm(false)}
-            className="rounded bg-gray-300 px-4 py-2 hover:opacity-80"
+            className='rounded bg-gray-300 px-4 py-2 hover:opacity-80'
           >
             취소
           </button>

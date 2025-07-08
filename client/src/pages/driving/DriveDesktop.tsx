@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import type { IDrivingInform } from '../../interfaces/interface';
 import { drivingHeaders } from '../../constants/headers';
-import { axiosReq, calCarDay } from '../../api';
+import { api, calCarDay } from '../../api';
 import { Edit, Trash2 } from 'lucide-react';
 import EditDrivingInform from './DriveEdit';
 import {
@@ -52,7 +52,7 @@ function DrivePC({
   const [open, setOpen] = useState(false);
 
   const deleteInform = async (id: string) => {
-    const res = await axiosReq.delete(`/api/driving-inform/removeInform/${id}`);
+    const res = await api.delete(`/api/driving-inform/removeInform/${id}`);
     if (res.status === 200) {
       refetch();
     }

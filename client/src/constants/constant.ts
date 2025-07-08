@@ -4,28 +4,28 @@ export const REFETCH_INTERVAL = 300_000;
 // 라우팅 경로
 export const ROUTES = {
   AUTH: {
-    LOGIN: "/",
-    REGISTER: "/register",
+    LOGIN: '/',
+    SIGNUP: '/signup',
   },
-  DASHBOARD: "/dashboard",
+  DASHBOARD: '/dashboard',
 
   WORKS: {
-    LIST: "/works",
-    CREATE: "/works/create",
-    DAILY_WORK: "/works/dailyWork",
+    LIST: '/works',
+    CREATE: '/works/create',
+    DAILY_WORK: '/works/dailyWork',
   },
 
   VEHICLES: {
-    LIST: "/vehicles",
-    CREATE: "/vehicles/create",
-    SERVICE: "/vehicles/service",
+    LIST: '/vehicles',
+    CREATE: '/vehicles/create',
+    SERVICE: '/vehicles/service',
   },
 
-  SCHEDULE: "/schedule",
+  SCHEDULE: '/schedule',
 
   ADMIN: {
-    STATISTICS: "/admin/statistics",
-    SETTINGS: "/admin/settings",
-    MANAGE: "/admin/manage",
+    STATISTICS: '/admin/statistics',
+    SETTINGS: '/admin/settings',
+    MANAGE: '/admin/manage',
   },
 };

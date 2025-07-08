@@ -1,6 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom';
 import App from './App';
-import LoginPage from './pages/auth/LoginPage';
+import LoginPage from './pages/LoginPage';
 import { lazy } from 'react';
 import { ROUTES } from './constants/constant';
 import DrivingService from './pages/driving/service/DrivingService';
@@ -15,7 +15,7 @@ import DailyWorkPage from './pages/dailyWork/DailyWorkPage';
 const AdminPage = lazy(() => import('./pages/admin/AdminPage'));
 const UserManagePage = lazy(() => import('./pages/userManage/UserManagePage'));
 const StatisticsPage = lazy(() => import('./pages/statistics/StatisticsPage'));
-const RegisterPage = lazy(() => import('./pages/auth/RegisterPage'));
+const SignupPage = lazy(() => import('./pages/SignupPage'));
 
 const router = createBrowserRouter([
   {
@@ -27,8 +27,8 @@ const router = createBrowserRouter([
         element: <LoginPage />,
       },
       {
-        path: ROUTES.AUTH.REGISTER,
-        element: <RegisterPage />,
+        path: ROUTES.AUTH.SIGNUP,
+        element: <SignupPage />,
       },
       {
         path: ROUTES.DASHBOARD,

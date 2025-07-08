@@ -1,29 +1,32 @@
-type Props = {
-  id: string;
+import type { UseFormRegisterReturn } from 'react-hook-form';
+
+interface Props {
+  name: string;
   label: string;
   type: string;
   placeholder: string;
   icon: React.ReactNode;
-  register: () => void;
+  register: UseFormRegisterReturn;
   error?: string;
   autoFocus?: boolean;
-};
+}
 
-export default function FormInput({
-  id,
+export default function AuthInput({
+  name,
   label,
   type,
   placeholder,
-  icon,
   register,
   error,
+  icon,
+
   autoFocus = false,
 }: Props) {
   return (
     <div className='mb-6'>
       <label
         className='mb-2 block text-sm font-medium text-gray-700'
-        htmlFor={id}
+        htmlFor={name}
       >
         {label}
       </label>
@@ -32,7 +35,7 @@ export default function FormInput({
           {icon}
         </div>
         <input
-          id={id}
+          id={name}
           type={type}
           {...register}
           className='w-full rounded-lg border border-gray-200 py-3 pl-10 pr-4 text-sm transition-colors focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200'

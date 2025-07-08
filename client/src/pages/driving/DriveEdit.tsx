@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import type { IDrivingInform } from '../../interfaces/interface';
 import { useCustomQueries } from '../../hooks/useCustomQuery';
 import { useQueryClient } from '@tanstack/react-query';
-import { axiosReq } from '../../api';
+import { api } from '../../api';
 import { X, Plus, Minus } from 'lucide-react';
 import dayjs, { Dayjs } from 'dayjs';
 import { LocalizationProvider, MobileDatePicker } from '@mui/x-date-pickers';
@@ -130,7 +130,7 @@ function EditDrivingInform({ item, setEditingItemId }: IEditInformProps) {
     e.preventDefault();
     if (!validateForm()) return;
 
-    const response = await axiosReq.put('/api/driving-inform/editInform', {
+    const response = await api.put('/api/driving-inform/editInform', {
       _id: item._id,
       ...formData,
       username: formData.usernames.join(', '),

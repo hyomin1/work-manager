@@ -8,7 +8,7 @@ import { useQuery } from '@tanstack/react-query';
 import type { IInform } from '../../interfaces/interface';
 import { Edit, Trash2 } from 'lucide-react';
 import {
-  axiosReq,
+  api,
   calDay,
   calDayOfWeek,
   calMonth,
@@ -121,9 +121,7 @@ function SchedulePage() {
       return;
     }
 
-    const res = await axiosReq.delete(
-      `/api/employee-inform/removeInform/${id}`
-    );
+    const res = await api.delete(`/api/employee-inform/removeInform/${id}`);
     if (res.status === 200) {
       setTooltip(null);
       refetch();

@@ -1,7 +1,6 @@
 import axios, { AxiosError, type AxiosResponse } from 'axios';
 import { ROUTES } from './constants/constant';
 
-// 서버 통신 관련 로직
 const axiosIP = axios.create({
   baseURL: import.meta.env.VITE_API_LOCAL,
   withCredentials: true,
@@ -17,30 +16,38 @@ const axiosDomain = axios.create({
 const handleResponseInterceptor = async (
   error: AxiosError
 ): Promise<AxiosResponse> => {
-  if (error.response?.status === 401) {
-    const errMsg = error.response.data as { error: string };
-    //alert(errMsg.error);
-    return Promise.reject(error);
-  } else if (error.response?.status === 403) {
-    const errMsg = error.response.data as { error: string };
-    const errType = error.response.data as { type: string };
-    //const url = error.response.data as { url: string };
-    //alert(errMsg.error);
+  const status = error.response?.status;
+  const data = error.response?.data as { error?: string; type?: string };
 
-    // 유저 아닌 경우
-    if (errType.type === 'not User') {
-      window.location.href = ROUTES.AUTH.LOGIN;
-    } else if (errType.type === 'not admin') {
-      window.location.href = ROUTES.AUTH.LOGIN;
-    } else if (errType.type === 'not granted admin') {
-    }
-    return new Promise(() => {});
-  } else if (error.response?.status === 500) {
-    const errMsg = error.response.data as { error: string };
-    return new Promise(() => {});
+  if (!status) return Promise.reject(error);
+
+  switch (status) {
+    case 401:
+      // 인증 실패 (ex. 세션 만료)
+      return Promise.reject(error);
+
+    case 403:
+      // 권한 없음 - 유저 or 관리자 접근 불가
+      if (data.type === 'not User' || data.type === 'not admin') {
+        window.location.href = ROUTES.AUTH.LOGIN;
+      }
+      // 관리자 권한 부족 같은 경우는 따로 처리할 수 있음
+      return Promise.reject(error);
+
+    case 409:
+      // 중복 아이디 등 클라이언트 처리 가능한 에러
+      return Promise.reject(error);
+
+    case 500:
+      // 서버 내부 오류
+      return Promise.reject(error);
+
+    default:
+      // 기타 에러
+      return Promise.reject(error);
   }
-  return new Promise(() => {});
 };
+
 axiosIP.interceptors.response.use(
   (response) => response,
   (error: AxiosError) => handleResponseInterceptor(error)

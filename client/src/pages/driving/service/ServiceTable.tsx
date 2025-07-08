@@ -7,7 +7,7 @@ import {
   TableBody,
 } from '@mui/material';
 import { carServiceHeader } from '../../../constants/headers';
-import { axiosReq, serviceDay } from '../../../api';
+import { api, serviceDay } from '../../../api';
 import { Edit, Trash2 } from 'lucide-react';
 import ServiceEdit from './ServiceEdit';
 import { useState } from 'react';
@@ -90,9 +90,7 @@ function ServiceTable({ services, refetch }: ITableBody) {
   const deleteService = async (id: string) => {
     const isConfirm = window.confirm('삭제하시겠습니까?');
     if (isConfirm) {
-      const res = await axiosReq.delete(
-        `/api/driving-inform/removeService/${id}`
-      );
+      const res = await api.delete(`/api/driving-inform/removeService/${id}`);
       if (res.status === 200) {
         refetch();
       }

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useCustomQueries } from '../../hooks/useCustomQuery';
 import type { IInform, FormData } from '../../interfaces/interface';
 import { useQueryClient } from '@tanstack/react-query';
-import { axiosReq } from '../../api';
+import { api } from '../../api';
 import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import dayjs, { Dayjs } from 'dayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers';
@@ -122,7 +122,7 @@ function EmployeeEdit({
       endDate: formData.endDate,
     };
 
-    const response = await axiosReq.put(
+    const response = await api.put(
       '/api/employee-inform/editInform',
       updatedData
     );

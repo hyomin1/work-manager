@@ -4,7 +4,7 @@ import dayjs, { Dayjs } from 'dayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { TextField } from '@mui/material';
-import { axiosReq } from '../../../api';
+import { api } from '../../../api';
 import { useQueryClient } from '@tanstack/react-query';
 import { WrenchIcon, XIcon } from 'lucide-react';
 import type { ICarServiceBase } from '../../../interfaces/interface';
@@ -76,7 +76,7 @@ function ServiceEdit({ item, setEditingItemId }: IServiceEdit) {
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     validateForm();
-    const response = await axiosReq.put('/api/driving-inform/editService', {
+    const response = await api.put('/api/driving-inform/editService', {
       ...formData,
     });
     if (response.status !== 200) {
