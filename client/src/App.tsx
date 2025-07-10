@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
 import LoadingSpinner from './components/common/LoadingSpinner';
 import { Outlet } from 'react-router-dom';
-import { Toaster } from './../node_modules/react-hot-toast/src/components/toaster';
+import { Toaster } from 'react-hot-toast';
 
 function App() {
   return (

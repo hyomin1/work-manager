@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { Calendar } from 'lucide-react';
-import { Paper, Pagination, Card, CardContent } from '@mui/material';
+import { Paper, Pagination } from '@mui/material';
 import { directAdminSession, formDate } from '../../api';
 import { useAdminData } from '../../hooks/useAdminData';
 import TableHeader from './components/TableHeader';

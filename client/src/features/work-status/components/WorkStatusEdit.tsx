@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { useCustomQueries } from '../../hooks/useCustomQuery';
-import type { IInform, FormData } from '../../interfaces/interface';
+import { useCommonData } from '../../../hooks/useCommonData';
+import type { IInform, FormData } from '../../../interfaces/interface';
 import { useQueryClient } from '@tanstack/react-query';
-import { api } from '../../api';
+import { api } from '../../../api';
 import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import dayjs, { Dayjs } from 'dayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers';
@@ -19,28 +19,28 @@ interface IEditInformProps {
   onUpdate?: (updatedData: any) => void;
 }
 
-function EmployeeEdit({
+export default function WorkStatusEdit({
   item,
   setEditingItemId,
   currentDate,
   onUpdate,
 }: IEditInformProps) {
   const {
-    names,
-    namesLoading,
-    destinationsData,
+    usernames,
+    usernamesLoading,
+    destinations,
     destinationsLoading,
-    businessesData,
+    businesses,
     businessesLoading,
-    workData,
+    works,
     worksLoading,
     cars,
     carsLoading,
-  } = useCustomQueries();
+  } = useCommonData();
 
   const queryClient = useQueryClient();
   const isLoading =
-    namesLoading ||
+    usernamesLoading ||
     destinationsLoading ||
     businessesLoading ||
     worksLoading ||
@@ -86,12 +86,12 @@ function EmployeeEdit({
   ];
 
   useEffect(() => {
-    if (formData.business && businessesData && destinationsData) {
-      const selectedBusiness = businessesData.find(
+    if (formData.business && businesses && destinations) {
+      const selectedBusiness = businesses.find(
         (b) => b.business === formData.business
       );
       if (selectedBusiness) {
-        const matchingDestination = destinationsData.find(
+        const matchingDestination = destinations.find(
           (dest) => dest._id === selectedBusiness.destinationId
         );
         if (
@@ -102,7 +102,7 @@ function EmployeeEdit({
         }
       }
     }
-  }, [formData, businessesData, destinationsData]);
+  }, [formData, businesses, destinations]);
 
   const validateForm = () => {
     if (!formData.username) return alert('이름을 선택해주세요');
@@ -221,7 +221,7 @@ function EmployeeEdit({
             <Autocomplete
               value={formData.username}
               options={
-                names
+                usernames
                   ?.sort((a, b) => a.username.localeCompare(b.username))
                   .map((item) => item.username) || []
               }
@@ -234,7 +234,7 @@ function EmployeeEdit({
             <Autocomplete
               value={formData.destination}
               options={
-                destinationsData
+                destinations
                   ?.sort((a, b) => a.destination.localeCompare(b.destination))
                   .map((item) => item.destination) || []
               }
@@ -252,9 +252,9 @@ function EmployeeEdit({
             <Autocomplete
               value={formData.business}
               options={
-                businessesData
+                businesses
                   ?.filter((business) => {
-                    const matchingDestination = destinationsData?.find(
+                    const matchingDestination = destinations?.find(
                       (dest) => dest.destination === formData.destination
                     );
                     return business.destinationId === matchingDestination?._id;
@@ -271,7 +271,7 @@ function EmployeeEdit({
             <Autocomplete
               value={formData.work}
               options={
-                workData
+                works
                   ?.sort((a, b) => a.work.localeCompare(b.work))
                   .map((item) => item.work) || []
               }
@@ -321,5 +321,3 @@ function EmployeeEdit({
     </div>
   );
 }
-
-export default EmployeeEdit;

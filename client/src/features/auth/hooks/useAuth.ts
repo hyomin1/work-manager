@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { authApi } from '../api/auth';
 import { ROUTES } from '../../../constants/constant';
 import type { LoginInput, SignupInput } from '../types/auth';
-import toast from './../../../../node_modules/react-hot-toast/src/index';
+import { toast } from 'react-hot-toast';
 import type { AxiosError } from 'axios';
 import { checkCarSession } from '../../../api';
 

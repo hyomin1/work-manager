@@ -1,29 +1,31 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Paper, Table, TableContainer } from '@mui/material';
 import { calculateDate } from '../../api';
 import ArrowBack from '../../components/common/ArrowBack';
 import Title from '../../components/layout/Title';
-import Logout from '../../features/auth/components/LogoutButton';
+import Logout from '../auth/components/LogoutButton';
 import EmployeeTableBody from './components/TableBody';
 import EmployeeTableHeader from './components/TableHeader';
 import DateInput from './components/DateInput';
 import NavigationButtons from './components/NavigationButtons';
-import useWorks from '../../hooks/useWorks';
+import useWorkStatus from './hooks/useWorkStatus';
 
 function EmployeePage() {
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
-  const [currentDate, setCurrentDate] = useState<Date | null>(new Date());
+  const [currentDate, setCurrentDate] = useState(new Date());
 
   const {
     worksQuery: { data, refetch },
-  } = useWorks(currentDate || new Date());
+  } = useWorkStatus(currentDate);
 
+  // 날짜 변경 시 해당 날짜 데이터 가져오기 위함
   useEffect(() => {
     if (currentDate) {
       refetch();
     }
   }, [currentDate, refetch]);
 
+  // 자정 체크
   useEffect(() => {
     const now = new Date();
     const msUntilMidnight =

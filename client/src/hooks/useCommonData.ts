@@ -8,43 +8,43 @@ import {
   getEtcNames,
   getDepartments,
 } from '../api';
+import type { IEtcNames, IDepartments } from '../interfaces/interface';
 import type {
-  INames,
-  IDestinations,
-  IBusinesses,
-  IWorks,
-  ICars,
-  IEtcNames,
-  IDepartments,
-} from '../interfaces/interface';
+  Business,
+  Car,
+  Destination,
+  Username,
+  Work,
+} from '../features/work-status/types/workStatus';
 
-// 전체 데이터 조회용
-export const useCustomQueries = () => {
-  const { data: names, isLoading: namesLoading } = useQuery<INames[]>({
-    queryKey: ['names'],
-    queryFn: getNames,
-  });
+export function useCommonData() {
+  const { data: usernames, isLoading: usernamesLoading } = useQuery<Username[]>(
+    {
+      queryKey: ['names'],
+      queryFn: getNames,
+    }
+  );
 
-  const { data: destinationsData, isLoading: destinationsLoading } = useQuery<
-    IDestinations[]
+  const { data: destinations, isLoading: destinationsLoading } = useQuery<
+    Destination[]
   >({
     queryKey: ['destinations'],
     queryFn: getDestinations,
   });
 
-  const { data: businessesData, isLoading: businessesLoading } = useQuery<
-    IBusinesses[]
+  const { data: businesses, isLoading: businessesLoading } = useQuery<
+    Business[]
   >({
     queryKey: ['businesses'],
     queryFn: getBusinesses,
   });
 
-  const { data: workData, isLoading: worksLoading } = useQuery<IWorks[]>({
+  const { data: works, isLoading: worksLoading } = useQuery<Work[]>({
     queryKey: ['works'],
     queryFn: getWorks,
   });
 
-  const { data: cars, isLoading: carsLoading } = useQuery<ICars[]>({
+  const { data: cars, isLoading: carsLoading } = useQuery<Car[]>({
     queryKey: ['cars'],
     queryFn: getCars,
   });
@@ -61,14 +61,21 @@ export const useCustomQueries = () => {
     queryFn: getDepartments,
   });
 
+  const isLoading =
+    usernamesLoading ||
+    destinationsLoading ||
+    businessesLoading ||
+    worksLoading ||
+    carsLoading;
+
   return {
-    names,
-    namesLoading,
-    destinationsData,
+    usernames,
+    usernamesLoading,
+    destinations,
     destinationsLoading,
-    businessesData,
+    businesses,
     businessesLoading,
-    workData,
+    works,
     worksLoading,
     cars,
     carsLoading,
@@ -76,5 +83,6 @@ export const useCustomQueries = () => {
     etcNamesLoading,
     departments,
     departmentsLoading,
+    isLoading,
   };
-};
+}

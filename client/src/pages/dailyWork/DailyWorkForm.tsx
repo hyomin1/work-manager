@@ -9,7 +9,7 @@ import {
   TextField,
 } from '@mui/material';
 import { X } from 'lucide-react';
-import { useCustomQueries } from '../../hooks/useCustomQuery';
+import { useCommonData } from '../../hooks/useCommonData';
 
 interface IDailyWorkForm {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -22,8 +22,8 @@ function DailyWorkForm({ setIsOpen, currentDate, refetch }: IDailyWorkForm) {
   const [username, setUsername] = useState('');
   const [content, setContent] = useState('1. ');
   const [nextContent, setNextContent] = useState('1. ');
-  const { names, namesLoading, departments, departmentsLoading } =
-    useCustomQueries();
+  const { usernames, usernamesLoading, departments, departmentsLoading } =
+    useCommonData();
 
   const onSubmit = async () => {
     const response = await api.post('/api/employee-inform/dailyWork/add', {
@@ -63,7 +63,7 @@ function DailyWorkForm({ setIsOpen, currentDate, refetch }: IDailyWorkForm) {
     }
   };
 
-  if (namesLoading || departmentsLoading) {
+  if (usernamesLoading || departmentsLoading) {
     return (
       <div className='flex items-center justify-center p-8'>Loading...</div>
     );
@@ -173,7 +173,7 @@ function DailyWorkForm({ setIsOpen, currentDate, refetch }: IDailyWorkForm) {
                 <Autocomplete
                   size='small'
                   options={
-                    names
+                    usernames
                       ?.sort((a, b) => a.username.localeCompare(b.username))
                       ?.map((item) => item.username) || []
                   }

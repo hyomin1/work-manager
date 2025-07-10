@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { api, calculateDate } from '../../api';
 import ArrowBack from '../../components/common/ArrowBack';
-import { useCustomQueries } from '../../hooks/useCustomQuery';
+import { useCommonData } from '../../hooks/useCommonData';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs, { Dayjs } from 'dayjs';
@@ -30,8 +30,14 @@ const DriveInput = () => {
   const { carId, setCarId } = useDrivingStore();
   const privateCarId = process.env.REACT_APP_PRIVATE_CAR;
 
-  const { names, namesLoading, cars, carsLoading, etcNames, etcNamesLoading } =
-    useCustomQueries();
+  const {
+    usernames,
+    usernamesLoading,
+    cars,
+    carsLoading,
+    etcNames,
+    etcNamesLoading,
+  } = useCommonData();
 
   const inputStyles = {
     '& .MuiOutlinedInput-root': {
@@ -136,7 +142,7 @@ const DriveInput = () => {
     }
   };
 
-  if (namesLoading || carsLoading || etcNamesLoading) {
+  if (usernamesLoading || carsLoading || etcNamesLoading) {
     return <div>Loading...</div>;
   }
 
@@ -157,10 +163,10 @@ const DriveInput = () => {
 
           <div className='w-full rounded-2xl bg-white p-6 shadow-xl ring-1 ring-gray-100'>
             <Grid container spacing={3}>
-              <Grid item xs={12}>
+              <Grid xs={12}>
                 <div className='rounded-xl bg-gray-50/50 p-4 ring-1 ring-gray-100'>
                   <Grid container spacing={3}>
-                    <Grid item xs={12} md={3}>
+                    <Grid xs={12} md={3}>
                       <SectionTitle icon={Calendar} title='날짜' />
                       <LocalizationProvider
                         dateAdapter={AdapterDayjs}
@@ -187,7 +193,7 @@ const DriveInput = () => {
                           <Grid item xs={12} md={6} key={index}>
                             <Autocomplete
                               options={
-                                names
+                                usernames
                                   ?.sort((a, b) =>
                                     a.username.localeCompare(b.username)
                                   )

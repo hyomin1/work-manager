@@ -17,8 +17,8 @@ import {
 } from '../../api';
 import { useNavigate } from 'react-router-dom';
 import './Calendar.css';
-import EmployeeEdit from '../workStatus/EmployeeEdit';
-import { useCustomQueries } from '../../hooks/useCustomQuery';
+import EmployeeEdit from '../../features/work-status/components/WorkStatusEdit';
+import { useCommonData } from '../../hooks/useCommonData';
 import { Autocomplete, TextField } from '@mui/material';
 import ScheduleAdd from './ScheduleAdd';
 
@@ -75,7 +75,7 @@ function SchedulePage() {
   const [searchButtonElement, setSearchButtonElement] =
     useState<Element | null>(null);
 
-  const { names } = useCustomQueries();
+  const { usernames } = useCommonData();
   const navigate = useNavigate();
 
   const [tooltip, setTooltip] = useState<{
@@ -244,7 +244,7 @@ function SchedulePage() {
         searchButtonElement &&
         createPortal(
           <SearchComponent
-            names={names || []}
+            names={usernames || []}
             username={username}
             handleNameChange={handleNameChange}
           />,

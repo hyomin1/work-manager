@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import type { IDrivingInform } from '../../interfaces/interface';
-import { useCustomQueries } from '../../hooks/useCustomQuery';
+import { useCommonData } from '../../hooks/useCommonData';
 import { useQueryClient } from '@tanstack/react-query';
 import { api } from '../../api';
 import { X, Plus, Minus } from 'lucide-react';
@@ -54,9 +54,10 @@ interface FormData {
 }
 
 function EditDrivingInform({ item, setEditingItemId }: IEditInformProps) {
-  const { names, namesLoading, etcNames, etcNamesLoading } = useCustomQueries();
+  const { usernames, usernamesLoading, etcNames, etcNamesLoading } =
+    useCommonData();
   const queryClient = useQueryClient();
-  const isLoading = namesLoading || etcNamesLoading;
+  const isLoading = usernamesLoading || etcNamesLoading;
 
   const [formData, setFormData] = useState<FormData>({
     driveDay: item.driveDay,
@@ -211,7 +212,7 @@ function EditDrivingInform({ item, setEditingItemId }: IEditInformProps) {
                   <Autocomplete
                     value={username}
                     options={
-                      names
+                      usernames
                         ?.sort((a, b) => a.username.localeCompare(b.username))
                         .map((item) => item.username) || []
                     }

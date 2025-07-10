@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { api, dailyWorkDay } from '../../api';
 import { Edit, X } from 'lucide-react';
-import { useCustomQueries } from '../../hooks/useCustomQuery';
+import { useCommonData } from '../../hooks/useCommonData';
 import { Button, MenuItem, Select, TextField } from '@mui/material';
 
 interface IDailyWorkView {
@@ -23,7 +23,7 @@ function DailyWorkView({
   const [nextContent, setNextContent] = useState('');
   const [isOwner, setIsOwner] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const { names, departments } = useCustomQueries();
+  const { usernames, departments } = useCommonData();
 
   const onSubmit = async () => {
     const response = await api.put('/api/employee-inform/dailyWork/edit', {
@@ -199,7 +199,7 @@ function DailyWorkView({
                     },
                   }}
                 >
-                  {names
+                  {usernames
                     ?.sort((a, b) => a.username.localeCompare(b.username))
                     .map((item) => (
                       <MenuItem key={item._id} value={item.username}>

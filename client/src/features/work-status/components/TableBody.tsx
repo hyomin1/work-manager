@@ -6,7 +6,6 @@ import {
   TableRow,
   Tooltip,
 } from '@mui/material';
-import EmployeeEdit from '../../../features/work-status/components/WorkStatusEdit';
 import { FileText } from 'lucide-react';
 import useEmployeeStore from '../../../stores/employeeStore';
 import DeleteBox from '../../../components/common/DeleteBox';
@@ -17,7 +16,7 @@ import {
   findNonEmptyCarInGroup,
   createStyleMap,
 } from '../../../utils/work-status';
-import useWorks from '../../../features/work-status/hooks/useWorkStatus';
+import useWorks from '../hooks/useWorkStatus';
 import {
   CELL_STYLE,
   EMPTY_TABLE_CELL_STYLE,
@@ -26,6 +25,7 @@ import {
   TOOLTIP_STYLE,
 } from '../../../styles/workStatusTableStyles';
 import ActionButtons from '../../../components/common/ActionButtons';
+import WorkStatusEdit from './WorkStatusEdit';
 
 type Props = {
   works: WorkStatus[];
@@ -36,7 +36,7 @@ export default function TableBody({ works }: Props) {
   const [editingItemId, setEditingItemId] = useState('');
   const [open, setOpen] = useState(false);
   const [deletedId, setDeletedId] = useState('');
-  const { deleteMutation } = useWorks();
+  const { deleteMutation } = useWorks(currentDate);
 
   const handleDelete = (id: string) => {
     setDeletedId(id);
@@ -174,7 +174,7 @@ export default function TableBody({ works }: Props) {
         handleDelete={handleConfirmDelete}
       />
       {editingItemId && (
-        <EmployeeEdit
+        <WorkStatusEdit
           item={works.find((item) => item._id === editingItemId) || works[0]}
           currentDate={currentDate || new Date()}
           setEditingItemId={setEditingItemId}

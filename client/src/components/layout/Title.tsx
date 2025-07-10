@@ -1,9 +1,9 @@
-import React from "react";
-import { Calendar, ChevronLeft, ChevronRight } from "lucide-react";
+import React from 'react';
+import { Calendar, ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface ITitleProps {
   currentDate: Date;
-  setCurrentDate: React.Dispatch<React.SetStateAction<Date | null>>;
+  setCurrentDate: React.Dispatch<React.SetStateAction<Date>>;
   setShowInput: React.Dispatch<React.SetStateAction<boolean>>;
   category: string;
   calDate?: (arg0: Date) => string;
@@ -20,9 +20,9 @@ function Title({
 }: ITitleProps) {
   const previous = () => {
     const prevDate = new Date(currentDate);
-    if (category === "employee") {
+    if (category === 'employee') {
       prevDate.setDate(prevDate.getDate() - 1);
-    } else if (category === "driving") {
+    } else if (category === 'driving') {
       prevDate.setMonth(prevDate.getMonth() - 1);
     }
     setCurrentDate(prevDate);
@@ -31,9 +31,9 @@ function Title({
 
   const next = () => {
     const prevDate = new Date(currentDate);
-    if (category === "employee") {
+    if (category === 'employee') {
       prevDate.setDate(prevDate.getDate() + 1);
-    } else if (category === "driving") {
+    } else if (category === 'driving') {
       prevDate.setMonth(prevDate.getMonth() + 1);
     }
     setCurrentDate(prevDate);
@@ -44,39 +44,39 @@ function Title({
   };
 
   return (
-    <div className="rounded-2xl bg-white p-3 shadow-lg ring-1 ring-black/5">
-      <div className="flex items-center justify-center gap-1">
+    <div className='rounded-2xl bg-white p-3 shadow-lg ring-1 ring-black/5'>
+      <div className='flex items-center justify-center gap-1'>
         <button
           onClick={previous}
-          className="rounded-lg text-gray-600 transition-all hover:bg-gray-100 active:scale-95 md:p-2 print:hidden"
+          className='rounded-lg text-gray-600 transition-all hover:bg-gray-100 active:scale-95 md:p-2 print:hidden'
         >
-          <ChevronLeft className="h-6 w-6" />
+          <ChevronLeft className='h-6 w-6' />
         </button>
 
         <button
           onClick={selectDate}
-          className="group flex w-full items-center gap-3 rounded-lg transition-all hover:bg-gray-100 md:px-4 md:py-2"
+          className='group flex w-full items-center gap-3 rounded-lg transition-all hover:bg-gray-100 md:px-4 md:py-2'
         >
-          <Calendar className="h-5 w-5 text-blue-600 transition-colors group-hover:text-blue-700 sm:hidden" />
-          <span className="whitespace-nowrap text-xl font-semibold text-gray-700 transition-colors group-hover:text-blue-600 sm:text-xs">
-            {category === "driving" && (
+          <Calendar className='h-5 w-5 text-blue-600 transition-colors group-hover:text-blue-700 sm:hidden' />
+          <span className='whitespace-nowrap text-xl font-semibold text-gray-700 transition-colors group-hover:text-blue-600 sm:text-xs'>
+            {category === 'driving' && (
               <>
                 {calYearMonth?.(currentDate)}
-                <span className="whitespace-nowrap text-xl font-semibold text-gray-700 transition-colors group-hover:text-blue-600 sm:text-xs">
-                  {" "}
+                <span className='whitespace-nowrap text-xl font-semibold text-gray-700 transition-colors group-hover:text-blue-600 sm:text-xs'>
+                  {' '}
                   차량운행일지
                 </span>
               </>
             )}
-            {category === "employee" && calDate && calDate(currentDate)}
+            {category === 'employee' && calDate && calDate(currentDate)}
           </span>
         </button>
 
         <button
           onClick={next}
-          className="rounded-lg text-gray-600 transition-all hover:bg-gray-100 active:scale-95 md:p-2 print:hidden"
+          className='rounded-lg text-gray-600 transition-all hover:bg-gray-100 active:scale-95 md:p-2 print:hidden'
         >
-          <ChevronRight className="h-6 w-6" />
+          <ChevronRight className='h-6 w-6' />
         </button>
       </div>
     </div>

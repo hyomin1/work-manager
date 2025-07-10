@@ -8,7 +8,7 @@ import {
   TextField,
 } from '@mui/material';
 import { X } from 'lucide-react';
-import { useCustomQueries } from '../../hooks/useCustomQuery';
+import { useCommonData } from '../../hooks/useCommonData';
 
 interface IDailyEdit {
   setEditingItemId: React.Dispatch<React.SetStateAction<string>>;
@@ -27,7 +27,7 @@ function DailyWorkEdit({
   const [username, setUsername] = useState('');
   const [content, setContent] = useState('');
   const [nextContent, setNextContent] = useState('');
-  const { names, departments } = useCustomQueries();
+  const { usernames, departments } = useCommonData();
 
   useEffect(() => {
     const handleEsc = (event: KeyboardEvent) => {
@@ -192,7 +192,7 @@ function DailyWorkEdit({
                     },
                   }}
                 >
-                  {names
+                  {usernames
                     ?.sort((a, b) => a.username.localeCompare(b.username))
                     .map((item) => (
                       <MenuItem key={item._id} value={item.username}>

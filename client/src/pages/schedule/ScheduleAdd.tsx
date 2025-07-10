@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { type SetStateAction } from 'react';
-import { useCustomQueries } from '../../hooks/useCustomQuery';
+import { useCommonData } from '../../hooks/useCommonData';
 import { Autocomplete, TextField } from '@mui/material';
 import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers';
@@ -24,17 +24,17 @@ export default function ScheduleAdd({
   date,
 }: IScheduleAdd) {
   const {
-    names,
-    namesLoading,
-    destinationsData,
+    usernames,
+    usernamesLoading,
+    destinations,
     destinationsLoading,
-    businessesData,
+    businesses,
     businessesLoading,
-    workData,
+    works,
     worksLoading,
     cars,
     carsLoading,
-  } = useCustomQueries();
+  } = useCommonData();
 
   const [formData, setFormData] = useState({
     startDate: date,
@@ -48,7 +48,7 @@ export default function ScheduleAdd({
   });
 
   const isLoading =
-    namesLoading ||
+    usernamesLoading ||
     destinationsLoading ||
     businessesLoading ||
     worksLoading ||
@@ -79,12 +79,12 @@ export default function ScheduleAdd({
   };
 
   useEffect(() => {
-    if (formData.business && businessesData && destinationsData) {
-      const selectedBusiness = businessesData.find(
+    if (formData.business && businesses && destinations) {
+      const selectedBusiness = businesses.find(
         (b) => b.business === formData.business
       );
       if (selectedBusiness) {
-        const matchingDestination = destinationsData.find(
+        const matchingDestination = destinations.find(
           (dest) => dest._id === selectedBusiness.destinationId
         );
         if (
@@ -98,12 +98,7 @@ export default function ScheduleAdd({
         }
       }
     }
-  }, [
-    formData.business,
-    businessesData,
-    destinationsData,
-    formData.destination,
-  ]);
+  }, [formData.business, businesses, destinations, formData.destination]);
 
   const datePickerStyles = {
     width: '100%',
@@ -144,7 +139,7 @@ export default function ScheduleAdd({
             <Autocomplete
               value={formData.username}
               options={
-                names
+                usernames
                   ?.sort((a, b) => a.username.localeCompare(b.username))
                   .map((item) => item.username) || []
               }
@@ -162,7 +157,7 @@ export default function ScheduleAdd({
             <Autocomplete
               value={formData.destination}
               options={
-                destinationsData
+                destinations
                   ?.sort((a, b) => a.destination.localeCompare(b.destination))
                   .map((item) => item.destination) || []
               }
@@ -181,9 +176,9 @@ export default function ScheduleAdd({
             <Autocomplete
               value={formData.business}
               options={
-                businessesData
+                businesses
                   ?.filter((business) => {
-                    const matchingDestination = destinationsData?.find(
+                    const matchingDestination = destinations?.find(
                       (dest) => dest.destination === formData.destination
                     );
                     return business.destinationId === matchingDestination?._id;
@@ -205,7 +200,7 @@ export default function ScheduleAdd({
             <Autocomplete
               value={formData.work}
               options={
-                workData
+                works
                   ?.sort((a, b) => a.work.localeCompare(b.work))
                   .map((item) => item.work) || []
               }

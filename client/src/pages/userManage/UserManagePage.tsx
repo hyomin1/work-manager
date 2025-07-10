@@ -3,7 +3,7 @@ import { calculateDate, checkAdminSession, getUsers } from '../../api';
 import ArrowBack from '../../components/common/ArrowBack';
 import UserManageTab from './UserManageTab';
 import { useQuery } from '@tanstack/react-query';
-import { Users } from '../../interfaces/interface';
+import type { Users } from '../../interfaces/interface';
 import UserManageTable from './UserManageTable';
 import { Calendar } from 'lucide-react';
 import Logout from '../../features/auth/components/LogoutButton';
