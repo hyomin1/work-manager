@@ -17,7 +17,7 @@ import {
 } from '../../api';
 import { useNavigate } from 'react-router-dom';
 import './Calendar.css';
-import EmployeeEdit from '../../features/work-status/components/WorkStatusEdit';
+import EmployeeEdit from '../../features/work-status/components/WorkStatusEditModal';
 import { useCommonData } from '../../hooks/useCommonData';
 import { Autocomplete, TextField } from '@mui/material';
 import ScheduleAdd from './ScheduleAdd';

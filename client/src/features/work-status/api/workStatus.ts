@@ -1,4 +1,5 @@
 import { api } from '../../../api';
+import type { EditWorkStatus } from '../../../types/work';
 import type { AddWork } from '../types/workStatus';
 
 export const getWorks = async (date: Date) => {
@@ -37,4 +38,8 @@ export async function addWork({
     })
   );
   return await Promise.all(requests);
+}
+
+export async function editWork(work: EditWorkStatus) {
+  await api.put('/api/employee-inform/editInform', work);
 }

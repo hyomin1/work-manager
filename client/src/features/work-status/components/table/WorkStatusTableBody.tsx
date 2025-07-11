@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import {
   Button,
   TableBody as MuiTableBody,
@@ -6,69 +5,48 @@ import {
   TableRow,
   Tooltip,
 } from '@mui/material';
-import EmployeeEdit from '../../../features/work-status/components/WorkStatusEdit';
 import { FileText } from 'lucide-react';
-import useEmployeeStore from '../../../stores/employeeStore';
-import DeleteBox from '../../../components/common/DeleteBox';
-import type { WorkStatus } from '../../../types/work';
+import type { WorkStatus } from '../../../../types/work';
 import {
   sortWorkStatus,
   getRowSpans,
   findNonEmptyCarInGroup,
   createStyleMap,
-} from '../../../utils/work-status';
-import useWorks from '../../../features/work-status/hooks/useWorkStatus';
+} from '../../utils/work-status';
 import {
   CELL_STYLE,
   EMPTY_TABLE_CELL_STYLE,
   LAST_CELL_STYLE,
   REMARK_BUTTON_STYLE,
   TOOLTIP_STYLE,
-} from '../../../styles/workStatusTableStyles';
-import ActionButtons from '../../../components/common/ActionButtons';
+} from '../../styles/workStatusTableStyles';
+import ActionButtons from '../../../../components/common/ActionButtons';
+import { useWorkStatusStore } from '../../stores/useWorkStatusStore';
 
-type Props = {
+interface Props {
   works: WorkStatus[];
-};
+}
 
-export default function TableBody({ works }: Props) {
-  const { currentDate } = useEmployeeStore();
-  const [editingItemId, setEditingItemId] = useState('');
-  const [open, setOpen] = useState(false);
-  const [deletedId, setDeletedId] = useState('');
-  const { deleteMutation } = useWorks();
+export default function WorkStatusTableBody({ works }: Props) {
+  const setEditId = useWorkStatusStore((state) => state.setEditId);
 
-  const handleDelete = (id: string) => {
-    setDeletedId(id);
-    setOpen(true);
-  };
-
-  const handleConfirmDelete = () => {
-    deleteMutation.mutate(deletedId, {
-      onSuccess: () => {
-        setOpen(false);
-        setDeletedId('');
-      },
-    });
-  };
-
-  const renderEmptyTable = () => (
-    <MuiTableBody>
-      <TableRow>
-        <TableCell
-          align='center'
-          colSpan={7}
-          className='text-center'
-          sx={EMPTY_TABLE_CELL_STYLE}
-        >
-          등록된 정보가 없습니다
-        </TableCell>
-      </TableRow>
-    </MuiTableBody>
-  );
+  const setDeleteId = useWorkStatusStore((state) => state.setDeleteId);
 
   if (!works?.length) {
-    return renderEmptyTable();
+    return (
+      <MuiTableBody>
+        <TableRow>
+          <TableCell
+            align='center'
+            colSpan={7}
+            className='text-center'
+            sx={EMPTY_TABLE_CELL_STYLE}
+          >
+            등록된 정보가 없습니다
+          </TableCell>
+        </TableRow>
+      </MuiTableBody>
+    );
   }
 
   const styleMap = createStyleMap(works);
@@ -159,27 +137,14 @@ export default function TableBody({ works }: Props) {
             <TableCell sx={LAST_CELL_STYLE}>
               {item.isOwner && (
                 <ActionButtons
-                  onEdit={() => setEditingItemId(item._id)}
-                  onDelete={() => handleDelete(item._id)}
-                  onOpen={() => setOpen(true)}
+                  onEdit={() => setEditId(item._id)}
+                  onDelete={() => setDeleteId(item._id)}
                 />
               )}
             </TableCell>
           </TableRow>
         ))}
       </MuiTableBody>
-      <DeleteBox
-        open={open}
-        setOpen={setOpen}
-        handleDelete={handleConfirmDelete}
-      />
-      {editingItemId && (
-        <EmployeeEdit
-          item={works.find((item) => item._id === editingItemId) || works[0]}
-          currentDate={currentDate || new Date()}
-          setEditingItemId={setEditingItemId}
-        />
-      )}
     </>
   );
 }

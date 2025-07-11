@@ -13,3 +13,8 @@ export interface WorkStatus {
   specificDate: Date;
   remarks: string;
 }
+
+export type EditWorkStatus = Omit<
+  WorkStatus,
+  'createdAt' | 'isOwner' | 'specificDate'
+>;

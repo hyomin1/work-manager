@@ -1,4 +1,3 @@
-// 스타일 상수 분리
 export const CELL_STYLE = {
   fontSize: "large",
   borderRight: "1px solid #e5e7eb",

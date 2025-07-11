@@ -1,83 +1,80 @@
-import { useEffect, useState } from 'react';
-import { Paper, Table, TableContainer } from '@mui/material';
+import { useEffect } from 'react';
 import { calculateDate } from '../../api';
 import ArrowBack from '../../components/common/ArrowBack';
 import Title from '../../components/layout/Title';
 import Logout from '../auth/components/LogoutButton';
-import EmployeeTableBody from './components/TableBody';
-import EmployeeTableHeader from './components/TableHeader';
+
 import DateInput from './components/DateInput';
 import NavigationButtons from './components/NavigationButtons';
 import useWorkStatus from './hooks/useWorkStatus';
+import useDateManager from '../../hooks/useDateManager';
+import PageLayout from '../../components/layout/PageLayout';
+import WorkStatusTable from './components/table/WorkStatusTable';
+import { useWorkStatusStore } from './stores/useWorkStatusStore';
+import WorkStatusEditModal from './components/WorkStatusEditModal';
+import DeleteBox from '../../components/common/DeleteBox';
 
 function EmployeePage() {
-  const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
-  const [currentDate, setCurrentDate] = useState(new Date());
-
+  const { currentDate, setCurrentDate, isOpen, setIsOpen } = useDateManager();
   const {
-    worksQuery: { data, refetch },
+    worksQuery: { data: works, refetch },
+    deleteMutation,
   } = useWorkStatus(currentDate);
 
-  // 날짜 변경 시 해당 날짜 데이터 가져오기 위함
+  const editId = useWorkStatusStore((state) => state.editId);
+  const setEditId = useWorkStatusStore((state) => state.setEditId);
+  const editWork = works?.find((item) => item._id === editId);
+
+  const deleteId = useWorkStatusStore((state) => state.deleteId);
+  const setDeleteId = useWorkStatusStore((state) => state.setDeleteId);
+
+  const handleDelete = () => {
+    deleteMutation.mutate(deleteId, {
+      onSuccess: () => {
+        setDeleteId('');
+      },
+    });
+  };
   useEffect(() => {
     if (currentDate) {
       refetch();
     }
   }, [currentDate, refetch]);
 
-  // 자정 체크
-  useEffect(() => {
-    const now = new Date();
-    const msUntilMidnight =
-      new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1).getTime() -
-      now.getTime();
-
-    const timeoutId = setTimeout(() => {
-      setCurrentDate(new Date());
-    }, msUntilMidnight);
-
-    return () => clearTimeout(timeoutId);
-  }, [currentDate]);
-
   return (
-    <div className='flex min-h-screen w-full flex-col items-center bg-gradient-to-br from-gray-50 to-blue-50 p-10 sm:p-4'>
-      <div className='flex w-[90%] flex-col items-center sm:w-full'>
-        <div className='relative mb-8 flex w-full items-center justify-between sm:mb-6'>
-          <ArrowBack type='home' />
-          <Title
-            setShowInput={setIsDatePickerOpen}
-            calDate={calculateDate}
-            category='employee'
-            currentDate={currentDate || new Date()}
-            setCurrentDate={setCurrentDate}
-          />
-          <Logout />
-        </div>
-
-        <DateInput
-          isDatePickerOpen={isDatePickerOpen}
-          onClose={() => setIsDatePickerOpen(false)}
+    <PageLayout>
+      <div className='relative mb-8 flex w-full items-center justify-between sm:mb-6'>
+        <ArrowBack type='home' />
+        <Title
+          setShowInput={setIsOpen}
+          calDate={calculateDate}
+          category='employee'
           currentDate={currentDate || new Date()}
           setCurrentDate={setCurrentDate}
         />
-
-        <NavigationButtons refetch={refetch} />
-
-        <TableContainer
-          component={Paper}
-          sx={{
-            boxShadow:
-              '0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)',
-          }}
-          className='shadow-custom-shadow'
-        >
-          <Table>
-            <EmployeeTableHeader />
-            <EmployeeTableBody works={data || []} />
-          </Table>
-        </TableContainer>
+        <Logout />
       </div>
-    </div>
+
+      <DateInput
+        isDatePickerOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        currentDate={currentDate}
+        handleDate={setCurrentDate}
+      />
+
+      <NavigationButtons refetch={refetch} />
+
+      <WorkStatusTable works={works || []} />
+
+      {editId && editWork && (
+        <WorkStatusEditModal editWork={editWork} setEditId={setEditId} />
+      )}
+      <DeleteBox
+        open={!!deleteId}
+        onClose={() => setDeleteId('')}
+        handleDelete={handleDelete}
+      />
+    </PageLayout>
   );
 }
 

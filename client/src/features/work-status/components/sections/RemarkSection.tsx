@@ -2,7 +2,7 @@ import { Grid, TextField } from '@mui/material';
 import React from 'react';
 import SectionTitle from './SectionTitle';
 import { MessageSquare } from 'lucide-react';
-import { inputStyles } from '../../style';
+import { inputStyles } from '../../styles/style';
 import type { FormAction } from '../../reducers/workStatusReducer';
 
 interface Props {

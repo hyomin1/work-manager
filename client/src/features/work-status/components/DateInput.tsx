@@ -1,40 +1,37 @@
 import { Calendar } from 'lucide-react';
-import { useEffect } from 'react';
+import { useState } from 'react';
+import useEscapeKey from '../hooks/useEscapeKey';
 
-interface DateInputProps {
+interface Props {
   isDatePickerOpen: boolean;
   onClose: () => void;
   currentDate: Date;
-  setCurrentDate: React.Dispatch<React.SetStateAction<Date>>;
+  handleDate: (date: Date) => void;
 }
 
 function DateInput({
   isDatePickerOpen,
   onClose,
   currentDate,
-  setCurrentDate,
-}: DateInputProps) {
-  useEffect(() => {
-    const handleEsc = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        onClose();
-      }
-    };
-    window.addEventListener('keydown', handleEsc);
+  handleDate,
+}: Props) {
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
-    return () => {
-      window.removeEventListener('keydown', handleEsc);
-    };
-  }, [onClose]);
+  useEscapeKey(onClose);
 
-  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newDate = e.target.value;
-    if (newDate) {
-      const date = new Date(newDate);
-      if (!isNaN(date.getTime())) {
-        setCurrentDate(date);
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const date = e.target.value;
+    if (date) {
+      const newDate = new Date(date);
+      if (!isNaN(newDate.getTime())) {
+        setSelectedDate(newDate);
       }
     }
+  };
+
+  const handleApply = () => {
+    if (selectedDate) handleDate(selectedDate);
+    onClose();
   };
 
   if (!isDatePickerOpen) return null;
@@ -59,10 +56,13 @@ function DateInput({
             </div>
             <input
               type='date'
-              value={currentDate ? currentDate.toISOString().split('T')[0] : ''}
+              value={
+                selectedDate
+                  ? selectedDate.toISOString().split('T')[0]
+                  : currentDate.toISOString().split('T')[0]
+              }
               className='w-full cursor-pointer rounded-lg border border-gray-300 bg-gray-50 px-4 py-3 pl-12 text-sm text-gray-700 shadow focus:border-blue-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-200'
-              onChange={handleDateChange}
-              onBlur={onClose}
+              onChange={handleChange}
             />
           </div>
         </div>
@@ -75,7 +75,7 @@ function DateInput({
           </button>
           <button
             className='rounded-lg bg-blue-500 px-4 py-2 text-sm font-medium text-white shadow hover:bg-blue-600 focus:ring-2 focus:ring-blue-300'
-            onClick={onClose}
+            onClick={handleApply}
           >
             확인
           </button>
