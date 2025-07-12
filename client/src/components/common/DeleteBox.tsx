@@ -6,16 +6,12 @@ import {
   Button,
 } from '@mui/material';
 
-interface DeleteBoxProps {
+interface Props {
   open: boolean;
   onClose: () => void;
   handleDelete: () => void;
 }
-export default function DeleteBox({
-  open,
-  onClose,
-  handleDelete,
-}: DeleteBoxProps) {
+export default function DeleteBox({ open, onClose, handleDelete }: Props) {
   return (
     <Dialog open={open} onClose={onClose}>
       <DialogTitle className='text-red-600'>삭제 확인</DialogTitle>

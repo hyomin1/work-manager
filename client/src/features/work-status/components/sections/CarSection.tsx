@@ -1,6 +1,6 @@
 import { Autocomplete, Grid, TextField } from '@mui/material';
 import React from 'react';
-import SectionTitle from './SectionTitle';
+import SectionTitle from '../../../../components/common/SectionTitle';
 import { inputStyles } from '../../styles/style';
 import type { Car } from '../../types/workStatus';
 import type { FormAction } from '../../reducers/workStatusReducer';

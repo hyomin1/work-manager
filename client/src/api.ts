@@ -149,10 +149,6 @@ export const checkCarSession = async () => {
 };
 
 // 메인화면에서 관리 버튼 눌러서 들어간 경우 check, 접근 불가 메시지만 띄워줌
-export const checkAdminSession = async () => {
-  const res = await api.get('/auth/checkAdminSession');
-  return res.status;
-};
 
 // /admin 경로로 접근시
 export const directAdminSession = async () => {

@@ -8,7 +8,7 @@ import {
   getEtcNames,
   getDepartments,
 } from '../api';
-import type { IEtcNames, IDepartments } from '../interfaces/interface';
+import type { IDepartments } from '../interfaces/interface';
 import type {
   Business,
   Car,
@@ -16,6 +16,7 @@ import type {
   Username,
   Work,
 } from '../features/work-status/types/workStatus';
+import type { Etc } from '../features/vehicle-log/types/vehicleLog';
 
 export function useCommonData() {
   const { data: usernames, isLoading: usernamesLoading } = useQuery<Username[]>(
@@ -49,8 +50,8 @@ export function useCommonData() {
     queryFn: getCars,
   });
 
-  const { data: etcNames, isLoading: etcNamesLoading } = useQuery<IEtcNames[]>({
-    queryKey: ['etcNames'],
+  const { data: etcList, isLoading: etcListLoading } = useQuery<Etc[]>({
+    queryKey: ['etcList'],
     queryFn: getEtcNames,
   });
 
@@ -68,6 +69,8 @@ export function useCommonData() {
     worksLoading ||
     carsLoading;
 
+  const isVehicleLoading = usernamesLoading || carsLoading || etcListLoading;
+
   return {
     usernames,
     usernamesLoading,
@@ -79,10 +82,11 @@ export function useCommonData() {
     worksLoading,
     cars,
     carsLoading,
-    etcNames,
-    etcNamesLoading,
+    etcList,
+    etcListLoading,
     departments,
     departmentsLoading,
     isLoading,
+    isVehicleLoading,
   };
 }

@@ -7,18 +7,20 @@ import {
   type SelectChangeEvent,
 } from '@mui/material';
 import { type SetStateAction, useState } from 'react';
-import type { ICars, IDrivingInform } from '../../../interfaces/interface';
+import type { IDrivingInform } from '../../../interfaces/interface';
 import useDrivingStore from '../../../stores/drivingStore';
 import { useNavigate } from 'react-router-dom';
-import { checkAdminSession, checkCarSession } from '../../../api';
+import { checkCarSession } from '../../../api';
 import { ROUTES } from '../../../constants/constant';
 import NavButton from '../../../components/common/NavButton';
+import { authApi } from '../../../features/auth/api/auth';
+import type { Car } from '../../../features/work-status/types/workStatus';
 
 interface NavProps {
   refetch: () => void;
   setCar: React.Dispatch<SetStateAction<string>>;
   setCurrentPage: React.Dispatch<SetStateAction<number>>;
-  cars: ICars[];
+  cars: Car[];
   drivingInform: IDrivingInform[];
   currentDate: Date;
   car: string;
@@ -68,7 +70,7 @@ export default function NavigationButtons({
   };
 
   const onClickAdmin = async () => {
-    const status = await checkAdminSession();
+    const { status } = await authApi.checkAdminSession();
     if (status === 200) {
       navigate(ROUTES.ADMIN.SETTINGS);
     }

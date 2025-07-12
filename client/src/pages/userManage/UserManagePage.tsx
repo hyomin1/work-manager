@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { calculateDate, checkAdminSession, getUsers } from '../../api';
+import { calculateDate, getUsers } from '../../api';
 import ArrowBack from '../../components/common/ArrowBack';
 import UserManageTab from './UserManageTab';
 import { useQuery } from '@tanstack/react-query';
@@ -7,6 +7,7 @@ import type { Users } from '../../interfaces/interface';
 import UserManageTable from './UserManageTable';
 import { Calendar } from 'lucide-react';
 import Logout from '../../features/auth/components/LogoutButton';
+import { authApi } from './../../features/auth/api/auth';
 
 function UserManagePage() {
   const [value, setValue] = useState(0);
@@ -25,7 +26,7 @@ function UserManagePage() {
   });
 
   useEffect(() => {
-    checkAdminSession();
+    authApi.checkAdminSession();
   }, []);
 
   return (

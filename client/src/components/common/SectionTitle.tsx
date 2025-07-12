@@ -1,8 +1,10 @@
+import type { LucideIcon } from 'lucide-react';
+
 export default function SectionTitle({
   icon: Icon,
   title,
 }: {
-  icon: any;
+  icon: LucideIcon;
   title: string;
 }) {
   return (

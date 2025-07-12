@@ -4,7 +4,7 @@ import type { FormAction, FormState } from '../../reducers/workStatusReducer';
 import { Autocomplete, Grid, TextField } from '@mui/material';
 import { inputStyles } from '../../styles/style';
 import { MapPin } from 'lucide-react';
-import SectionTitle from './SectionTitle';
+import SectionTitle from '../../../../components/common/SectionTitle';
 
 interface Props {
   form: FormState;

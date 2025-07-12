@@ -9,7 +9,7 @@ import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { Calendar } from 'lucide-react';
-import SectionTitle from './SectionTitle';
+import SectionTitle from '../../../../components/common/SectionTitle';
 import 'dayjs/locale/ko';
 import type { FormAction } from '../../reducers/workStatusReducer';
 import { inputStyles } from '../../styles/style';

@@ -6,4 +6,5 @@ export const authApi = {
   signup: (data: SignupInput) => api.post('/auth/register', data),
   logout: () => api.post('/auth/logout'),
   checkSession: () => api.get('/auth/checkSession'),
+  checkAdminSession: () => api.get('/auth/checkAdminSession'),
 };

@@ -7,7 +7,7 @@ import DrivingService from './pages/driving/service/DrivingService';
 import WorkStatusPage from './features/work-status/WorkStatusPage';
 import MenuPage from './features/menu/MenuPage';
 import DrivePage from './pages/driving/DrivePage';
-import DriveForm from './pages/driving/DriveForm';
+import VehicleLogForm from './features/vehicle-log/components/VehicleLogForm';
 import SchedulePage from './pages/schedule/SchedulePage';
 import DailyWorkPage from './pages/dailyWork/DailyWorkPage';
 import WorkStatusForm from './features/work-status/components/WorkStatusForm';
@@ -52,7 +52,7 @@ const router = createBrowserRouter([
       },
       {
         path: ROUTES.VEHICLES.CREATE,
-        element: <DriveForm />,
+        element: <VehicleLogForm />,
       },
       {
         path: ROUTES.VEHICLES.SERVICE,

@@ -1,5 +1,6 @@
 import axios, { AxiosError, type AxiosResponse } from 'axios';
 import { ROUTES } from './constants/constant';
+import toast from 'react-hot-toast';
 
 const axiosIP = axios.create({
   baseURL: import.meta.env.VITE_API_LOCAL,
@@ -30,6 +31,8 @@ const handleResponseInterceptor = async (
       // 권한 없음 - 유저 or 관리자 접근 불가
       if (data.type === 'not User' || data.type === 'not admin') {
         window.location.href = ROUTES.AUTH.LOGIN;
+      } else if (data.type === 'not granted admin') {
+        toast.error(data.error || '');
       }
       // 관리자 권한 부족 같은 경우는 따로 처리할 수 있음
       return Promise.reject(error);

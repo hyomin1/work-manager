@@ -1,7 +1,7 @@
 import React from 'react';
 import type { FormAction } from '../../reducers/workStatusReducer';
 import { Autocomplete, Grid, TextField } from '@mui/material';
-import SectionTitle from './SectionTitle';
+import SectionTitle from '../../../../components/common/SectionTitle';
 import { User } from 'lucide-react';
 import type { Username } from '../../types/workStatus';
 import { inputStyles } from '../../styles/style';

@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 import {
   Calendar,
   FileText,
@@ -9,93 +8,87 @@ import {
   Truck,
   Users,
   RefreshCw,
-} from "lucide-react";
-import { ROUTES } from "../../../constants/constant";
-import { checkAdminSession } from "../../../api";
-import NavButton from "../../../components/common/NavButton";
+} from 'lucide-react';
+import { ROUTES } from '../../../constants/constant';
+import NavButton from '../../../components/common/NavButton';
+import { authApi } from '../../auth/api/auth';
 
-type Category = "STATISTICS" | "SETTINGS" | "MANAGE";
+const navItems = [
+  { icon: Truck, label: '차량', route: ROUTES.VEHICLES.LIST, variant: 'blue' },
+  { icon: Pencil, label: '입력', route: ROUTES.WORKS.CREATE, variant: 'green' },
+  { icon: Calendar, label: '일정', route: ROUTES.SCHEDULE, variant: 'blue' },
+  {
+    icon: FileText,
+    label: '업무',
+    route: ROUTES.WORKS.DAILY_WORK,
+    variant: 'green',
+  },
+] as const;
 
-interface NavProps {
+const adminItems = [
+  { icon: Users, label: '관리', route: ROUTES.ADMIN.MANAGE, variant: 'blue' },
+  {
+    icon: Settings,
+    label: '설정',
+    route: ROUTES.ADMIN.SETTINGS,
+    variant: 'green',
+  },
+  {
+    icon: LineChart,
+    label: '통계',
+    route: ROUTES.ADMIN.STATISTICS,
+    variant: 'blue',
+  },
+] as const;
+
+interface Props {
   refetch: () => void;
 }
 
-const NavigationButtons = ({ refetch }: NavProps) => {
+const NavigationButtons = ({ refetch }: Props) => {
   const navigate = useNavigate();
-  const [isRefreshing, setIsRefreshing] = useState(false);
 
-  const handleAdminAction = async (category: Category) => {
-    const status = await checkAdminSession();
+  const handleAdminAction = async (route: string) => {
+    const { status } = await authApi.checkAdminSession();
     if (status === 200) {
-      navigate(`${ROUTES.ADMIN[category]}`);
+      navigate(route);
     }
-  };
-
-  const handleRefresh = () => {
-    setIsRefreshing(true);
-    setTimeout(() => {
-      refetch();
-      setIsRefreshing(false);
-    }, 110);
   };
 
   return (
     <div
-      className={`mb-8 w-full rounded-lg border-0 bg-white/90 p-4 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.1)] backdrop-blur-sm transition-all duration-500 ${isRefreshing ? "opacity-0" : "opacity-100"} sm:p-3`}
+      className={`mb-8 w-full rounded-lg border-0 bg-white/90 p-4 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.1)] backdrop-blur-sm transition-all duration-500 sm:p-3`}
     >
-      <div className="w-full">
-        <div className="flex items-center justify-between gap-6 sm:flex-col sm:gap-3">
-          <div className="flex flex-1 sm:mb-2 sm:w-full sm:gap-2">
-            <NavButton
-              icon={Truck}
-              label="차량"
-              onClick={() => navigate(ROUTES.VEHICLES.LIST)}
-              variant="blue"
-            />
-            <NavButton
-              icon={Pencil}
-              label="입력"
-              onClick={() => navigate(ROUTES.WORKS.CREATE)}
-              variant="green"
-            />
-            <NavButton
-              icon={Calendar}
-              label="일정"
-              onClick={() => navigate(ROUTES.SCHEDULE)}
-              variant="blue"
-            />
-            <NavButton
-              icon={FileText}
-              label="업무"
-              onClick={() => navigate(ROUTES.WORKS.DAILY_WORK)}
-              variant="green"
-            />
+      <div className='w-full'>
+        <div className='flex items-center justify-between gap-6 sm:flex-col sm:gap-3'>
+          <div className='flex flex-1 sm:mb-2 sm:w-full sm:gap-2'>
+            {navItems.map(({ icon, label, route, variant }) => (
+              <NavButton
+                key={route}
+                icon={icon}
+                label={label}
+                onClick={() => navigate(route)}
+                variant={variant}
+              />
+            ))}
           </div>
 
-          <div className="flex justify-end sm:w-full sm:gap-2">
-            <NavButton
-              icon={Users}
-              label="관리"
-              onClick={() => handleAdminAction("MANAGE")}
-              variant="blue"
-            />
-            <NavButton
-              icon={Settings}
-              label="설정"
-              onClick={() => handleAdminAction("SETTINGS")}
-              variant="green"
-            />
-            <NavButton
-              icon={LineChart}
-              label="통계"
-              onClick={() => handleAdminAction("STATISTICS")}
-              variant="blue"
-            />
-            <button className="flex items-center">
-              <div className="mx-4 h-10 w-px bg-slate-200" />
+          <div className='flex justify-end sm:w-full sm:gap-2'>
+            {adminItems.map(({ icon, label, route, variant }) => (
+              <NavButton
+                key={route}
+                icon={icon}
+                label={label}
+                onClick={() => handleAdminAction(route)}
+                variant={variant}
+              />
+            ))}
+
+            <button className='flex items-center'>
+              <div className='mx-4 h-10 w-px bg-slate-200' />
               <RefreshCw
-                onClick={handleRefresh}
-                className={`text-slate-600 transition-all duration-200 hover:text-slate-800 sm:h-4 sm:w-4 md:h-6 md:w-6 ${isRefreshing ? "animate-spin" : ""} hover:opacity-80`}
+                onClick={refetch}
+                className={`text-slate-600 transition-all duration-200 hover:text-slate-800 sm:h-4 sm:w-4 md:h-6 md:w-6  hover:opacity-80`}
               />
             </button>
           </div>

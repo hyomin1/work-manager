@@ -1,6 +1,6 @@
 import { Autocomplete, Grid, TextField } from '@mui/material';
 import React from 'react';
-import SectionTitle from './SectionTitle';
+import SectionTitle from '../../../../components/common/SectionTitle';
 import { ClipboardList } from 'lucide-react';
 import type { FormAction, FormState } from '../../reducers/workStatusReducer';
 import { inputStyles } from '../../styles/style';
