@@ -1,10 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { REFETCH_INTERVAL, ROUTES } from '../../../constants/constant';
-import type { EditWorkStatus, WorkStatus } from '../../../types/work';
+
 import { addWork, deleteWork, editWork, getWorks } from '../api/workStatus';
 import { toast } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
-import type { AddWork } from '../types/workStatus';
+import type { AddWork, EditWorkStatus, WorkStatus } from '../types/workStatus';
 
 export default function useWorkStatus(date?: Date) {
   const navigate = useNavigate();

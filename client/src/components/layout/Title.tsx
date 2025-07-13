@@ -1,7 +1,7 @@
 import React from 'react';
 import { Calendar, ChevronLeft, ChevronRight } from 'lucide-react';
 
-interface ITitleProps {
+interface Props {
   currentDate: Date;
   setCurrentDate: (date: Date) => void;
   setShowInput: React.Dispatch<React.SetStateAction<boolean>>;
@@ -17,7 +17,7 @@ function Title({
   currentDate,
   setCurrentDate,
   setShowInput,
-}: ITitleProps) {
+}: Props) {
   const previous = () => {
     const prevDate = new Date(currentDate);
     if (category === 'employee') {

@@ -1,6 +1,5 @@
 import { api } from '../../../api';
-import type { EditWorkStatus } from '../../../types/work';
-import type { AddWork } from '../types/workStatus';
+import type { AddWork, EditWorkStatus } from '../types/workStatus';
 
 export const getWorks = async (date: Date) => {
   const url = `/api/employee-inform/getInform?date=${date}`;

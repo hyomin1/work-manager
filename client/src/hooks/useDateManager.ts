@@ -1,9 +1,7 @@
 import { useEffect, useState } from 'react';
-import { useDateStore } from '../stores/useDateStore';
 
 export default function useDateManager() {
-  const currentDate = useDateStore((state) => state.currentDate);
-  const setCurrentDate = useDateStore((state) => state.setCurrentDate);
+  const [currentDate, setCurrentDate] = useState(new Date());
   const [isOpen, setIsOpen] = useState(false);
   useEffect(() => {
     const now = new Date();
@@ -18,5 +16,10 @@ export default function useDateManager() {
     return () => clearTimeout(timeoutId);
   }, [setCurrentDate]);
 
-  return { currentDate, setCurrentDate, isOpen, setIsOpen };
+  return {
+    currentDate,
+    setCurrentDate,
+    isOpen,
+    setIsOpen,
+  };
 }

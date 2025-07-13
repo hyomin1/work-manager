@@ -6,8 +6,8 @@ import {
   type SelectChangeEvent,
 } from '@mui/material';
 import ServiceTable from './ServiceTable';
-import { getCars, getServices } from '../../../api';
-import type { ICars, ICarService } from '../../../interfaces/interface';
+import { getServices } from '../../../api';
+import type { ICarService } from '../../../interfaces/interface';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { Pencil } from 'lucide-react';
@@ -18,6 +18,8 @@ import useDrivingStore from '../../../stores/drivingStore';
 import DriveAlert from '../components/DriveAlert';
 import NavButton from '../../../components/common/NavButton';
 import AddService from './AddService';
+import type { Car } from '../../../features/vehicle-log/types/vehicleLog';
+import { getCars } from '../../../features/vehicle-log/api/vehicleLog';
 
 dayjs.locale('ko');
 
@@ -56,7 +58,7 @@ function ServiceTab() {
     handleOpen();
   };
 
-  const { data: cars } = useQuery<ICars[]>({
+  const { data: cars } = useQuery<Car[]>({
     queryKey: ['car', 1],
     queryFn: getCars,
   });

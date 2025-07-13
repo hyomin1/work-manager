@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import type { IDrivingInform } from '../../interfaces/interface';
 import { drivingHeaders } from '../../constants/headers';
 import { api, calCarDay } from '../../api';
 import { Edit, Trash2 } from 'lucide-react';
@@ -16,16 +15,16 @@ import {
 } from '@mui/material';
 import DrivePrint from './DrivePrint';
 import DeleteBox from '../../components/common/DeleteBox';
+import type {
+  Cost,
+  VehicleLog,
+} from '../../features/vehicle-log/types/vehicleLog';
 
 interface IDrivePCProps {
-  drivingInform: IDrivingInform[];
+  vehicleLogs: VehicleLog[];
   indexOfFirstItem: number;
   indexOfLastItem: number;
-  totalDrivingKM: number;
-  totalFuelCost: number;
-  totalToll: number;
-  totalEtcCost: number;
-  grandTotal: number;
+  cost: Cost;
   refetch: () => void;
 }
 
@@ -37,19 +36,18 @@ const cellStyle = {
 };
 
 function DrivePC({
-  drivingInform,
+  vehicleLogs,
   indexOfFirstItem,
   indexOfLastItem,
-  totalDrivingKM,
-  totalFuelCost,
-  totalToll,
-  grandTotal,
-  totalEtcCost,
+  cost,
   refetch,
 }: IDrivePCProps) {
   const [editingItemId, setEditingItemId] = useState('');
   const [deleteId, setDeleteId] = useState<string>('');
   const [open, setOpen] = useState(false);
+
+  const { totalDrivingKM, totalFuelCost, totalToll, grandTotal, totalEtcCost } =
+    cost;
 
   const deleteInform = async (id: string) => {
     const res = await api.delete(`/api/driving-inform/removeInform/${id}`);
@@ -104,7 +102,7 @@ function DrivePC({
             </TableRow>
           </TableHead>
           <TableBody>
-            {drivingInform
+            {vehicleLogs
               ?.sort((a, b) => {
                 if (
                   new Date(a.driveDay).getTime() ===
@@ -274,14 +272,14 @@ function DrivePC({
       </TableContainer>
 
       <DrivePrint
-        drivingInform={drivingInform}
+        vehicleLogs={vehicleLogs}
         indexOfFirstItem={indexOfFirstItem}
         indexOfLastItem={indexOfLastItem}
       />
 
       <DeleteBox
         open={open}
-        setOpen={setOpen}
+        onClose={() => setOpen(false)}
         handleDelete={() => deleteInform(deleteId)}
       />
     </>

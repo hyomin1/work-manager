@@ -90,7 +90,7 @@ export const getEtcName = async (req: Request, res: Response) => {
 };
 
 export const addInform = async (req: Request, res: Response) => {
-  const privateCarId = '66fde7d11c70777ade2403fb';
+  const privateCarId = '6871f233b17c3f6314c554ec';
   if (!checkSession(req, res)) return;
 
   const { driveDay, username, car, drivingDestination, startKM, endKM } =
@@ -119,8 +119,6 @@ export const addInform = async (req: Request, res: Response) => {
     return res.status(500).json({ error: '서버 에러' });
   }
 };
-
-
 
 export const getInform = async (req: Request, res: Response) => {
   //if (!checkSession(req, res)) return;

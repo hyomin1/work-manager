@@ -6,7 +6,7 @@ import { ROUTES } from './constants/constant';
 import DrivingService from './pages/driving/service/DrivingService';
 import WorkStatusPage from './features/work-status/WorkStatusPage';
 import MenuPage from './features/menu/MenuPage';
-import DrivePage from './pages/driving/DrivePage';
+import VehicleLogPage from './features/vehicle-log/VehicleLogPage';
 import VehicleLogForm from './features/vehicle-log/components/VehicleLogForm';
 import SchedulePage from './pages/schedule/SchedulePage';
 import DailyWorkPage from './pages/dailyWork/DailyWorkPage';
@@ -40,7 +40,7 @@ const router = createBrowserRouter([
       },
       {
         path: ROUTES.VEHICLES.LIST,
-        element: <DrivePage />,
+        element: <VehicleLogPage />,
       },
       {
         path: ROUTES.ADMIN.STATISTICS,

@@ -6,7 +6,7 @@ import { ROUTES } from '../../../constants/constant';
 import type { LoginInput, SignupInput } from '../types/auth';
 import { toast } from 'react-hot-toast';
 import type { AxiosError } from 'axios';
-import { checkCarSession } from '../../../api';
+import { checkCarSession } from '../../vehicle-log/api/vehicleLog';
 
 export default function useAuth() {
   const navigate = useNavigate();

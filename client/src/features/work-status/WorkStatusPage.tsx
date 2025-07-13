@@ -1,10 +1,8 @@
-import { useEffect } from 'react';
 import { calculateDate } from '../../api';
 import ArrowBack from '../../components/common/ArrowBack';
 import Title from '../../components/layout/Title';
 import Logout from '../auth/components/LogoutButton';
-
-import DateInput from './components/DateInput';
+import DateInput from './components/DateSelector';
 import NavigationButtons from './components/NavigationButtons';
 import useWorkStatus from './hooks/useWorkStatus';
 import useDateManager from '../../hooks/useDateManager';
@@ -35,11 +33,6 @@ function EmployeePage() {
       },
     });
   };
-  useEffect(() => {
-    if (currentDate) {
-      refetch();
-    }
-  }, [currentDate, refetch]);
 
   return (
     <PageLayout>

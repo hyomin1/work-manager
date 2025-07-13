@@ -1,30 +1,26 @@
-import React from 'react';
-import type { IDrivingInform } from '../../interfaces/interface';
 import { calCarDay } from '../../api';
-interface IDriveMobileProps {
-  drivingInform: IDrivingInform[];
-  totalDrivingKM: number;
-  totalFuelCost: number;
-  totalToll: number;
-  totalEtcCost: number;
-  grandTotal: number;
+import type {
+  Cost,
+  VehicleLog,
+} from '../../features/vehicle-log/types/vehicleLog';
+interface Props {
+  vehicleLogs: VehicleLog[];
+  cost: Cost;
   indexOfFirstItem: number;
   indexOfLastItem: number;
 }
 // 차량 운행일지 모바일 화면
 function DriveMobile({
-  drivingInform,
-  totalDrivingKM,
-  totalEtcCost,
-  totalFuelCost,
-  totalToll,
-  grandTotal,
+  vehicleLogs,
+  cost,
   indexOfFirstItem,
   indexOfLastItem,
-}: IDriveMobileProps) {
+}: Props) {
+  const { totalDrivingKM, totalEtcCost, totalFuelCost, totalToll, grandTotal } =
+    cost;
   return (
     <div className='h-full sm:w-full'>
-      {drivingInform
+      {vehicleLogs
         ?.sort((a, b) => {
           if (
             new Date(a.driveDay).getTime() === new Date(b.driveDay).getTime()

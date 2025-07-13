@@ -3,7 +3,7 @@ import ArrowBack from '../../components/common/ArrowBack';
 import Title from '../../components/layout/Title';
 import Logout from '../../features/auth/components/LogoutButton';
 import { calculateDate, getDailyWorks } from '../../api';
-import DateInput from '../../features/work-status/components/DateInput';
+import DateInput from '../../features/work-status/components/DateSelector';
 import NavigationButtons from './components/NavigationButtons';
 import { useQuery } from '@tanstack/react-query';
 import { REFETCH_INTERVAL } from '../../constants/constant';

@@ -1,37 +1,35 @@
-import React from 'react';
 import TabHeader from '../../components/layout/TabHeader';
 import { drivingHeaders } from '../../constants/headers';
-import type { IDrivingInform } from '../../interfaces/interface';
 import { calCarDay } from '../../api';
+import type { VehicleLog } from '../../features/vehicle-log/types/vehicleLog';
 
 interface IDrivePrint {
-  drivingInform: IDrivingInform[];
+  vehicleLogs: VehicleLog[];
   indexOfFirstItem: number;
   indexOfLastItem: number;
 }
 // 차량 운행일지 프린트 시 나오는 화면 (사용 X)
 function DrivePrint({
-  drivingInform,
+  vehicleLogs,
   indexOfFirstItem,
   indexOfLastItem,
 }: IDrivePrint) {
   const totalFuelCost =
-    drivingInform?.reduce((acc, item) => acc + item.fuelCost, 0) || 0;
+    vehicleLogs?.reduce((acc, item) => acc + item.fuelCost, 0) || 0;
 
-  const totalToll =
-    drivingInform?.reduce((acc, item) => acc + item.toll, 0) || 0;
+  const totalToll = vehicleLogs?.reduce((acc, item) => acc + item.toll, 0) || 0;
 
   const totalEtcCost =
-    drivingInform?.reduce((acc, item) => acc + item.etc.cost, 0) || 0;
+    vehicleLogs?.reduce((acc, item) => acc + item.etc.cost, 0) || 0;
 
   const totalDrivingKM =
-    drivingInform?.reduce((acc, item) => acc + item.totalKM, 0) || 0;
+    vehicleLogs?.reduce((acc, item) => acc + item.totalKM, 0) || 0;
   const grandTotal = totalFuelCost + totalToll + totalEtcCost;
   return (
     <table className='hidden w-[100%] text-left print:block'>
       <TabHeader headers={drivingHeaders} />
       <tbody className='rounded-b-xl border border-black text-xs print:text-[9px]'>
-        {drivingInform
+        {vehicleLogs
           ?.sort((a, b) => {
             if (
               new Date(a.driveDay).getTime() === new Date(b.driveDay).getTime()

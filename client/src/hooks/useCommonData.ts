@@ -4,19 +4,18 @@ import {
   getDestinations,
   getBusinesses,
   getWorks,
-  getCars,
   getEtcNames,
   getDepartments,
 } from '../api';
 import type { IDepartments } from '../interfaces/interface';
 import type {
   Business,
-  Car,
   Destination,
   Username,
   Work,
 } from '../features/work-status/types/workStatus';
-import type { Etc } from '../features/vehicle-log/types/vehicleLog';
+import type { Car, Etc } from '../features/vehicle-log/types/vehicleLog';
+import { getCars } from '../features/vehicle-log/api/vehicleLog';
 
 export function useCommonData() {
   const { data: usernames, isLoading: usernamesLoading } = useQuery<Username[]>(

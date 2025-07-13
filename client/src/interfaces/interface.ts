@@ -3,21 +3,6 @@ export interface IDepartments {
   department: string;
 }
 
-export interface IDrivingInform {
-  _id: string;
-  isOwner: boolean;
-  driveDay: Date;
-  createdAt: Date;
-  username: string;
-  drivingDestination: string;
-  startKM: number;
-  endKM: number;
-  totalKM: number;
-  fuelCost: number;
-  toll: number;
-  etc: { name: string; cost: number };
-}
-
 // 유저 인터페이스
 export interface Users {
   _id: string;

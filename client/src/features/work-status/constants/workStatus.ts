@@ -12,3 +12,13 @@ export const INITIAL_FORM = {
   startDate: null,
   endDate: null,
 };
+
+export const TABLE_HEADER = [
+  '이름',
+  '방문지',
+  '사업명',
+  '업무',
+  '차량',
+  '비고',
+  '',
+];

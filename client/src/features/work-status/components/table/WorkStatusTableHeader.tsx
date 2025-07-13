@@ -1,11 +1,11 @@
 import { TableCell, TableHead, TableRow } from '@mui/material';
-import { employeeHeaders } from '../../../../constants/headers';
+import { TABLE_HEADER } from '../../constants/workStatus';
 
 export default function WorkStatusTableHeader() {
   return (
     <TableHead>
       <TableRow>
-        {employeeHeaders.map((item, index) => (
+        {TABLE_HEADER.map((item, index) => (
           <TableCell
             key={index}
             sx={{

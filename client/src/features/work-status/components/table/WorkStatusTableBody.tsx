@@ -6,7 +6,6 @@ import {
   Tooltip,
 } from '@mui/material';
 import { FileText } from 'lucide-react';
-import type { WorkStatus } from '../../../../types/work';
 import {
   sortWorkStatus,
   getRowSpans,
@@ -22,6 +21,7 @@ import {
 } from '../../styles/workStatusTableStyles';
 import ActionButtons from '../../../../components/common/ActionButtons';
 import { useWorkStatusStore } from '../../stores/useWorkStatusStore';
+import type { WorkStatus } from '../../types/workStatus';
 
 interface Props {
   works: WorkStatus[];

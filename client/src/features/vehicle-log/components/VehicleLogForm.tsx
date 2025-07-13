@@ -38,7 +38,7 @@ export default function VehiclelogForm() {
     if (error) toast.error(error);
 
     const username = formatUsernames(selectedUsernames);
-    add.mutate({ ...form, username });
+    add.mutate({ ...form, selectedUsernames: username });
   };
   if (isVehicleLoading) {
     return <LoadingSpinner />;

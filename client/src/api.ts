@@ -40,10 +40,6 @@ export const getWorks = async () => {
 };
 
 // 차량 정보
-export const getCars = async () => {
-  const res = await api.get('/api/employee-inform/getCar');
-  return res.data.allCars || [];
-};
 
 export const getEtcNames = async () => {
   const res = await api.get('/api/employee-inform/getEtcName');
@@ -56,30 +52,10 @@ export const getDepartments = async () => {
   return res.data.allDepartments || [];
 };
 
-// 입력된 인원 상태 정보
-export const getEmployeeInform = async (date: Date) => {
-  const res = await api.get(`/api/employee-inform/getInform?date=${date}`);
-  return res.data.allInforms || [];
-};
-
 // 일일 업무 현황 정보
 export const getDailyWorks = async (date: Date) => {
   const res = await api.get(`/api/employee-inform/dailyWork?date=${date}`);
   return res.data.allDailyWorks || [];
-};
-
-export const getDrivingInform = async (
-  year: number,
-  month: number,
-  car: string
-) => {
-  if (car) {
-    const res = await api.get(
-      `/api/driving-inform/getInform?year=${year}&month=${month}&car=${car}&date=${new Date()}`
-    );
-    return res.data.allDrivingInforms || [];
-  }
-  return [];
 };
 
 // 통계: 이름 검색
@@ -121,14 +97,6 @@ export const getSchedule = async (
   return res.data.schedules || [];
 };
 
-// 차량 공지 사항
-export const getNotification = async (carId: string) => {
-  const response = await api.get(
-    `/api/driving-inform/getNotification?id=${carId}`
-  );
-  return response.data || '';
-};
-
 // 차량 정비 내역
 export const getServices = async (carId: string) => {
   const response = await api.get(
@@ -141,11 +109,6 @@ export const getServices = async (carId: string) => {
 export const getUsers = async () => {
   const response = await api.get('/api/users');
   return response.data.users || '';
-};
-
-export const checkCarSession = async () => {
-  const res = await api.get('/auth/checkCarSession');
-  return res.data;
 };
 
 // 메인화면에서 관리 버튼 눌러서 들어간 경우 check, 접근 불가 메시지만 띄워줌
@@ -197,13 +160,6 @@ export const calDay = (date: Date) => {
 export const calDayOfWeek = (date: Date) => {
   const daysOfWeek = ['일', '월', '화', '수', '목', '금', '토'];
   return daysOfWeek[date.getDay()];
-};
-
-export const calCarDay = (date: Date) => {
-  const carDate = new Date(date);
-  const month = carDate.getMonth() + 1;
-  const day = carDate.getDate();
-  return `${month}/${day}`;
 };
 
 export const extractMonthAndDay = (date: Date) => {

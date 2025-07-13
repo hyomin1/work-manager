@@ -1,6 +1,6 @@
 import type { VehicleLogForm } from '../types/vehicleLog';
 
-type FormState = VehicleLogForm;
+export type FormState = VehicleLogForm;
 
 export const initialFormState: FormState = {
   selectedDate: null,
