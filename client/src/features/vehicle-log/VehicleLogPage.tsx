@@ -1,20 +1,27 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import { calYearMonth } from '../../api';
-import Title from '../../components/layout/Title';
 import { useLocation, useNavigate } from 'react-router-dom';
-import ArrowBack from '../../components/common/ArrowBack';
-import Logout from '../auth/components/LogoutButton';
+
+import { calYearMonth } from '../../api';
 import { ROUTES } from '../../constants/constant';
-import NavigationButtons from './components/NavigationButtons';
-import DriveAlert from '../../pages/driving/components/DriveAlert';
-import useVehicleLog from './hooks/useVehicleLog';
-import useDateManager from '../../hooks/useDateManager';
 import { calculateCost } from './utils/calculateCost';
 import { checkUserPermission } from './utils/checkPermission';
+
+import useDateManager from '../../hooks/useDateManager';
+import useVehicleLog from './hooks/useVehicleLog';
+
+import Title from '../../components/layout/Title';
+import ArrowBack from '../../components/common/ArrowBack';
+import LogoutButton from '../auth/components/LogoutButton';
+import LoadingSpinner from '../../components/common/LoadingSpinner';
+
+import NavigationButtons from './components/NavigationButtons';
+import DriveAlert from '../../pages/driving/components/DriveAlert';
 import DateSelector from './components/DateSelector';
 import SelectBox from './components/SelectBox';
 import VehicleLogTable from './components/table/VehicleLogTable';
-import LoadingSpinner from '../../components/common/LoadingSpinner';
+import { useVehicleLogStore } from './stores/useVehicleLogStore';
+import VehicleLogEditModal from './components/VehicleLogEditModal';
+import DeleteBox from '../../components/common/DeleteBox';
 
 function DrivePage() {
   const navigate = useNavigate();
@@ -22,6 +29,10 @@ function DrivePage() {
 
   const [showInput, setShowInput] = useState(false);
   const [carId, setCarId] = useState('');
+  const editId = useVehicleLogStore((state) => state.editId);
+
+  const deleteId = useVehicleLogStore((state) => state.deleteId);
+  const setDeleteId = useVehicleLogStore((state) => state.setDeleteId);
 
   const { currentDate, setCurrentDate } = useDateManager();
 
@@ -29,9 +40,12 @@ function DrivePage() {
     carsQuery: { data: cars },
     vehicleLogsQuery: { data: vehicleLogs, isLoading },
     notificationQuery: { data: notification },
+    deleteLog,
   } = useVehicleLog(carId, currentDate);
 
   const cost = calculateCost(vehicleLogs);
+
+  const editVehicleLog = vehicleLogs?.find((log) => log._id === editId);
 
   useEffect(() => {
     if (state) {
@@ -54,6 +68,12 @@ function DrivePage() {
     }
   };
 
+  const handleDelete = () => {
+    deleteLog.mutate(deleteId, {
+      onSuccess: () => setDeleteId(''),
+    });
+  };
+
   const checkNotification = () => {
     checkUserPermission(navigate, ROUTES.VEHICLES.SERVICE, '권한이 없습니다.');
   };
@@ -72,7 +92,7 @@ function DrivePage() {
             calYearMonth={calYearMonth}
             category='driving'
           />
-          <Logout />
+          <LogoutButton />
         </div>
 
         <div className='mb-2 flex w-full items-center justify-between'>
@@ -112,6 +132,14 @@ function DrivePage() {
           <VehicleLogTable vehicleLogs={vehicleLogs || []} cost={cost} />
         </div>
       </div>
+      {editVehicleLog && (
+        <VehicleLogEditModal editVehicleLog={editVehicleLog} />
+      )}
+      <DeleteBox
+        open={!!deleteId}
+        onClose={() => setDeleteId('')}
+        onDelete={handleDelete}
+      />
     </div>
   );
 }

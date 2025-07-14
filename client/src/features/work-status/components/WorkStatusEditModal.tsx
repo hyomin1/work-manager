@@ -7,27 +7,28 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import 'dayjs/locale/ko';
 import { Autocomplete, TextField } from '@mui/material';
 import { X } from 'lucide-react';
-import type { EditWorkStatus, WorkStatus } from '../../../types/work';
 import LoadingSpinner from '../../../components/common/LoadingSpinner';
 import { inputStyles } from '../styles/style';
 import useWorkStatus from '../hooks/useWorkStatus';
 import useEscapeKey from '../hooks/useEscapeKey';
 import toast from 'react-hot-toast';
 import Modal from '../../../components/common/Modal';
+import type { EditWorkStatus, WorkStatus } from '../types/workStatus';
+import { useWorkStatusStore } from '../stores/useWorkStatusStore';
 dayjs.locale('ko');
 
 interface Props {
   editWork: WorkStatus;
-  setEditId: (id: string) => void;
 }
 
-export default function WorkStatusEditModal({ editWork, setEditId }: Props) {
+export default function WorkStatusEditModal({ editWork }: Props) {
   const { usernames, destinations, businesses, works, cars, isLoading } =
     useCommonData();
   const { edit } = useWorkStatus();
   const { isDaily } = editWork;
 
   const [form, setForm] = useState<EditWorkStatus>(editWork);
+  const setEditId = useWorkStatusStore((state) => state.setEditId);
 
   const onClose = () => setEditId('');
 

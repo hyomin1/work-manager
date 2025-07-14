@@ -10,6 +10,7 @@ const HEADERS = [
   '주유비',
   '하이패스',
   '기타',
+  '',
 ];
 
 export default function VehicleLogTableHeader() {

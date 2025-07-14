@@ -41,10 +41,3 @@ export function validateForm(form: VehicleLogForm & { privateCarId: string }) {
   }
   return null;
 }
-
-export function formatUsernames(
-  selectedUsernames: VehicleLogForm['selectedUsernames']
-) {
-  const usernames = selectedUsernames.filter(Boolean);
-  return usernames.join(', ');
-}

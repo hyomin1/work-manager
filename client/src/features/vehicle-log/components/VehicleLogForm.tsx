@@ -18,16 +18,15 @@ import DateSection from './section/DateSection';
 import DistanceSection from './section/DistanceSection';
 import useVehicleLog from '../hooks/useVehicleLog';
 import EtcSection from './section/EtcSection';
-import { formatUsernames, validateForm } from '../utils/formUitls';
+import { validateForm } from '../utils/formUitls';
 import toast from 'react-hot-toast';
 
 dayjs.locale('ko');
 
-export default function VehiclelogForm() {
+export default function VehicleLogForm() {
   const [form, dispatch] = useReducer(formReducer, initialFormState);
   const privateCarId = import.meta.env.VITE_PRIVATE_CAR_ID;
-  const { selectedUsernames, destination, startKM, endKM, totalKM, car, etc } =
-    form;
+  const { destination, startKM, endKM, totalKM, car, etc } = form;
 
   const { add } = useVehicleLog();
 
@@ -37,8 +36,7 @@ export default function VehiclelogForm() {
     const error = validateForm({ ...form, privateCarId });
     if (error) toast.error(error);
 
-    const username = formatUsernames(selectedUsernames);
-    add.mutate({ ...form, selectedUsernames: username });
+    add.mutate({ ...form });
   };
   if (isVehicleLoading) {
     return <LoadingSpinner />;

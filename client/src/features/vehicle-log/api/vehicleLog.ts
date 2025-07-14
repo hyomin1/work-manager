@@ -1,5 +1,5 @@
 import { api, calMonth, calYear } from '../../../api';
-import type { VehicleLogForm } from '../types/vehicleLog';
+import type { VehicleLog, VehicleLogForm } from '../types/vehicleLog';
 
 export async function getCars() {
   const res = await api.get('/api/employee-inform/getCar');
@@ -25,35 +25,26 @@ export const getNotification = async (carId: string) => {
 };
 
 export async function addVehicleLog(form: VehicleLogForm) {
-  const {
-    selectedDate,
-    selectedUsernames,
-    destination,
-    car,
-    startKM,
-    endKM,
-    totalKM,
-    fuelCost,
-    toll,
-    etc,
-  } = form;
+  const { selectedDate, selectedUsernames, destination } = form;
   const newForm = {
+    ...form,
     driveDay: selectedDate,
     username: selectedUsernames,
     drivingDestination: destination,
-    car,
-    startKM,
-    endKM,
-    totalKM,
-    fuelCost,
-    toll,
-    etc,
   };
   return await api.post('/api/driving-inform/addInform', newForm);
 }
 
+export async function editVehicleLog(form: VehicleLog) {
+  return await api.put('/api/driving-inform/editInform', form);
+}
+
+export async function deleteVehicleLog(id: string) {
+  return await api.delete(`/api/driving-inform/removeInform/${id}`);
+}
+
 export const checkCarSession = async () => {
   const res = await api.get('/auth/checkCarSession');
-  console.log(res.data);
+
   return res.data;
 };

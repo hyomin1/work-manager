@@ -9,9 +9,9 @@ import {
 interface Props {
   open: boolean;
   onClose: () => void;
-  handleDelete: () => void;
+  onDelete: () => void;
 }
-export default function DeleteBox({ open, onClose, handleDelete }: Props) {
+export default function DeleteBox({ open, onClose, onDelete }: Props) {
   return (
     <Dialog open={open} onClose={onClose}>
       <DialogTitle className='text-red-600'>삭제 확인</DialogTitle>
@@ -20,7 +20,7 @@ export default function DeleteBox({ open, onClose, handleDelete }: Props) {
       </DialogContent>
       <DialogActions>
         <Button
-          onClick={handleDelete}
+          onClick={onDelete}
           color='error'
           variant='contained'
           className='hover:opacity-35'

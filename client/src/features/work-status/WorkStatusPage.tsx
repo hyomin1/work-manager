@@ -20,7 +20,6 @@ function EmployeePage() {
   } = useWorkStatus(currentDate);
 
   const editId = useWorkStatusStore((state) => state.editId);
-  const setEditId = useWorkStatusStore((state) => state.setEditId);
   const editWork = works?.find((item) => item._id === editId);
 
   const deleteId = useWorkStatusStore((state) => state.deleteId);
@@ -59,13 +58,11 @@ function EmployeePage() {
 
       <WorkStatusTable works={works || []} />
 
-      {editId && editWork && (
-        <WorkStatusEditModal editWork={editWork} setEditId={setEditId} />
-      )}
+      {editWork && <WorkStatusEditModal editWork={editWork} />}
       <DeleteBox
         open={!!deleteId}
         onClose={() => setDeleteId('')}
-        handleDelete={handleDelete}
+        onDelete={handleDelete}
       />
     </PageLayout>
   );

@@ -20,7 +20,7 @@ interface BaseVehicleLog {
 
 export interface VehicleLogForm extends BaseVehicleLog {
   selectedDate: Date | null;
-  selectedUsernames: string;
+  selectedUsernames: string[];
   car: string;
   destination: string;
 }
@@ -30,7 +30,7 @@ export interface VehicleLog extends BaseVehicleLog {
   isOwner: boolean;
   driveDay: Date;
   createdAt: Date;
-  username: string;
+  username: string[];
   drivingDestination: string;
 }
 export interface Cost {

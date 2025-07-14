@@ -1,9 +1,11 @@
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '../../../constants/constant';
 import {
   addVehicleLog,
+  deleteVehicleLog,
+  editVehicleLog,
   getCars,
   getNotification,
   getVehicleLogs,
@@ -12,7 +14,7 @@ import type { Car, VehicleLog, VehicleLogForm } from '../types/vehicleLog';
 
 export default function useVehicleLog(carId?: string, currentDate?: Date) {
   const navigate = useNavigate();
-
+  const queryClient = useQueryClient();
   // 전체 차량정보조회
   const carsQuery = useQuery<Car[]>({
     queryKey: ['cars'],
@@ -50,6 +52,8 @@ export default function useVehicleLog(carId?: string, currentDate?: Date) {
     mutationFn: (form: VehicleLogForm) => addVehicleLog(form),
     onSuccess: (_, variables) => {
       toast.success('운행이 등록되었습니다.');
+      queryClient.invalidateQueries({ queryKey: ['vehicleLog'] });
+
       navigate(ROUTES.VEHICLES.LIST, {
         state: { car: variables.car },
       });
@@ -59,5 +63,34 @@ export default function useVehicleLog(carId?: string, currentDate?: Date) {
     },
   });
 
-  return { carsQuery, vehicleLogsQuery, notificationQuery, add };
+  const edit = useMutation({
+    mutationFn: (form: VehicleLog) => editVehicleLog(form),
+    onSuccess: () => {
+      toast.success('운행이 수정되었습니다.');
+      queryClient.invalidateQueries({ queryKey: ['vehicleLog'] });
+    },
+    onError: () => {
+      toast.error('운행 수정에 실패했습니다.');
+    },
+  });
+
+  const deleteLog = useMutation({
+    mutationFn: (id: string) => deleteVehicleLog(id),
+    onSuccess: () => {
+      toast.success('운행기록이 삭제 되었습니다.');
+      queryClient.invalidateQueries({ queryKey: ['vehicleLog'] });
+    },
+    onError: () => {
+      toast.error('운행 기록 삭제에 실패했습니다.');
+    },
+  });
+
+  return {
+    carsQuery,
+    vehicleLogsQuery,
+    notificationQuery,
+    add,
+    edit,
+    deleteLog,
+  };
 }
