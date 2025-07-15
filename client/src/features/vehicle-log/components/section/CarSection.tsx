@@ -4,7 +4,7 @@ import SectionTitle from '../../../../components/common/SectionTitle';
 import { Autocomplete, Grid, TextField } from '@mui/material';
 import type { Car } from '../../../work-status/types/workStatus';
 import type { FormAction } from '../../reducers/vehicleLogReducer';
-import { inputStyles } from '../../../work-status/styles/style';
+import { inputStyles } from '../../../../styles/style';
 
 interface Props {
   cars: Car[];

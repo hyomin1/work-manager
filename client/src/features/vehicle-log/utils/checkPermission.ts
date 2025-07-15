@@ -2,14 +2,13 @@ import toast from 'react-hot-toast';
 import { checkCarSession } from '../api/vehicleLog';
 
 export async function checkUserPermission(
-  navigate: (route: string) => void,
-  route: string,
+  navigate: () => void,
   fallbackMsg = '권한이 없습니다.'
 ) {
   try {
     const { isUser } = await checkCarSession();
     if (isUser) {
-      navigate(route);
+      navigate();
     } else {
       toast.error(fallbackMsg);
     }

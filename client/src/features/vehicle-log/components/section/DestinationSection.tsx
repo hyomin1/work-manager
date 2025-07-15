@@ -3,7 +3,7 @@ import React from 'react';
 import SectionTitle from '../../../../components/common/SectionTitle';
 import { MapPin } from 'lucide-react';
 import type { FormAction } from '../../reducers/vehicleLogReducer';
-import { inputStyles } from '../../../work-status/styles/style';
+import { inputStyles } from '../../../../styles/style';
 
 interface Props {
   destination: string;

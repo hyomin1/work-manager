@@ -43,8 +43,18 @@ export async function deleteVehicleLog(id: string) {
   return await api.delete(`/api/driving-inform/removeInform/${id}`);
 }
 
-export const checkCarSession = async () => {
-  const res = await api.get('/auth/checkCarSession');
+export async function addVehicleNotice(carId: string, notification: string) {
+  return await api.post('/api/driving-inform/addNotification', {
+    id: carId,
+    notification,
+  });
+}
 
-  return res.data;
+export async function deleteVehicleNotice(carId: string) {
+  return await api.delete(`/api/driving-inform/removeNotification/${carId}`);
+}
+
+export const checkCarSession = async () => {
+  const { data } = await api.get('/auth/checkCarSession');
+  return data;
 };

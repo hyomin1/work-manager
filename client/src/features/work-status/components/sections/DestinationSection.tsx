@@ -2,7 +2,7 @@ import React from 'react';
 import type { Destination } from '../../types/workStatus';
 import type { FormAction, FormState } from '../../reducers/workStatusReducer';
 import { Autocomplete, Grid, TextField } from '@mui/material';
-import { inputStyles } from '../../styles/style';
+import { inputStyles } from '../../../../styles/style';
 import { MapPin } from 'lucide-react';
 import SectionTitle from '../../../../components/common/SectionTitle';
 

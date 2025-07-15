@@ -1,106 +1,71 @@
-import React, { useState } from 'react';
-import { api } from '../../../api';
-import { QueryClient } from '@tanstack/react-query';
+import React, { useEffect, useState } from 'react';
 import { Modal, Box, TextField } from '@mui/material';
 import { Megaphone, XIcon, Trash2 } from 'lucide-react';
+import { useVehicleLogStore } from '../stores/useVehicleLogStore';
+import { boxStyle, inputStyles } from '../../../styles/style';
+import useVehicleLog from '../hooks/useVehicleLog';
 
-interface IAddData {
-  setIsAdding: React.Dispatch<React.SetStateAction<boolean>>;
-  id: string;
-  queryClient: QueryClient;
-  notice: string;
+interface Props {
+  carId: string;
+  notice?: string;
 }
 
-const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 500,
-  bgcolor: 'background.paper',
-  borderRadius: '24px',
-  boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
-  p: 0,
-  outline: 'none',
-};
-
-const inputStyle = {
-  '& .MuiOutlinedInput-root': {
-    borderRadius: '12px',
-    backgroundColor: '#f8fafc',
-    '&:hover fieldset': {
-      borderColor: '#3b82f6',
-    },
-    '&.Mui-focused fieldset': {
-      borderColor: '#3b82f6',
-    },
-  },
-  '& .MuiInputLabel-root.Mui-focused': {
-    color: '#3b82f6',
-  },
-};
-
-function AddDriveNotification({
-  setIsAdding,
-  id,
-  queryClient,
-  notice,
-}: IAddData) {
+export default function VehicleNoticeFormModal({ carId, notice }: Props) {
   const [notification, setNotification] = useState(notice);
 
-  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const isisNoticeModalOpen = useVehicleLogStore(
+    (state) => state.isNoticeModalOpen
+  );
+  const { addNotice, deleteNotice } = useVehicleLog();
+  const setIsNoticeModalOpen = useVehicleLogStore(
+    (state) => state.setIsNoticeModalOpen
+  );
+  const onClose = () => setIsNoticeModalOpen(false);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    try {
-      const response = await api.post('/api/driving-inform/addNotification', {
-        id,
-        notification,
-      });
-      if (response.status === 201) {
-        setIsAdding(false);
-        queryClient.invalidateQueries({ queryKey: ['car', 1] });
+    addNotice.mutate(
+      { carId, notification },
+      {
+        onSuccess: onClose,
       }
-    } catch (error) {
-      console.error('Error adding notification:', error);
-    }
+    );
   };
 
   const handleDelete = async () => {
+    // window.confirm 대체하기
     if (window.confirm('공지사항을 삭제하시겠습니까?')) {
-      try {
-        const response = await axiosReq.delete(
-          `/api/driving-inform/removeNotification/${id}`
-        );
-        if (response.status === 200) {
-          setIsAdding(false);
-          queryClient.invalidateQueries({ queryKey: ['car', 1] });
-        }
-      } catch (error) {
-        console.error('Error deleting notification:', error);
-      }
+      deleteNotice.mutate(carId, {
+        onSuccess: onClose,
+      });
     }
   };
 
+  useEffect(() => {
+    setNotification(notice || '');
+  }, [notice, isisNoticeModalOpen]);
+
   return (
     <Modal
-      open={true}
-      onClose={() => setIsAdding(false)}
+      open={isisNoticeModalOpen}
+      onClose={onClose}
       className='backdrop-blur-sm'
     >
-      <Box sx={style}>
+      <Box sx={boxStyle}>
         <div className='relative rounded-t-[24px] bg-gradient-to-r from-blue-500 to-blue-600 px-6 py-4'>
           <div className='flex items-center space-x-3'>
             <Megaphone className='h-6 w-6 text-white' />
             <h2 className='text-xl font-bold text-white'>공지사항</h2>
           </div>
           <button
-            onClick={() => setIsAdding(false)}
+            onClick={onClose}
             className='absolute right-4 top-4 text-white/80 transition-colors hover:text-white'
           >
             <XIcon className='h-5 w-5' />
           </button>
         </div>
 
-        <form onSubmit={onSubmit} className='space-y-6 p-6'>
+        <form onSubmit={handleSubmit} className='space-y-6 p-6'>
           <TextField
             fullWidth
             multiline
@@ -108,7 +73,7 @@ function AddDriveNotification({
             placeholder='공지사항을 입력하세요'
             value={notification}
             onChange={(e) => setNotification(e.target.value)}
-            sx={inputStyle}
+            sx={inputStyles}
           />
 
           <div className='flex items-center justify-between pt-2'>
@@ -124,7 +89,7 @@ function AddDriveNotification({
             <div className='flex space-x-3'>
               <button
                 type='button'
-                onClick={() => setIsAdding(false)}
+                onClick={onClose}
                 className='rounded-xl border border-gray-200 px-6 py-2.5 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-200'
               >
                 취소
@@ -142,5 +107,3 @@ function AddDriveNotification({
     </Modal>
   );
 }
-
-export default AddDriveNotification;

@@ -1,10 +1,8 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 import { calYearMonth } from '../../api';
-import { ROUTES } from '../../constants/constant';
 import { calculateCost } from './utils/calculateCost';
-import { checkUserPermission } from './utils/checkPermission';
 
 import useDateManager from '../../hooks/useDateManager';
 import useVehicleLog from './hooks/useVehicleLog';
@@ -15,16 +13,16 @@ import LogoutButton from '../auth/components/LogoutButton';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 
 import NavigationButtons from './components/NavigationButtons';
-import DriveAlert from '../../pages/driving/components/DriveAlert';
 import DateSelector from './components/DateSelector';
 import SelectBox from './components/SelectBox';
 import VehicleLogTable from './components/table/VehicleLogTable';
 import { useVehicleLogStore } from './stores/useVehicleLogStore';
 import VehicleLogEditModal from './components/VehicleLogEditModal';
 import DeleteBox from '../../components/common/DeleteBox';
+import VehicleNoticeBanner from './components/VehicleNoticeBanner';
+import VehicleNoticeFormModal from './components/VehicleNoticeFormModal';
 
 function DrivePage() {
-  const navigate = useNavigate();
   const { state } = useLocation();
 
   const [showInput, setShowInput] = useState(false);
@@ -74,10 +72,6 @@ function DrivePage() {
     });
   };
 
-  const checkNotification = () => {
-    checkUserPermission(navigate, ROUTES.VEHICLES.SERVICE, '권한이 없습니다.');
-  };
-
   if (isLoading) return <LoadingSpinner />;
 
   return (
@@ -119,15 +113,12 @@ function DrivePage() {
             currentDate={currentDate || new Date()}
             cost={cost}
           />
-          <div className='print-hidden border'>
-            {carId.length > 0 && (
-              <DriveAlert
-                notification={notification?.notification || ''}
-                onClick={checkNotification}
-                type=''
-              />
-            )}
-          </div>
+
+          {!!carId && (
+            <VehicleNoticeBanner
+              notification={notification?.notification || ''}
+            />
+          )}
 
           <VehicleLogTable vehicleLogs={vehicleLogs || []} cost={cost} />
         </div>
@@ -139,6 +130,10 @@ function DrivePage() {
         open={!!deleteId}
         onClose={() => setDeleteId('')}
         onDelete={handleDelete}
+      />
+      <VehicleNoticeFormModal
+        carId={carId}
+        notice={notification?.notification}
       />
     </div>
   );

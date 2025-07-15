@@ -1,18 +1,16 @@
-import React, { type SetStateAction } from 'react';
+import { useVehicleLogStore } from '../stores/useVehicleLogStore';
 
 interface Props {
   notification: string;
-  onClick?: () => void;
-  setIsAdding?: React.Dispatch<SetStateAction<boolean>>;
-  type: string;
 }
 
-const DriveAlert = ({ notification, onClick, type, setIsAdding }: Props) => {
+export default function VehicleNoticeBanner({ notification }: Props) {
+  const setIsNoticeModalOpen = useVehicleLogStore(
+    (state) => state.setIsNoticeModalOpen
+  );
   return (
     <div
-      onClick={
-        type === 'carService' && setIsAdding ? () => setIsAdding(true) : onClick
-      }
+      onClick={() => setIsNoticeModalOpen(true)}
       className='group relative mb-4 cursor-pointer overflow-hidden rounded-lg bg-gradient-to-r from-blue-50 to-indigo-50 p-4 shadow-sm transition-all duration-300 hover:shadow-md'
     >
       <div className='flex items-center gap-3'>
@@ -55,6 +53,4 @@ const DriveAlert = ({ notification, onClick, type, setIsAdding }: Props) => {
       <div className='absolute inset-x-0 bottom-0 h-0.5 bg-gradient-to-r from-blue-300 to-indigo-300 transition-transform duration-300 group-hover:scale-100' />
     </div>
   );
-};
-
-export default DriveAlert;
+}

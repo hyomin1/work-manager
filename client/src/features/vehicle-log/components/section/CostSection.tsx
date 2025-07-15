@@ -1,5 +1,5 @@
 import { Grid, TextField } from '@mui/material';
-import { inputStyles } from '../../../work-status/styles/style';
+import { inputStyles } from '../../../../styles/style';
 
 interface Props {
   label: string;

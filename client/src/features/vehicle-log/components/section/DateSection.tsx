@@ -4,7 +4,7 @@ import SectionTitle from '../../../../components/common/SectionTitle';
 import { Calendar } from 'lucide-react';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import { inputStyles } from '../../../work-status/styles/style';
+import { inputStyles } from '../../../../styles/style';
 import type { FormAction } from '../../reducers/vehicleLogReducer';
 
 interface Props {

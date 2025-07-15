@@ -12,14 +12,15 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { Pencil } from 'lucide-react';
 import dayjs from 'dayjs';
-import AddDriveNotification from '../components/AddDriveNotification';
+import AddDriveNotification from '../../../features/vehicle-log/components/VehicleNoticeFormModal';
 import { useLocation } from 'react-router-dom';
 import useDrivingStore from '../../../stores/drivingStore';
-import DriveAlert from '../components/DriveAlert';
+import DriveAlert from '../../../features/vehicle-log/components/VehicleNoticeBanner';
 import NavButton from '../../../components/common/NavButton';
 import AddService from './AddService';
 import type { Car } from '../../../features/vehicle-log/types/vehicleLog';
 import { getCars } from '../../../features/vehicle-log/api/vehicleLog';
+import VehicleNoticeBanner from '../../../features/vehicle-log/components/VehicleNoticeBanner';
 
 dayjs.locale('ko');
 
@@ -212,11 +213,7 @@ function ServiceTab() {
       </div>
       <div>
         {carId.length > 0 && (
-          <DriveAlert
-            notification={notification || ''}
-            onClick={() => setIsAdding(true)}
-            type='carService'
-          />
+          <VehicleNoticeBanner notification={notification || ''} />
         )}
         {isAdding && (
           <AddDriveNotification

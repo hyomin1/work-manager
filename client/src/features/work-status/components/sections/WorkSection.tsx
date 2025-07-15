@@ -3,7 +3,7 @@ import React from 'react';
 import SectionTitle from '../../../../components/common/SectionTitle';
 import { ClipboardList } from 'lucide-react';
 import type { FormAction, FormState } from '../../reducers/workStatusReducer';
-import { inputStyles } from '../../styles/style';
+import { inputStyles } from '../../../../styles/style';
 import type { Work } from '../../types/workStatus';
 
 interface Props {

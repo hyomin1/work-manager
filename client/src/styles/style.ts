@@ -20,3 +20,16 @@ export const inputStyles = {
     },
   },
 };
+
+export const boxStyle = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 500,
+  bgcolor: 'background.paper',
+  borderRadius: '24px',
+  boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
+  p: 0,
+  outline: 'none',
+};

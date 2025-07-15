@@ -12,7 +12,7 @@ import { Calendar } from 'lucide-react';
 import SectionTitle from '../../../../components/common/SectionTitle';
 import 'dayjs/locale/ko';
 import type { FormAction } from '../../reducers/workStatusReducer';
-import { inputStyles } from '../../styles/style';
+import { inputStyles } from '../../../../styles/style';
 
 interface Props {
   isDaily: number;

@@ -1,7 +1,7 @@
 import { Autocomplete, Grid, TextField } from '@mui/material';
 import SectionTitle from '../../../../components/common/SectionTitle';
 import { User } from 'lucide-react';
-import { inputStyles } from '../../../work-status/styles/style';
+import { inputStyles } from '../../../../styles/style';
 import type { Username } from '../../../work-status/types/workStatus';
 import type { FormAction } from '../../reducers/vehicleLogReducer';
 

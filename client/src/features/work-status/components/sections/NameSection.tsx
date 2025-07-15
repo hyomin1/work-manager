@@ -4,7 +4,7 @@ import { Autocomplete, Grid, TextField } from '@mui/material';
 import SectionTitle from '../../../../components/common/SectionTitle';
 import { User } from 'lucide-react';
 import type { Username } from '../../types/workStatus';
-import { inputStyles } from '../../styles/style';
+import { inputStyles } from '../../../../styles/style';
 
 interface Props {
   usernames: Username[];

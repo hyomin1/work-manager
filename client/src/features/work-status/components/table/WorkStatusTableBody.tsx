@@ -18,7 +18,7 @@ import {
   LAST_CELL_STYLE,
   REMARK_BUTTON_STYLE,
   TOOLTIP_STYLE,
-} from '../../styles/workStatusTableStyles';
+} from '../../../../styles/workStatusTableStyles';
 import ActionButtons from '../../../../components/common/ActionButtons';
 import { useWorkStatusStore } from '../../stores/useWorkStatusStore';
 import type { WorkStatus } from '../../types/workStatus';

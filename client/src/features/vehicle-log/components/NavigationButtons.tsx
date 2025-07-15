@@ -1,4 +1,3 @@
-import { Pencil, Settings, Sheet, Users, Wrench } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '../../../constants/constant';
 import NavButton from '../../../components/common/NavButton';
@@ -6,6 +5,7 @@ import { authApi } from '../../auth/api/auth';
 import type { Cost, VehicleLog } from '../types/vehicleLog';
 import { checkUserPermission } from '../utils/checkPermission';
 import toast from 'react-hot-toast';
+import { NAV_ITEMS } from '../constants/vehicleLog';
 
 interface Props {
   vehicleLogs: VehicleLog[];
@@ -23,74 +23,49 @@ export default function NavigationButtons({
   cost,
 }: Props) {
   const navigate = useNavigate();
-  const onClickAdmin = async () => {
-    const { status } = await authApi.checkAdminSession();
-    if (status === 200) {
-      navigate(ROUTES.ADMIN.SETTINGS);
-    }
-  };
 
-  const checkUser = async () => {
-    checkUserPermission(navigate, ROUTES.WORKS.LIST);
-  };
-
-  const checkCarService = () =>
-    checkUserPermission(navigate, ROUTES.VEHICLES.SERVICE);
-
-  const checkUserInput = async () => {
-    checkUserPermission(navigate, ROUTES.VEHICLES.CREATE);
-  };
-
-  const handleExcelDownload = async () => {
-    try {
-      const module = await import('../utils/downloadExcel');
-      const downloadExcel = module.default;
-
-      downloadExcel(vehicleLogs || [], currentDate || null, car, cost);
-    } catch {
-      toast.error('엑셀 다운로드 중 오류 발생:');
-    }
+  const onClickHandler = {
+    user: (route?: string) => {
+      if (!route) return;
+      checkUserPermission(() => navigate(route));
+    },
+    excel: async () => {
+      try {
+        const module = await import('../utils/downloadExcel');
+        const downloadExcel = module.default;
+        downloadExcel(vehicleLogs || [], currentDate || null, car, cost);
+      } catch {
+        toast.error('엑셀 다운로드 중 오류 발생:');
+      }
+    },
+    admin: async () => {
+      const { status } = await authApi.checkAdminSession();
+      if (status === 200) {
+        navigate(ROUTES.ADMIN.SETTINGS);
+      }
+    },
   };
 
   return (
-    <div className='print-hidden mb-8 flex w-full items-center rounded-lg bg-white/90 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.1)] backdrop-blur-sm transition-all duration-500 sm:h-auto sm:flex-col md:justify-between'>
-      <div className='flex flex-1 items-center justify-between sm:w-full sm:flex-col sm:gap-2 sm:p-2 md:w-[50%] md:p-4'>
-        <div className='flex w-full items-center justify-between sm:mb-2 sm:w-full sm:flex-col sm:gap-2'>
-          <div className='flex sm:w-full'>
-            <NavButton
-              icon={Pencil}
-              label='입력'
-              onClick={checkUserInput}
-              variant='blue'
-            />
-            <NavButton
-              icon={Users}
-              label='근무'
-              onClick={checkUser}
-              variant='green'
-            />
-          </div>
-          <div className='flex sm:w-full'>
-            {!!carId && (
+    <div
+      className={`mb-8 w-full rounded-lg border-0 bg-white/90 p-4 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.1)] backdrop-blur-sm transition-all duration-500 sm:p-3`}
+    >
+      <div className='w-full'>
+        <div className='flex items-center justify-between gap-6 sm:flex-col sm:gap-3'>
+          <div className='flex flex-1 sm:mb-2 sm:w-full sm:gap-2'>
+            {NAV_ITEMS.filter((item) => item.condition(carId)).map((item) => (
               <NavButton
-                icon={Sheet}
-                label='엑셀'
-                onClick={handleExcelDownload}
-                variant='green'
+                key={item.label}
+                icon={item.icon}
+                label={item.label}
+                variant={item.variant}
+                onClick={() => {
+                  if (item.onClickType === 'excel') onClickHandler.excel();
+                  else if (item.onClickType === 'admin') onClickHandler.admin();
+                  else onClickHandler.user(item.route);
+                }}
               />
-            )}
-            <NavButton
-              icon={Wrench}
-              label='점검'
-              onClick={checkCarService}
-              variant='blue'
-            />
-            <NavButton
-              icon={Settings}
-              label='설정'
-              onClick={onClickAdmin}
-              variant='green'
-            />
+            ))}
           </div>
         </div>
 

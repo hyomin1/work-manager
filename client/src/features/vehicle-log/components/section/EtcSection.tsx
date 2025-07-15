@@ -2,7 +2,7 @@ import { Autocomplete, Grid, TextField } from '@mui/material';
 import React from 'react';
 import type { Etc } from '../../types/vehicleLog';
 import type { FormAction, FormState } from '../../reducers/vehicleLogReducer';
-import { inputStyles } from '../../../work-status/styles/style';
+import { inputStyles } from '../../../../styles/style';
 
 interface Props {
   etcList: Etc[];

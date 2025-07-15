@@ -3,7 +3,7 @@ import type { FormAction, FormState } from '../../reducers/workStatusReducer';
 import type { Business } from '../../types/workStatus';
 import SectionTitle from '../../../../components/common/SectionTitle';
 import { Autocomplete, Grid, TextField } from '@mui/material';
-import { inputStyles } from '../../styles/style';
+import { inputStyles } from '../../../../styles/style';
 import { Briefcase } from 'lucide-react';
 
 interface Props {

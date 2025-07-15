@@ -6,7 +6,7 @@ import { LocalizationProvider, MobileDatePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import 'dayjs/locale/ko';
 import { Autocomplete, TextField } from '@mui/material';
-import { inputStyles } from '../../work-status/styles/style';
+import { inputStyles } from '../../../styles/style';
 import type { VehicleLog } from '../types/vehicleLog';
 import { useVehicleLogStore } from '../stores/useVehicleLogStore';
 import useEscapeKey from '../../work-status/hooks/useEscapeKey';

@@ -5,6 +5,8 @@ interface VehicleLogStore {
   setEditId: (editId: string) => void;
   deleteId: string;
   setDeleteId: (deleteId: string) => void;
+  isNoticeModalOpen: boolean;
+  setIsNoticeModalOpen: (isNoticeModalOpen: boolean) => void;
 }
 
 export const useVehicleLogStore = create<VehicleLogStore>((set) => ({
@@ -12,4 +14,7 @@ export const useVehicleLogStore = create<VehicleLogStore>((set) => ({
   setEditId: (editId) => set({ editId }),
   deleteId: '',
   setDeleteId: (deleteId) => set({ deleteId }),
+  isNoticeModalOpen: false,
+  setIsNoticeModalOpen: (isNoticeModalOpen: boolean) =>
+    set({ isNoticeModalOpen }),
 }));

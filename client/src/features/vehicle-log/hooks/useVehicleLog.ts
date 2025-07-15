@@ -4,7 +4,9 @@ import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '../../../constants/constant';
 import {
   addVehicleLog,
+  addVehicleNotice,
   deleteVehicleLog,
+  deleteVehicleNotice,
   editVehicleLog,
   getCars,
   getNotification,
@@ -85,6 +87,35 @@ export default function useVehicleLog(carId?: string, currentDate?: Date) {
     },
   });
 
+  const addNotice = useMutation({
+    mutationFn: ({
+      carId,
+      notification,
+    }: {
+      carId: string;
+      notification: string | undefined;
+    }) => addVehicleNotice(carId, notification || ''),
+    onSuccess: (_, { carId }) => {
+      toast.success('공지사항이 등록 되었습니다.');
+
+      queryClient.invalidateQueries({ queryKey: ['notification', carId] });
+    },
+    onError: () => {
+      toast.error('공지사항 등록에 실패했습니다.');
+    },
+  });
+
+  const deleteNotice = useMutation({
+    mutationFn: (carId: string) => deleteVehicleNotice(carId),
+    onSuccess: (_, carId) => {
+      toast.success('공지사항이 삭제 되었습니다.');
+      queryClient.invalidateQueries({ queryKey: ['notification', carId] });
+    },
+    onError: () => {
+      toast.error('공지사항 삭제에 실패했습니다.');
+    },
+  });
+
   return {
     carsQuery,
     vehicleLogsQuery,
@@ -92,5 +123,7 @@ export default function useVehicleLog(carId?: string, currentDate?: Date) {
     add,
     edit,
     deleteLog,
+    addNotice,
+    deleteNotice,
   };
 }
