@@ -16,9 +16,9 @@ export const ROUTES = {
   },
 
   VEHICLES: {
-    LIST: '/vehicles',
-    CREATE: '/vehicles/create',
-    SERVICE: '/vehicles/service',
+    LIST: '/vehicleLog',
+    CREATE: '/vehicleLog/create',
+    SERVICE: '/vehicleLog/maintenance',
   },
 
   SCHEDULE: '/schedule',

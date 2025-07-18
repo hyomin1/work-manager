@@ -5,7 +5,7 @@ import { calYearMonth } from '../../api';
 import { calculateCost } from './utils/calculateCost';
 
 import useDateManager from '../../hooks/useDateManager';
-import useVehicleLog from './hooks/useVehicleLog';
+import useVehicleLog from './hooks/useVehicle';
 
 import Title from '../../components/layout/Title';
 import ArrowBack from '../../components/common/ArrowBack';
@@ -19,8 +19,8 @@ import VehicleLogTable from './components/table/VehicleLogTable';
 import { useVehicleLogStore } from './stores/useVehicleLogStore';
 import VehicleLogEditModal from './components/VehicleLogEditModal';
 import DeleteBox from '../../components/common/DeleteBox';
-import VehicleNoticeBanner from './components/VehicleNoticeBanner';
-import VehicleNoticeFormModal from './components/VehicleNoticeFormModal';
+import VehicleNoticeBanner from './components/notice/VehicleNoticeBanner';
+import VehicleNoticeFormModal from './components/notice/VehicleNoticeFormModal';
 
 function DrivePage() {
   const { state } = useLocation();
@@ -33,7 +33,6 @@ function DrivePage() {
   const setDeleteId = useVehicleLogStore((state) => state.setDeleteId);
 
   const { currentDate, setCurrentDate } = useDateManager();
-
   const {
     carsQuery: { data: cars },
     vehicleLogsQuery: { data: vehicleLogs, isLoading },
@@ -49,7 +48,7 @@ function DrivePage() {
     if (state) {
       setCarId(state.car);
     }
-  }, [state, setCarId]);
+  }, [state]);
 
   const selectedCar = useMemo(() => {
     return cars?.find((car) => car._id === carId);
@@ -133,7 +132,7 @@ function DrivePage() {
       />
       <VehicleNoticeFormModal
         carId={carId}
-        notice={notification?.notification}
+        notification={notification?.notification}
       />
     </div>
   );

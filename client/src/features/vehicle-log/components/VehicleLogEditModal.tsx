@@ -11,7 +11,7 @@ import type { VehicleLog } from '../types/vehicleLog';
 import { useVehicleLogStore } from '../stores/useVehicleLogStore';
 import useEscapeKey from '../../work-status/hooks/useEscapeKey';
 import LoadingSpinner from '../../../components/common/LoadingSpinner';
-import useVehicleLog from '../hooks/useVehicleLog';
+import useVehicleLog from '../hooks/useVehicle';
 import toast from 'react-hot-toast';
 import Modal from '../../../components/common/Modal';
 import { FIELDS } from '../constants/vehicleLog';

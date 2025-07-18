@@ -1,4 +1,4 @@
-import { axiosIP, axiosDomain } from './axios';
+import { axiosIP, axiosDomain } from './api/axios';
 
 // 데이터 가져오는 함수 모음
 // 현재 URL 정보 get ex) http://localhost:3000/login -> http://localhost:3000
@@ -97,14 +97,6 @@ export const getSchedule = async (
   return res.data.schedules || [];
 };
 
-// 차량 정비 내역
-export const getServices = async (carId: string) => {
-  const response = await api.get(
-    `/api/driving-inform/getServices?carId=${carId}`
-  );
-  return response.data.services || [];
-};
-
 // 유저 목록 (승인된)
 export const getUsers = async () => {
   const response = await api.get('/api/users');
@@ -173,14 +165,6 @@ export const calStatDay = (date: Date) => {
   const month = localDate.getMonth() + 1;
   const day = localDate.getDate();
   return `${month}/${day}`;
-};
-
-export const serviceDay = (newDate: Date) => {
-  const date = new Date(newDate);
-  const year = date.getFullYear().toString().slice(-2);
-  const month = date.getMonth() + 1;
-  const day = date.getDate();
-  return `${year}.${month}.${day}`;
 };
 
 export const dailyWorkDay = (newDate: Date) => {

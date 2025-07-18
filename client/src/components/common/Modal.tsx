@@ -1,4 +1,5 @@
 import React from 'react';
+import { createPortal } from 'react-dom';
 
 interface Props {
   children: React.ReactNode;
@@ -8,7 +9,7 @@ interface Props {
 export default function Modal({ children, onClose }: Props) {
   const modalRoot = document.getElementById('modal-root');
   if (!modalRoot) return null;
-  return (
+  return createPortal(
     <div
       onClick={onClose}
       className='fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-gray-900/40 px-4 backdrop-blur-[2px]'
@@ -19,6 +20,7 @@ export default function Modal({ children, onClose }: Props) {
       >
         {children}
       </div>
-    </div>
+    </div>,
+    modalRoot
   );
 }

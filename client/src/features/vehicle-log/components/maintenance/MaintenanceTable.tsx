@@ -6,94 +6,36 @@ import {
   TableRow,
   TableBody,
 } from '@mui/material';
-import { carServiceHeader } from '../../../constants/headers';
-import { api, serviceDay } from '../../../api';
+import { carServiceHeader } from '../../../../constants/headers';
 import { Edit, Trash2 } from 'lucide-react';
-import ServiceEdit from './ServiceEdit';
-import { useState } from 'react';
-import type { ICarService } from '../../../interfaces/interface';
+import type { Maintenance } from '../../types/vehicleLog';
+import useVehicleLog from './../../hooks/useVehicle';
+import { maintenanceTableStyles } from '../../../../styles/style';
+import { serviceDay } from '../../utils/formatDate';
 
-interface ITableBody {
-  services: ICarService[];
-  refetch: () => void;
+interface Props {
+  services: Maintenance[];
+  setEditId: (editId: string) => void;
 }
 
-const tableStyles = {
-  tableContainer: {
-    boxShadow:
-      '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
-    borderRadius: '16px',
-    backgroundColor: '#ffffff',
-    overflow: 'auto', // overflow: hidden에서 auto로 변경
-    minWidth: '100%', // 최소 너비 설정
-    maxHeight: 'calc(100vh - 300px)', // 최대 높이 설정
-  },
-  headerCell: {
-    backgroundColor: '#f8fafc',
-    color: '#475569',
-    fontSize: '0.875rem',
-    fontWeight: '600',
-    padding: '16px',
-    whiteSpace: 'nowrap',
-    borderBottom: '1px solid #e2e8f0',
-    minWidth: '100px', // 최소 너비 설정
-    '&:first-of-type': {
-      // 첫 번째 셀
-      minWidth: '120px',
-    },
-    '&:last-child': {
-      // 마지막 셀 (버튼 영역)
-      minWidth: '160px',
-    },
-  },
-  cell: {
-    fontSize: '0.875rem',
-    color: '#334155',
-    padding: '16px',
-    whiteSpace: 'nowrap',
-    borderBottom: '1px solid #f1f5f9',
-    minWidth: '100px', // 최소 너비 설정
-    '&:first-of-type': {
-      // 첫 번째 셀
-      minWidth: '120px',
-    },
-    '&:last-child': {
-      // 마지막 셀 (버튼 영역)
-      minWidth: '160px',
-    },
-  },
-  warningCell: {
-    fontSize: '0.875rem',
-    color: '#ef4444',
-    fontWeight: '600',
-    padding: '16px',
-    whiteSpace: 'nowrap',
-    borderBottom: '1px solid #f1f5f9',
-    minWidth: '100px', // 최소 너비 설정
-  },
-};
-
-function ServiceTable({ services, refetch }: ITableBody) {
-  const [editingItemId, setEditingItemId] = useState('');
-
+export default function MaintenanceTable({ services, setEditId }: Props) {
   const recentByType = services.reduce((acc, service) => {
     const { type, date } = service;
-    if (
-      !acc[type] ||
-      new Date(date).getTime() > new Date(acc[type].date).getTime()
-    ) {
+
+    const currentDate = date ? new Date(date).getTime() : 0;
+    const savedDate = acc[type]?.date ? new Date(acc[type].date).getTime() : 0;
+
+    if (!acc[type] || currentDate > savedDate) {
       acc[type] = service;
     }
     return acc;
-  }, {} as Record<string, ICarService>);
+  }, {} as Record<string, Maintenance>);
+  const { deleteMaintenance } = useVehicleLog();
 
   const deleteService = async (id: string) => {
     const isConfirm = window.confirm('삭제하시겠습니까?');
     if (isConfirm) {
-      const res = await api.delete(`/api/driving-inform/removeService/${id}`);
-      if (res.status === 200) {
-        refetch();
-      }
+      deleteMaintenance.mutate(id);
     }
   };
 
@@ -109,7 +51,7 @@ function ServiceTable({ services, refetch }: ITableBody) {
       </div>
 
       <div className='overflow-auto rounded-2xl border-gray-100'>
-        <TableContainer sx={tableStyles.tableContainer}>
+        <TableContainer sx={maintenanceTableStyles.tableContainer}>
           <Table stickyHeader>
             <TableHead>
               <TableRow>
@@ -117,7 +59,7 @@ function ServiceTable({ services, refetch }: ITableBody) {
                   <TableCell
                     align='center'
                     key={index}
-                    sx={tableStyles.headerCell}
+                    sx={maintenanceTableStyles.headerCell}
                   >
                     {item}
                   </TableCell>
@@ -126,42 +68,43 @@ function ServiceTable({ services, refetch }: ITableBody) {
             </TableHead>
             <TableBody>
               {services
-                ?.sort(
-                  (a, b) =>
-                    new Date(b.date).getTime() - new Date(a.date).getTime()
-                )
+                ?.sort((a, b) => {
+                  const aTime = a.date ? new Date(a.date).getTime() : -Infinity;
+                  const bTime = b.date ? new Date(b.date).getTime() : -Infinity;
+                  return bTime - aTime;
+                })
                 .map((item, index) => (
                   <TableRow key={index}>
-                    <TableCell align='center' sx={tableStyles.cell}>
+                    <TableCell align='center' sx={maintenanceTableStyles.cell}>
                       {serviceDay(item.date)}
                     </TableCell>
-                    <TableCell align='center' sx={tableStyles.cell}>
+                    <TableCell align='center' sx={maintenanceTableStyles.cell}>
                       {item.type}
                     </TableCell>
-                    <TableCell align='center' sx={tableStyles.cell}>
+                    <TableCell align='center' sx={maintenanceTableStyles.cell}>
                       {Number(item.mileage.base).toLocaleString()}km
                     </TableCell>
                     <TableCell
                       align='center'
                       sx={
                         recentByType[item.type]?.date === item.date
-                          ? tableStyles.warningCell
-                          : tableStyles.cell
+                          ? maintenanceTableStyles.warningCell
+                          : maintenanceTableStyles.cell
                       }
                     >
                       {item.mileage.next &&
                         Number(item.mileage.next).toLocaleString()}
                       {item.mileage.next && 'km'}
                     </TableCell>
-                    <TableCell align='center' sx={tableStyles.cell}>
+                    <TableCell align='center' sx={maintenanceTableStyles.cell}>
                       {item.note}
                     </TableCell>
-                    <TableCell sx={tableStyles.cell}>
+                    <TableCell sx={maintenanceTableStyles.cell}>
                       {item.isOwner && (
                         <div className='flex justify-end gap-2'>
                           <button
                             className='flex items-center rounded-lg px-2 py-1.5 text-blue-600 transition-all hover:bg-blue-50 hover:shadow-sm active:bg-blue-100 sm:px-3'
-                            onClick={() => setEditingItemId(item._id)}
+                            onClick={() => setEditId(item._id)}
                           >
                             <Edit className='h-4 w-4' strokeWidth={2} />
                             <span className='ml-1 text-sm font-medium sm:ml-1.5'>
@@ -186,14 +129,6 @@ function ServiceTable({ services, refetch }: ITableBody) {
           </Table>
         </TableContainer>
       </div>
-      {editingItemId && (
-        <ServiceEdit
-          item={services.find((service) => service._id === editingItemId)!}
-          setEditingItemId={setEditingItemId}
-        />
-      )}
     </div>
   );
 }
-
-export default ServiceTable;

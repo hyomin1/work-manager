@@ -4,15 +4,25 @@ import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '../../../constants/constant';
 import {
   addVehicleLog,
+  addVehicleMaintenance,
   addVehicleNotice,
   deleteVehicleLog,
+  deleteVehicleMaintenance,
   deleteVehicleNotice,
   editVehicleLog,
+  editVehicleMaintenance,
+  getCarMaintenances,
   getCars,
   getNotification,
   getVehicleLogs,
 } from '../api/vehicleLog';
-import type { Car, VehicleLog, VehicleLogForm } from '../types/vehicleLog';
+import {
+  type Maintenance,
+  type Car,
+  type VehicleLog,
+  type VehicleLogForm,
+  type MaintenanceBase,
+} from '../types/vehicleLog';
 
 export default function useVehicleLog(carId?: string, currentDate?: Date) {
   const navigate = useNavigate();
@@ -107,13 +117,47 @@ export default function useVehicleLog(carId?: string, currentDate?: Date) {
 
   const deleteNotice = useMutation({
     mutationFn: (carId: string) => deleteVehicleNotice(carId),
-    onSuccess: (_, carId) => {
+    onSuccess: () => {
       toast.success('공지사항이 삭제 되었습니다.');
       queryClient.invalidateQueries({ queryKey: ['notification', carId] });
     },
     onError: () => {
       toast.error('공지사항 삭제에 실패했습니다.');
     },
+  });
+
+  const maintenancesQuery = useQuery<Maintenance[]>({
+    queryKey: ['maintenance', carId],
+    queryFn: () => getCarMaintenances(carId || ''),
+    enabled: !!carId,
+  });
+
+  const addMaintenance = useMutation({
+    mutationFn: ({ carId, form }: { carId: string; form: MaintenanceBase }) =>
+      addVehicleMaintenance(carId, form),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['maintenance'] });
+      toast.success('정비내역이 등록되었습니다.');
+    },
+    onError: () => toast.error('정비내역 등록에 실패했습니다.'),
+  });
+
+  const deleteMaintenance = useMutation({
+    mutationFn: (carId: string) => deleteVehicleMaintenance(carId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['maintenance'] });
+      toast.success('정비내역이 삭제 되었습니다.');
+    },
+    onError: () => toast.error('정비내역 삭제에 실패했습니다.'),
+  });
+
+  const editMaintenance = useMutation({
+    mutationFn: (form: MaintenanceBase) => editVehicleMaintenance(form),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['maintenance'] });
+      toast.success('정비내역이 수정 되었습니다.');
+    },
+    onError: () => toast.error('정비내역 수정에 실패했습니다.'),
   });
 
   return {
@@ -125,5 +169,9 @@ export default function useVehicleLog(carId?: string, currentDate?: Date) {
     deleteLog,
     addNotice,
     deleteNotice,
+    addMaintenance,
+    maintenancesQuery,
+    deleteMaintenance,
+    editMaintenance,
   };
 }

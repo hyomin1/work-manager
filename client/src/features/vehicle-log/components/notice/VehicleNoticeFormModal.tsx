@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { Modal, Box, TextField } from '@mui/material';
 import { Megaphone, XIcon, Trash2 } from 'lucide-react';
-import { useVehicleLogStore } from '../stores/useVehicleLogStore';
-import { boxStyle, inputStyles } from '../../../styles/style';
-import useVehicleLog from '../hooks/useVehicleLog';
+import { useVehicleLogStore } from '../../stores/useVehicleLogStore';
+import { boxStyle, inputStyles } from '../../../../styles/style';
+import useVehicleLog from '../../hooks/useVehicle';
 
 interface Props {
   carId: string;
-  notice?: string;
+  notification?: string;
 }
 
-export default function VehicleNoticeFormModal({ carId, notice }: Props) {
-  const [notification, setNotification] = useState(notice);
+export default function VehicleNoticeFormModal({ carId, notification }: Props) {
+  const [inputNotification, setInputNotification] = useState(notification);
 
   const isisNoticeModalOpen = useVehicleLogStore(
     (state) => state.isNoticeModalOpen
@@ -25,7 +25,7 @@ export default function VehicleNoticeFormModal({ carId, notice }: Props) {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     addNotice.mutate(
-      { carId, notification },
+      { carId, notification: inputNotification },
       {
         onSuccess: onClose,
       }
@@ -42,8 +42,8 @@ export default function VehicleNoticeFormModal({ carId, notice }: Props) {
   };
 
   useEffect(() => {
-    setNotification(notice || '');
-  }, [notice, isisNoticeModalOpen]);
+    setInputNotification(notification || '');
+  }, [notification, isisNoticeModalOpen]);
 
   return (
     <Modal
@@ -71,8 +71,8 @@ export default function VehicleNoticeFormModal({ carId, notice }: Props) {
             multiline
             rows={6}
             placeholder='공지사항을 입력하세요'
-            value={notification}
-            onChange={(e) => setNotification(e.target.value)}
+            value={inputNotification}
+            onChange={(e) => setInputNotification(e.target.value)}
             sx={inputStyles}
           />
 

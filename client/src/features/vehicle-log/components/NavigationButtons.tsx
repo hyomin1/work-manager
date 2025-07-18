@@ -62,7 +62,16 @@ export default function NavigationButtons({
                 onClick={() => {
                   if (item.onClickType === 'excel') onClickHandler.excel();
                   else if (item.onClickType === 'admin') onClickHandler.admin();
-                  else onClickHandler.user(item.route);
+                  else {
+                    const finalRoute =
+                      item.label === '점검'
+                        ? carId
+                          ? `${item.route}?carId=${carId}`
+                          : item.route
+                        : item.route;
+
+                    onClickHandler.user(finalRoute);
+                  }
                 }}
               />
             ))}

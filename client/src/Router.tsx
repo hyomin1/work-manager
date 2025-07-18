@@ -3,7 +3,7 @@ import App from './App';
 import LoginPage from './features/auth/LoginPage';
 import { lazy } from 'react';
 import { ROUTES } from './constants/constant';
-import DrivingService from './pages/driving/service/DrivingService';
+import DrivingService from './features/vehicle-log/MaintenancePage';
 import WorkStatusPage from './features/work-status/WorkStatusPage';
 import MenuPage from './features/menu/MenuPage';
 import VehicleLogPage from './features/vehicle-log/VehicleLogPage';

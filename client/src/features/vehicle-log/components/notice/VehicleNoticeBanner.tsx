@@ -1,4 +1,4 @@
-import { useVehicleLogStore } from '../stores/useVehicleLogStore';
+import { useVehicleLogStore } from '../../stores/useVehicleLogStore';
 
 interface Props {
   notification: string;

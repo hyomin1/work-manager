@@ -1,5 +1,5 @@
 import axios, { AxiosError, type AxiosResponse } from 'axios';
-import { ROUTES } from './constants/constant';
+import { ROUTES } from '../constants/constant';
 import toast from 'react-hot-toast';
 
 const axiosIP = axios.create({

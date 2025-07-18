@@ -1,5 +1,9 @@
 import { api, calMonth, calYear } from '../../../api';
-import type { VehicleLog, VehicleLogForm } from '../types/vehicleLog';
+import type {
+  MaintenanceBase,
+  VehicleLog,
+  VehicleLogForm,
+} from '../types/vehicleLog';
 
 export async function getCars() {
   const res = await api.get('/api/employee-inform/getCar');
@@ -52,6 +56,30 @@ export async function addVehicleNotice(carId: string, notification: string) {
 
 export async function deleteVehicleNotice(carId: string) {
   return await api.delete(`/api/driving-inform/removeNotification/${carId}`);
+}
+
+// 차량 정비 내역
+export async function getCarMaintenances(carId: string) {
+  const res = await api.get(`/api/driving-inform/getServices?carId=${carId}`);
+  return res.data.services || [];
+}
+
+export async function addVehicleMaintenance(
+  carId: string,
+  form: MaintenanceBase
+) {
+  api.post('/api/driving-inform/addService', {
+    carId,
+    ...form,
+  });
+}
+
+export async function deleteVehicleMaintenance(carId: string) {
+  return await api.delete(`/api/driving-inform/removeService/${carId}`);
+}
+
+export async function editVehicleMaintenance(form: MaintenanceBase) {
+  return await api.put('/api/driving-inform/editService', form);
 }
 
 export const checkCarSession = async () => {

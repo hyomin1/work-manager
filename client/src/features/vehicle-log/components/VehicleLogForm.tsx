@@ -16,7 +16,7 @@ import CarSection from './section/CarSection';
 import DestinationSection from './section/DestinationSection';
 import DateSection from './section/DateSection';
 import DistanceSection from './section/DistanceSection';
-import useVehicleLog from '../hooks/useVehicleLog';
+import useVehicleLog from '../hooks/useVehicle';
 import EtcSection from './section/EtcSection';
 import { validateForm } from '../utils/formUitls';
 import toast from 'react-hot-toast';

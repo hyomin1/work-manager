@@ -1,40 +1,25 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { TextField } from '@mui/material';
-import { api } from '../../../api';
-import { useQueryClient } from '@tanstack/react-query';
 import { WrenchIcon, XIcon } from 'lucide-react';
-import type { ICarServiceBase } from '../../../interfaces/interface';
+import type { MaintenanceEditForm } from '../../types/vehicleLog';
+import { inputStyles } from '../../../../styles/style';
+import useEscapeKey from '../../../work-status/hooks/useEscapeKey';
+import toast from 'react-hot-toast';
+import useVehicleLog from '../../hooks/useVehicle';
 
 dayjs.locale('ko');
 
-interface IServiceEdit {
-  item: ICarServiceBase;
-  setEditingItemId: React.Dispatch<React.SetStateAction<string>>;
+interface Props {
+  item: MaintenanceEditForm;
+  setEditId: (editId: string) => void;
 }
 
-const inputStyle = {
-  '& .MuiOutlinedInput-root': {
-    borderRadius: '12px',
-    backgroundColor: '#f8fafc',
-    '&:hover fieldset': {
-      borderColor: '#3b82f6',
-    },
-    '&.Mui-focused fieldset': {
-      borderColor: '#3b82f6',
-    },
-  },
-  '& .MuiInputLabel-root.Mui-focused': {
-    color: '#3b82f6',
-  },
-};
-
-function ServiceEdit({ item, setEditingItemId }: IServiceEdit) {
-  const queryClient = useQueryClient();
-  const [formData, setFormData] = useState<ICarServiceBase>({
+export default function MaintenanceEditForm({ item, setEditId }: Props) {
+  const [form, setForm] = useState<MaintenanceEditForm>({
     _id: item._id,
     date: item.date,
     type: item.type,
@@ -42,48 +27,35 @@ function ServiceEdit({ item, setEditingItemId }: IServiceEdit) {
     note: item.note,
   });
 
-  useEffect(() => {
-    const handleEsc = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        setEditingItemId('');
-      }
-    };
-    window.addEventListener('keydown', handleEsc);
-    return () => {
-      window.removeEventListener('keydown', handleEsc);
-    };
-  }, [setEditingItemId]);
+  const { date, type, mileage, note } = form;
 
-  const updateField = (field: string, value: any) => {
-    setFormData((prev) => ({
+  const { editMaintenance } = useVehicleLog();
+
+  useEscapeKey(() => setEditId(''));
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setForm((prev) => ({
       ...prev,
-      [field]: value,
+      [e.target.name]: e.target.value,
     }));
   };
 
   const validateForm = () => {
-    if (!formData.date) {
-      return alert('정비 일자를 선택해주세요');
-    }
-    if (!formData.type) {
-      return alert('정비 유형을 선택해주세요');
-    }
-    if (!formData.mileage.base) {
-      return alert('최근 점검(km)을 입력해주세요');
-    }
+    if (!date) return '정비 일자를 선택해주세요';
+    if (!type) return '정비 유형을 선택해주세요';
+    if (!mileage.base) return '최근 점검(km)을 입력해주세요';
+    return null;
   };
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    validateForm();
-    const response = await api.put('/api/driving-inform/editService', {
-      ...formData,
-    });
-    if (response.status !== 200) {
-      return;
+    const error = validateForm();
+    if (error) {
+      toast.error(error);
     }
-    queryClient.invalidateQueries({ queryKey: ['services'] });
-    setEditingItemId('');
+    editMaintenance.mutate(form, {
+      onSuccess: () => setEditId(''),
+    });
   };
 
   return (
@@ -95,7 +67,7 @@ function ServiceEdit({ item, setEditingItemId }: IServiceEdit) {
             <h2 className='text-xl font-bold text-white'>정비 정보 수정</h2>
           </div>
           <button
-            onClick={() => setEditingItemId('')}
+            onClick={() => setEditId('')}
             className='absolute right-4 top-4 text-white/80 transition-colors hover:text-white'
           >
             <XIcon className='h-5 w-5' />
@@ -112,13 +84,17 @@ function ServiceEdit({ item, setEditingItemId }: IServiceEdit) {
                 <MobileDatePicker
                   label='정비 일자*'
                   format='YYYY.MM.DD'
-                  value={dayjs(formData.date)}
-                  onChange={(newDate: Dayjs | null) =>
-                    newDate && updateField('date', newDate.toDate())
+                  value={dayjs(date)}
+                  onChange={(newDate) =>
+                    newDate &&
+                    setForm((prev) => ({
+                      ...prev,
+                      date: newDate.toDate(),
+                    }))
                   }
                   sx={{
                     width: '100%',
-                    ...inputStyle,
+                    ...inputStyles,
                   }}
                 />
               </LocalizationProvider>
@@ -128,9 +104,10 @@ function ServiceEdit({ item, setEditingItemId }: IServiceEdit) {
               fullWidth
               label='정비 유형*'
               variant='outlined'
-              value={formData.type}
-              onChange={(e) => updateField('type', e.target.value)}
-              sx={inputStyle}
+              value={type}
+              name='type'
+              onChange={handleChange}
+              sx={inputStyles}
             />
 
             <div className='flex gap-4'>
@@ -138,28 +115,34 @@ function ServiceEdit({ item, setEditingItemId }: IServiceEdit) {
                 fullWidth
                 label='최근 점검(km)*'
                 variant='outlined'
-                value={formData.mileage.base}
+                value={mileage.base}
                 onChange={(e) =>
-                  updateField('mileage', {
-                    ...formData.mileage,
-                    base: e.target.value,
-                  })
+                  setForm((prev) => ({
+                    ...prev,
+                    mileage: {
+                      ...prev.mileage,
+                      base: e.target.value,
+                    },
+                  }))
                 }
-                sx={inputStyle}
+                sx={inputStyles}
               />
 
               <TextField
                 fullWidth
                 label='다음 점검(km)'
                 variant='outlined'
-                value={formData.mileage.next}
+                value={mileage.next}
                 onChange={(e) =>
-                  updateField('mileage', {
-                    ...formData.mileage,
-                    next: e.target.value,
-                  })
+                  setForm((prev) => ({
+                    ...prev,
+                    mileage: {
+                      ...prev.mileage,
+                      next: e.target.value,
+                    },
+                  }))
                 }
-                sx={inputStyle}
+                sx={inputStyles}
               />
             </div>
 
@@ -168,17 +151,18 @@ function ServiceEdit({ item, setEditingItemId }: IServiceEdit) {
               multiline
               rows={3}
               label='비고'
+              name='note'
               variant='outlined'
-              value={formData.note}
-              onChange={(e) => updateField('note', e.target.value)}
-              sx={inputStyle}
+              value={note}
+              onChange={handleChange}
+              sx={inputStyles}
             />
           </div>
 
           <div className='flex justify-end space-x-3 pt-8'>
             <button
               type='button'
-              onClick={() => setEditingItemId('')}
+              onClick={() => setEditId('')}
               className='rounded-xl border border-gray-200 px-6 py-2.5 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-200'
             >
               취소
@@ -195,5 +179,3 @@ function ServiceEdit({ item, setEditingItemId }: IServiceEdit) {
     </div>
   );
 }
-
-export default ServiceEdit;

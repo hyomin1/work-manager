@@ -40,3 +40,22 @@ export interface Cost {
   totalDrivingKM: number;
   grandTotal: number;
 }
+// 차량 정비 내역
+
+export interface MaintenanceBase {
+  date: Date | null;
+  type: string;
+  mileage: {
+    base: string;
+    next: string;
+  };
+  note: string;
+}
+
+export interface Maintenance extends MaintenanceBase {
+  _id: string;
+  isOwner: boolean;
+}
+export interface MaintenanceEditForm extends MaintenanceBase {
+  _id: string;
+}
