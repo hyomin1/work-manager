@@ -13,7 +13,9 @@ import DailyWorkPage from './pages/dailyWork/DailyWorkPage';
 import WorkStatusForm from './features/work-status/components/WorkStatusForm';
 
 const AdminPage = lazy(() => import('./pages/admin/AdminPage'));
-const UserManagePage = lazy(() => import('./pages/userManage/UserManagePage'));
+const UserManagePage = lazy(
+  () => import('./features/userManage/UserManagePage')
+);
 const StatisticsPage = lazy(() => import('./pages/statistics/StatisticsPage'));
 const SignupPage = lazy(() => import('./features/auth/SignupPage'));
 

@@ -135,15 +135,15 @@ export default function useVehicleLog(carId?: string, currentDate?: Date) {
   const addMaintenance = useMutation({
     mutationFn: ({ carId, form }: { carId: string; form: MaintenanceBase }) =>
       addVehicleMaintenance(carId, form),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['maintenance'] });
+    onSuccess: (_, { carId }) => {
+      queryClient.invalidateQueries({ queryKey: ['maintenance', carId] });
       toast.success('정비내역이 등록되었습니다.');
     },
     onError: () => toast.error('정비내역 등록에 실패했습니다.'),
   });
 
   const deleteMaintenance = useMutation({
-    mutationFn: (carId: string) => deleteVehicleMaintenance(carId),
+    mutationFn: (id: string) => deleteVehicleMaintenance(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['maintenance'] });
       toast.success('정비내역이 삭제 되었습니다.');

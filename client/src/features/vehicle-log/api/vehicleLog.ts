@@ -68,7 +68,7 @@ export async function addVehicleMaintenance(
   carId: string,
   form: MaintenanceBase
 ) {
-  api.post('/api/driving-inform/addService', {
+  return await api.post('/api/driving-inform/addService', {
     carId,
     ...form,
   });

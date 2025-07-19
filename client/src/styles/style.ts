@@ -125,3 +125,18 @@ export const maintenanceTableStyles = {
     minWidth: '100px', // 최소 너비 설정
   },
 };
+
+export const userManageTableStyle = {
+  '& .MuiTab-root': {
+    fontSize: '0.95rem',
+    fontWeight: 600,
+    textTransform: 'none',
+    minHeight: 48,
+  },
+  '& .Mui-selected': {
+    color: '#2563eb',
+  },
+  '& .MuiTabs-indicator': {
+    backgroundColor: '#2563eb',
+  },
+};

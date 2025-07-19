@@ -97,12 +97,6 @@ export const getSchedule = async (
   return res.data.schedules || [];
 };
 
-// 유저 목록 (승인된)
-export const getUsers = async () => {
-  const response = await api.get('/api/users');
-  return response.data.users || '';
-};
-
 // 메인화면에서 관리 버튼 눌러서 들어간 경우 check, 접근 불가 메시지만 띄워줌
 
 // /admin 경로로 접근시
