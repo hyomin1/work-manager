@@ -16,7 +16,9 @@ const AdminPage = lazy(() => import('./pages/admin/AdminPage'));
 const UserManagePage = lazy(
   () => import('./features/userManage/UserManagePage')
 );
-const StatisticsPage = lazy(() => import('./pages/statistics/StatisticsPage'));
+const StatisticsPage = lazy(
+  () => import('./features/statistics/StatisticsPage')
+);
 const SignupPage = lazy(() => import('./features/auth/SignupPage'));
 
 const router = createBrowserRouter([

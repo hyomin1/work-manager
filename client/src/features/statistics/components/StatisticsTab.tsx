@@ -15,89 +15,60 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import 'dayjs/locale/ko';
 import React from 'react';
-import { useCustomQueries } from '../../hooks/useCommonData';
+import { useCommonData } from '../../../hooks/useCommonData';
 
 dayjs.locale('ko');
 
-interface ITabs {
+interface Props {
   value: number;
-  setValue: React.Dispatch<React.SetStateAction<number>>;
+  onChangeValue: (e: React.SyntheticEvent, newValue: number) => void;
   username: string;
-  setUserName: React.Dispatch<React.SetStateAction<string>>;
+  onChangeUsername: (e: React.SyntheticEvent, newValue: string | null) => void;
   destination: string;
-  setDestination: React.Dispatch<React.SetStateAction<string>>;
+  onChangeDestination: (
+    e: React.SyntheticEvent,
+    newValue: string | null
+  ) => void;
   startDate: Date;
-  setStartDate: React.Dispatch<React.SetStateAction<Date>>;
+  setStartDate: (newDate: Date) => void;
   endDate: Date;
-  setEndDate: React.Dispatch<React.SetStateAction<Date>>;
-  nameRefetch: () => void;
-  destinationRefetch: () => void;
+  setEndDate: (newDate: Date) => void;
+  onSearch: () => void;
 }
 
-function StatisticsTab({
+export default function StatisticsTab({
   value,
-  setValue,
+  onChangeValue,
   username,
-  setUserName,
+  onChangeUsername,
   destination,
-  setDestination,
+  onChangeDestination,
   startDate,
   setStartDate,
   endDate,
   setEndDate,
-  nameRefetch,
-  destinationRefetch,
-}: ITabs) {
-  const { names, destinationsData } = useCustomQueries();
+  onSearch,
+}: Props) {
+  const { usernames, destinations } = useCommonData();
 
-  const handleChangeValue = (event: React.SyntheticEvent, newValue: number) => {
-    setValue(newValue);
-  };
+  const sortedUsernames =
+    usernames
+      ?.sort((a, b) => a.username.localeCompare(b.username))
+      .map((item) => item.username) || [];
 
-  const handleChangeName = (
-    event: React.SyntheticEvent,
-    name: string | null
-  ) => {
-    if (name) setUserName(name);
-  };
-
-  const handleChangeDestination = (
-    event: React.SyntheticEvent,
-    dest: string | null
-  ) => {
-    if (dest) setDestination(dest);
-  };
-
-  const handleSearch = () => {
-    if (value === 0) {
-      if (!username) {
-        alert('이름을 선택해주세요');
-        return;
-      }
-      nameRefetch();
-    } else {
-      if (!destination) {
-        alert('방문지를 선택해주세요');
-        return;
-      }
-      destinationRefetch();
-    }
-  };
+  const sortedDestinations =
+    destinations
+      ?.sort((a, b) => a.destination.localeCompare(b.destination))
+      .map((item) => item.destination) || [];
 
   return (
     <Paper elevation={2} className='w-[90%] bg-white p-6'>
       <Box className='space-y-6'>
-        {/* Tabs */}
         <Tabs
           value={value}
-          onChange={handleChangeValue}
+          onChange={onChangeValue}
           variant='fullWidth'
           className='border-b border-gray-200'
-          TabIndicatorProps={{
-            style: {
-              backgroundColor: '#2563eb',
-            },
-          }}
           sx={{
             '& .MuiTab-root': {
               fontSize: '0.95rem',
@@ -125,7 +96,6 @@ function StatisticsTab({
           />
         </Tabs>
 
-        {/* Search Forms */}
         <div className='flex w-full flex-col gap-4 md:flex-row md:items-center'>
           <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale='ko'>
             <MobileDatePicker
@@ -159,30 +129,22 @@ function StatisticsTab({
             {value === 0 ? (
               <Autocomplete
                 size='small'
-                options={
-                  names
-                    ?.sort((a, b) => a.username.localeCompare(b.username))
-                    .map((item) => item.username) || []
-                }
+                options={sortedUsernames}
                 renderInput={(params) => (
                   <TextField {...params} label='이름' size='small' />
                 )}
-                onChange={handleChangeName}
+                onChange={onChangeUsername}
                 value={username}
                 className='bg-white'
               />
             ) : (
               <Autocomplete
                 size='small'
-                options={
-                  destinationsData
-                    ?.sort((a, b) => a.destination.localeCompare(b.destination))
-                    .map((item) => item.destination) || []
-                }
+                options={sortedDestinations}
                 renderInput={(params) => (
                   <TextField {...params} label='방문지' size='small' />
                 )}
-                onChange={handleChangeDestination}
+                onChange={onChangeDestination}
                 value={destination}
                 className='bg-white'
               />
@@ -190,7 +152,7 @@ function StatisticsTab({
           </FormControl>
 
           <Button
-            onClick={handleSearch}
+            onClick={onSearch}
             variant='contained'
             className='h-10 whitespace-nowrap bg-blue-600 px-6 text-sm font-semibold normal-case transition-colors duration-200 hover:bg-blue-700'
             startIcon={<Search className='h-4 w-4' />}
@@ -202,5 +164,3 @@ function StatisticsTab({
     </Paper>
   );
 }
-
-export default StatisticsTab;

@@ -1,27 +1,19 @@
-import { useEffect, useState } from 'react';
-import StatisticsTab from './StatisticsTab';
-import { IDestStat, INameStat } from '../../interfaces/interface';
-import { useQuery } from '@tanstack/react-query';
-import {
-  calculateDate,
-  checkAdminSession,
-  getDestinationStatistics,
-  getUserStatistics,
-} from '../../api';
+import React, { useEffect, useState } from 'react';
+import StatisticsTab from './components/StatisticsTab';
+import { calculateDate } from '../../api';
 import ArrowBack from '../../components/common/ArrowBack';
-
 import { Calendar } from 'lucide-react';
-import Logout from '../../features/auth/components/LogoutButton';
-import StatisticsTable from './StatisticsTable';
+import Logout from '../auth/components/LogoutButton';
+import StatisticsTable from './components/StatisticsTable';
+import useStatistics from './hooks/useStatistics';
+import toast from 'react-hot-toast';
+import { authApi } from '../auth/api/auth';
 
-// 통계 페이지
-function StatisticsPage() {
+export default function StatisticsPage() {
   // 0: 이름 검색, 1: 방문지 검색
   const [value, setValue] = useState(0);
-
   const [username, setUserName] = useState('');
   const [destination, setDestination] = useState('');
-  // 시작일은 해당 날짜의 시작(00:00:00)으로, 종료일은 해당 날짜의 끝(23:59:59)으로 설정
   const [startDate, setStartDate] = useState(() => {
     const date = new Date();
     date.setHours(0, 0, 0, 0);
@@ -34,26 +26,37 @@ function StatisticsPage() {
     return date;
   });
 
-  // 날짜 변경 핸들러도 같은 방식으로 처리
-
-  const { data: statisticsNameData, refetch: nameRefetch } = useQuery<
-    INameStat[]
-  >({
-    queryKey: ['statistics', username, startDate],
-    queryFn: () => getUserStatistics(username, startDate, endDate), // startDate ~ endDate 범위의 데이터 get
-    enabled: false,
-  });
-
-  const { data: statisticsDestinationData, refetch: destinationRefetch } =
-    useQuery<IDestStat[]>({
-      queryKey: ['statistics', destination],
-      queryFn: () => getDestinationStatistics(destination, startDate, endDate),
-      enabled: false,
-    });
+  const { userStatistics, destinationStatistics } = useStatistics(
+    username,
+    destination,
+    startDate,
+    endDate
+  );
 
   useEffect(() => {
-    checkAdminSession();
+    authApi.checkAdminSession();
   }, []);
+
+  const handleChangeValue = (_: React.SyntheticEvent, newValue: number) =>
+    setValue(newValue);
+
+  const handleChange =
+    (setter: (value: string) => void) =>
+    (_: React.SyntheticEvent, value: string | null) => {
+      if (value) setter(value);
+    };
+
+  const handleSearch = () => {
+    if (value === 0) {
+      if (!username) {
+        toast.error('이름을 선택해주세요');
+        return;
+      }
+    } else if (!destination) {
+      toast.error('방문지를 선택해주세요');
+      return;
+    }
+  };
 
   return (
     <div className='flex h-screen w-full flex-col items-center overflow-y-auto bg-gradient-to-br from-gray-50 to-blue-50 p-10 sm:p-2'>
@@ -72,27 +75,24 @@ function StatisticsPage() {
 
       <StatisticsTab
         value={value}
-        setValue={setValue}
+        onChangeValue={handleChangeValue}
         username={username}
-        setUserName={setUserName}
+        onChangeUsername={handleChange(setUserName)}
+        onChangeDestination={handleChange(setDestination)}
         destination={destination}
-        setDestination={setDestination}
         startDate={startDate}
         setStartDate={setStartDate}
         endDate={endDate}
         setEndDate={setEndDate}
-        nameRefetch={nameRefetch}
-        destinationRefetch={destinationRefetch}
+        onSearch={handleSearch}
       />
       <div className='w-[90%]'>
         <StatisticsTable
-          statisticsNameData={statisticsNameData || []}
-          statisticsDestinationData={statisticsDestinationData || []}
+          userStatistics={userStatistics || []}
+          destinationStatistics={destinationStatistics || []}
           value={value}
         />
       </div>
     </div>
   );
 }
-
-export default StatisticsPage;

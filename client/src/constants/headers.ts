@@ -58,25 +58,6 @@ export const employeeInputHeaders = [
   '기간',
 ];
 
-export const statisticsNameHeader = [
-  '날짜',
-  '이름',
-  '방문지',
-  '사업명',
-  '업무',
-  '차량',
-  '비고',
-];
-
-export const statisticsDestinationHeader = [
-  '날짜',
-  '이름',
-  '방문지',
-  '사업명',
-  '업무',
-  '비고',
-];
-
 export const carServiceHeader = [
   '점검 일자',
   '점검 유형',

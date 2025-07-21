@@ -3,8 +3,6 @@ export interface IDepartments {
   department: string;
 }
 
-// 유저 인터페이스
-
 // 일일 업무 현황
 export interface IDailyWork {
   _id: string;
