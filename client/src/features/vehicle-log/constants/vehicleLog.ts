@@ -53,3 +53,25 @@ export const NAV_ITEMS = [
     condition: () => true,
   },
 ] as const;
+
+export const MAINTENANCE_HEADER = [
+  '점검 일자',
+  '점검 유형',
+  '최근 점검(km)',
+  '다음 점검(km)',
+  '비고',
+  '',
+];
+
+export const EXCEL_HEADER = [
+  '날짜',
+  '운전자',
+  '행선지',
+  '출발(km)',
+  '도착(km)',
+  '주행거리',
+  '주유비',
+  '하이패스',
+  '기타',
+  '합계',
+];

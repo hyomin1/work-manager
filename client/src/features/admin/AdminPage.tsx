@@ -1,26 +1,34 @@
 import { useEffect, useState } from 'react';
-import { useQueryClient } from '@tanstack/react-query';
 import { Calendar } from 'lucide-react';
 import { Paper, Pagination } from '@mui/material';
 import { directAdminSession, formDate } from '../../api';
-import { useAdminData } from '../../hooks/useAdminData';
 import TableHeader from './components/TableHeader';
 import TableBody from './components/TableBody';
 import ArrowBack from '../../components/common/ArrowBack';
-import Logout from '../../features/auth/components/LogoutButton';
+import LogoutButton from '../../features/auth/components/LogoutButton';
+import { useAdmin } from './hooks/useAdmin';
+import AddCommonDataForm from './components/AddCommonDataForm';
+import toast from 'react-hot-toast';
+import type { AdminType } from './types/admin';
+import EditCommonDataForm from './components/EditCommonDataForm';
+import ItemList from './components/ItemList';
+import DeleteBox from '../../components/common/DeleteBox';
 
-const AdminPage = () => {
-  const queryClient = useQueryClient();
-  const [activeTab, setActiveTab] = useState<string>('username');
+export default function AdminPage() {
+  const [activeTab, setActiveTab] = useState<AdminType>('username');
   const [page, setPage] = useState(1);
   const [destination, setDestination] = useState('');
-  const { data, removeItem } = useAdminData(activeTab, page, queryClient);
+  const [isAdd, setIsAdd] = useState(false);
+  const [editId, setEditId] = useState('');
+  const [deleteId, setDeleteId] = useState('');
+
+  const { data, destinations, removeItem } = useAdmin(activeTab, page);
 
   useEffect(() => {
     directAdminSession();
   }, []);
 
-  const handleTabClick = (tab: string) => {
+  const handleTabClick = (tab: AdminType) => {
     setPage(1);
     setActiveTab(tab);
   };
@@ -39,6 +47,22 @@ const AdminPage = () => {
   );
   const totalPages = Math.ceil(filteredData.length / itemsPerPage);
 
+  const selectedItem = filteredData.find((item) => item._id === editId);
+
+  const handleAddClick = () => {
+    if (activeTab === 'business' && destination === '') {
+      toast.error('방문지를 선택해주세요.');
+      return;
+    }
+    setIsAdd(true);
+  };
+
+  const handleDelete = () => {
+    removeItem(deleteId, {
+      onSuccess: () => setDeleteId(''),
+    });
+  };
+
   return (
     <div className='lg:px-8 min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 px-4 py-8 sm:px-6'>
       <div className='mx-auto w-[90%]'>
@@ -52,18 +76,26 @@ const AdminPage = () => {
             </span>
           </div>
 
-          <Logout />
+          <LogoutButton />
         </div>
 
         <Paper elevation={3} className='overflow-hidden rounded-lg'>
           <TableHeader activeTab={activeTab} onTabClick={handleTabClick} />
+          <ItemList
+            activeTab={activeTab}
+            destination={destination}
+            destinations={destinations || []}
+            setDestination={setDestination}
+            onClick={handleAddClick}
+          />
           <TableBody
+            destinations={destinations || []}
             activeTab={activeTab}
             data={paginatedData}
-            removeItem={removeItem}
-            queryClient={queryClient}
             destination={destination}
             setDestination={setDestination}
+            setEditId={setEditId}
+            setDeleteId={setDeleteId}
           />
         </Paper>
 
@@ -79,8 +111,27 @@ const AdminPage = () => {
           />
         </div>
       </div>
+      {isAdd && (
+        <AddCommonDataForm
+          onClose={() => setIsAdd(false)}
+          activeTab={activeTab}
+          destination={destination}
+        />
+      )}
+      {editId && (
+        <EditCommonDataForm
+          activeTab={activeTab}
+          onClose={() => setEditId('')}
+          destination={destination}
+          editId={editId}
+          selectedItem={selectedItem}
+        />
+      )}
+      <DeleteBox
+        open={!!deleteId}
+        onClose={() => setDeleteId('')}
+        onDelete={handleDelete}
+      />
     </div>
   );
-};
-
-export default AdminPage;
+}

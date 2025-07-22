@@ -6,12 +6,12 @@ import {
   TableRow,
   TableBody,
 } from '@mui/material';
-import { carServiceHeader } from '../../../../constants/headers';
 import { Edit, Trash2 } from 'lucide-react';
 import type { Maintenance } from '../../types/vehicleLog';
 import useVehicleLog from './../../hooks/useVehicle';
 import { maintenanceTableStyles } from '../../../../styles/style';
 import { serviceDay } from '../../utils/formatDate';
+import { MAINTENANCE_HEADER } from '../../constants/vehicleLog';
 
 interface Props {
   services: Maintenance[];
@@ -55,7 +55,7 @@ export default function MaintenanceTable({ services, setEditId }: Props) {
           <Table stickyHeader>
             <TableHead>
               <TableRow>
-                {carServiceHeader.map((item, index) => (
+                {MAINTENANCE_HEADER.map((item, index) => (
                   <TableCell
                     align='center'
                     key={index}

@@ -1,9 +1,9 @@
 import ExcelJS from 'exceljs';
 import { saveAs } from 'file-saver';
 import { calYearMonth } from '../../../api';
-import { drivingExcelHeaders } from '../../../constants/headers';
 import type { Cost, VehicleLog } from '../types/vehicleLog';
 import { calCarDay } from './formatDate';
+import { EXCEL_HEADER } from '../constants/vehicleLog';
 
 export default function downloadExcel(
   drivingInform: VehicleLog[] | undefined,
@@ -42,7 +42,7 @@ export default function downloadExcel(
   worksheet.addRow([]);
 
   // 1. 헤더 추가 (스타일 적용)
-  const headerRow = worksheet.addRow(drivingExcelHeaders);
+  const headerRow = worksheet.addRow(EXCEL_HEADER);
 
   headerRow.font = { bold: true };
   headerRow.alignment = { vertical: 'middle', horizontal: 'left' };

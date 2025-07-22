@@ -10,48 +10,6 @@ export const domainName = 'https://tech.bonc.co.kr';
 
 export const api = getBaseUrl() === domainName ? axiosDomain : axiosIP;
 
-// 이름 정보
-export const getNames = async () => {
-  const res = await api.get('/api/employee-inform/getName');
-  return res.data.allNames || [];
-};
-
-// 방문지 정보
-export const getDestinations = async () => {
-  const res = await api.get('/api/employee-inform/getDestination');
-  return res.data.allDestinations || [];
-};
-
-// 사업명 정보
-export const getBusinesses = async () => {
-  const res = await api.get('/api/employee-inform/getBusinesses');
-  return res.data.allBusinesses || [];
-};
-
-export const getBusiness = async (business: string) => {
-  const res = await api.get(`/api/employee-inform/getBusiness/${business}`);
-  return res.data.business || '';
-};
-
-// 업무 정보
-export const getWorks = async () => {
-  const res = await api.get('/api/employee-inform/getWork');
-  return res.data.allWorks || [];
-};
-
-// 차량 정보
-
-export const getEtcNames = async () => {
-  const res = await api.get('/api/employee-inform/getEtcName');
-  return res.data.allEtcNames || [];
-};
-
-// 파트 정보
-export const getDepartments = async () => {
-  const res = await api.get('/api/employee-inform/getDepartment');
-  return res.data.allDepartments || [];
-};
-
 // 일일 업무 현황 정보
 export const getDailyWorks = async (date: Date) => {
   const res = await api.get(`/api/employee-inform/dailyWork?date=${date}`);

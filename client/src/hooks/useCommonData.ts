@@ -1,12 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import {
-  getNames,
-  getDestinations,
-  getBusinesses,
-  getWorks,
-  getEtcNames,
-  getDepartments,
-} from '../api';
+
 import type { IDepartments } from '../interfaces/interface';
 import type {
   Business,
@@ -16,6 +9,14 @@ import type {
 } from '../features/work-status/types/workStatus';
 import type { Car, Etc } from '../features/vehicle-log/types/vehicleLog';
 import { getCars } from '../features/vehicle-log/api/vehicleLog';
+import {
+  getBusinesses,
+  getDepartments,
+  getDestinations,
+  getEtcNames,
+  getNames,
+  getWorks,
+} from '../api/commonData';
 
 export function useCommonData() {
   const { data: usernames, isLoading: usernamesLoading } = useQuery<Username[]>(

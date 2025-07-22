@@ -12,7 +12,7 @@ import SchedulePage from './pages/schedule/SchedulePage';
 import DailyWorkPage from './pages/dailyWork/DailyWorkPage';
 import WorkStatusForm from './features/work-status/components/WorkStatusForm';
 
-const AdminPage = lazy(() => import('./pages/admin/AdminPage'));
+const AdminPage = lazy(() => import('./features/admin/AdminPage'));
 const UserManagePage = lazy(
   () => import('./features/userManage/UserManagePage')
 );

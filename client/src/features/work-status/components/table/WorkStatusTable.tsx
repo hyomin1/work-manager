@@ -1,7 +1,7 @@
 import { Paper, Table, TableContainer } from '@mui/material';
 import WorkStatusTableBody from './WorkStatusTableBody';
 import WorkStatusTableHeader from './WorkStatusTableHeader';
-import type { WorkStatus } from '../../../../types/work';
+import type { WorkStatus } from '../../types/workStatus';
 
 interface Props {
   works: WorkStatus[];
