@@ -10,12 +10,6 @@ export const domainName = 'https://tech.bonc.co.kr';
 
 export const api = getBaseUrl() === domainName ? axiosDomain : axiosIP;
 
-// 일일 업무 현황 정보
-export const getDailyWorks = async (date: Date) => {
-  const res = await api.get(`/api/employee-inform/dailyWork?date=${date}`);
-  return res.data.allDailyWorks || [];
-};
-
 // 일정 fetch
 export const getSchedule = async (
   year: number,

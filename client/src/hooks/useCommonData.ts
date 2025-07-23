@@ -1,6 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
 
-import type { IDepartments } from '../interfaces/interface';
 import type {
   Business,
   Destination,
@@ -17,6 +16,7 @@ import {
   getNames,
   getWorks,
 } from '../api/commonData';
+import type { Department } from '../features/admin/types/admin';
 
 export function useCommonData() {
   const { data: usernames, isLoading: usernamesLoading } = useQuery<Username[]>(
@@ -56,7 +56,7 @@ export function useCommonData() {
   });
 
   const { data: departments, isLoading: departmentsLoading } = useQuery<
-    IDepartments[]
+    Department[]
   >({
     queryKey: ['departments'],
     queryFn: getDepartments,

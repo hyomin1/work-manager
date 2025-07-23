@@ -25,3 +25,8 @@ export type AdminDataItem =
   | { _id: string; car: string }
   | { _id: string; etcName: string }
   | { _id: string; department: string };
+
+export interface Department {
+  _id: string;
+  department: string;
+}

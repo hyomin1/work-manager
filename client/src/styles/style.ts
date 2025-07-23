@@ -140,3 +140,51 @@ export const userManageTableStyle = {
     backgroundColor: '#2563eb',
   },
 };
+
+export const dailyWorkStyle = {
+  '& .MuiOutlinedInput-notchedOutline': {
+    borderColor: 'rgb(243 244 246)',
+    borderWidth: '1px',
+  },
+  '&:hover .MuiOutlinedInput-notchedOutline': {
+    borderColor: 'rgb(209 213 219)',
+  },
+  '& .MuiSelect-select': {
+    paddingY: '2px',
+    fontSize: '0.875rem',
+  },
+};
+
+export const dailyWorkCheckButtonStyle = {
+  textTransform: 'none',
+  backgroundColor: '#3b82f6',
+  boxShadow: '0 1px 2px 0 rgb(0 0 0 / 0.05)',
+  '&:hover': {
+    backgroundColor: '#2563eb',
+    boxShadow: '0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)',
+  },
+  '&:active': {
+    backgroundColor: '#1d4ed8',
+  },
+  '&:focus': {
+    boxShadow: '0 0 0 2px #bfdbfe',
+  },
+};
+export const dailyWorkCancelButtonStyle = {
+  textTransform: 'none',
+  borderColor: '#e5e7eb',
+  color: '#4b5563',
+  backgroundColor: 'white',
+  boxShadow: '0 1px 2px 0 rgb(0 0 0 / 0.05)',
+  '&:hover': {
+    backgroundColor: '#f9fafb',
+    borderColor: '#d1d5db',
+    color: '#374151',
+  },
+  '&:active': {
+    backgroundColor: '#f3f4f6',
+  },
+  '&:focus': {
+    boxShadow: '0 0 0 2px #f3f4f6',
+  },
+};
