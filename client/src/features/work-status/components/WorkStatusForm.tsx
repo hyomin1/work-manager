@@ -1,5 +1,5 @@
 import { useReducer } from 'react';
-import { formDate } from '../../../api';
+import { formDate } from '../../../utils';
 import ArrowBack from '../../../components/common/ArrowBack';
 import { useCommonData } from '../../../hooks/useCommonData';
 import dayjs from 'dayjs';

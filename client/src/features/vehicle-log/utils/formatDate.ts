@@ -12,3 +12,10 @@ export const serviceDay = (newDate: Date | null) => {
   const day = date.getDate();
   return `${year}.${month}.${day}`;
 };
+
+export const calYearMonth = (date: Date) => {
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1;
+
+  return `${year}년 ${month}월`;
+};

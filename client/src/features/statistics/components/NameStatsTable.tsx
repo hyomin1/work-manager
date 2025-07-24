@@ -7,9 +7,9 @@ import {
 } from '@mui/material';
 import { STATS_NAME_HEADER } from '../constants/statistics';
 import type { StatByName } from '../types/statistics';
-import { calStatDay, extractMonthAndDay } from '../../../api';
 import { commonCellStyles, remarksCellStyles } from '../style/style';
 import TooltipButton from './TooltipButton';
+import { calStatDay, extractMonthAndDay } from '../utils/formatDate';
 
 interface Props {
   userStatistics: StatByName[];

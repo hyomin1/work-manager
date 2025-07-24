@@ -1,4 +1,4 @@
-import { api } from '../../../api';
+import { api } from '../../../utils';
 import type { DailyWork, DailyWorkForm } from '../types/dailyWork';
 
 export async function addDailyWork(form: DailyWorkForm) {
@@ -7,6 +7,7 @@ export async function addDailyWork(form: DailyWorkForm) {
 
 export const getDailyWorks = async (date: Date): Promise<DailyWork[]> => {
   const res = await api.get(`/api/employee-inform/dailyWork?date=${date}`);
+
   return res.data.allDailyWorks || [];
 };
 export async function getDailyWork(id?: string) {

@@ -1,4 +1,4 @@
-import { api } from '../../../api';
+import { api } from '../../../utils';
 import type { LoginInput, SignupInput } from '../types/auth';
 
 export const authApi = {

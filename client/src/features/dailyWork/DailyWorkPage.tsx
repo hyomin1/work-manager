@@ -2,7 +2,7 @@ import { useState } from 'react';
 import ArrowBack from '../../components/common/ArrowBack';
 import Title from '../../components/layout/Title';
 import Logout from '../auth/components/LogoutButton';
-import { calculateDate } from '../../api';
+import { calculateDate } from '../../utils';
 import DateInput from '../work-status/components/DateSelector';
 import NavigationButtons from './components/NavigationButtons';
 import { Paper, Table, TableContainer } from '@mui/material';

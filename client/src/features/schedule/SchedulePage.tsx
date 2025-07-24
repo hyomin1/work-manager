@@ -14,10 +14,10 @@ import {
   calMonth,
   calYear,
   getSchedule,
-} from '../../api';
+} from '../../utils';
 import { useNavigate } from 'react-router-dom';
 import './Calendar.css';
-import EmployeeEdit from '../../features/work-status/components/WorkStatusEditModal';
+import EmployeeEdit from '../work-status/components/WorkStatusEditModal';
 import { useCommonData } from '../../hooks/useCommonData';
 import { Autocomplete, TextField } from '@mui/material';
 import ScheduleAdd from './ScheduleAdd';

@@ -8,7 +8,7 @@ import WorkStatusPage from './features/work-status/WorkStatusPage';
 import MenuPage from './features/menu/MenuPage';
 import VehicleLogPage from './features/vehicle-log/VehicleLogPage';
 import VehicleLogForm from './features/vehicle-log/components/VehicleLogForm';
-import SchedulePage from './pages/schedule/SchedulePage';
+import SchedulePage from './features/schedule/SchedulePage';
 import DailyWorkPage from './features/dailyWork/DailyWorkPage';
 import WorkStatusForm from './features/work-status/components/WorkStatusForm';
 

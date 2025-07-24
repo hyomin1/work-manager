@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { calculateDate } from '../../api';
+import { calculateDate } from '../../utils';
 import ArrowBack from '../../components/common/ArrowBack';
 import UserManageTab from './components/UserManageTab';
 import UserManageTable from './components/UserManageTable';

@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { calYearMonth } from '../../api';
 import { calculateCost } from './utils/calculateCost';
 
 import useDateManager from '../../hooks/useDateManager';
@@ -21,6 +20,7 @@ import VehicleLogEditModal from './components/VehicleLogEditModal';
 import DeleteBox from '../../components/common/DeleteBox';
 import VehicleNoticeBanner from './components/notice/VehicleNoticeBanner';
 import VehicleNoticeFormModal from './components/notice/VehicleNoticeFormModal';
+import { calYearMonth } from './utils/formatDate';
 
 function DrivePage() {
   const { state } = useLocation();

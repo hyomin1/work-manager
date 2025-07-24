@@ -40,8 +40,6 @@ export default function useWorkStatus(date?: Date) {
     },
   });
 
-  //수정
-
   const edit = useMutation({
     mutationFn: (work: EditWorkStatus) => editWork(work),
     onSuccess: () => {

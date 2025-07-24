@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import StatisticsTab from './components/StatisticsTab';
-import { calculateDate } from '../../api';
+import { calculateDate } from '../../utils';
 import ArrowBack from '../../components/common/ArrowBack';
 import { Calendar } from 'lucide-react';
 import Logout from '../auth/components/LogoutButton';

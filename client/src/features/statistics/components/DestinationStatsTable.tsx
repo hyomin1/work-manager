@@ -7,9 +7,9 @@ import {
 } from '@mui/material';
 import { STATS_DESTINATION_HEADER } from '../constants/statistics';
 import type { StatByDestination } from '../types/statistics';
-import { calStatDay, extractMonthAndDay } from '../../../api';
 import TooltipButton from './TooltipButton';
 import { commonCellStyles, remarksCellStyles } from '../style/style';
+import { calStatDay, extractMonthAndDay } from '../utils/formatDate';
 
 interface Props {
   destinationStatistics: StatByDestination[];

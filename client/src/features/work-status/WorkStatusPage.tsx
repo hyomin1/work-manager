@@ -1,4 +1,4 @@
-import { calculateDate } from '../../api';
+import { calculateDate } from '../../utils';
 import ArrowBack from '../../components/common/ArrowBack';
 import Title from '../../components/layout/Title';
 import Logout from '../auth/components/LogoutButton';

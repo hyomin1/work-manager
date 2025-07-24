@@ -1,4 +1,4 @@
-import { api } from '../../../api';
+import { api } from '../../../utils';
 
 // 통계: 이름 검색
 export const getUserStatistics = async (

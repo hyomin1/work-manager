@@ -1,8 +1,7 @@
 import ExcelJS from 'exceljs';
 import { saveAs } from 'file-saver';
-import { calYearMonth } from '../../../api';
 import type { Cost, VehicleLog } from '../types/vehicleLog';
-import { calCarDay } from './formatDate';
+import { calCarDay, calYearMonth } from './formatDate';
 import { EXCEL_HEADER } from '../constants/vehicleLog';
 
 export default function downloadExcel(

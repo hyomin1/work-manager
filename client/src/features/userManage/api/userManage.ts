@@ -1,4 +1,4 @@
-import { api } from '../../../api';
+import { api } from '../../../utils';
 
 // 유저 목록 (승인된)
 export async function getUsers() {

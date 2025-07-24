@@ -12,22 +12,17 @@ import { REFETCH_INTERVAL } from '../../../constants/constant';
 export default function useDailyWork(date?: Date | null) {
   const queryClient = useQueryClient();
   const { data: dailyWorks } = useQuery<DailyWork[]>({
-    queryKey: ['dailyWorks'],
+    queryKey: ['dailyWorks', date?.toISOString().split('T')[0]],
     queryFn: () => getDailyWorks(date || new Date()),
     refetchInterval: REFETCH_INTERVAL,
   });
-  /*
-      const { data: dailyWork } = useQuery<DailyWork>({
-    queryKey: ['dailyWork', id],
-    queryFn: () => getDailyWork(id),
-    enabled: !!id,
-  });
-   */
 
   const { mutate: addItem } = useMutation({
     mutationFn: (form: DailyWorkForm) => addDailyWork(form),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['dailyWorks'] });
+      queryClient.invalidateQueries({
+        queryKey: ['dailyWorks'],
+      });
       toast.success('일일 업무가 등록되었습니다.');
     },
     onError: () => {

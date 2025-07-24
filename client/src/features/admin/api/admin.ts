@@ -1,4 +1,4 @@
-import { api } from '../../../api';
+import { api } from '../../../utils';
 import type { AdminType } from '../types/admin';
 import { createAdminData, editAdminData } from '../utils/admin';
 
@@ -31,4 +31,9 @@ export async function editCommonItem(
     destination
   );
   return await api.patch(url, body);
+}
+
+export async function directAdminSession() {
+  const res = await api.get('/auth/directAdminSession');
+  return res.status;
 }

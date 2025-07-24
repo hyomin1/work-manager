@@ -1,4 +1,4 @@
-import { api } from '../../../api';
+import { api } from '../../../utils';
 import type { AddWork, EditWorkStatus } from '../types/workStatus';
 
 export const getWorks = async (date: Date) => {

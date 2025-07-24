@@ -1,16 +1,15 @@
-import React from 'react';
 import { Calendar, ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface Props {
   currentDate: Date;
   setCurrentDate: (date: Date) => void;
-  setShowInput: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowInput: (value: boolean | ((prev: boolean) => boolean)) => void;
   category: string;
-  calDate?: (arg0: Date) => string;
-  calYearMonth?: (arg0: Date) => string;
+  calDate?: (date: Date) => string;
+  calYearMonth?: (date: Date) => string;
 }
 
-function Title({
+export default function Title({
   calDate,
   calYearMonth,
   category,
@@ -82,5 +81,3 @@ function Title({
     </div>
   );
 }
-
-export default Title;

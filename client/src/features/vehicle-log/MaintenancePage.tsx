@@ -1,5 +1,5 @@
 import ArrowBack from '../../components/common/ArrowBack';
-import { calculateDate } from '../../api';
+import { calculateDate } from '../../utils';
 import { Calendar } from 'lucide-react';
 import LogoutButton from '../auth/components/LogoutButton';
 import VehicleNoticeFormModal from './components/notice/VehicleNoticeFormModal';

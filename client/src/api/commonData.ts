@@ -1,4 +1,4 @@
-import { api } from '../api';
+import { api } from '../utils';
 
 export async function getNames() {
   const res = await api.get('/api/employee-inform/getName');
