@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import useEscapeKey from '../../work-status/hooks/useEscapeKey';
+import useEscapeKey from '../../../hooks/useEscapeKey';
 import Modal from '../../../components/common/Modal';
 import { changeName } from '../utils/admin';
 import type { AdminType } from '../types/admin';

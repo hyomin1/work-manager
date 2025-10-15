@@ -4,7 +4,7 @@ import dayjs from 'dayjs';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import React, { useState } from 'react';
 import { WrenchIcon, XIcon } from 'lucide-react';
-import useEscapeKey from '../../../work-status/hooks/useEscapeKey';
+import useEscapeKey from '../../../../hooks/useEscapeKey';
 import { serviceInputStyle, serviceStyle } from '../../../../styles/style';
 import type { MaintenanceBase } from '../../types/vehicleLog';
 import useVehicleLog from '../../hooks/useVehicle';

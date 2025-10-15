@@ -1,4 +1,4 @@
-import type { WorkStatus } from '../../../types/work';
+import type { WorkStatus } from '../types/workStatus';
 
 export const sortWorkStatus = (works: WorkStatus[]) => {
   return [...works].sort((a, b) => {

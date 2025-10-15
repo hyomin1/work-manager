@@ -10,7 +10,7 @@ import {
 import { X } from 'lucide-react';
 import { useCommonData } from '../../../hooks/useCommonData';
 import { dailyWorkStyle } from '../../../styles/style';
-import useEscapeKey from '../../work-status/hooks/useEscapeKey';
+import useEscapeKey from '../../../hooks/useEscapeKey';
 import FormButton from './FormButton';
 import type { DailyWork } from '../types/dailyWork';
 import useDailyWork from '../hooks/useDailyWork';

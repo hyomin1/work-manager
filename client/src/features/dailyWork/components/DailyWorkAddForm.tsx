@@ -11,7 +11,7 @@ import { X } from 'lucide-react';
 import { useCommonData } from '../../../hooks/useCommonData';
 import type { DailyWorkForm } from '../types/dailyWork';
 import useDailyWork from '../hooks/useDailyWork';
-import useEscapeKey from '../../work-status/hooks/useEscapeKey';
+import useEscapeKey from '../../../hooks/useEscapeKey';
 import LoadingSpinner from '../../../components/common/LoadingSpinner';
 import { dailyWorkStyle } from '../../../styles/style';
 import FormButton from './FormButton';

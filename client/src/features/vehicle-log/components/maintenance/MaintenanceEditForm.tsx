@@ -7,7 +7,7 @@ import { TextField } from '@mui/material';
 import { WrenchIcon, XIcon } from 'lucide-react';
 import type { MaintenanceEditForm } from '../../types/vehicleLog';
 import { inputStyles } from '../../../../styles/style';
-import useEscapeKey from '../../../work-status/hooks/useEscapeKey';
+import useEscapeKey from '../../../../hooks/useEscapeKey';
 import toast from 'react-hot-toast';
 import useVehicleLog from '../../hooks/useVehicle';
 

@@ -10,7 +10,7 @@ import { X } from 'lucide-react';
 import LoadingSpinner from '../../../components/common/LoadingSpinner';
 import { inputStyles } from '../../../styles/style';
 import useWorkStatus from '../hooks/useWorkStatus';
-import useEscapeKey from '../hooks/useEscapeKey';
+import useEscapeKey from '../../../hooks/useEscapeKey';
 import toast from 'react-hot-toast';
 import Modal from '../../../components/common/Modal';
 import type { EditWorkStatus, WorkStatus } from '../types/workStatus';

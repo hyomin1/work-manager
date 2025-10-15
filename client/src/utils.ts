@@ -10,19 +10,6 @@ export const domainName = 'https://tech.bonc.co.kr';
 
 export const api = getBaseUrl() === domainName ? axiosDomain : axiosIP;
 
-// 일정 fetch
-export const getSchedule = async (
-  year: number,
-  month: number,
-  username: string | null
-) => {
-  const res = await api.get(
-    `/api/schedule/getSchedule?year=${year}&month=${month}&username=${username}`
-  );
-
-  return res.data.schedules || [];
-};
-
 const today = new Date();
 const year = today.getFullYear();
 const month = today.getMonth() + 1;

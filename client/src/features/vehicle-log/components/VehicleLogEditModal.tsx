@@ -9,7 +9,7 @@ import { Autocomplete, TextField } from '@mui/material';
 import { inputStyles } from '../../../styles/style';
 import type { VehicleLog } from '../types/vehicleLog';
 import { useVehicleLogStore } from '../stores/useVehicleLogStore';
-import useEscapeKey from '../../work-status/hooks/useEscapeKey';
+import useEscapeKey from '../../../hooks/useEscapeKey';
 import LoadingSpinner from '../../../components/common/LoadingSpinner';
 import useVehicleLog from '../hooks/useVehicle';
 import toast from 'react-hot-toast';

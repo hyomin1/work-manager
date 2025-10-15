@@ -1,25 +1,51 @@
 import { createBrowserRouter } from 'react-router-dom';
 import App from './App';
-import LoginPage from './features/auth/LoginPage';
 import { lazy } from 'react';
 import { ROUTES } from './constants/constant';
-import DrivingService from './features/vehicle-log/MaintenancePage';
-import WorkStatusPage from './features/work-status/WorkStatusPage';
-import MenuPage from './features/menu/MenuPage';
-import VehicleLogPage from './features/vehicle-log/VehicleLogPage';
-import VehicleLogForm from './features/vehicle-log/components/VehicleLogForm';
-import SchedulePage from './features/schedule/SchedulePage';
-import DailyWorkPage from './features/dailyWork/DailyWorkPage';
-import WorkStatusForm from './features/work-status/components/WorkStatusForm';
 
-const AdminPage = lazy(() => import('./features/admin/AdminPage'));
-const UserManagePage = lazy(
-  () => import('./features/userManage/UserManagePage')
+// ========================================
+// ✅ 메인 번들: 초기 로드에 필수적인 것만!
+// ========================================
+import LoginPage from './features/auth/LoginPage';
+import MenuPage from './features/menu/MenuPage';
+
+// ========================================
+// 🔥 나머지는 전부 lazy (필요할 때만 로드)
+// ========================================
+// 회원가입 (1회성)
+const SignupPage = lazy(() => import('./features/auth/SignupPage'));
+
+// 근무 관련
+const WorkStatusPage = lazy(
+  () => import('./features/work-status/WorkStatusPage')
 );
+const WorkStatusForm = lazy(
+  () => import('./features/work-status/components/WorkStatusForm')
+);
+const DailyWorkPage = lazy(() => import('./features/dailyWork/DailyWorkPage'));
+
+// 차량 관련
+const VehicleLogPage = lazy(
+  () => import('./features/vehicle-log/VehicleLogPage')
+);
+const VehicleLogForm = lazy(
+  () => import('./features/vehicle-log/components/VehicleLogForm')
+);
+const DrivingService = lazy(
+  () => import('./features/vehicle-log/MaintenancePage')
+);
+
+// 캘린더
+const SchedulePage = lazy(() => import('./features/schedule/SchedulePage'));
+
+// 관리자
+const AdminPage = lazy(() => import('./features/admin/AdminPage'));
 const StatisticsPage = lazy(
   () => import('./features/statistics/StatisticsPage')
 );
-const SignupPage = lazy(() => import('./features/auth/SignupPage'));
+const UserManagePage = lazy(
+  () => import('./features/userManage/UserManagePage')
+);
 
 const router = createBrowserRouter([
   {

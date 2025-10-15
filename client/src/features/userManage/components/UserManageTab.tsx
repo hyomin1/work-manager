@@ -21,7 +21,7 @@ const tabs = [
 ];
 
 function UserManageTab({ value, setValue }: Props) {
-  const handleChangeValue = (event: React.SyntheticEvent, newValue: number) => {
+  const handleChangeValue = (_: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
 

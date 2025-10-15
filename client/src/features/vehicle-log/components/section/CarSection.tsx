@@ -2,9 +2,9 @@ import { Car as CarIcon } from 'lucide-react';
 import React from 'react';
 import SectionTitle from '../../../../components/common/SectionTitle';
 import { Autocomplete, Grid, TextField } from '@mui/material';
-import type { Car } from '../../../work-status/types/workStatus';
 import type { FormAction } from '../../reducers/vehicleLogReducer';
 import { inputStyles } from '../../../../styles/style';
+import type { Car } from '../../types/vehicleLog';
 
 interface Props {
   cars: Car[];
