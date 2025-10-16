@@ -2,7 +2,7 @@ import { vi, describe, expect, beforeEach, it } from 'vitest';
 import { api } from '../../../utils';
 import { authApi } from './auth';
 
-vi.mock('../../../api', () => ({
+vi.mock('../../../utils', () => ({
   api: {
     post: vi.fn(),
     get: vi.fn(),

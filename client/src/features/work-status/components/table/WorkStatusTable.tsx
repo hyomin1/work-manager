@@ -2,12 +2,14 @@ import { Paper, Table, TableContainer } from '@mui/material';
 import WorkStatusTableBody from './WorkStatusTableBody';
 import WorkStatusTableHeader from './WorkStatusTableHeader';
 import type { WorkStatus } from '../../types/workStatus';
+import { useMemo } from 'react';
 
 interface Props {
   works: WorkStatus[];
 }
 
 export default function WorkStatusTable({ works }: Props) {
+  const memoWorks = useMemo(() => works || [], [works]);
   return (
     <TableContainer
       component={Paper}
@@ -19,7 +21,7 @@ export default function WorkStatusTable({ works }: Props) {
     >
       <Table>
         <WorkStatusTableHeader />
-        <WorkStatusTableBody works={works || []} />
+        <WorkStatusTableBody works={memoWorks} />
       </Table>
     </TableContainer>
   );
