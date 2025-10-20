@@ -80,8 +80,8 @@ describe('workStatus API', () => {
         selectedWorks: ['test'],
         selectedCar: 'test',
         isDaily: 0,
-        startDate: new Date(),
-        endDate: new Date(),
+        startDate: new Date('2024-01-01'),
+        endDate: new Date('2024-01-01'),
         remarks: 'test',
       };
       await addWork(data);
@@ -93,8 +93,8 @@ describe('workStatus API', () => {
           business: 'test',
           work: 'test',
           car: 'test',
-          startDate: new Date(),
-          endDate: new Date(),
+          startDate: new Date('2024-01-01'),
+          endDate: new Date('2024-01-01'),
           isDaily: 0,
           remarks: 'test',
         })
@@ -137,8 +137,8 @@ describe('workStatus API', () => {
         business: '회의',
         work: '프로젝트 미팅 수정',
         car: '차량2',
-        startDate: new Date(2025, 0, 15),
-        endDate: new Date(2025, 0, 15),
+        startDate: new Date(2025, 12, 15),
+        endDate: new Date(2025, 12, 15),
         isDaily: 1,
         remarks: '수정됨',
       };
