@@ -59,7 +59,7 @@ export function useAdmin(activeTab: AdminType, page?: number) {
     mutationFn: (id: string) => removeCommonItem(activeTab, id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [activeTab] });
-      toast.success('삭제되었습니다.');
+      toast.success('성공적으로 삭제하였습니다.');
     },
     onError: () => {
       toast.error('삭제에 실패했습니다.');

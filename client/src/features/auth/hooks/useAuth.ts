@@ -79,7 +79,7 @@ export default function useAuth() {
       navigate(ROUTES.WORKS.LIST);
       return;
     }
-    alert('권한이 없습니다.');
+    toast.error('권한이 없습니다.');
   };
 
   return {
