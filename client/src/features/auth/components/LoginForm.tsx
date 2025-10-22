@@ -43,7 +43,7 @@ export default function LoginForm() {
   }, [cookies.rememberUserId, setValue]);
 
   return (
-    <form onSubmit={handleSubmit(handleLogin)} className='p-8'>
+    <form onSubmit={handleSubmit(handleLogin)} className='p-8' role='form'>
       <AuthInput
         name='userId'
         label='아이디'
@@ -63,7 +63,7 @@ export default function LoginForm() {
         icon={<KeyRound className='h-5 w-5 text-gray-400' />}
         type='password'
         register={register('password', {
-          required: VALIDATION_MESSAGES.required.userId,
+          required: VALIDATION_MESSAGES.required.password,
         })}
         error={errors.password?.message}
       />
